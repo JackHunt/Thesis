@@ -2,14 +2,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper,width=170mm,top=25mm,bottom=25mm]{geometry}
 \usepackage{graphicx}
-\usepackage{fancyhdr}
-\usepackage{float}
-\usepackage[]{algorithm2e}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage[numbers]{natbib}
-\usepackage{url}
-\usepackage{minted}
+\usepackage{fancyhdr}%For headers and fiiters.
+%\usepackage[numbers]{natbib}
+
+%Set header and footer.
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE]{\slshape \rightmark} %section
@@ -23,7 +19,8 @@
 \title{
     {Thesis Title}\\
     {\large Department of Engineering Science, University of Oxford}\\
-    {\includegraphics[scale=0.3]{pre_chapters/figures/oxford_logo.png}}
+    \vspace{10 mm}
+    {\includegraphics[scale=0.5]{pre_chapters/figures/oxford_logo.png}}
 }
 \author{Mr Jack Miles Hunt}
 \date{}
@@ -44,8 +41,8 @@
 \input{pre_chapters/notation}
 
 \tableofcontents
-\listoffigures
-\listoftables
+%\listoffigures
+%\listoftables
 \chapter{Introduction}
 \input{chapters/introduction}
 
