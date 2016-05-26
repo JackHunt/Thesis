@@ -1,0 +1,58 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,width=170mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage[]{algorithm2e}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[numbers]{natbib}
+\usepackage{url}
+\usepackage{minted}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\slshape \rightmark} %section
+\fancyhead[RE]{\thepage}
+\fancyhead[RO]{\slshape \leftmark} % chapter
+\fancyhead[LO]{\thepage}
+\setlength{\textfloatsep}{1cm plus 0.5cm minus 0.5cm}
+\setlength{\intextsep}{1cm plus 0.5cm minus 0.5cm}
+\setlength{\floatsep}{1cm plus 0.5cm minus 0.5cm}
+
+\title{
+    {Thesis Title}\\
+    {\large Department of Engineering Science, University of Oxford}\\
+    {\includegraphics[scale=0.3]{pre_chapters/figures/oxford_logo.png}}
+}
+\author{Mr Jack Miles Hunt}
+\date{}
+
+\bibliographystyle{ieeetr}
+\begin{document}
+\maketitle
+\chapter*{Declaration}
+\input{pre_chapters/decleration}
+
+\chapter*{Acknowledgements}
+\input{pre_chapters/acknowledgements}
+
+\chapter*{Abstract}
+\input{pre_chapters/abstract}
+
+\chapter*{Notation and Abbreviations Used}
+\input{pre_chapters/notation}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\chapter{Introduction}
+\input{chapters/introduction}
+
+\appendix
+\chapter{Appendix A}
+\input{appendices/appendix_a.tex}
+\appendix
+
+\bibliography{bibliography}
+\end{document}
