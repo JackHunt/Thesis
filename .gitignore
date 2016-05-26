@@ -9,6 +9,8 @@
 *.toc
 *.*~
 *.tps
+*.lot
+*.lof
 .DS_Store
 thesis.pdf
 auto
