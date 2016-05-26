@@ -13,7 +13,7 @@ bib: *.tex
 	pdflatex $(name).tex
 
 clean:
-	rm -f *.aux *.bbl *.blg *.log *.out *.brf *.tcp *.toc
+	rm -f *.aux *.bbl *.blg *.log *.out *.brf *.tcp *.toc *.lot *.lof *.gz
 	rm -rf auto
 
 cleanpdf:
