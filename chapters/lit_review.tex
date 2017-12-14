@@ -1,9 +1,145 @@
 %% Tracking and Mapping.
+\section{Tracking and Mapping}
+\label{sec:lit_review_tam}
+Besl and McKay \cite{Besl1992}
+\begin{itemize}
+	\item 3D Shape Registration.
+	\item Full 6DoF pose estimation.
+	\item Requires shape complexity - geometrically distinctive.
+	\item Compute closest point, compute \& apply registration, iterate until MSE low. 
+	\item Convergence not guaranteed, determined empirically to be rapid over first few iterations.
+\end{itemize}
+
+Curless and Levoy \cite{Curless1996}
+\begin{itemize}
+	\item Early volumetric reconstruction work.
+	\item Integrates aligned range images in to a volume.
+	\item Volume introduced is SDF - cumulative and weighted.
+	\item Isosurface extracted from SDF - Marching Cubes.
+	\item Gaps filled by tesselation.
+\end{itemize}
+
+Zhou et.al. \cite{Zhou2008}
+\begin{itemize}
+	\item Alternative representation to Curless and Levoy.
+	\item Massively parallel KD-Tree construction.
+	\item Suitable for real-time use.
+	\item Parallelism achieved by building tree with BFS.
+	\item Example use given for Ray Tracing and Photon Mapping.
+\end{itemize}
+
+Censi \cite{Censi2008}
+\begin{itemize}
+	\item PL-ICP, ICP using point-to-line metric.
+	\item Closed form solution in planar case.
+	\item Quadratic convergence in finite amount of steps.
+	\item New formulation weighted by normal and solved by reducing to quadratic form and introducing Lagrange Multipliers.
+	\item Prior to optimisation, trimming procedure used to remove outliers.
+\end{itemize}
+
+Newcombe et.al. \cite{Newcombe2011}
+\begin{itemize}
+	\item Real time mapping of indoor scenes with Kinect sensor.
+	\item Invariance to lighting.
+	\item Observations fused in to SDF like volume of Curless et al - TSDF
+	\item Multilevel ICP(coarse to fine) used to obtain pose.
+	\item Measurement->integration->isosurface extraction->pose update.
+	\item Limited to static scenes.
+\end{itemize}
+
+%TO-DO:fix name
+Neissner et.al. \cite{NieBner2013}
+\begin{itemize}
+	\item Pipeline follows that of KinectFusion.
+	\item Introduce a spatial Hashing data structure.
+	\item TSDF split in to Voxel Blocks which are hashed.
+	\item Low space and time complexity.
+	\item Streaming system to reduce GPU memory usage.
+\end{itemize}
+
+Thomas et.al. \cite{Thomas2013}
+\begin{itemize}
+	\item Represent scene as a set of planes with attributes.
+	\item Motivated by planar nature of objects such as tables and cabinets.
+	\item Attributes are bump(normal) image for geometry encoding, mask image encoding confidence and RGB image.
+	\item Rendering by quadrangulation. %Cite this
+	\item Tracking as with KF - linearized GICP.
+\end{itemize}
+
+Salas-Moreno et.al. \cite{Salas-Moreno2013}
+\begin{itemize}
+	\item Introduce a new "Object Orientated" Dense SLAM paradigm.
+	\item Incorporates prior knowledge that many scenes have repeated structure.
+	\item Scene split in to graph of objects. Pose graph optimisation used.
+	\item ICP run against object renderings, followed by detection and insertion of objects. Finally graph optimisation.
+	\item Graph based re-localisation.
+	\item Requires database of known objects.
+\end{itemize}
+
+%TO-DO:fix name
+Stuckler et.al. \cite{Stuckler2014}
+\begin{itemize}
+	\item Uses multiple resolution, probabilistic surfel maps as representation.
+	\item Octree with spatial and appearance statistics at each level.
+	\item Randomised loop closure - graph and key-view based.
+	\item Pose estimation by maximising observation likelihood with uncertainty measure.
+\end{itemize}
+
+Salas-Moreno et.al. \cite{Salas-Moreno2014}
+\begin{itemize}
+	\item Exploits planar structure in the scene, like Thomas.
+	\item Focus on detection and modelling of planes, refined over time.
+	\item From generated Surfel maps, planes are segmented and holes filled over time. %Reference Surfels.
+	\item Fern encoding used for relocalisation. %Reference Fern Encoding - Glocker et al
+	\item ICP between measured vertex map and predicted vertex map.
+\end{itemize}
+
+Prisacariu et.al \cite{Prisacariu2014} Followed up by tech report \cite{Kahler2015}
+\begin{itemize}
+	\item Open source implementation of Voxel Hashing.
+	\item A number of optimisations to the data structure(allocation \& integration) and raycaster.
+	\item IMU data to supplement camera observations for tracking.
+	\item 47Hz NVIDIA Shield tablet, 910Hz Titan X.
+\end{itemize}
+
+Whelan et.al \cite{Whelan2015}
+\begin{itemize}
+	\item Like KF but large scale(hundreds of meters), achieved using GPU cyclic buffers.
+	\item Geometric and photometric camera pose constraints.
+	\item Map updated by frame recognition, as-rigid-as-possible. %Reference as-rigid-as-possible
+	\item Pose graph based loop closure.
+\end{itemize}
+
+Zhou et.al. \cite{Zhou2015}
+\begin{itemize}
+	\item Uses contour cues to improve camera tracking.
+	\item Contour cues extracted from noisy and incomplete depth images.
+	\item Correspondence constraints using scene geometry enforced on pose estimation.
+	\item Based on KF pipeline.
+	\item Depth image inpainting used before contour extraction.
+\end{itemize}
+
+%TO-DO: fix name.
+Kahler et.al \cite{Kahler2016} 
+\begin{itemize}
+	\item Based on KF pipeline and InfiniTAM.
+	\item Online submap alignment algorithm for drift correction.
+	\item Inter-submap corrections based on graph optimisation.
+	\item Loop closure detected using fern conservatories. %cite glocker
+\end{itemize}
 
 %% Semantic SLAM.
+\section{Semantic SLAM}
+\label{sec:lit_review_semantic}
 
 %% Dynamic SLAM.
+\section{Dynamic SLAM}
+\label{sec:lit_review_dynamic}
 
 %% Object Reconstruction.
+\section{Object Reconstruction}
+\label{sec:lit_review_obj_recon}
 
 %% Object Shape Prediction.
+\section{Shape and Pose Prediction}
+\label{sec:lit_review_prediction}
