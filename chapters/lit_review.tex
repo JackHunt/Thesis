@@ -79,7 +79,7 @@ Salas-Moreno et.al. \cite{Salas-Moreno2013}
 %TO-DO:fix name
 Stuckler et.al. \cite{Stuckler2014}
 \begin{itemize}
-	\item Uses multiple resolution, probabilistic surfel maps as representation.
+	\item Uses multiple resolution, probabilistic surfel maps as representation. \cite{Pfister2000}
 	\item Octree with spatial and appearance statistics at each level.
 	\item Randomised loop closure - graph and key-view based.
 	\item Pose estimation by maximising observation likelihood with uncertainty measure.
@@ -89,7 +89,7 @@ Salas-Moreno et.al. \cite{Salas-Moreno2014}
 \begin{itemize}
 	\item Exploits planar structure in the scene, like Thomas.
 	\item Focus on detection and modelling of planes, refined over time.
-	\item From generated Surfel maps, planes are segmented and holes filled over time. %Reference Surfels.
+	\item From generated Surfel maps, planes are segmented and holes filled over time. \cite{Pfister2000}
 	\item Fern encoding used for relocalisation. %Reference Fern Encoding - Glocker et al
 	\item ICP between measured vertex map and predicted vertex map.
 \end{itemize}
@@ -131,10 +131,89 @@ Kahler et.al \cite{Kahler2016}
 %% Semantic SLAM.
 \section{Semantic SLAM}
 \label{sec:lit_review_semantic}
+Civera et.al. \cite{Civera2011}
+\begin{itemize}
+	\item Monocular EKF based SLAM.
+	\item Semantics added to points via SURF correspondences with precomputed object descriptors.
+	\item Geometric compatibility is then tested.
+\end{itemize}
+
+%TO-DO: fix name,
+Stuckler et.al \cite{Stuckler2012} 
+\begin{itemize}
+	\item Uses RGB-D, not monocular.
+	\item Fuses only detected objects.
+	\item Object detection via random forests.
+	\item Hand crafted features over object regions.
+\end{itemize}
+
+Valentin et.al. \cite{Valentin2015} Golodetz et.al. \cite{Golodetz2015}.
+\begin{itemize}
+	\item Online, real time semantic segmentation using user input.
+	\item Dense reconstruction like KF.
+	\item User physically interacts.
+	\item Voxel Oriented Patch features using normals and appearance in CIELab.
+	\item Streaming Random Forests\cite{Abdulsalam2007}  and Valentin version uses Mean Field \cite{Xing2002} optimised by \cite{Krahenbuhl2011}.
+\end{itemize}
+
+Bengio et.al. \cite{Bengio2013} - representation learning.
+Girshick et.al \cite{Girshick2014} - feature hierarchies.
+Handa et.al. \cite{Handa2015}
+\begin{itemize}
+	\item Real time reconstruction with semantic segmentation.
+	\item Deep autoencoders stacked and trained on synthetic depth data.
+	\item Uses depth only cues.
+	\item KF style reconstruction.
+\end{itemize}
+
+Cavallari et.al. \cite{Cavallari2016}
+\begin{itemize}
+	\item Built on top of Voxel Hashing
+	\item RGB frames passed to FCN\cite{Shelhamer2017}, PMF's out.
+	\item Post rendering, colours determined by argmax over PMF bins.
+	\item Texture(non label colours) trilinearly interpolated.
+\end{itemize}
 
 %% Dynamic SLAM.
 \section{Dynamic SLAM}
 \label{sec:lit_review_dynamic}
+Tsap et.al. \cite{Tsap2000}
+\begin{itemize}
+	\item Algorithm for nonrigid motion tracking.
+	\item Solve for dense motion vector fields between 3D objects via Finite Element Methods. %Cite FEM
+	\item Iteratively analyses difference between actual and predicted behaviour.
+	\item Iterative descent to find optimal parameters of nonlinear FEM.
+	\item Tracking improved by using point correspondences.
+	\item Not scene based.
+\end{itemize}
+
+Chen et.al \cite{Chen2011}
+\begin{itemize}
+	\item Nonrigid motion tracking applied to human body.
+	\item Surface mesh extracted from multi view video and skinned.
+	\item Hierarchical(w.r.t articulation) Weighted ICP is then applied.
+	\item ICP points weighted by Approximate Nearest Neighbour %cite
+	\item Prior human skeleton fitted.
+	\item Not scene based.
+\end{itemize}
+
+Sun et.al. \cite{Sun2012}
+\begin{itemize}
+	\item Layered optical flow. Layered over detected moving objects.
+	\item Depth ordered MRF's and Max Flow used for layering.%cite MF
+	\item Number of layers automatically determined.
+	\item Max Flow used to solve for discretised flow field cost function.
+	\item Motion tracking only, no reconstruction.
+\end{itemize}
+
+Unger et.al. \cite{Unger2012}
+\begin{itemize}
+	\item Variational formulation for motion estimation and segmentation with occlusion handling.
+	\item Parametric labelling of flow field for each object undergoing motion.
+	\item Labels encoded with an MRF Potts model as with Sun. %cite potts model.
+	\item Flow and labels solved for via Primal-Dual optimisation framework. %cite primal dual
+	\item Again, motion only. No reconstruction.
+\end{itemize}
 
 %% Object Reconstruction.
 \section{Object Reconstruction}
