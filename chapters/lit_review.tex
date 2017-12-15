@@ -268,6 +268,61 @@ Curless and Levoy \cite{Curless1996}
 	\item No pose tracking in the TAM sense.
 \end{itemize}
 
+Kolev et.al. \cite{Kolev2006}
+\begin{itemize}
+	\item Probabilistic 3D segmentation.
+	\item Rather than direct reconstruction like Curless, the most probable image w.r.t. images is inferred.
+	\item Level set representation used.
+	\item Level set has analogous probability volume(pF,pB)
+	\item Level set is evolved via a variational framework over probability volume.
+	\item Only evaluated on synthetic data.
+	\item Designed for objects with distinct appearance and homogeneous background, though some tolerance to noise is claimed.
+\end{itemize}
+
+Weise et.al. \cite{Weise2009}
+\begin{itemize}
+	\item 3D in hand scanning system.
+	\item Point cloud representation, Surfel rendering. \cite{Pfister2000}
+	\item Objects rotated in front of a sensor, suggests limited tracking ability.
+	\item Drift offset in as-rigid-as-possible manner. %cite as-rigid-as-possible
+	\item ICP registration. Topology graph used for deformation.
+	\item Uses range scanner. No indication of RGBD capability. May need high quality equipment.
+\end{itemize}
+
+Ren et.al. \cite{Ren2013}
+\begin{itemize}
+	\item Probabilistic framework for tracking and reconstruction of objects.
+	\item Initialised with a shape prior level set, which is then evolved as per observations.
+	\item Works with RGBD data.
+	\item Pixel-Wise-Posteriors used for segmentation. Prob volume like Kolev. \cite{Bibby2008}
+	\item Experiments show limitations.
+\end{itemize}
+
+Dou et.al. \cite{Dou2015}
+\begin{itemize}
+	\item Reconstruction of deformable objects with a Kinect sensor.
+	\item Loop closures automatically detected, distributing drift error over the loop.
+	\item Latent shape and nonrigid deformation solved for with bundle adjustment.
+	\item Surface represented as a triangular mesh.
+	\item Experiments show high quality reconstructions, but with overnight run times.
+\end{itemize}
+
+Gupta et.al. \cite{Gupta2016}
+\begin{itemize}
+	\item 3D reconstruction and segmentation of objects with an RGBD sensor.
+	\item Implicit representation, i.e. volumetric. Fusion with Softmax rather than weighted average like KF.
+	\item Each voxel gets a label{obj, bg, empty}. Segmentation with graph cut and alpha expansion.
+	\item Keyframe based loop closure.
+	\item Pose estimation via photometric loss. Authors report drift to be a problem.
+	\item Authors report difficulty in building a granular reconstruction.
+\end{itemize}
+
 %% Object Shape Prediction.
 \section{Shape and Pose Prediction}
 \label{sec:lit_review_prediction}
+
+Dame et.al. \cite{Dame2013}
+\begin{itemize}
+	\item Dense object reconstruction from monocular image source.
+	\item 
+\end{itemize}
