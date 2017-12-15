@@ -175,7 +175,7 @@ Cavallari et.al. \cite{Cavallari2016}
 \end{itemize}
 
 %% Dynamic SLAM.
-\section{Dynamic SLAM}
+\section{Dynamic SLAM, Motion Segmentation and Optical Flow}
 \label{sec:lit_review_dynamic}
 Tsap et.al. \cite{Tsap2000}
 \begin{itemize}
@@ -215,9 +215,58 @@ Unger et.al. \cite{Unger2012}
 	\item Again, motion only. No reconstruction.
 \end{itemize}
 
+Herbst et.al. \cite{Herbst2013}
+\begin{itemize}
+	\item Extension of Optical Flow to 3D scenes.
+	\item Scene flow computed from RGB-D data, i.e. Kinect.
+	\item Approach based on Brox et.al. \cite{Brox2004}
+	\item Variational formulation and optimisation framework.
+\end{itemize}
+
+Stuckler et.al. \cite{Stueckler2013}
+\begin{itemize}
+	\item EM framework to segment rigid body motion from RGBD data.
+	\item Robust to simultaneous fg and bg motion by treating both with parity.
+	\item Sites of motion as well as motion params are posed as latent variables.
+	\item No reconstruction, but feasibly could be extended.
+\end{itemize}
+
+Keller et.al. \cite{Keller2013}
+\begin{itemize}
+	\item Dense SLAM system capable of handling scene dynamics.
+	\item Works with RGB-D data.
+	\item Uses ICP outliers to determine dynamic scene components followed by flood fill.
+	\item Surfel representation \cite{Pfister2000}
+	\item Flat data structure. Does not have advantages of Voxel Hashing.
+\end{itemize}
+
+Perera et.al. \cite{Perera2015}
+\begin{itemize}
+	\item Motion segmentation in TSDF volumes,
+	\item Based on MAP inference over a CRF on the TSDF.
+	\item Can handle minor and major displacements.
+	\item Motion labels and parameters found w.r.t. live frame and TSDF.
+	\item $256^{3}$ voxel grid does not run real time. Scalability issues.
+\end{itemize}
+
+Newcombe et.al. \cite{Newcombe2015}
+\begin{itemize}
+	\item Handles non-rigidly deforming scenes.
+	\item Built on KinectFusion pipeline.
+	\item 6DoF motion field estimated that warps model to live frame.
+	\item Warp field used to fuse new measurements in to canonical model.
+	\item Warp field solved for by Dual Quaternion Blending. \cite{Kavan2006}
+	\item Limitations, such as lack of robustness to open/closed topology changes(hands). Authors highlight scalability issues.
+\end{itemize}
+
 %% Object Reconstruction.
 \section{Object Reconstruction}
 \label{sec:lit_review_obj_recon}
+Curless and Levoy \cite{Curless1996}
+\begin{itemize}
+	\item Object reconstruction from different viewpoints but statically.
+	\item No pose tracking in the TAM sense.
+\end{itemize}
 
 %% Object Shape Prediction.
 \section{Shape and Pose Prediction}
