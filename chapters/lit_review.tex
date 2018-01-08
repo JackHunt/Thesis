@@ -321,8 +321,63 @@ Gupta et.al. \cite{Gupta2016}
 \section{Shape and Pose Prediction}
 \label{sec:lit_review_prediction}
 
+Prisacariu et.al. \cite{Prisacariu2011}
+\begin{itemize}
+	\item Shape prediction, segmentation(optimisation based) and pose optimisation.
+	\item Hierarchical(early deep?) GPLVM's for Shape Latent Space Embedding.
+	\item Unified energy function.
+	\item Candidate shapes generated as one off regression in latent space.
+\end{itemize}
+
 Dame et.al. \cite{Dame2013}
 \begin{itemize}
 	\item Dense object reconstruction from monocular image source.
-	\item 
+	\item Shape priors used to aid reconstruction and segmentation, GPLVM.
+	\item Depth maps optimised for with Primal Dual with TV. Poses are known from PTAM.
 \end{itemize}
+
+Toshev et.al. \cite{Toshev2014}
+\begin{itemize}
+	\item Human pose estimation(articulated estimation) with Deep Neural Networks.
+	\item Cascaded DNN regressors.
+	\item No reconstruction, pose estimation only.
+\end{itemize}
+
+Wohlhart et.al. \cite{Wohlhart2015}
+\begin{itemize}
+	\item 3D object detection and pose recovery.
+	\item CNN descriptors used with Nearest Neighbour Cost for detection and rough pose.
+	\item Problem posed as KNN search in Descriptor Space.
+	\item Object and Pose are coupled in training(i.e. two similar cars with different poses have distant descriptors)
+\end{itemize}
+
+Chang et.al. \cite{Chang2015}
+\begin{itemize}
+	\item Large scale dataset of 3D shapes.
+	\item Synthetic data with no "source" sequence, i.e. no depth.
+	\item Can be used to learn rich latent space embeddings.
+\end{itemize}
+
+Rock et.al. \cite{Rock2015}
+\begin{itemize}
+	\item Recovers a complete 3D model from a depth image of an object.
+	\item Input depth image matched to database of objects via a Random Forest.
+	\item Matched shape coarsely matched to depth map, then deformed at a higher granularity.
+	\item Deformation manually optimised for.
+\end{itemize}
+
+Zhou et.al. \cite{Zhou2017_2}
+\begin{itemize}
+	\item Object detection from 3D Point Clouds.
+	\item End-to-end trainable Convolutional, Region Proposal Network.
+	\item Trained on KITTI LIDAR dataset. \cite{Geiger2013}
+	\item Voxelisation of point cloud used for region detections.
+\end{itemize}
+
+Gwak et.al \cite{Gwak2017}
+\begin{itemize}
+	\item GAN like shape prediction with log-barrier ojective.
+	\item Weakly supervised with sillhouettes and 3D shapes.
+	\item May not work "in the wild"
+\end{itemize}
+
