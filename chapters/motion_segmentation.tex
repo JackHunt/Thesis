@@ -28,7 +28,7 @@ the two scene representations is the ``static'' scene and the other the
 the reconstruction output of the system.
 
 Without the segmentation of dynamic scene components, when tracking against the
-current reconstruction the integrated dynamic components may cause atrifacts
+current reconstruction the integrated dynamic components may cause artifacts
 that prevent the finding of ICP correspondences which often causes camera
 tracking to drift, or completely fail. By tracking against only the stable
 scene components, this inteference in the ICP pose estimation process can be
@@ -59,6 +59,41 @@ Finally, an application to interactive object recognition is given in Section
 
 \section{Static Volumetric Fusion}
 \label{sec:moseg_static_fusion}
+The Volumetric Fusion approach taken in this work draws on previous Volumetric
+integration techniques \cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2014}
+and shall be introduced in this section as preliminary material. Following this
+approach, at each frame the camera is tracked against the current scene, after
+which new data is fused into the scene model which is then rendered using
+Raycasting to prepare for tracking in the next frame.
+
+The static Fusion pipeline consists of the following three consecutive steps:
+\begin{itemize}
+  \item Camera Tracking.
+  \item Model Integration.
+  \item Rendering.
+\end{itemize}
+
+The approach in this work utilises the TSDF Volumetric data structure which
+encodes for each voxel in the structure, a signed value and a weight.
+In the case of 3D environment modelling, the values pertain to distances from
+surfaces, within some truncation region.
+
+Given a vertex map generated from the back projection of the points in a depth
+image, the vertices pertain to the zero crossing point with Voxels either side
+representing distances to the zero crossing point; positive in front of the
+surface, negative behind. Surface points are known as the Zero Level Set.
+% TO-DO: make diagram.
+
+To facilitate real time fusion, the InfiniTAM framework employs a Voxel Block
+Hashing mechanism for fast access to scene Voxels \cite{NieBner2013}. Within
+this context, Voxel Blocks are collections of $N \times N \times N$ TSDF Voxels,
+stored in a Hash Table for fast access. As such, each Hash Table entry
+corresponds to a portion of a global Voxel Block Array, pertaining to a region
+in the scene. This division of the scene into Voxel Blocks is used for the later
+process of determining and labelling dynamic regions in the scene.
+
+\subsection{Camera Tracking}
+
 
 \section{Volumetric Fusion with Dynamic Scenes}
 \label{sec:moseg_dynamic_fusion}
