@@ -4,15 +4,70 @@
 %%% End: 
 
 \section{Introduction}
+\label{sec: moseg_introduction}
+Progress in Dense Volumetric Fusion has been accelerated in recent years with
+the availability of comsumer grade RGBD sensors such as the Microsoft Kinect and
+the Asus Xtion coupled with the increasingly parallel nature of GPU hardware.
+Systems such as the seminal KinectFusion \cite{Newcombe2011} allow one to build
+high quality, globally consistent scene models trivially. Applications of such
+reconstruction pipelines however are limited due to the inability of such
+systems to handle scenes in which there are dynamics; such systems are unable
+to yield reliable reconstructions when there is motion in the sensors field
+of view independent of the sensors own motion. Such a scenario introduces
+additional error to the Pose Estimation component in the pipeline and as such
+causes model corruption.
+
+In this chapter an approach to solving the problem of performing robust
+Dense Volumetric Reconstruction in dynamic scenes is presented. Central to the
+pipeline is the introduction of a dual scene representation based on the use
+of an implicit TSDF \cite{Curless1996}. The use of a dual TSDF approach allows
+for the segmentation of moving components in the scene from static components,
+e.g. segmenting a person getting up from a chair from the chair itself. One of
+the two scene representations is the ``static'' scene and the other the
+``dynamic'' scene. Such separation prevents corruption in the static scene,
+the reconstruction output of the system.
+
+Without the segmentation of dynamic scene components, when tracking against the
+current reconstruction the integrated dynamic components may cause atrifacts
+that prevent the finding of ICP correspondences which often causes camera
+tracking to drift, or completely fail. By tracking against only the stable
+scene components, this inteference in the ICP pose estimation process can be
+mitigated.
+
+Once a part of the dynamic model has been stable for a sufficient period, it's
+volumetric data is integrates in to the static model and it is used for the
+tracking phase of the pipeline. The use of Volumetric structures in this work
+is motivated by previous works on Voxel Block Hashing \cite{NieBner2013},
+providing efficient, real time lookup operations. The presented approach
+exploits the abstraction that Voxel Blocks provide; a block of voxels is
+interpreted as a region of space that can be either static or dynamic.
+From a survey of the literature, it appears that this approach is the first to
+utilise such a dual representation for the motion segmentation problem.
+
+The remainder of this chapter is structured as follows.
+Section \ref{sec:moseg_related_work} presents an assessment of related and
+relevant literature. Section \ref{sec:moseg_static_fusion} introduces
+preliminaries pertaining to the static Fusion pipeline followed by Section
+\ref{sec:moseg_dynamic_fusion} describing the dynamic Fusion component of the
+pipeline. Qualitative and Quantitative results are presented in Sections
+\ref{sec:moseg_qualitative} and \ref{sec:moseg_quantitative}, respectively.
+Finally, an application to interactive object recognition is given in Section
+\ref{sec:moseg_semantic}.
 
 \section{Related Work}
+\label{sec:moseg_related_work}
 
 \section{Static Volumetric Fusion}
+\label{sec:moseg_static_fusion}
 
 \section{Volumetric Fusion with Dynamic Scenes}
+\label{sec:moseg_dynamic_fusion}
 
 \section{Qualitative Results}
+\label{sec:moseg_qualitative}
 
 \section{Quantitative Results}
+\label{sec:moseg_quantitative}
 
 \section{Application to Semantic Scene Understanding}
+\label{sec:moseg_semantic}

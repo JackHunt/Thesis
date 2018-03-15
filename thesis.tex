@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{fancyhdr}%For headers and fiiters.
 \usepackage[numbers]{natbib}
+\usepackage{setspace}
 
 %Set header and footer.
 \pagestyle{fancy}
@@ -15,6 +16,9 @@
 \setlength{\textfloatsep}{1cm plus 0.5cm minus 0.5cm}
 \setlength{\intextsep}{1cm plus 0.5cm minus 0.5cm}
 \setlength{\floatsep}{1cm plus 0.5cm minus 0.5cm}
+
+%Set double spacing.
+\doublespacing
 
 \title{
     {Thesis Title}\\
@@ -59,6 +63,5 @@
 \chapter{Appendix Title}
 \input{appendices/appendix_a.tex}
 
-\bibliogra
-phy{bib/definitions,bib/books,bib/slam_moseg,bib/segmentation,bib/objects,bib/ml}
+\bibliography{bib/definitions,bib/books,bib/slam_moseg,bib/segmentation,bib/objects,bib/ml}
 \end{document}
