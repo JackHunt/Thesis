@@ -5,6 +5,16 @@
 \usepackage{fancyhdr}%For headers and fiiters.
 \usepackage[numbers]{natbib}
 \usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[toc,page]{appendix}
+\usepackage[ocgcolorlinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
 
 %Set header and footer.
 \pagestyle{fancy}
@@ -19,6 +29,11 @@
 
 %Set double spacing.
 \doublespacing
+
+% Declare some math operators.
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_{2}}
+\newcommand\given[1][]{\:#1\vert\:}
 
 \title{
     {Thesis Title}\\
@@ -59,9 +74,12 @@
 \chapter{Probabilistic Object Reconstruction with Online Drift Correction}
 \input{chapters/object_reconstruction}
 
-\appendix
-\chapter{Appendix Title}
-\input{appendices/appendix_a.tex}
+\begin{appendices}
+  \section{Mathematical Appendices}
+  \input{appendices/appendix_a}
+
+  \section{Misc Appendix}
+\end{appendices}
 
 \bibliography{bib/definitions,bib/books,bib/slam_moseg,bib/segmentation,bib/objects,bib/ml}
 \end{document}
