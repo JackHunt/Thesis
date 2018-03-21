@@ -162,7 +162,7 @@ the Cross Product Matrix operator and is defined as follows
   \end{bmatrix}
 \end{equation}
 
-Evaluating Equation \ref{eqn:rodriguez_matrix_eq} leads to the following form
+Evaluating Equation \ref{eqn:ridriguez_matrix_eq} leads to the following form
 of the Rotation Matrix $\mathbf{R}$
 \begin{equation}
   \label{eqn:rodriguez_matrix}
@@ -236,7 +236,7 @@ As a first step, the following definition is made
 \end{equation}
 With this substitution in place, the derivation proceeds as follows
 \begin{equation}
-  \label{eqn:icp_update_derivation_rot}
+  \label{eqn:icp_update_derivation}
   \begin{split}
     % Line 1.
     \frac{\partial E}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}} & =
@@ -250,32 +250,31 @@ With this substitution in place, the derivation proceeds as follows
     % Line 3.
     & = \sum_{p \in \mathbf{\Omega}}
     \frac{\partial}{\partial \phi(.)} \norm{\phi(.)}
-    \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+    \frac{\partial \phi(.)}{\partial \mathbf{R}}
+    \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}\\
     % Line 4.
     & = \sum_{p \in \mathbf{\Omega}}
     \frac{1}{2}\frac{2 \phi(.)}{\sqrt{\phi(.)^{T}\phi(.)}}
-    \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+    \frac{\partial \phi(.)}{\partial \mathbf{R}}
+    \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}\\
     % Line 5.
     & = \sum_{p \in \mathbf{\Omega}}
     \frac{\phi(.)}{\norm{\phi(.)}}
-    \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
-    % Line 6
+    \frac{\partial \phi(.)}{\partial \mathbf{R}}
+    \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}\\
+    % Line 6. - TODO: Check this last step.
     & = \sum_{p \in \mathbf{\Omega}}
     \frac{\phi(.)}{\norm{\phi(.)}}
-    \Bigg[ \frac{\partial}{\partial \mathbf{R_{\{\alpha, \beta, \gamma\}}}}
-    \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
-    \mathcal{N}(\bar{\mathbf{x}}) + 
-    \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
-    \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
-    \mathcal{N}(\bar{\mathbf{x}})\Bigg]\\
-    % Line 6
-    & = \sum_{p \in \mathbf{\Omega}}
-    \frac{\phi(.)}{\norm{\phi(.)}}
-    \bigg[ \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}
-    \mathbf{x}\bigg]^{T}
-    \mathcal{N}(\bar{\mathbf{x}})
+    [\mathbf{x}^{T}\mathcal{N}(\bar{\mathbf{x}})]
+    \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}
   \end{split}
 \end{equation}
+Note that the derivation for the Partial Derivative
+$\frac{\partial E}{\partial \mathbf{t}}$ is analogous and has been omitted.
+Note that for the Translation Gradient, the term
+$\frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}$ is replaced
+with $\frac{\partial \mathbf{t}}{\partial \{t_{x}, t_{y}, t_{z}\}}$.
+
 The full Partial Derivatives $\frac{\partial \mathbf{R}}{\partial \alpha}$,
 $\frac{\partial \mathbf{R}}{\partial \beta}$ and
 $\frac{\partial \mathbf{R}}{\partial \gamma}$ may be found Equations
@@ -284,38 +283,19 @@ and \ref{eqn:rodrigues_full_gamma_deriv} of Appendix
 \ref{appendix:mathematical}.
 
 The Partial Derivatives
-$\frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}$ may be
-multiplied with $\mathbf{x}$ and combined in to the following Rotation Jacobian
+$\frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}$ may be combined
+in to the following Rotation Jacobian
 \begin{equation}
   \label{eqn:rot_jac}
-  \begin{split}
-    \mathbf{J}_{R} & = \left. \bigg[
-      \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}} \mathbf{x}
-      \bigg]^{T} \right\vert_{\alpha,\beta,\gamma = 0} \\
-    & =
-    \begin{bmatrix}
-      0 & -z & y \\
-      z & 0 & -x \\
-      -y & x & 0
-    \end{bmatrix}
-  \end{split}
+  \mathbf{J}_{R} =
+  \begin{bmatrix}
+    0 & -z & y \\
+    z & 0 & -x \\
+    -y & x & 0
+  \end{bmatrix}
 \end{equation}
-
-Note that the derivation for the Partial Derivatives
-$\frac{\partial E}{\partial \mathbf{t}_{\{x, y, z\}}}$ is analogous with that of
-Equation \ref{eqn:icp_update_derivation_rot}, with the result given as follows
-\begin{equation}
-  \label{eqn:icp_update_derivation_trans}
-  \frac{\partial E}{\partial \mathbf{t}_{\{x, y, z\}}} =
-  \sum_{p \in \mathbf{\Omega}}
-  \frac{\phi(.)}{\norm{\phi(.)}}
-  \bigg[ \frac{\partial \mathbf{t}}{\partial \{x, y, z\}}\bigg]^{T}
-  \mathcal{N}(\bar{\mathbf{x}})
-\end{equation}
-
-The Translation Partial Derivatives
-$\frac{\partial \mathbf{t}}{\partial \{x, y, z\}}$ may also be combined in to
-the following Translation Jacobian
+likewise for the Translation Partial Derivatives
+$\frac{\partial \mathbf{t}}{\partial \{t_{x}, t_{y}, t_{z}\}}$
 \begin{equation}
   \label{eqn:trans_jac}
   \mathbf{J}_{t} =
@@ -330,74 +310,21 @@ The overall combined Jacobian for the Energy function defined in Equation
 \ref{eqn:pose_estimation_kf} as follows
 \begin{equation}
   \label{eqn:pose_jacobian}
-  \mathbf{J} =
-  \frac{\phi(.)}{\norm{\phi(.)}}
-  \begin{bmatrix}
-    \mathbf{J}_{R} & \mathbf{J}_{t}
-  \end{bmatrix}^{T}
-  \mathcal{N}(\bar{\mathbf{x}})
+  \begin{split}
+    \mathbf{J} & = \left. \frac{\partial E}{\partial
+        \mathbf{R}_{\{\alpha, \beta, \gamma\}}, \mathbf{t}_{\{x, y, z\}}}
+    \right\vert_{\alpha,\beta,\gamma = 0}\\
+    & =
+    \begin{bmatrix}
+      0 & -z & y & 1 & 0 & 0 \\
+      z & 0 & -x & 0 & 1 & 0 \\
+      -y & x & 0 & 0 & 0 & 1
+    \end{bmatrix}
+  \end{split}
 \end{equation}
 
 \subsubsection{Pose Recovery Optimisation}
 \label{subsub:moseg_static_camera_poserec_opt}
-With the gradient derivations in place, this section will now detail the
-Pose Recovery procedure. As highlighted, the optimisation routine used is the
-Levenberg-Marquardt\cite{NumericalRecipes} algorithm for solving Nonlinear Least
-Squares problems. The Gradient update equation for the Levenberg-Marquardt
-algorithm is given as follows
-\begin{equation}
-  \label{eqn:lm_update}
-  \theta_{t+1} = \theta_{t} - (\mathbf{H} + \lambda \text{diag}(\mathbf{H}))^{-1}
-  \mathbf{J}
-\end{equation}
-where $\theta_{t} = [\alpha, \beta, \gamma, t_{x}, t_{y}, t_{z}]^{T}$ is the
-Parameter Vector of $\mathbf{T}$ at time $t$, $\mathbf{J}$ is the Jacobian
-introduced in Equation \ref{eqn:pose_jacobian} and $\mathbf{H}$ is the Hessian,
-approximated by $\mathbf{H} = \mathbf{J}^{T}\mathbf{J}$. The parameter $\lambda$
-controls the influence of the Gradient on the update step and is adjusted
-according to the change in error, as shall be evident in the Algorithm
-that follows.
-
-{
-  \centering
-  \singlespacing
-  \begin{minipage}{.7\linewidth}
-    \begin{algorithm}[H]
-      \label{alg:icp}
-      \caption{ICP with Levenberg-Marquardt}
-      \begin{algorithmic}[1]
-        \Procedure{ICP}{$\mathcal{D}_{l}, \mathcal{D}_{m}, \mathcal{V}, \theta_{t-1}$}
-        \State $\lambda \gets \lambda_{init}$
-        \State $\theta_{tmp} \gets \theta_{t-1}$
-        \State $\theta_{t} \gets \theta_{tmp}$
-        \State $\epsilon_{old} \gets \inf$
-        \State $\epsilon \gets \epsilon_{old}$
-        \While{$\epsilon >= \tau$}
-        \State $\epsilon \gets E(.)$
-        \Comment{Evaluate Equation \ref{eqn:pose_estimation_kf}}
-        \If{$\epsilon \leq \epsilon_{old}$}
-        \State $\lambda \gets 10\lambda$
-        \State $\theta_{t} \gets \theta_{tmp}$
-        \Else
-        \State $\lambda \gets \frac{\lambda}{10}$
-        \State $\epsilon_{old} \gets \epsilon$
-        \State $\theta_{tmp} \gets \theta_{t}$
-        \EndIf
-        \State $\mathbf{J} \gets \nabla E$
-        \Comment{Evaluate Equation \ref{eqn:pose_jacobian}}
-        \State $\mathbf{H} = \mathbf{J}^{T}\mathbf{J}$
-        \State $\mathbf{C} = \text{chol}(\mathbf{H} +
-        \lambda \text{diag}(\mathbf{H}))$
-        \State $\delta = \text{backsub}(\mathbf{C}, \mathbf{J})$
-        \State $\theta_{tmp} \gets \theta_{tmp} - \delta$
-        \EndWhile\\
-        \Return $\theta_{t}$
-        \EndProcedure
-      \end{algorithmic}
-    \end{algorithm}
-  \end{minipage}
-  \par
-}
 
 \section{Volumetric Fusion with Dynamic Scenes}
 \label{sec:moseg_dynamic_fusion}
