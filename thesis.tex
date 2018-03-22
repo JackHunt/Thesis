@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper,width=170mm,top=25mm,bottom=25mm]{geometry}
 \usepackage{graphicx}
+\usepackage{xcolor}
 \usepackage{fancyhdr}%For headers and fiiters.
 \usepackage[numbers]{natbib}
 \usepackage{setspace}
@@ -16,7 +17,11 @@
     linkcolor=blue,
     filecolor=magenta,      
     urlcolor=cyan,
-}
+  }
+
+%Tikz packages.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
 
 %Set header and footer.
 \pagestyle{fancy}
@@ -54,7 +59,6 @@
 
 \chapter*{Acknowledgements}
 \input{pre_chapters/acknowledgements}
-
 
 \chapter*{Abstract}
 \input{pre_chapters/abstract}

@@ -399,6 +399,22 @@ that follows.
   \par
 }
 
+\subsection{Volumetric Integration}
+The second phase in the Scene Reconstruction pipeline is Volumetric Integration.
+That is, the integration of observed depth images in to a consistent, Implicit
+Volumetric representation, in this case the TSDF.
+
+As previously outlined, the TSDF may be defined as a volume of distances to an
+Isosurface, with the Isosurface itself being given by the Zero Level Set, as
+defined in Equation \ref{eqn:zero_level_definition}. A graphical representation
+is given in Figure \ref{fig:sdf_example}.
+% Based on: http://www.texample.net/tikz/examples/contours-grids/
+\begin{figure}
+  \label{fig:sdf_example}
+  \centering
+  \caption{An example of a Two Dimensional Signed Distance Function.}
+\end{figure}
+
 \section{Volumetric Fusion with Dynamic Scenes}
 \label{sec:moseg_dynamic_fusion}
 
