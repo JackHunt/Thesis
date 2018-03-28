@@ -457,7 +457,7 @@ truncation band behind the Isosurface(Zero Level Set), where $\mu$ is half the
 width of the truncation band, then the TSDF depth measurement update proceeds as
 follows for a Voxel $\mathbf{x}_{v} \in \mathbf{\Phi}$.
 \begin{equation}
-\label{sdf_update}
+\label{eqn:sdf_update}
 \mathbf{\Phi}(\mathbf{x}_{v})_{t} = \frac{1}{\phi(\mathbf{x}_{v})_{t-1} + 1}
 \bigg[\phi(\mathbf{x}_{v})_{t-1}\mathbf{\mathbf{\Phi}}(\mathbf{x}_{v})_{t-1} +
 \text{min} \bigg( 1, \frac{\eta}{\mu} \bigg)
@@ -507,8 +507,8 @@ An overview of the Pipeline is given in Figure \ref{fig:moseg_pipeline}
     Labelling stage with a feedback to the Model Integration stage.}
 \end{figure}
 
-\subsubsection{Stability Labelling}
-\label{subsub:moseg_stability_labelling}
+\subsection{Stability Labelling}
+\label{sub:moseg_stability_labelling}
 The purpose of the stability labelling section of the pipeline is to distinguish
 between Stable and Unstable Voxel Blocks in the Dynamic Model, resulting in
 parts of the scene that are moving being excluded from the Static Model.
@@ -527,7 +527,7 @@ follows.
 \begin{equation}
   \label{eqn:moseg_stability_value}
   \tau_{\mathcal{V}} = \Bigg[ \frac{1}{|\mathcal{V}|} \sum_{v \in \mathcal{V}}
-  \bigg|\Phi(v)^{d} - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
+  \bigg|\Phi^{d}(v) - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
 \end{equation}
 The Stability Label $l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\}$ for
 a given Voxel Block $\mathcal{V}$ is determined by thresholding on $\xi$
@@ -540,28 +540,49 @@ a given Voxel Block $\mathcal{V}$ is determined by thresholding on $\xi$
     \text{unstable} & \textbf{if} \mkern4mu \tau > \xi
   \end{cases}
 \end{equation}
-If the label $l_{\mathcal{V}}$ is `stable`, the implication is that the Voxel
+If the label $l_{\mathcal{V}}$ is ``stable'', the implication is that the Voxel
 Block contains few disparities between the current scene and the stored model.
 In this case, it's stability value is incremented. If however
-$l_{\mathcal{V}}$ has the label `unstable`, the implication is that the
+$l_{\mathcal{V}}$ has the label ``unstable'', the implication is that the
 contents of the Voxel Block are changing, so it's stability value is reset to
 nought, as follows.
 \begin{equation}
   \label{eqn:moseg_stability_update}
   \tau_{\mathcal{V}} =
   \begin{cases}
-    \tau_{\mathcal{V}} + 1 & \textbf{if} \mkern4mu l_{\mathcal{V}} = \text{stable}\\
+    \tau_{\mathcal{V}} + 1 & \textbf{if} \mkern4mu l_{\mathcal{V}} =
+    \text{stable}\\
     0 & \textbf{if} \mkern4mu l_{\mathcal{V}} = \text{unstable}
   \end{cases}
 \end{equation}
 
 Voxel Blocks that are observed to be stable over a sufficiently long period of
-time (empirically set to $40$ frames) will be fused into the Static Model,
-as follows in Section \ref{subsub:moseg_static_to_dynamic}.
+time (empirically set to $40$ frames) will be Integrated into the Static Model,
+as follows in Section \ref{sub:moseg_static_to_dynamic}.
 
-\subsubsection{Integration From Dynamic to Static Models}
-\label{subsub:moseg_static_to_dynamic}
+\subsection{Integration into Static Model from Dynamic Model}
+\label{sub:moseg_static_to_dynamic}
+For a time step $t$, each Voxel Block in the Dynamic Model that has assigned to
+it a stable label has the entirety its Voxel TSDF values Integrated in to the
+static model. In a similar formulation to that of Equation \ref{eqn:sdf_update}
+in Section \ref{subsec:moseg_static_integration}, the update comprises
+Integration of new data in to a running average.
 
+The weight update for a given Voxel $v$ in the Stable Model $\mathbf{\Phi}^{s}$
+with respect to a Voxel(belonging to a Voxel Block labelled ``stable'') 
+$\bar{v}$ in the Dynamic Model $\mathbf{\Phi}^{d}$ is given as follows.
+\begin{equation}
+  \label{eqn:moseg_weight_update}
+  \phi^{s}_{t}(v) = \phi(v)^{s}_{t-1}(v) + \phi(\bar{v})^{d}_{t-1}(\bar{v})
+\end{equation}
+Similarly, the update for the TSDF values is as follows.
+\begin{equation}
+  \label{eqn:moseg_sdf_update}
+  \mathbf{\Phi}^{s}_{t}(v) = \frac{1}{\phi^{s}_{t}(v)} \bigg[
+  \phi^{s}_{t-1}(v) \mathbf{\Phi}^{s}_{t-1}(v) +
+  \phi^{d}_{t-1}(\bar{v}) \mathbf{\Phi}^{d}_{t-1}(\bar{v})
+  \bigg]
+\end{equation}
 
 \section{Qualitative Results}
 \label{sec:moseg_qualitative}
