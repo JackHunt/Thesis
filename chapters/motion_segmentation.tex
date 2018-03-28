@@ -35,12 +35,16 @@ scene components, this inteference in the ICP pose estimation process can be
 mitigated.
 
 Once a part of the dynamic model has been stable for a sufficient period, it's
-volumetric data is integrates in to the static model and it is used for the
+volumetric data is integrated in to the static model and it is used for the
 tracking phase of the pipeline. The use of Volumetric structures in this work
 is motivated by previous works on Voxel Block Hashing \cite{NieBner2013},
 providing efficient, real time lookup operations. The presented approach
 exploits the abstraction that Voxel Blocks provide; a block of voxels is
 interpreted as a region of space that can be either static or dynamic.
+Voxel Block Stability is determined by a confidence measure over the Voxel
+Blocks in the Dynamic Scene, such that Isosurface information is not transferred
+to the Static Model(used for Camera Tracking) until there is sufficient
+confidence in it's stability.
 From a survey of the literature, it appears that this approach is the first to
 utilise such a dual representation for the motion segmentation problem.
 
@@ -60,7 +64,8 @@ Finally, an application to interactive object recognition is given in Section
 \section{Static Volumetric Fusion}
 \label{sec:moseg_static_fusion}
 The Volumetric Fusion approach taken in this work draws on previous Volumetric
-integration techniques \cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2014}
+integration techniques \cite{Curless1996, Newcombe2011, NieBner2013,
+  Prisacariu2014}
 and shall be introduced in this section as preliminary material and shall be
 referred to in later chapters. Following this approach, at each frame the camera
 is tracked against the current scene, after which new data is fused into the
@@ -347,7 +352,8 @@ Squares problems. The Gradient update equation for the Levenberg-Marquardt
 algorithm is given as follows
 \begin{equation}
   \label{eqn:lm_update}
-  \theta_{t+1} = \theta_{t} - (\mathbf{H} + \lambda \text{diag}(\mathbf{H}))^{-1}
+  \theta_{t+1} = \theta_{t} - (\mathbf{H} + \lambda \text{diag}(
+  \mathbf{H}))^{-1}
   \mathbf{J}
 \end{equation}
 where $\theta_{t} = [\alpha, \beta, \gamma, t_{x}, t_{y}, t_{z}]^{T}$ is the
@@ -366,7 +372,8 @@ that follows.
       \label{alg:icp}
       \caption{ICP with Levenberg-Marquardt}
       \begin{algorithmic}[1]
-        \Procedure{ICP}{$\mathcal{D}_{l}, \mathcal{D}_{m}, \mathcal{V}, \theta_{t-1}$}
+        \Procedure{ICP}{$\mathcal{D}_{l}, \mathcal{D}_{m}, \mathcal{V},
+          \theta_{t-1}$}
         \State $\lambda \gets \lambda_{init}$
         \State $\theta_{tmp} \gets \theta_{t-1}$
         \State $\theta_{t} \gets \theta_{tmp}$
@@ -400,9 +407,12 @@ that follows.
 }
 
 \subsection{Volumetric Integration}
+\label{subsec:moseg_static_integration}
 The second phase in the Scene Reconstruction pipeline is Volumetric Integration.
 That is, the integration of observed depth images in to a consistent, Implicit
-Volumetric representation, in this case the TSDF.
+Volumetric representation, in this case the existing TSDF model of the scene,
+providing the basis for an updated rendering to be used in the ICP procedure
+for Tracking at the next time step.
 
 As previously outlined, the TSDF may be defined as a volume of distances to an
 Isosurface, with the Isosurface itself being given by the Zero Level Set, as
@@ -412,11 +422,146 @@ is given in Figure \ref{fig:sdf_example}.
 \begin{figure}
   \label{fig:sdf_example}
   \centering
+  TODO: Make figure.
   \caption{An example of a Two Dimensional Signed Distance Function.}
 \end{figure}
 
+As with KinectFusion \cite{Newcombe2011} the global (scene) location
+$\mathbf{x}_{v}$ of each voxel $v \in \mathbf{\Phi}$ that is visible in the
+current view frustum is transformed into the camera's coordinate frame via the
+following Transformation(noting that $\mathbf{x}_{v}$ is in Homogeneous form)
+\begin{equation}
+\label{eqn:project_tsdf_to_image}
+\mathbf{x}_{\Omega} = \mathbf{K}\mathbf{T}_i^{-1}\mathbf{x}_{v}
+\end{equation}
+where $\mathbf{K}$ is the Camera's Intrinsic Calibration Matrix, $\mathbf{T}$ is
+the Transformation optimised for at time $t$, with the form given in Equation
+\ref{eqn:trans_mat_definition} and $\mathbf{x}_{\Omega}$ is the resultant
+projected coordinates.
+
+The Integration of new data points into the TSDF Volume is achieved by computing 
+running averages; each voxel contains a running average of its SDF value over
+time.
+
+Projecting to the depth image $\mathbf{\Omega}$ coordinates as in Equation
+\ref{eqn:project_tsdf_to_image} to perform a depth lookup in $\mathbf{\Omega}$
+and subtracting the $z$ component of $\mathbf{x}_{v}$ from the resulting value
+yields the depth offset from the surface, as follows
+\begin{equation}
+  \label{eqn:integration_offset}
+  \eta = \mathbf{x}_{\Omega} - \mathbf{x}_{v}^{z}
+\end{equation}
+
+If $\eta \geq -\mu$, that is that the depth of the point is not beyond the
+truncation band behind the Isosurface(Zero Level Set), where $\mu$ is half the
+width of the truncation band, then the TSDF depth measurement update proceeds as
+follows for a Voxel $\mathbf{x}_{v} \in \mathbf{\Phi}$.
+\begin{equation}
+\label{sdf_update}
+\mathbf{\Phi}(\mathbf{x}_{v})_{t} = \frac{1}{\phi(\mathbf{x}_{v})_{t-1} + 1}
+\bigg[\phi(\mathbf{x}_{v})_{t-1}\mathbf{\mathbf{\Phi}}(\mathbf{x}_{v})_{t-1} +
+\text{min} \bigg( 1, \frac{\eta}{\mu} \bigg)
+\bigg]
+\end{equation}
+In addition, the weight $\phi(\mathbf{x}_{v})$ is updated as follows.
+\begin{equation}
+  \label{eqn:sdf_weight_update}
+  \phi(\mathbf{x}_{v})_{t} = \phi(\mathbf{x}_{v})_{t-1} + 1
+\end{equation}
+
+\subsection{Rendering}
+\label{subsec:moseg_static_rendering}
+Following the Integration process outlined in Section
+\ref{subsec:moseg_static_integration} is the rendering stage in which an image
+of the scene image is generated to provide an updated view for the tracking
+stage outlined in Section \ref{subsec:moseg_static_camera_tracking}, at the next
+time step.
+
+Rendering in the pipeline is achieved by Raycasting, the process of `casting` a
+ray from the Camera Frame into the scene, to find intersections with the scene
+Isosurface. 
+% A complete treatment of the Raycasting procedure may be found in the computer
+% graphics literature \cite{Parker:1998:IRT:288216.288266}.
+
 \section{Volumetric Fusion with Dynamic Scenes}
 \label{sec:moseg_dynamic_fusion}
+To adapt the conventional approach described in Section
+\ref{sec:moseg_static_fusion} to handle dynamic environments, a dual-volume
+representation of the scene is introduced, consisting of a \emph{Static Model}
+and a \emph{Dynamic Model} (both of which are TSDF's).
+
+There are two additional stages in the dynamic pipeline to handle integration in
+to the Static Model. The first updates stability values for all of the Voxel
+Blocks in the current view frustum at each frame. The second Integrates blocks
+whose stability values are above a certain threshold into the static model.
+Camera Tracking is performed against the Static Model as soon as it contains
+valid Isosurface data to track against, preventing moving objects in the scene
+from contributing to tracking drift.
+
+An overview of the Pipeline is given in Figure \ref{fig:moseg_pipeline}
+\begin{figure}[t]
+  \label{fig:moseg_pipeline}
+  \centering
+  \includegraphics[width=\linewidth]{figures/motion_segmentation/pipeline.pdf}
+  \caption{The Motion Segmentation pipeline. Note the additional Voxel Block
+    Labelling stage with a feedback to the Model Integration stage.}
+\end{figure}
+
+\subsubsection{Stability Labelling}
+\label{subsub:moseg_stability_labelling}
+The purpose of the stability labelling section of the pipeline is to distinguish
+between Stable and Unstable Voxel Blocks in the Dynamic Model, resulting in
+parts of the scene that are moving being excluded from the Static Model.
+
+For each Voxel Block in the Dynamic Model, a \emph{Stability Value} is
+maintained, representing the extent to which the instantaneous TSDF values for
+the Voxels in a given Voxel Block(visible in the current View Frustrum under the
+current Pose) have remained similar to the existing TSDF values for those voxels
+over time.
+
+The stability value for each voxel block in the scene is initialised to nought.
+At each frame, the instantaneous TSDF values for the Voxels in each visible
+Voxel Block are computed. For each Voxel Block, the Mean Absolute Difference
+$\tau$, between the instantaneous and existing TSDF values is computed as
+follows.
+\begin{equation}
+  \label{eqn:moseg_stability_value}
+  \tau_{\mathcal{V}} = \Bigg[ \frac{1}{|\mathcal{V}|} \sum_{v \in \mathcal{V}}
+  \bigg|\Phi(v)^{d} - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
+\end{equation}
+The Stability Label $l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\}$ for
+a given Voxel Block $\mathcal{V}$ is determined by thresholding on $\xi$
+(empirically set to $0.3m$) as follows.
+\begin{equation}
+  \label{eqn:moseg_stability_labelling}
+  l_{\mathcal{V}} =
+  \begin{cases}
+    \text{stable} & \textbf{if} \mkern4mu \tau \leq \xi \\
+    \text{unstable} & \textbf{if} \mkern4mu \tau > \xi
+  \end{cases}
+\end{equation}
+If the label $l_{\mathcal{V}}$ is `stable`, the implication is that the Voxel
+Block contains few disparities between the current scene and the stored model.
+In this case, it's stability value is incremented. If however
+$l_{\mathcal{V}}$ has the label `unstable`, the implication is that the
+contents of the Voxel Block are changing, so it's stability value is reset to
+nought, as follows.
+\begin{equation}
+  \label{eqn:moseg_stability_update}
+  \tau_{\mathcal{V}} =
+  \begin{cases}
+    \tau_{\mathcal{V}} + 1 & \textbf{if} \mkern4mu l_{\mathcal{V}} = \text{stable}\\
+    0 & \textbf{if} \mkern4mu l_{\mathcal{V}} = \text{unstable}
+  \end{cases}
+\end{equation}
+
+Voxel Blocks that are observed to be stable over a sufficiently long period of
+time (empirically set to $40$ frames) will be fused into the Static Model,
+as follows in Section \ref{subsub:moseg_static_to_dynamic}.
+
+\subsubsection{Integration From Dynamic to Static Models}
+\label{subsub:moseg_static_to_dynamic}
+
 
 \section{Qualitative Results}
 \label{sec:moseg_qualitative}
