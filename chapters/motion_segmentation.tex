@@ -502,7 +502,7 @@ An overview of the Pipeline is given in Figure \ref{fig:moseg_pipeline}
 \begin{figure}[t]
   \label{fig:moseg_pipeline}
   \centering
-  \includegraphics[width=\linewidth]{figures/motion_segmentation/pipeline.pdf}
+  \includegraphics[width=\linewidth]{figures/moseg/pipeline.pdf}
   \caption{The Motion Segmentation pipeline. Note the additional Voxel Block
     Labelling stage with a feedback to the Model Integration stage.}
 \end{figure}
@@ -586,9 +586,114 @@ Similarly, the update for the TSDF values is as follows.
 
 \section{Qualitative Results}
 \label{sec:moseg_qualitative}
+Empirically, the proposed Motion Segmentation system is capable of retaining
+globally consistent tracking within the Dense SLAM framework for a range of
+scenarios that would prove to be problematic for other, static Dense SLAM
+systems. The experiments performed demonstrate a robustness	to dynamics in
+various scenes, both in terms of tracking and noise artefacts in the static
+model. In addition, the system is robust to the addition and removal of scene
+components and is robust to short term occlusions, such as a person walking in
+front of the camera. An example of a person moving in to the the View Frustrum
+and sitting on a Setee is given in Figure \ref{fig:moseg_qualitative_setee}.
+
+\begin{figure}[t]
+  \label{fig:moseg_qualitative_setee}
+  \centering
+  \begin{tabular}{ccc}
+    \includegraphics[height=.2\linewidth]{figures/moseg/original_sitting.png} &
+    \includegraphics[height=.2\linewidth]{figures/moseg/infinitam_sitting.png} &
+    \includegraphics[height=.2\linewidth]{figures/moseg/moseg_sitting.png}\\
+    (a) & (b) & (c)
+  \end{tabular}
+  \caption{A qualitative comparison between the proposed system and InfiniTAM
+    \cite{Prisacariu2014}.
+    (a) A static scene containing a Setee is reconstructed.
+    (b) When a person enters the scene using standard InfiniTAM, the tracking
+    fails, leading to a corrupted scene model.
+    (c) Using the proposed system, tracking is maintained and the person is
+    Integrated successfully into the scene.}
+\end{figure}
+
+In addition to the ability to reconstruct a moving object that becomes static in
+the scene as shown in Figure \ref{fig:moseg_qualitative_setee}, the proposed
+system is also capable of segmenting dynamic objects in a scene that are
+undergoing nonrigid motion. Whilst these objects are segmented and labelled as
+``dynamic'' they are not used for Camera Pose Estimation. An example of this
+behaviour may be observed in Figure \ref{fig:moseg_qualitative_chair}.
+
+\begin{figure}[t]
+  \label{fig:moseg_qualitative_chair}
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[height=.25\linewidth]{figures/moseg/chair0.png} &
+    \includegraphics[height=.25\linewidth]{figures/moseg/chair1.png} \\
+    (a) & (b) \\
+    \includegraphics[height=.25\linewidth]{figures/moseg/chair2.png} &
+    \includegraphics[height=.25\linewidth]{figures/moseg/chair3.png} \\
+    (c) & (d)
+  \end{tabular}
+  \caption{A qualitative example of the proposed systems ability to segment
+    dynamic scene components.
+    (a) A static scene containing a Chair is reconstructed.
+    (b) A person enters the scene, is marked as ``dynamic'' and sits down.
+    (c) After gaining a sufficient confidence score, the person is labelled
+    ``static'' and is integrated in to the Static Model.
+    (d) The person gets up from the Chair and leaves the scene. The original
+    reconstruction of the chair from (a) is in tact.}
+\end{figure}
 
 \section{Quantitative Results}
 \label{sec:moseg_quantitative}
+In this section, a quantitative evaluation of the system's efficacy in terms of
+and Camera Tracking ability is provided.
+
+For the quantitative analysis, the system has been evaluated on the Dynamic
+Objects subset of the TUM RGBD dataset \cite{Sturm2012} with respect to
+trajectory quality. The scenes provided in the dataset contain a range of
+dynamic components ranging from arm movement to people walking around, occluding
+parts of the scene. Comparison is drawn against the standard InfiniTAM framework
+on which the proposed system is based, using standard, static InfiniTAM as a
+baseline.
+
+\begin{table}[!t]
+  \label{tbl:moseg_ate}
+\begin{center}
+  \begin{tabular}{l@{\hskip 1cm} c c}
+    \emph{TUM Standard Sequence Name} & \emph{MoSeg} ATE & \emph{Baseline} ATE \\
+    \midrule
+    \textsf{fr2-desk-with-person} & \textbf{0.158 \std{0.091}} & 0.297 \std{0.193}\\
+    \textsf{fr3-sitting-static} & 0.014 \std{0.008} & \textbf{0.012 \std{0.007}}\\
+    \textsf{fr3-sitting-xyz} & 0.064 \std{0.031} & \textbf{0.053 \std{0.029}}\\
+    \textsf{fr3-sitting-halfsphere} & 0.142 \std{0.063} & \textbf{0.115 \std{0.049}}\\
+    \textsf{fr3-sitting-rpy} & \textbf{0.056 \std{0.033}} & 0.081 \std{0.051}\\
+    \textsf{fr3-walking-static} & \textbf{0.294 \std{0.153}} & 0.999 \std{0.178}\\
+    \textsf{fr3-walking-xyz} & \textbf{0.385 \std{0.271}} & 0.544 \std{0.343}\\
+    \textsf{fr3-walking-halfsphere} & \textbf{0.539 \std{0.360}} & 0.762 \std{0.367}\\
+    \textsf{fr3-walking-rpy} & \textbf{0.662 \std{0.335}} & 0.843 \std{0.365}\\
+  \end{tabular}
+\end{center}
+\caption{The absolute trajectory error (ATE) results (in metres, lower is better
+  ) achieved by the proposed approach in comparison to the baseline InfiniTAM
+  \cite{Prisacariu2014} framework on a variety of the standard sequences from
+  the TUM RGBD dataset \cite{Sturm2012}. Results are in the format mean
+  $\pm$ standard deviation. The better result (by mean) on each sequence is
+  highlighted in bold.}
+\end{table}
+
+Given in Table \ref{tbl:moseg_ate} is the Absolute Trajectory Error measures
+for each of the TUM Dynamic Scenes. The Absolute Trajectory Error utilises the
+method of Horn \cite{Horn1987} to solve for the error incurred by mapping the
+trajectory of the proposed system on to the ground truth trajectory of the TUM
+sequence, for a given TUM Dynamic Objects sequence.
+
+The results of Table \ref{tbl:moseg_ate} are visualised in Figure \ref{}.
+
+\begin{figure}[t]
+  \label{fig:moseg_pipeline}
+  \centering
+  \includegraphics[width=\linewidth]{figures/moseg/ate.eps}
+  \caption{Absolute Trajectory Error for the TUM Dynamic Scenes dataset.}
+\end{figure}
 
 \section{Application to Semantic Scene Understanding}
 \label{sec:moseg_semantic}
