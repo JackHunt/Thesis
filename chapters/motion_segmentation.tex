@@ -419,7 +419,7 @@ Isosurface, with the Isosurface itself being given by the Zero Level Set, as
 defined in Equation \ref{eqn:zero_level_definition}. A graphical representation
 is given in Figure \ref{fig:sdf_example}.
 % Based on: http://www.texample.net/tikz/examples/contours-grids/
-\begin{figure}
+\begin{figure}[h]
   \label{fig:sdf_example}
   \centering
   TODO: Make figure.
@@ -499,7 +499,7 @@ valid Isosurface data to track against, preventing moving objects in the scene
 from contributing to tracking drift.
 
 An overview of the Pipeline is given in Figure \ref{fig:moseg_pipeline}
-\begin{figure}[t]
+\begin{figure}[h]
   \label{fig:moseg_pipeline}
   \centering
   \includegraphics[width=\linewidth]{figures/moseg/pipeline.pdf}
@@ -527,7 +527,7 @@ follows.
 \begin{equation}
   \label{eqn:moseg_stability_value}
   \tau_{\mathcal{V}} = \Bigg[ \frac{1}{|\mathcal{V}|} \sum_{v \in \mathcal{V}}
-  \bigg|\Phi^{d}(v) - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
+  \bigg|\mathbf{\Phi}^{d}(v) - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
 \end{equation}
 The Stability Label $l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\}$ for
 a given Voxel Block $\mathcal{V}$ is determined by thresholding on $\xi$
@@ -596,7 +596,7 @@ components and is robust to short term occlusions, such as a person walking in
 front of the camera. An example of a person moving in to the the View Frustrum
 and sitting on a Setee is given in Figure \ref{fig:moseg_qualitative_setee}.
 
-\begin{figure}[t]
+\begin{figure}[h]
   \label{fig:moseg_qualitative_setee}
   \centering
   \begin{tabular}{ccc}
@@ -621,7 +621,7 @@ undergoing nonrigid motion. Whilst these objects are segmented and labelled as
 ``dynamic'' they are not used for Camera Pose Estimation. An example of this
 behaviour may be observed in Figure \ref{fig:moseg_qualitative_chair}.
 
-\begin{figure}[t]
+\begin{figure}[h]
   \label{fig:moseg_qualitative_chair}
   \centering
   \begin{tabular}{cc}
@@ -655,7 +655,7 @@ parts of the scene. Comparison is drawn against the standard InfiniTAM framework
 on which the proposed system is based, using standard, static InfiniTAM as a
 baseline.
 
-\begin{table}[!t]
+\begin{table}[h]
   \label{tbl:moseg_ate}
 \begin{center}
   \begin{tabular}{l@{\hskip 1cm} c c}
@@ -672,7 +672,7 @@ baseline.
     \textsf{fr3-walking-rpy} & \textbf{0.662 \std{0.335}} & 0.843 \std{0.365}\\
   \end{tabular}
 \end{center}
-\caption{The absolute trajectory error (ATE) results (in metres, lower is better
+\caption{The Bbsolute Trajectory Error (ATE) results (in metres, lower is better
   ) achieved by the proposed approach in comparison to the baseline InfiniTAM
   \cite{Prisacariu2014} framework on a variety of the standard sequences from
   the TUM RGBD dataset \cite{Sturm2012}. Results are in the format mean
@@ -686,13 +686,53 @@ method of Horn \cite{Horn1987} to solve for the error incurred by mapping the
 trajectory of the proposed system on to the ground truth trajectory of the TUM
 sequence, for a given TUM Dynamic Objects sequence.
 
-The results of Table \ref{tbl:moseg_ate} are visualised in Figure \ref{}.
+The results of Table \ref{tbl:moseg_ate} are visualised in Figure
+\ref{fig:moseg_ate}.
 
-\begin{figure}[t]
-  \label{fig:moseg_pipeline}
+\begin{figure}[h]
+  \label{fig:moseg_ate}
   \centering
   \includegraphics[width=\linewidth]{figures/moseg/ate.eps}
   \caption{Absolute Trajectory Error for the TUM Dynamic Scenes dataset.}
+\end{figure}
+
+In addition to evaluating quantitatively in terms of Absolute Trajectory Error,
+additional results are provided in terms of Relative Trajectory Error
+\cite{Sturm2012}. RTE measures the relative pose error over a fixed time
+interval, with the final score being the RMSE over all time windows. RTE results
+are provided in Table \ref{tbl:moseg_rte} and visualised in Figure
+\ref{fig:moseg_rte}.
+
+\begin{table}[h]
+  \label{tbl:moseg_rte}
+\begin{center}
+  \begin{tabular}{l@{\hskip 1cm} c c}
+    \emph{TUM Standard Sequence Name} & \emph{MoSeg} RTE & \emph{Baseline} RTE \\
+    \midrule
+    \textsf{fr2-desk-with-person} & \textbf{0.023 \std{0.030}} & 0.026 \std{0.037}\\
+    \textsf{fr3-sitting-static} & 0.010 \std{0.008} & \textbf{0.010 \std{0.008}}\\
+    \textsf{fr3-sitting-xyz} & 0.028 \std{0.017} & \textbf{0.028 \std{0.017}}\\
+    \textsf{fr3-sitting-halfsphere} & \textbf{0.031 \std{0.033}} & 0.032 \std{0.029}\\
+    \textsf{fr3-sitting-rpy} & 0.073 \std{0.061} & \textbf{0.067 \std{0.065}}\\
+    \textsf{fr3-walking-static} & \textbf{0.082 \std{0.140}} & 0.163 \std{0.308}\\
+    \textsf{fr3-walking-xyz} & 0.410 \std{0.262} & \textbf{0.300 \std{0.252}}\\
+    \textsf{fr3-walking-halfsphere} & \textbf{0.245 \std{0.320}} & 0.305 \std{0.374}\\
+    \textsf{fr3-walking-rpy} & 0.482 \std{0.456} & \textbf{0.406 \std{0.364}}\\
+  \end{tabular}
+\end{center}
+\caption{The Relative Trajectory Error (RTE) results (in metres, lower is better
+  ) achieved by the proposed approach in comparison to the baseline InfiniTAM
+  \cite{Prisacariu2014} framework on a variety of the standard sequences from
+  the TUM RGBD dataset \cite{Sturm2012}. Results are in the format mean
+  $\pm$ standard deviation. The better result (by mean) on each sequence is
+  highlighted in bold.}
+\end{table}
+
+\begin{figure}[h]
+  \label{fig:moseg_rte}
+  \centering
+  \includegraphics[width=\linewidth]{figures/moseg/rte.eps}
+  \caption{Relative Trajectory Error for the TUM Dynamic Scenes dataset.}
 \end{figure}
 
 \section{Application to Semantic Scene Understanding}
