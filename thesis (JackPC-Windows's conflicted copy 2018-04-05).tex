@@ -1,0 +1,92 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,width=170mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}%For headers and fiiters.
+\usepackage[numbers]{natbib}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[toc,page]{appendix}
+\usepackage[ocgcolorlinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+  }
+
+%Tikz packages.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+%Set header and footer.
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\slshape \rightmark} %section
+\fancyhead[RE]{\thepage}
+\fancyhead[RO]{\slshape \leftmark} % chapter
+\fancyhead[LO]{\thepage}
+\setlength{\textfloatsep}{1cm plus 0.5cm minus 0.5cm}
+\setlength{\intextsep}{1cm plus 0.5cm minus 0.5cm}
+\setlength{\floatsep}{1cm plus 0.5cm minus 0.5cm}
+
+%Set double spacing.
+\doublespacing
+
+% Declare some math operators.
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_{2}}
+\newcommand\given[1][]{\:#1\vert\:}
+
+\title{
+    {Thesis Title}\\
+    \vspace{10 mm}
+    {\includegraphics[scale=1]{pre_chapters/figures/oxford_logo.png}\\
+    {\large Department of Engineering Science\\ University of Oxford}\\}
+}
+\author{Mr Jack Miles Hunt}
+\date{}
+
+\bibliographystyle{ieeetr}
+\begin{document}
+\maketitle
+\chapter*{Declaration}
+\input{pre_chapters/decleration}
+
+\chapter*{Acknowledgements}
+\input{pre_chapters/acknowledgements}
+
+\chapter*{Abstract}
+\input{pre_chapters/abstract}
+
+\chapter*{Notation and Abbreviations Used}
+\input{pre_chapters/notation}
+
+\tableofcontents
+%\listoffigures
+%\listoftables
+\chapter{Introduction}
+\input{chapters/introduction}
+
+\chapter{Literature Review}
+\input{chapters/lit_review}
+
+\chapter{Real Time Motion Segmentation for Dense Volumetric Fusion}
+\input{chapters/motion_segmentation}
+
+\chapter{Probabilistic Object Reconstruction with Online Drift Correction}
+\input{chapters/object_reconstruction}
+
+\begin{appendices}
+  \section{Mathematical Appendices}
+  \input{appendices/appendix_a}
+
+  \section{Misc Appendix}
+\end{appendices}
+
+\bibliography{bib/definitions,bib/books,bib/slam_moseg,bib/segmentation,bib/objects,bib/ml}
+\end{document}
