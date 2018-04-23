@@ -260,24 +260,22 @@ not appear to cause any functional issues.
 Continuing on from the formulation given in Equation
 \ref{eqn:probobj_simplified_joint}, the appearance model $u$ may be Marginalised
 as follows.
-\begin{equation}
+\begin{align}
   \label{eqn:probobj_appearanc_marginal}
-  \begin{split}
-    % Line 1.
-    P(\Phi, \Omega, p, L) & =
-    \int_{-\infty}^{\infty} \Bigg[ 
-    \prod_{\psi \in \mathbf{\Psi}} P(\Phi \given u_{\psi})
-    \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
-    P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
-    % Line 2.
-    & = \prod_{\psi \in \mathbf{\Psi}} 
-    \int_{-\infty}^{\infty} \Bigg[ P(\Phi \given u_{\psi})
-    \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
-    P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
-    & = \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
-    P(L_{s, s'})P(p)P(\Omega)P(\mathbf{\Phi})
-  \end{split}
-\end{equation}
+  % Line 1.
+  P(\Phi, \Omega, p, L) & =
+  \int_{-\infty}^{\infty} \Bigg[ 
+  \prod_{\psi \in \mathbf{\Psi}} P(\Phi \given u_{\psi})
+  \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
+  P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
+  % Line 2.
+  & = \prod_{\psi \in \mathbf{\Psi}} 
+  \int_{-\infty}^{\infty} \Bigg[ P(\Phi \given u_{\psi})
+  \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
+  P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
+  & = \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
+  P(L_{s, s'})P(p)P(\Omega)P(\mathbf{\Phi})
+\end{align}
 Note that the Appearance Posterior Volume outlined in Section 
 \ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
 Section \ref{} for the purposes of subvolume alignment and determining the
@@ -307,20 +305,18 @@ of disparity between overlapping subvolumes, a Maximum a Posteriori (MAP)
 estimate is desirable. As such, a MAP estimate over $L_{s, s'}$ in Equation
 \ref{eqn:probobj_simplified_joint} for a given subvolume pair $s, s'$ may be
 derived as follows.
-\begin{equation}
+\begin{align}
   \label{eqn:probobj_map_estimate}
-  \begin{split}
-    % Line 1.
-    P(\Omega, p | L_{s, s'}) & \propto \frac{P(L_{s, s'} | \Omega, p) 
-    P(\Omega | p)P(p)P(L_{s, s'})}
-    {\displaystyle\int_{-\infty}^{\infty} P(L_{s, s'} \given \Omega, p)
-    \intd{L_{s, s'}}} P(\Phi) \\
-    % Line 2.
-    & \propto P(L_{s, s'} | \Omega, p) P(\Omega | p)P(p)P(L_{s, s'})P(\Phi) \\
-    % Line 3.
-    & \propto P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)
-  \end{split}
-\end{equation}
+  % Line 1.
+  P(\Omega, p | L_{s, s'}) & \propto \frac{P(L_{s, s'} | \Omega, p) 
+  P(\Omega | p)P(p)P(L_{s, s'})}
+  {\displaystyle\int_{-\infty}^{\infty} P(L_{s, s'} \given \Omega, p)
+  \intd{L_{s, s'}}} P(\Phi) \\
+  % Line 2.
+  & \propto P(L_{s, s'} | \Omega, p) P(\Omega | p)P(p)P(L_{s, s'})P(\Phi) \\
+  % Line 3.
+  & \propto P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)
+\end{align}
 Note that in the third step of Equation \ref{eqn:probobj_map_estimate} the
 distributions $P(\Omega | p)$ and $P(p)$ are taken to be Uniform and as such may
 be omitted whilst retaining proportionality. The distribution $P(L_{s, s'})$ is

@@ -240,47 +240,45 @@ As a first step, the following definition is made
   \mathcal{N}(\bar{\mathbf{x}})
 \end{equation}
 With this substitution in place, the derivation proceeds as follows
-\begin{equation}
+\begin{align}
   \label{eqn:icp_update_derivation_rot}
-  \begin{split}
-    % Line 1.
-    \frac{\partial E}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}} & =
-    \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
-    \sum_{p \in \mathbf{\Omega}}
-    \norm{\phi(.)}\\
-    % Line 2.
-    & = \sum_{p \in \mathbf{\Omega}}
-    \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
-    \norm{\phi(.)}\\
-    % Line 3.
-    & = \sum_{p \in \mathbf{\Omega}}
-    \frac{\partial}{\partial \phi(.)} \norm{\phi(.)}
-    \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
-    % Line 4.
-    & = \sum_{p \in \mathbf{\Omega}}
-    \frac{1}{2}\frac{2 \phi(.)}{\sqrt{\phi(.)^{T}\phi(.)}}
-    \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
-    % Line 5.
-    & = \sum_{p \in \mathbf{\Omega}}
-    \frac{\phi(.)}{\norm{\phi(.)}}
-    \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
-    % Line 6
-    & = \sum_{p \in \mathbf{\Omega}}
-    \frac{\phi(.)}{\norm{\phi(.)}}
-    \Bigg[ \frac{\partial}{\partial \mathbf{R_{\{\alpha, \beta, \gamma\}}}}
-    \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
-    \mathcal{N}(\bar{\mathbf{x}}) + 
-    \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
-    \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
-    \mathcal{N}(\bar{\mathbf{x}})\Bigg]\\
-    % Line 6
-    & = \sum_{p \in \mathbf{\Omega}}
-    \frac{\phi(.)}{\norm{\phi(.)}}
-    \bigg[ \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}
-    \mathbf{x}\bigg]^{T}
-    \mathcal{N}(\bar{\mathbf{x}})
-  \end{split}
-\end{equation}
+  % Line 1.
+  \frac{\partial E}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}} & =
+  \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
+  \sum_{p \in \mathbf{\Omega}}
+  \norm{\phi(.)}\\
+  % Line 2.
+  & = \sum_{p \in \mathbf{\Omega}}
+  \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
+  \norm{\phi(.)}\\
+  % Line 3.
+  & = \sum_{p \in \mathbf{\Omega}}
+  \frac{\partial}{\partial \phi(.)} \norm{\phi(.)}
+  \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+  % Line 4.
+  & = \sum_{p \in \mathbf{\Omega}}
+  \frac{1}{2}\frac{2 \phi(.)}{\sqrt{\phi(.)^{T}\phi(.)}}
+  \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+  % Line 5.
+  & = \sum_{p \in \mathbf{\Omega}}
+  \frac{\phi(.)}{\norm{\phi(.)}}
+  \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+  % Line 6
+  & = \sum_{p \in \mathbf{\Omega}}
+  \frac{\phi(.)}{\norm{\phi(.)}}
+  \Bigg[ \frac{\partial}{\partial \mathbf{R_{\{\alpha, \beta, \gamma\}}}}
+  \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
+  \mathcal{N}(\bar{\mathbf{x}}) + 
+  \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
+  \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
+  \mathcal{N}(\bar{\mathbf{x}})\Bigg]\\
+  % Line 6
+  & = \sum_{p \in \mathbf{\Omega}}
+  \frac{\phi(.)}{\norm{\phi(.)}}
+  \bigg[ \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}
+  \mathbf{x}\bigg]^{T}
+  \mathcal{N}(\bar{\mathbf{x}})
+\end{align}
 The full Partial Derivatives $\frac{\partial \mathbf{R}}{\partial \alpha}$,
 $\frac{\partial \mathbf{R}}{\partial \beta}$ and
 $\frac{\partial \mathbf{R}}{\partial \gamma}$ may be found Equations
@@ -291,20 +289,18 @@ and \ref{eqn:rodrigues_full_gamma_deriv} of Appendix
 The Partial Derivatives
 $\frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}$ may be
 multiplied with $\mathbf{x}$ and combined in to the following Rotation Jacobian
-\begin{equation}
+\begin{align}
   \label{eqn:rot_jac}
-  \begin{split}
-    \mathbf{J}_{R} & = \left. \bigg[
-      \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}} \mathbf{x}
-      \bigg]^{T} \right\vert_{\alpha,\beta,\gamma = 0} \\
-    & =
-    \begin{bmatrix}
-      0 & -z & y \\
-      z & 0 & -x \\
-      -y & x & 0
-    \end{bmatrix}
-  \end{split}
-\end{equation}
+  \mathbf{J}_{R} & = \left. \bigg[
+    \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}} \mathbf{x}
+    \bigg]^{T} \right\vert_{\alpha,\beta,\gamma = 0} \\
+  & =
+  \begin{bmatrix}
+    0 & -z & y \\
+    z & 0 & -x \\
+    -y & x & 0
+  \end{bmatrix}
+\end{align}
 
 Note that the derivation for the Partial Derivatives
 $\frac{\partial E}{\partial \mathbf{t}_{\{x, y, z\}}}$ is analogous with that of
