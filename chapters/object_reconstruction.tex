@@ -376,35 +376,42 @@ Cumulative Density Function of $P(\Phi)$ is derived as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior_cdf}
   % Line 1.
-  P(\Phi < b) &= \int_{-\infty}^{b} \text{Logistic}
-  (\Phi \given \mu, \sigma) \intd{\Phi}\\
+  %P(\Phi < b) &= \int_{-\infty}^{b} \text{Logistic}
+  %(\Phi \given \mu, \sigma) \intd{\Phi}\\
   % Line 2.
-  &= \int_{-\infty}^{b} \frac
+  P(\Phi < b) &= \int_{-\infty}^{b} \frac
   {e^{-\frac{\Phi - \mu}{\sigma}}}
-  {\sigma \big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \big)^{2}} \intd{\Phi}\\
+  {\sigma \Big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \Big)^{2}} \intd{\Phi}\\
   % Line 3.
   &= \lim_{y\to -\infty} \int_{y}^{b} \frac
   {e^{\frac{-\Phi + \mu}{\sigma}}}
-  {\sigma \big( 1 + e^{\frac{-\Phi + \mu}{\sigma}} \big)^{2}} \intd{\Phi}\\
+  {\sigma \Big( 1 + e^{\frac{-\Phi + \mu}{\sigma}} \Big)^{2}} \intd{\Phi}\\
   % Line 4.
   &= \lim_{y\to -\infty} \frac{1}{\sigma} \int_{y}^{b}
-  \frac{e^{\frac{u}{s}}}{\big( 1 + e^{\frac{u}{\sigma}} \big)^{2}} \intd{u}\\
+  \frac{e^{\frac{u}{s}}}{\Big( 1 + e^{\frac{u}{\sigma}} \Big)^{2}} \intd{u}\\
   \shortintertext{Where $u = -\Phi + \mu$ and $\intd{u} = -\intd{\Phi}$}
   % Line 5.
   &= \lim_{y\to -\infty} -\int_{y}^{b}
-  \frac{e^{p}}{\big( 1 + e^{p} \big)^{2}} \intd{p}\\
-  \shortintertext{Where $p = \frac{u}{\sigma}$ and $\intd{p} = \frac{1}{\sigma}\intd{u}$}
+  \frac{e^{p}}{\Big( 1 + e^{p} \Big)^{2}} \intd{p}\\
+  \shortintertext{Where $p = \frac{u}{\sigma}$ and $\intd{p} = \frac{1}{\sigma}
+  \intd{u}$}
   % Line 6.
   &= \lim_{y\to -\infty} -\int_{y}^{b} \frac{1}{w^{2}} \intd{w}\\
   \shortintertext{Where $w = 1 + e^{p}$ and $\intd{w} = e^{p} \intd{p}$}
   % Line 7.
-  &= \lim_{y\to -\infty} \Big[ \frac{1}{w} + C \Big]_{y}^{b}\\
+  &= \lim_{y\to -\infty} \Bigg[ \frac{1}{w} + C \Bigg]_{y}^{b}\\
   % Line 8.
-  &= \lim_{y\to -\infty} \Big[ \frac{1}{1 + e^{p}} + C \Big]_{y}^{b}\\
+  &= \lim_{y\to -\infty} \Bigg[ \frac{1}{1 + e^{p}} + C \Bigg]_{y}^{b}\\
   % Line 9.
-  &= \lim_{y\to -\infty} \Big[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C \Big]_{y}^{b}\\
+  &= \lim_{y\to -\infty} \Bigg[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C
+  \Bigg]_{y}^{b}\\
   % Line 10.
-  &= \lim_{y\to -\infty} \Big[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Big]_{y}^{b}
+  &= \lim_{y\to -\infty} \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} +
+  C \Bigg]_{y}^{b}\\
+  &= \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]_{\Phi = b}
+  - \lim_{y\to -\infty}
+  \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]_{\Phi = y}\\
+  &= \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
 \end{align}
 
 \subsection{Optimisation for MAP Inference}
