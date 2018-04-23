@@ -258,7 +258,8 @@ not appear to cause any functional issues.
 
 \subsection{Appearance Marginal}
 Continuing on from the formulation given in Equation
-\ref{eqn:probobj_simplified_joint}, the appearance model $u$ may be Marginalised as follows.
+\ref{eqn:probobj_simplified_joint}, the appearance model $u$ may be Marginalised
+as follows.
 \begin{equation}
   \label{eqn:probobj_appearanc_marginal}
   \begin{split}
@@ -277,37 +278,134 @@ Continuing on from the formulation given in Equation
     P(L_{s, s'})P(p)P(\Omega)P(\mathbf{\Phi})
   \end{split}
 \end{equation}
-Note that the Appearance Posterior Volume outlined in Section \ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in Section \ref{} for the purposes of subvolume alignment and determining the subset of Voxels $\mathbf{\Phi} \subset \mathbf{\Psi}$ that determine the target object shape.
+Note that the Appearance Posterior Volume outlined in Section 
+\ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
+Section \ref{} for the purposes of subvolume alignment and determining the
+subset of Voxels $\mathbf{\Phi} \subset \mathbf{\Psi}$ that determine the target
+object shape.
 
-Further details pertaining to the inference procedure for the per-subvolume deformations is provided in Section \ref{sec:probobj_model_correction}.
+Further details pertaining to the inference procedure for the per-subvolume
+deformations is provided in Section \ref{sec:probobj_model_correction}.
 
 \section{Online Model Correction}
 \label{sec:probobj_model_correction}
-The tracking consistency constraints denoted by the variables $L_{s, s'}$ such that $s, s' \in \mathcal{S}$ with $\mathcal{S}$ being the set of overlapping subvolume pairs $s, s'$ in the Probabilistic Graphical Models given by Figures \ref{fig:probobj_pgm1} and \ref{fig:probobj_pgm2} can be enforced in terms of minimising the disparity between each pair of adjacent subvolumes. The effect of this minimsation being that consistency in the Pose Estimation phase of the Pipeline outlined in Figure \ref{fig:probobj_pipeline_diagram} is enforced. The objective of this procedure is to infer a robust and consistent deformation transformation for the subvolume pair.
+The tracking consistency constraints denoted by the variables $L_{s, s'}$ such
+that $s, s' \in \mathcal{S}$ with $\mathcal{S}$ being the set of overlapping
+subvolume pairs $s, s'$ in the Probabilistic Graphical Models given by Figures
+\ref{fig:probobj_pgm1} and \ref{fig:probobj_pgm2} can be enforced in terms of
+minimising the disparity between each pair of adjacent subvolumes. The effect of
+this minimsation being that consistency in the Pose Estimation phase of the
+Pipeline outlined in Figure \ref{fig:probobj_pipeline_diagram} is enforced. The
+objective of this procedure is to infer a robust and consistent deformation
+transformation for the subvolume pair.
 
 \subsection{Alignment MAP Estimate}
 \label{subsec:probobj_alignment_map}
-Referring back to the joint distribution of Equation \ref{eqn:probobj_simplified_joint}, to achieve the aforementioned minimisation of disparity between overlapping subvolumes, a Maximum a Posteriori (MAP) estimate is desirable. As such, a MAP estimate over $L_{s, s'}$ in Equation \ref{eqn:probobj_simplified_joint} for a given subvolume pair $s, s'$ may be derived as follows.
+Referring back to the joint distribution of Equation
+\ref{eqn:probobj_simplified_joint}, to achieve the aforementioned minimisation
+of disparity between overlapping subvolumes, a Maximum a Posteriori (MAP)
+estimate is desirable. As such, a MAP estimate over $L_{s, s'}$ in Equation
+\ref{eqn:probobj_simplified_joint} for a given subvolume pair $s, s'$ may be
+derived as follows.
 \begin{equation}
   \label{eqn:probobj_map_estimate}
   \begin{split}
     % Line 1.
     P(\Omega, p | L_{s, s'}) & \propto \frac{P(L_{s, s'} | \Omega, p) 
     P(\Omega | p)P(p)P(L_{s, s'})}
-    {\displaystyle\int_{-\infty}^{\infty} P(L_{s, s'} \given \Omega, p) \intd{L_{s, s'}}} P(\Phi) \\
+    {\displaystyle\int_{-\infty}^{\infty} P(L_{s, s'} \given \Omega, p)
+    \intd{L_{s, s'}}} P(\Phi) \\
     % Line 2.
     & \propto P(L_{s, s'} | \Omega, p) P(\Omega | p)P(p)P(L_{s, s'})P(\Phi) \\
     % Line 3.
     & \propto P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)
   \end{split}
 \end{equation}
-Note that in the third step of Equation \ref{eqn:probobj_map_estimate} the distributions $P(\Omega | p)$ and $P(p)$ are taken to be Uniform and as such may be omitted whilst retaining proportionality. The distribution $P(L_{s, s'})$ is Conjugate to $P(L_{s, s'} | \Omega, p)$ and is of the form of a Multivariate Gaussian Distribution $\mathcal{N}(\mathbf{1} \given \mathbf{0})$ over the $\mathbb{SE}(3)$ deformation parameters. The choice of such a Prior Distribution is motivated by the assumption that motion between consecutive frames is minor, thus the given Prior will have the effect of constraining the $\mathbb{SE}(3)$ transformation as such. The Prior distribution $P(\Phi)$ serves as a \textit{Surface Prior} to mitigate the effect of noise introduced in to the TSDF volumes. The form of $P(\Phi)$ shall be discussed in Section \ref{}.
+Note that in the third step of Equation \ref{eqn:probobj_map_estimate} the
+distributions $P(\Omega | p)$ and $P(p)$ are taken to be Uniform and as such may
+be omitted whilst retaining proportionality. The distribution $P(L_{s, s'})$ is
+Conjugate to $P(L_{s, s'} | \Omega, p)$ and is of the form of a Multivariate
+Gaussian Distribution $\mathcal{N}(\mathbf{0} \given \mathbf{I})$ over the
+$\mathbb{SE}(3)$ deformation parameters. The choice of such a Prior Distribution
+is motivated by the assumption that motion between consecutive frames is minor,
+thus the given Prior will have the effect of constraining the $\mathbb{SE}(3)$
+transformation as such. The Prior distribution $P(\Phi)$ serves as a
+\textit{Surface Prior} to mitigate the effect of noise introduced in to the TSDF
+volumes. The form of $P(\Phi)$ shall be discussed in Section
+\ref{subsec:probobj_analytic_alignment_map}.
 
-The rationale of Equation \ref{eqn:probobj_map_estimate} is that the deformation $L_{s, s'}$ applied to the subvolume $s$ maximises the Posterior 
-Probability of observing the current pose $p$ given the current RGBD frame $\Omega$ by reducing the variance of the result of the Pose Estimation phase of the Pipeline. As such, global tracking variance (quantified by the proportion of outliers in the result of the ICP component of the Pipeline) is reduced by enforcing local consistency, also improving global consistency and thus the quality of the resultant reconstruction.
+The rationale of Equation \ref{eqn:probobj_map_estimate} is that the deformation
+$L_{s, s'}$ applied to the subvolume $s$ maximises the Posterior Probability of
+observing the current pose $p$ given the current RGBD frame $\Omega$ by reducing
+the variance of the result of the Pose Estimation phase of the Pipeline. As such,
+global tracking variance (quantified by the proportion of outliers in the result
+of the ICP component of the Pipeline) is reduced by enforcing local consistency,
+also improving global consistency and thus the quality of the resultant
+reconstruction.
 
 \subsection{Analytic Form of Alignment MAP Estimate}
 \label{subsec:probobj_analytic_alignment_map}
+With the Probabilistic framework now outlined, the analytic form of the
+Posterior given in Equation \ref{eqn:probobj_map_estimate} may be explored. The
+Likelihood term in Equation \ref{eqn:probobj_map_estimate} quantifies the
+ability of the constraint $L_{s, s'}$ to maximise consistency between subvolumes
+$s$ and $s'$, with respect to observed RGBD Frame $\Omega$ and Pose $p$. By
+quantifying the Likelihood only for Voxels in $s$ and $s'$ that are visible in
+the current view frustrum at time $t$, the Posterior $P(\Omega, p | L_{s, s'})$
+is given. As outlined in Section \ref{subsec:probobj_alignment_map}, the Prior
+on the constraints $L_{s, s'}$ has the form of a Multivariate Gaussian
+Distribution of the form $\mathcal{N}(\mathbf{0}, \mathbf{I})$.
+
+The form of the aforementioned Surface Prior $P(\Phi)$ is taken to be that of
+the Logistic Distribution, due to the ``symmetric'' $1 - f(x) = f(-x)$
+and ``squashing'' $\text{Range}[f(x)] = [0, 1]$ properties of it's Cumulative
+Density Function. The Probability Density Function of the Logistic Distribution
+is given as follows.
+\begin{equation}
+  \label{eqn:probobj_logistic_dist}
+  \text{Logistic}(x \given \mu, \sigma) = \frac
+  {e^{-\frac{x - \mu}{\sigma}}}
+  {\sigma \big( 1 + e^{-\frac{x - \mu}{\sigma}} \big)^{2}}
+\end{equation}
+
+To encode the probability of a given Voxel $\psi \in \mathbf{\Psi}$ encoding an
+Isosurface point, represented as the Zero Level Set defined in Equation
+\ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
+probability with a function that has the aforementioned properties. As such, the
+Cumulative Density Function of $P(\Phi)$ is derived as follows.
+\begin{align}
+  \label{eqn:probobj_surface_prior_cdf}
+  % Line 1.
+  P(\Phi < b) &= \int_{-\infty}^{b} \text{Logistic}
+  (\Phi \given \mu, \sigma) \intd{\Phi}\\
+  % Line 2.
+  &= \int_{-\infty}^{b} \frac
+  {e^{-\frac{\Phi - \mu}{\sigma}}}
+  {\sigma \big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \big)^{2}} \intd{\Phi}\\
+  % Line 3.
+  &= \lim_{y\to -\infty} \int_{y}^{b} \frac
+  {e^{\frac{-\Phi + \mu}{\sigma}}}
+  {\sigma \big( 1 + e^{\frac{-\Phi + \mu}{\sigma}} \big)^{2}} \intd{\Phi}\\
+  % Line 4.
+  &= \lim_{y\to -\infty} \frac{1}{\sigma} \int_{y}^{b}
+  \frac{e^{\frac{u}{s}}}{\big( 1 + e^{\frac{u}{\sigma}} \big)^{2}} \intd{u}\\
+  \shortintertext{Where $u = -\Phi + \mu$ and $\intd{u} = -\intd{\Phi}$}
+  % Line 5.
+  &= \lim_{y\to -\infty} -\int_{y}^{b}
+  \frac{e^{p}}{\big( 1 + e^{p} \big)^{2}} \intd{p}\\
+  \shortintertext{Where $p = \frac{u}{\sigma}$ and $\intd{p} = \frac{1}{\sigma}\intd{u}$}
+  % Line 6.
+  &= \lim_{y\to -\infty} -\int_{y}^{b} \frac{1}{w^{2}} \intd{w}\\
+  \shortintertext{Where $w = 1 + e^{p}$ and $\intd{w} = e^{p} \intd{p}$}
+  % Line 7.
+  &= \lim_{y\to -\infty} \Big[ \frac{1}{w} + C \Big]_{y}^{b}\\
+  % Line 8.
+  &= \lim_{y\to -\infty} \Big[ \frac{1}{1 + e^{p}} + C \Big]_{y}^{b}\\
+  % Line 9.
+  &= \lim_{y\to -\infty} \Big[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C \Big]_{y}^{b}\\
+  % Line 10.
+  &= \lim_{y\to -\infty} \Big[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Big]_{y}^{b}
+\end{align}
 
 \subsection{Optimisation for MAP Inference}
 \label{subsec:probobj_map_optimisation}
