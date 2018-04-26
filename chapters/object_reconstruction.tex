@@ -308,14 +308,17 @@ derived as follows.
 \begin{align}
   \label{eqn:probobj_map_estimate}
   % Line 1.
-  P(\Omega, p | L_{s, s'}) & \propto \frac{P(L_{s, s'} | \Omega, p) 
+  P(\Omega, p | L_{s, s'}) & \propto \prod_{s, s' \in \mathcal{S}}
+  \frac{P(L_{s, s'} | \Omega, p) 
   P(\Omega | p)P(p)P(L_{s, s'})}
   {\displaystyle\int_{-\infty}^{\infty} P(L_{s, s'} \given \Omega, p)
   \intd{L_{s, s'}}} P(\Phi) \\
   % Line 2.
-  & \propto P(L_{s, s'} | \Omega, p) P(\Omega | p)P(p)P(L_{s, s'})P(\Phi) \\
+  & \propto \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p) P(\Omega | p)
+  P(p)P(L_{s, s'})P(\Phi) \\
   % Line 3.
-  & \propto P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)
+  & \propto \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})
+  P(\Phi)
 \end{align}
 Note that in the third step of Equation \ref{eqn:probobj_map_estimate} the
 distributions $P(\Omega | p)$ and $P(p)$ are taken to be Uniform and as such may
@@ -444,32 +447,68 @@ Finally, the analytic form of the Log-Posterior is given as follows.
   \label{eqn:probobj_log_posterior}
   % Line 1.
   \ln P(\Omega, p | L_{s, s'}) &\propto \ln
-  \Big[ P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)\Big]\\
+  \prod_{s, s' \in \mathcal{s}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)\\
   % Line 2.
-  &\propto \ln P(L_{s, s'} | \Omega, p) + \ln P(L_{s, s'}) + \ln P(\Phi)\\
+  &\propto \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'} | \Omega, p) +
+  \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'}) +
+  \sum_{s, s' \in \mathcal{S}} \ln P(\Phi)\\
   % Line 3.
-  &\propto \ln \frac{1}{\sqrt{2 \pi \sigma}}
+  &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[\ln \frac{1}{\sqrt{2 \pi \sigma}}
   \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}
   {2\sigma^{2}}} +
   \ln \frac{-\frac{1}{2} e^{\mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p}}}
   {\sqrt{(2\pi)^{k}\left|\mathbf{\Sigma}\right|}} +
-  \ln \frac{1}{1 + e^{-\Phi}}\\
+  \ln \frac{1}{1 + e^{-\Phi}}\Bigg]\\
   % Line 4.
-  &\propto -\ln(2\pi\sigma) - \frac{\big(\Phi_{s}(\mathbf{x}) -
+  &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
+  \frac{\big(\Phi_{s}(\mathbf{x}) -
   \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
   \frac{1}{2} \ln \left|\mathbf{\Sigma}\right| -
   \frac{1}{2} \mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p} -
-  \ln(1 + e^{-\Phi})\\
+  \ln(1 + e^{-\Phi}) \Bigg]\\
   % Line 5.
-  &\propto -\ln(2\pi\sigma) - \frac{\big(\Phi_{s}(\mathbf{x}) -
+  &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
+  \frac{\big(\Phi_{s}(\mathbf{x}) -
   \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
   \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
-  \ln(1 + e^{-\Phi})
+  \ln(1 + e^{-\Phi}) \Bigg]
 \end{align}
 
 \subsection{Optimisation for MAP Inference}
 \label{subsec:probobj_map_optimisation}
+To infer the optimal consistency constraints between adjacent subvolumes, the
+Log-Posterior given in Equation \ref{eqn:probobj_log_posterior} may be optimised
+using Second Order Gradient based methods such as Levenberg-Marquardt. As with
+the ICP procedure outlined in Section \ref{subsub:moseg_static_camera_poserec},
+the optimisation is performed with respect to the three Rodrigues Rotation
+Parameters $\alpha$, $\beta$, $\gamma$ and Translation Parameters $t_{x}$,
+$t_{y}$ and $t_{z}$ of the target $\mathbb{SE}(3)$ Transformation.
 
+In a similar manner to the process outlined in Section
+\ref{subsub:moseg_static_camera_poserec}, the target Energy function must be
+differentiated with respect to each of the $\mathbb{SE}(3)$ parameters. In this
+case, the Log-Posterior if Equation \ref{eqn:probobj_log_posterior} is the
+target Energy function. The derivation of the Partial Derivatives with respect
+to the Rodrigues Rotational parameters is as follows for some parameter
+$\tau \in \{\alpha, \beta, \gamma\}$.
+\begin{align}
+  \label{eqn:probobj_log_post_rot_grad}
+  % Line 1.
+  \frac{\partial}{\partial \tau} \ln P(\Omega, p | L_{s, s'}) &=
+  \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{\partial}{\partial \tau} -
+  \ln(2\pi\sigma) - \frac{\partial}{\partial \tau}
+  \frac{\big(\Phi_{s}(\mathbf{x}) -
+  \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
+  \frac{\partial}{\partial \tau} \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
+  \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi}) \Bigg]\\
+  % Line 2.
+  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
+  \frac{\partial}{\partial \tau}
+  \big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2} -
+  \frac{1}{2} \frac{\partial}{\partial \tau}
+  \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+  \Bigg]
+\end{align}
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
 
