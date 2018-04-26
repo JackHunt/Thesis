@@ -352,6 +352,20 @@ is given. As outlined in Section \ref{subsec:probobj_alignment_map}, the Prior
 on the constraints $L_{s, s'}$ has the form of a Multivariate Gaussian
 Distribution of the form $\mathcal{N}(\mathbf{0}, \mathbf{I})$.
 
+As such, the analytic form of the Likelihood term $P(L_{s, s'} | \Omega, p)$ is
+given as follows.
+\begin{equation}
+  \label{eqn:probobj_likelihood_analytic}
+  P(L_{s, s'} | \Omega, p) = \prod_{(s, s') \in \mathcal{S}}
+  \frac{1}{\sqrt{2 \pi \sigma}}
+  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}
+  {2\sigma^{2}}}
+\end{equation}
+
+In Equation \ref{eqn:probobj_likelihood_analytic} the function $\Lambda(.)$
+applies an $\mathbb{SE}(3)$ Transform as defined in Equation
+\ref{eqn:se3_definition}.
+
 The form of the aforementioned Surface Prior $P(\Phi)$ is taken to be that of
 the Logistic Distribution, due to the ``symmetric'' $1 - f(x) = f(-x)$
 and ``squashing'' $\text{Range}[f(x)] = [0, 1]$ properties of it's Cumulative
@@ -405,13 +419,57 @@ Cumulative Density Function of $P(\Phi)$ is derived as follows.
   &= \lim_{y\to -\infty} \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} +
   C \Bigg]_{y}^{b}\\
   &= \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]_{\Phi = b}
-  - \lim_{y\to -\infty}
-  \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]_{\Phi = y}\\
+  - \Bigg[ \left. \lim_{y\to -\infty} \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
+  \right\rvert_{\Phi = y} + C \Bigg]\\
   &= \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
+\end{align}
+Given the Cumulative Density Function derived in Equation
+\ref{eqn:probobj_surface_prior_cdf}, the Prior $P(\Phi)$ is defined as follows.
+\begin{align}
+  \label{eqn:probobj_surface_prior}
+  P(\Phi) &= \left. \int_{-\infty}^{b} \frac
+  {e^{-\frac{\Phi - \mu}{\sigma}}}
+  {\sigma \Big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \Big)^{2}} \intd{\Phi}
+  \right\rvert_{\mu = 0, \sigma = 1}\\
+  &= \frac{1}{1 + e^{-\Phi}}
+\end{align}
+It is evident from Equation \ref{eqn:probobj_surface_prior} that under a certain
+paramaterisation the CDF of the Logistic Distribution is the Logistic Sigmoid
+function, prevelant in the Artificial Neural Network literature. As given in
+Equation \ref{eqn:probobj_surface_prior} the Mean $\mu$ and Standard Deviation
+$\sigma$ are $0$ and $1$, respectively.
+
+Finally, the analytic form of the Log-Posterior is given as follows.
+\begin{align}
+  \label{eqn:probobj_log_posterior}
+  % Line 1.
+  \ln P(\Omega, p | L_{s, s'}) &\propto \ln
+  \Big[ P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)\Big]\\
+  % Line 2.
+  &\propto \ln P(L_{s, s'} | \Omega, p) + \ln P(L_{s, s'}) + \ln P(\Phi)\\
+  % Line 3.
+  &\propto \ln \frac{1}{\sqrt{2 \pi \sigma}}
+  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}
+  {2\sigma^{2}}} +
+  \ln \frac{-\frac{1}{2} e^{\mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p}}}
+  {\sqrt{(2\pi)^{k}\left|\mathbf{\Sigma}\right|}} +
+  \ln \frac{1}{1 + e^{-\Phi}}\\
+  % Line 4.
+  &\propto -\ln(2\pi\sigma) - \frac{\big(\Phi_{s}(\mathbf{x}) -
+  \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
+  \frac{1}{2} \ln \left|\mathbf{\Sigma}\right| -
+  \frac{1}{2} \mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p} -
+  \ln(1 + e^{-\Phi})\\
+  % Line 5.
+  &\propto -\ln(2\pi\sigma) - \frac{\big(\Phi_{s}(\mathbf{x}) -
+  \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
+  \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
+  \ln(1 + e^{-\Phi})
 \end{align}
 
 \subsection{Optimisation for MAP Inference}
 \label{subsec:probobj_map_optimisation}
+
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
 
