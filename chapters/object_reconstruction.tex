@@ -361,13 +361,24 @@ given as follows.
   \label{eqn:probobj_likelihood_analytic}
   P(L_{s, s'} | \Omega, p) = \prod_{(s, s') \in \mathcal{S}}
   \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}
+  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) -
+  \Phi_{s'}(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}
   {2\sigma^{2}}}
 \end{equation}
 
-In Equation \ref{eqn:probobj_likelihood_analytic} the function $\Lambda(.)$
-applies an $\mathbb{SE}(3)$ Transform as defined in Equation
-\ref{eqn:se3_definition}.
+In Equation \ref{eqn:probobj_likelihood_analytic}, the function $\Lambda(.)$
+applies the resultant $\mathbb{SE}(3)$ Transform to a given Voxel position
+$\mathbf{x}$ and is defined as follows.
+\begin{equation}
+  \label{eqn:probobj_lambda_fn}
+  \Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}) =
+  \mathbf{R}_{\mathbf{p}} \mathbf{x} + \mathbf{t}
+\end{equation}
+In Equation \ref{eqn:probobj_lambda_fn} $R_{\mathbf{p}}$ is the $\mathbb{SO}(3)$
+Rotation Matrix generated from the Rodrigues Parameters given by the Vector
+$\mathbf{p}$. Recall the definition of the Rodrigues Paramaterisation given in
+Equation \ref{eqn:rodriguez_matrix_eq} of Section
+\ref{subsub:moseg_static_camera_attitude}.
 
 The form of the aforementioned Surface Prior $P(\Phi)$ is taken to be that of
 the Logistic Distribution, due to the ``symmetric'' $1 - f(x) = f(-x)$
@@ -442,7 +453,9 @@ function, prevelant in the Artificial Neural Network literature. As given in
 Equation \ref{eqn:probobj_surface_prior} the Mean $\mu$ and Standard Deviation
 $\sigma$ are $0$ and $1$, respectively.
 
-Finally, the analytic form of the Log-Posterior is given as follows.
+Finally, the analytic form of the Log-Posterior is given as follows, optimising
+for the Rodrigues Parameters $p$ and Translation Vector $t$ of the constraint
+$L_{s, s'}$ between subvolumes $s$ and $s'$.
 \begin{align}
   \label{eqn:probobj_log_posterior}
   % Line 1.
@@ -454,7 +467,8 @@ Finally, the analytic form of the Log-Posterior is given as follows.
   \sum_{s, s' \in \mathcal{S}} \ln P(\Phi)\\
   % Line 3.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[\ln \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}
+  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}
+  (\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}
   {2\sigma^{2}}} +
   \ln \frac{-\frac{1}{2} e^{\mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p}}}
   {\sqrt{(2\pi)^{k}\left|\mathbf{\Sigma}\right|}} +
@@ -462,14 +476,14 @@ Finally, the analytic form of the Log-Posterior is given as follows.
   % Line 4.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
   \frac{\big(\Phi_{s}(\mathbf{x}) -
-  \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
+  \Phi_{s'}(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}{2\sigma^{2}} -
   \frac{1}{2} \ln \left|\mathbf{\Sigma}\right| -
   \frac{1}{2} \mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p} -
   \ln(1 + e^{-\Phi}) \Bigg]\\
   % Line 5.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
   \frac{\big(\Phi_{s}(\mathbf{x}) -
-  \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
+  \Phi_{s'}(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}{2\sigma^{2}} -
   \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
   \ln(1 + e^{-\Phi}) \Bigg]
 \end{align}
@@ -488,14 +502,15 @@ In a similar manner to the process outlined in Section
 \ref{subsub:moseg_static_camera_poserec}, the target Energy function must be
 differentiated with respect to each of the $\mathbb{SE}(3)$ parameters. In this
 case, the Log-Posterior if Equation \ref{eqn:probobj_log_posterior} is the
-target Energy function. The derivation of the Partial Derivatives with respect
+target Energy function and shall be denoted $E(.)$ in the following derivation.
+The derivation of the Partial Derivatives of $E(.)$ with respect
 to the Rodrigues Rotational parameters is as follows for some parameter
 $\tau \in \{\alpha, \beta, \gamma\}$.
 \begin{align}
   \label{eqn:probobj_log_post_rot_grad}
   % Line 1.
-  \frac{\partial}{\partial \tau} \ln P(\Omega, p | L_{s, s'}) &=
-  \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{\partial}{\partial \tau} -
+  \frac{\partial E}{\partial \tau} &=
+  \sum_{s, s' \in \mathcal{S}} \Bigg[ - \frac{\partial}{\partial \tau}
   \ln(2\pi\sigma) - \frac{\partial}{\partial \tau}
   \frac{\big(\Phi_{s}(\mathbf{x}) -
   \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -

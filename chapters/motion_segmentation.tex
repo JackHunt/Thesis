@@ -48,6 +48,63 @@ confidence in it's stability.
 From a survey of the literature, it appears that this approach is the first to
 utilise such a dual representation for the motion segmentation problem.
 
+A graphical representation of the Voxel Block based structure of a given Scene
+is presented in Figure \ref{fig:voxel_blocks}.
+% Based on http://www.texample.net/tikz/examples/sudoku-3d-cube/.
+\begin{figure}
+  \centering
+  \label{fig:voxel_blocks}
+  \resizebox {0.4\linewidth}{!}{
+    \begin{tikzpicture}[every node/.style={minimum size=1cm},on grid]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %%% BEGIN: BIG GRID.
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      % Left face nodes.
+      \begin{scope}[every node/.append style={yslant=-0.5},yslant=-0.5]
+        \foreach \i in {0,...,2}{
+          \foreach \j in {0,...,2}{
+            \node at (\i+0.5, \j+0.5) {v};
+          }
+        }
+        \draw (0,0) grid (3,3);
+      \end{scope}
+
+      % Right face nodes.
+      \begin{scope}[every node/.append style={yslant=0.5},yslant=0.5]
+        \foreach \i in {0,...,2}{
+          \foreach \j in {0,...,2}{
+            \node at (\i+3.5, -1*\j-0.5) {v};
+          }
+        }
+        \draw(3, -3) grid (6, 0);
+      \end{scope}
+
+      % Top face nodes.
+      \begin{scope}[every node/.append style={yslant=0.5,xslant=-1},yslant=0.5,xslant=-1]
+        \foreach \i in {0,...,2}{
+          \foreach \j in {2,...,0}{
+            \node at (\i+3.5, \j+0.5) {v};
+          }
+        }
+        \draw (3,0) grid (6,3);
+      \end{scope}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %%% END: BIG GRID.
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %%% BEGIN: SMALL GRID.
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %%% END: SMALL GRID.
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \end{tikzpicture}
+  }
+  \caption{A graphical representation of an SDF/TSDF with it's Voxels subdivided
+  into Voxel Blocks.}
+\end{figure}
+
 The remainder of this chapter is structured as follows.
 Section \ref{sec:moseg_related_work} presents an assessment of related and
 relevant literature. Section \ref{sec:moseg_static_fusion} introduces
@@ -88,14 +145,22 @@ Given a vertex map generated from the back projection of the points in a depth
 image, the vertices pertain to the zero crossing point with Voxels either side
 representing distances to the zero crossing point; positive in front of the
 surface, negative behind. Surface points are known as the Zero Level Set.
-% TO-DO: make diagram.
+\begin{figure}[h]
+  \label{fig:sdf_example}
+  \centering
+  \includegraphics[width=.5\linewidth]{figures/moseg/3d_sdf.eps}
+  \caption{An example of a Sphere embedded within a Three Dimensional Signed
+    Distance Function.}
+\end{figure}
+
 For a given TSDF $\mathbf{\Phi}$, the Zero Level Set is defined as follows
 \begin{equation}
   \label{eqn:zero_level_definition}
   \mathcal{S} = \{v \given \mathbf{\Phi}(v) = 0\}, 
   \mkern2mu \forall \mkern2mu v \in \mathbf{\Phi}
 \end{equation}
-where $v$ denotes a TSDF Voxel.
+where $v$ denotes a TSDF Voxel. An example of such an embedding is given in
+Figure \ref{fig:sdf_example}.
 
 To facilitate real time fusion, the InfiniTAM framework employs a Voxel Block
 Hashing mechanism for fast access to scene Voxels \cite{NieBner2013}. Within
@@ -414,13 +479,6 @@ As previously outlined, the TSDF may be defined as a volume of distances to an
 Isosurface, with the Isosurface itself being given by the Zero Level Set, as
 defined in Equation \ref{eqn:zero_level_definition}. A graphical representation
 is given in Figure \ref{fig:sdf_example}.
-% Based on: http://www.texample.net/tikz/examples/contours-grids/
-\begin{figure}[ht]
-  \label{fig:sdf_example}
-  \centering
-  TODO: Make figure.
-  \caption{An example of a Two Dimensional Signed Distance Function.}
-\end{figure}
 
 As with KinectFusion \cite{Newcombe2011} the global (scene) location
 $\mathbf{x}_{v}$ of each voxel $v \in \mathbf{\Phi}$ that is visible in the
