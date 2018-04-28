@@ -51,43 +51,56 @@ utilise such a dual representation for the motion segmentation problem.
 A graphical representation of the Voxel Block based structure of a given Scene
 is presented in Figure \ref{fig:voxel_blocks}.
 % Based on http://www.texample.net/tikz/examples/sudoku-3d-cube/.
-\begin{figure}
+\begin{figure}[h]
   \centering
   \label{fig:voxel_blocks}
-  \resizebox {0.4\linewidth}{!}{
+  \resizebox {0.5\linewidth}{!}{
     \begin{tikzpicture}[every node/.style={minimum size=1cm},on grid]
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %%% BEGIN: BIG GRID.
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       % Left face nodes.
       \begin{scope}[every node/.append style={yslant=-0.5},yslant=-0.5]
-        \foreach \i in {0,...,2}{
-          \foreach \j in {0,...,2}{
-            \node at (\i+0.5, \j+0.5) {v};
+        \foreach \i in {0,...,4}{
+          \foreach \j in {0,...,4}{
+            \ifthenelse{\i=4 \AND \j=4}{
+              \node[fill=red!20] at (\i+0.5, \j+0.5) {vb};
+            }{
+              \node[fill=blue!20] at (\i+0.5, \j+0.5) {vb};
+            }
           }
         }
-        \draw (0,0) grid (3,3);
+        \draw (0,0) grid (5,5);
       \end{scope}
 
       % Right face nodes.
       \begin{scope}[every node/.append style={yslant=0.5},yslant=0.5]
-        \foreach \i in {0,...,2}{
-          \foreach \j in {0,...,2}{
-            \node at (\i+3.5, -1*\j-0.5) {v};
+        \foreach \i in {0,...,4}{
+          \foreach \j in {0,...,4}{
+            \ifthenelse{\i=0 \AND \j=0}{
+              \node[fill=red!20] at (\i+5.5, -1*\j-0.5) {vb};
+            }{
+              \node[fill=blue!20] at (\i+5.5, -1*\j-0.5) {vb};
+            }
           }
         }
-        \draw(3, -3) grid (6, 0);
+        \draw(5, -5) grid (10, 0);
       \end{scope}
 
       % Top face nodes.
       \begin{scope}[every node/.append style={yslant=0.5,xslant=-1},yslant=0.5,xslant=-1]
-        \foreach \i in {0,...,2}{
-          \foreach \j in {2,...,0}{
-            \node at (\i+3.5, \j+0.5) {v};
+        \foreach \i in {0,...,4}{
+          \foreach \j in {4,...,0}{
+            \ifthenelse{\i=0 \AND \j=0}{
+              \node[fill=red!20] at (\i+5.5, \j+0.5) {\rotatebox{-45}{vb}};
+            }{
+              \node[fill=blue!20] at (\i+5.5, \j+0.5) {\rotatebox{-45}{vb}};
+            }
           }
         }
-        \draw (3,0) grid (6,3);
+        \draw (5,0) grid (10,5);
       \end{scope}
+      \node at (5,-4) {\huge \textbf{Voxel Block Volume}};
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %%% END: BIG GRID.
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,14 +108,45 @@ is presented in Figure \ref{fig:voxel_blocks}.
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %%% BEGIN: SMALL GRID.
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      
+      \begin{scope}[shift={(14,-1)}]
+        % Left face nodes.
+        \begin{scope}[every node/.append style={yslant=-0.5},yslant=-0.5]
+          \foreach \i in {0,...,2}{
+            \foreach \j in {0,...,2}{
+              \node[fill=red!20] at (\i+0.5, \j+0.5) {v};
+            }
+          }
+          \draw (0,0) grid (3,3);
+        \end{scope}
+
+        % Right face nodes.
+        \begin{scope}[every node/.append style={yslant=0.5},yslant=0.5]
+          \foreach \i in {0,...,2}{
+            \foreach \j in {0,...,2}{
+              \node[fill=red!20] at (\i+3.5, -1*\j-0.5) {v};
+            }
+          }
+          \draw(3, -3) grid (6, 0);
+        \end{scope}
+
+        % Top face nodes.
+        \begin{scope}[every node/.append style={yslant=0.5,xslant=-1},yslant=0.5,xslant=-1]
+          \foreach \i in {0,...,2}{
+            \foreach \j in {2,...,0}{
+              \node[fill=red!20] at (\i+3.5, \j+0.5) {\rotatebox{-45}{v}};
+            }
+          }
+          \draw (3,0) grid (6,3);
+        \end{scope}
+        \node at (3,-3) {\huge \textbf{Voxel Volume}};
+      \end{scope}
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %%% END: SMALL GRID.
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \end{tikzpicture}
   }
   \caption{A graphical representation of an SDF/TSDF with it's Voxels subdivided
-  into Voxel Blocks.}
+  into Voxel Blocks. In the above, $vb$ represents Voxel Blocks and $v$ Voxels.}
 \end{figure}
 
 The remainder of this chapter is structured as follows.
