@@ -515,14 +515,43 @@ $\tau \in \{\alpha, \beta, \gamma\}$.
   \frac{\big(\Phi_{s}(\mathbf{x}) -
   \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
   \frac{\partial}{\partial \tau} \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
-  \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi}) \Bigg]\\
+  \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+  \Bigg]\\
   % Line 2.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial}{\partial \tau}
   \big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
   \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
-  \Bigg]
+  \Bigg]\\
+  % Line 3.
+  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
+  \frac{\partial \phi}{\partial \Phi} \frac{\partial \Phi}{\partial \Lambda}
+  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} -
+  \frac{1}{2} \frac{\partial}{\partial \tau}
+  \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+  \Bigg]\\
+  \shortintertext{Where $\phi(.) =
+  \big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}$}
+  % Line 4.
+  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  \frac{\partial \Phi}{\partial \Lambda}
+  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} -
+  \frac{1}{2} \frac{\partial}{\partial \tau}
+  \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+  \Bigg]\\
+  % Line 5.
+  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  \frac{\partial \Phi}{\partial \Lambda}
+  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} - \mathbf{p}^{T} -
+  \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+    \Bigg]\\
+  % Line 6.
+  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  \frac{\partial \Phi}{\partial \Lambda}
+  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} - \mathbf{p}^{T} +
+  \frac{1}{1 + e^{\Phi}} \frac{\partial \Phi}{\partial \Lambda}
+  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} \Bigg]
 \end{align}
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
