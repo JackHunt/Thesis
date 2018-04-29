@@ -555,6 +555,155 @@ $\tau \in \{\alpha, \beta, \gamma\}$.
 \end{align}
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
+The final component of the proposed pipeline performs a segmentation in three
+dimensional observed model space to perform refinements over the Appearance
+Posteriors that separate the Voxels pertaining to the object of interest from
+those that have irrelevant measurements integrated, i.e. background measurements
+that have not been used to perform pose estimation and have not been rendered.
+
+This segmentation is formulated within a CRF framework, with each node in the
+CRF Graph representing a set of neighbouring Voxels in space, where connections
+are made between adjacent Voxel neighbourhoods. This segmentation process is
+posed as an Energy Minimisation problem to optimise for a cut in downsampled
+Voxel space between observations pertaining to the object of interest and those,
+of irrelevant observations, such that a segmentation in 3D is obtained. The
+central purpose of this segmentation is to refine the resultant output model of
+the proposed object reconstruction system. The described CRF model is depicted
+in Figure \ref{fig:probobj_crf}
+
+\begin{figure}[h]
+  \label{fig:probobj_crf}
+  \centering
+  \resizebox {0.5\linewidth}{!}{
+    \begin{tikzpicture}[every node/.style={minimum size=1cm},on grid]
+      % Define dimension and multiplier - tweakable.
+      \newcommand\graphdim{2}
+      \newcommand\multiplier{2}
+
+      % Define highlight node.
+      \pgfmathtruncatemacro\hx{2}
+      \pgfmathtruncatemacro\hy{2}
+      \pgfmathtruncatemacro\hz{0}
+
+      % Truncated Graph boundary nodes.
+      \pgfmathtruncatemacro\gmin{-1}
+      \pgfmathtruncatemacro\gmax{\multiplier*\graphdim + 1}
+
+      % Draw Edges.
+      \begin{scope}%[rotate around x=5]
+        \foreach \i in {0,...,\graphdim}{
+          \foreach \j in {0,...,\graphdim}{
+            \foreach \k in {0,...,\graphdim}{
+              % Get truncated x, y, and z. 
+              \pgfmathtruncatemacro\x{\multiplier*\i}
+              \pgfmathtruncatemacro\y{\multiplier*\j}
+              \pgfmathtruncatemacro\z{\multiplier*\k}
+
+              % Get truncated neigh left, right, up, down, forward and backward.
+              \pgfmathtruncatemacro\nl{\x-\multiplier}
+              \pgfmathtruncatemacro\nr{\x+\multiplier}
+              \pgfmathtruncatemacro\nu{\y+\multiplier}
+              \pgfmathtruncatemacro\nd{\y-\multiplier}
+              \pgfmathtruncatemacro\nf{\z+\multiplier}
+              \pgfmathtruncatemacro\nb{\z-\multiplier}
+
+              % Left Neighbour Edge.
+              \ifnum\nl>\gmin
+                \draw[color=gray, line width=0.5mm] (\x, \y, \z) -- (\nl, \y, \z);
+              \fi
+
+              % Right Neighbour Edge.
+              \ifnum\nr<\gmax
+                \draw[color=gray, line width=0.5mm] (\x, \y, \z) -- (\nr, \y, \z);
+              \fi
+
+              % Up Neighbour Edge.
+              \ifnum\nu<\gmax
+                \draw[color=gray, line width=0.5mm] (\x, \y, \z) -- (\x, \nu, \z);
+              \fi
+
+              % Down Neighbour Edge.
+              \ifnum\nd>\gmin
+                \draw[color=gray, line width=0.5mm] (\x, \y, \z) -- (\x, \nd, \z);
+              \fi
+
+              % Forward Neighbour Edge.
+              \ifnum\nf<\gmax
+                \draw[color=gray, line width=0.5mm] (\x, \y, \z) -- (\x, \y, \nf);
+              \fi
+
+              % Backward Neighbour Edge.
+              \ifnum\nb>\gmin
+                \draw[color=gray, line width=0.5mm] (\x, \y, \z) -- (\x, \y, \nb);
+              \fi
+            }
+          }
+        }
+      \end{scope}
+
+      % Draw Nodes.
+      \begin{scope}%[rotate around x=5]
+        \foreach \i in {0,...,\graphdim}{
+          \foreach \j in {0,...,\graphdim}{
+            \foreach \k in {0,...,\graphdim}{
+              % Get truncated x, y and z.
+              \pgfmathtruncatemacro\x{\multiplier*\i}
+              \pgfmathtruncatemacro\y{\multiplier*\j}
+              \pgfmathtruncatemacro\z{\multiplier*\k}
+
+              % Scale hx, hy and hz.
+              \pgfmathtruncatemacro\hhx{\multiplier*\hx}
+              \pgfmathtruncatemacro\hhy{\multiplier*\hy}
+              \pgfmathtruncatemacro\hhz{\multiplier*\hz}
+
+              % Get truncated neigh left, right, up, down, forward and backward.
+              \pgfmathtruncatemacro\hl{\hhx-\multiplier}
+              \pgfmathtruncatemacro\hr{\hhx+\multiplier}
+              \pgfmathtruncatemacro\hu{\hhy+\multiplier}
+              \pgfmathtruncatemacro\hd{\hhy-\multiplier}
+              \pgfmathtruncatemacro\hf{\hhz+\multiplier}
+              \pgfmathtruncatemacro\hb{\hhz-\multiplier}
+
+              % First colour as an ordinary node.
+              \draw[color=blue!60] plot [mark=*, mark size=5] coordinates{(\x, \y, \z)}; 
+              
+              % If this is the node of interest.
+              \pgfmathparse{\x==\hhx && \y==\hhy && \z==\hhz ? int(1) : int(0)}
+              \ifnum\pgfmathresult>0
+                \draw[color=red!60] plot [mark=*, mark size=5] coordinates{(\x, \y, \z)};
+              \fi
+
+              % If this is an x neighbour of the node of interest.
+              \pgfmathparse{(\x==\hl || \x==\hr) && \y==\hhy && \z==\hhz ? int(1) : int(0)}
+              \ifnum\pgfmathresult>0
+                \draw[color=red!60] plot [mark=*, mark size=5] coordinates{(\x, \y, \z)};
+              \fi
+
+              % If this is an y neighbour of the node of interest.
+              \pgfmathparse{(\y==\hu || \y==\hd) && \x==\hhx && \z==\hhz ? int(1) : int(0)}
+              \ifnum\pgfmathresult>0
+                \draw[color=red!60] plot [mark=*, mark size=5] coordinates{(\x, \y, \z)};
+              \fi
+
+              % If this is an y neighbour of the node of interest.
+              \pgfmathparse{(\z==\hf || \z==\hb) && \x==\hhx && \y==\hhy ? int(1) : int(0)}
+              \ifnum\pgfmathresult>0
+                \draw[color=red!60] plot [mark=*, mark size=5] coordinates{(\x, \y, \z)};
+              \fi
+            }
+          }
+        }
+      \end{scope}
+    \end{tikzpicture}
+  }
+  \caption{The 3D CRF model over Voxel space.}
+\end{figure}
+
+The following Energy Function consists of the Appearance Posterior Probabilities
+accumulated during the on-line fusion process for a region in space as the
+CRF Unary Potentials. The pairwise smoothing term represents the physical
+appearance similarity of the observation regions represented by the
+Voxel neighbourhoods $\gamma$ and $\gamma^{'}$:
 
 \section{Qualitative Results}
 
