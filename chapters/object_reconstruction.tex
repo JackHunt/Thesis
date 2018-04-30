@@ -579,6 +579,7 @@ in Figure \ref{fig:probobj_crf}
       % Define dimension and multiplier - tweakable.
       \newcommand\graphdim{2}
       \newcommand\multiplier{2}
+      \newcommand\srad{0.8}
 
       % Define highlight node.
       \pgfmathtruncatemacro\hx{2}
@@ -670,8 +671,9 @@ in Figure \ref{fig:probobj_crf}
               % If this is the node of interest.
               \pgfmathparse{\x==\hhx && \y==\hhy && \z==\hhz ? int(1) : int(0)}
               \ifnum\pgfmathresult>0
-                \draw[color=red!60] plot [mark=*, mark size=5] coordinates{(\x, \y, \z)};
+                \draw[color=green!50] plot [mark=*, mark size=5] coordinates{(\x, \y, \z)};
               \fi
+
 
               % If this is an x neighbour of the node of interest.
               \pgfmathparse{(\x==\hl || \x==\hr) && \y==\hhy && \z==\hhz ? int(1) : int(0)}
@@ -693,6 +695,17 @@ in Figure \ref{fig:probobj_crf}
             }
           }
         }
+      \end{scope}
+
+      % Finally, draw the sphere of influence... Putin style!
+      \begin{scope}
+        % Scale hx, hy and hz.
+        \pgfmathtruncatemacro\hhx{\multiplier*\hx}
+        \pgfmathtruncatemacro\hhy{\multiplier*\hy}
+        \pgfmathtruncatemacro\hhz{\multiplier*\hz}
+
+        % Shade and draw the ball.
+        \shade[ball color=green!60, opacity=0.3] (\hhx, \hhy, \hhz) circle (\srad cm);
       \end{scope}
     \end{tikzpicture}
   }
