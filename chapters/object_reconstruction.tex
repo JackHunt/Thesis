@@ -704,6 +704,25 @@ accumulated during the on-line fusion process for a region in space as the
 CRF Unary Potentials. The pairwise smoothing term represents the physical
 appearance similarity of the observation regions represented by the
 Voxel neighbourhoods $\gamma$ and $\gamma^{'}$:
+\begin{equation}
+  \label{eqn:probobj_crf_energy}
+  E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \Psi_{n}}
+  P(\psi \in \Phi \given \Omega_{t}, p_{t}) +
+  P(\mathbb{E}[c]_{\gamma} \given \mathbb{E}[c]_{\gamma'})
+\end{equation}
+
+In Equation \ref{eqn:probobj_crf_energy} the terms $\mathbb{E}[c]_{\gamma}$ and
+$\mathbb{E}[c]_{\gamma'}$ of the Pairwise component of the Energy function  are
+the expected values over appearance for the 3D regions $\gamma$ and $\gamma'$
+respectively. Recall the Unary term $P(\psi \in \Phi \given \Omega_{t}, p_{t})$
+from Equation \ref{eqn:probobj_voxel_posterior} of Section
+\ref{subsec:probobj_vol_appearance_model}.
+
+In the implementation used in this work, the aforementioned cut in Voxel space
+is obtained by optimising the Energy function of Equation
+\ref{eqn:probobj_crf_energy} within a Max-Flow framework \cite{BOYKOV} due to GPU
+parallelisation potential. However it should be noted that alternatives such as
+Variational Bayesian Mean Field approximations may also be of use \cite{KRAHENBUHL}.
 
 \section{Qualitative Results}
 
