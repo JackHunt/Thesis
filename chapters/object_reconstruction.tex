@@ -744,19 +744,48 @@ this section demonstrate efficacy over the approach of \textit{Ren et al}
 \cite{Ren2013} for the task of obtaining closed, small object reconstructions 
 from RGBD data. Each evaluation sequence is run on the system proposed in this 
 chapter and through that of \textit{Ren et al}, with output snapshots taken at 
-quarterly intervals for each sequence. 
+quarterly intervals for each sequence. In Section \ref{QUANT}, a Quantitative 
+evaluation of Reconstruction quality is given.
 
 \begin{figure}[ht]
   \label{fig:probobj_rock_s3d}
   \centering
-  \begin{tabular}{c}
-    \includegraphics[width=.25\linewidth]{figures/object_recon/strips/rock.png} \\
+  \begin{tabular}{@{}c@{}}
+    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
     (a) \\
-    \includegraphics[width=.25\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
+    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/rock.png} \\ 
+    (b)\\
+  \end{tabular}
+  \caption{(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
+  from RGBD observations on the Museum Rock sequence. (b) The proposed system reconstructing 
+  the same object from observations of the Museum Rock sequence.}
+\end{figure}
+
+As can be observed in Figure \ref{fig:probobj_rock_s3d}, the proposed system of 
+\textit{Ren et al} begins with a discretised SDF Shape Prior of a Sphere that is 
+evolved over time whilst simultaneously optimising for pose. However, it is evident 
+that through the course of the sequence it is unable to evolve sufficiently to model 
+the object of interest, contary to the approach outlined in this chapter.
+
+\begin{figure}[ht]
+  \label{fig:probobj_dino_s3d}
+  \centering
+  \begin{tabular}{@{}c@{}}
+    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/dino_s3d.png} \\
+    (a) \\
+    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/dino.png} \\ 
     (b) \\
   \end{tabular}
-  \caption{}
+  \caption{(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
+  from RGBD observations on the Museum Dinosaur Head sequence. (b) The proposed system 
+  reconstructing same the object from observations of the Museum Dinosaur Head sequence.}
 \end{figure}
+
+As with the example given in Figure \ref{fig:probobj_rock_s3d}, it can be seen in 
+Figure \ref{fig:probobj_dino_s3d} that the System of \textit{Ren et al} is again 
+unable to evolve the SDF Shape Prior suffiently to model the object of interest. As 
+can be observed, again the proposed system of this work is capable of yielding a suitable 
+reconstruction.
 
 An additional evaluation is performed on the proposed systems ability to reconstruct 
 a range of objects versus that of an implementation of the standard KinectFusion 
