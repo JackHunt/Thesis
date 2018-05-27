@@ -842,4 +842,30 @@ the top-down views presented in Figure \ref{fig:probobj_comp_itm}.
 	}
 \end{figure}
 
+The efficacy of the approach described in this work is further demonstrated when comparing
+the pipeline as outlined in Figure \ref{fig:probobj_pipeline_diagram} to a version that 
+utilises only a single representation of the object of interest. Figure 
+\ref{fig:probobj_gappy_teddy} demonstrates the difference in reconstruction output when 
+not utilising the multiple subvolume representation and it's accompanying enforcement 
+of consistency constraints. 
+
+\begin{figure}[ht]
+  \label{fig:probobj_gappy_teddy}
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=.2\linewidth]{figures/object_recon/gappy/one_scene00.png}&
+    \includegraphics[width=.2\linewidth]{figures/object_recon/gappy/one_scene01.png}\\
+    (a) & (b) \\
+		\includegraphics[width=.2\linewidth]{figures/object_recon/gappy/multi_scene00.png}&
+    \includegraphics[width=.2\linewidth]{figures/object_recon/gappy/multi_scene01.png}\\
+    (c) & (d)\\
+	\end{tabular}
+	\caption{
+    Teddy reconstruction with InfiniTAM (a, b) versus the system proposed in this 
+    work (c, d).
+	}
+\end{figure}
+
+The gaps in the isosurface depicted in Figure \ref{fig:probobj_gappy_teddy} (a, b)...
+
 \section{Quantitative Results}
