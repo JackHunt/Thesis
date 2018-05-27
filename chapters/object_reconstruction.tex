@@ -738,5 +738,37 @@ parallelisation potential. However it should be noted that alternatives such as
 Variational Bayesian Mean Field approximations may also be of use \cite{KRAHENBUHL}.
 
 \section{Qualitative Results}
+Empirically the proposed system is capable of reconstructing a range of objects 
+characterised by a range of different sizes and geometries. The experiments in 
+this section demonstrate efficacy over the approach of \textit{Ren et al} 
+\cite{Ren2013} for the task of obtaining closed, small object reconstructions 
+from RGBD data. Each evaluation sequence is run on the system proposed in this 
+chapter and through that of \textit{Ren et al}, with output snapshots taken at 
+quarterly intervals for each sequence. 
+
+\begin{figure}[ht]
+  \label{fig:probobj_rock_s3d}
+  \centering
+  \begin{tabular}{c}
+    \includegraphics[width=.25\linewidth]{figures/object_recon/strips/rock.png} \\
+    (a) \\
+    \includegraphics[width=.25\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
+    (b) \\
+  \end{tabular}
+  \caption{}
+\end{figure}
+
+An additional evaluation is performed on the proposed systems ability to reconstruct 
+a range of objects versus that of an implementation of the standard KinectFusion 
+pipeline, as outlined in Section \ref{MOSEG INTRO}. The central difference in the use 
+of the two approaches in this comparison is that in the proposed system, only the 
+observed points of the live frame and of the reconstruction that belong to the 
+object of interest are used for Pose Estimation. In the KinectFusion pipeline used 
+as a base of comparison however, the entire scene is modelled as the camera is moved, 
+with the reconstruction of the object of interest being segmented as a post processing 
+step. As such, the results extracted from the KinectFusion pipeline are taken to be the 
+ground truth reconstructions of the object of interest. This is due to the more robust 
+Pose Estimation that would be expected from utilising all available geometric data 
+for tracking, versus utilising only that of a single, potentially small object.
 
 \section{Quantitative Results}

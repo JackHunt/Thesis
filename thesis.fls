@@ -281,6 +281,8 @@ INPUT pre_chapters/abstract.tex
 INPUT pre_chapters/notation.tex
 INPUT pre_chapters/notation.tex
 OUTPUT thesis.toc
+OUTPUT thesis.lof
+OUTPUT thesis.lot
 INPUT chapters/introduction.tex
 INPUT chapters/introduction.tex
 INPUT chapters/lit_review.tex
@@ -427,6 +429,16 @@ INPUT figures/object_recon/pipeline.pdf
 INPUT ./figures/object_recon/pipeline.pdf
 INPUT ./figures/object_recon/pipeline.pdf
 INPUT ./figures/object_recon/pipeline.pdf
+INPUT figures/object_recon/strips/rock.png
+INPUT ./figures/object_recon/strips/rock.png
+INPUT ./figures/object_recon/strips/rock.png
+INPUT ./figures/object_recon/strips/rock.png
+INPUT ./figures/object_recon/strips/rock.png
+INPUT figures/object_recon/strips/rock_s3d.png
+INPUT ./figures/object_recon/strips/rock_s3d.png
+INPUT ./figures/object_recon/strips/rock_s3d.png
+INPUT ./figures/object_recon/strips/rock_s3d.png
+INPUT ./figures/object_recon/strips/rock_s3d.png
 INPUT appendices/appendix_a.tex
 INPUT appendices/appendix_a.tex
 INPUT appendices/appendix_b.tex
