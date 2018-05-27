@@ -789,9 +789,9 @@ reconstruction.
 
 An additional evaluation is performed on the proposed systems ability to reconstruct 
 a range of objects versus that of an implementation of the standard KinectFusion 
-pipeline, as outlined in Section \ref{MOSEG INTRO}. The central difference in the use 
-of the two approaches in this comparison is that in the proposed system, only the 
-observed points of the live frame and of the reconstruction that belong to the 
+pipeline as outlined in Section \ref{MOSEG INTRO}. The central difference in the use 
+of the two approaches for the purposes of this comparison is that in the proposed system, 
+only the observed points of the live frame and of the reconstruction that belong to the 
 object of interest are used for Pose Estimation. In the KinectFusion pipeline used 
 as a base of comparison however, the entire scene is modelled as the camera is moved, 
 with the reconstruction of the object of interest being segmented as a post processing 
@@ -799,5 +799,47 @@ step. As such, the results extracted from the KinectFusion pipeline are taken to
 ground truth reconstructions of the object of interest. This is due to the more robust 
 Pose Estimation that would be expected from utilising all available geometric data 
 for tracking, versus utilising only that of a single, potentially small object.
+
+\begin{figure}[ht]
+  \label{fig:probobj_comp_itm}
+  \centering
+  \begin{tabular}{cccc}
+    \includegraphics[width=.2\linewidth]{figures/object_recon/comp/itm/bear00.png}&
+		\includegraphics[width=.2\linewidth]{figures/object_recon/comp/itm/brain00.png}&
+		\includegraphics[width=.2\linewidth]{figures/object_recon/comp/itm/chair00.png}&
+    \includegraphics[width=.2\linewidth]{figures/object_recon/comp/itm/dino00.png} \\
+    (a) & (b) & (c) & (d) \\
+		\includegraphics[width=.2\linewidth]{figures/object_recon/comp/prob/bear00.png}&
+		\includegraphics[width=.2\linewidth]{figures/object_recon/comp/prob/brain00.png}&
+		\includegraphics[width=.2\linewidth]{figures/object_recon/comp/prob/chair00.png}&
+    \includegraphics[width=.2\linewidth]{figures/object_recon/comp/itm/dino00.png} \\
+    (e) & (f) & (g) & (h) \\
+  \end{tabular}
+  \caption{(a, b, c, d) Base reconstructions extracted from the output of the 
+  standard KinectFusion pipeline. (e, f, g, h) Reconstructions yielded by 
+  the proposed approach.}
+\end{figure}
+
+As can be seen in Figure \ref{fig:probobj_comp_itm} the proposed system is 
+capable of providing reconstructions of a wide variety of objects in an 
+aesthetically similar manner to a well established baseline. The proposed 
+system provides globally consistent, closed reconstructions as is evident from 
+the top-down views presented in Figure \ref{fig:probobj_comp_itm}.
+
+\begin{figure}[ht]
+  \label{fig:probobj_comp_itm}
+	\centering
+	\begin{tabular}{cccc}
+		\includegraphics[width=.2\linewidth]{figures/object_recon/top/teddy_top00.png}&
+    \includegraphics[width=.2\linewidth]{figures/object_recon/top/dino_top00.png} &
+		\includegraphics[width=.2\linewidth]{figures/object_recon/top/chair_top00.png}&
+    \includegraphics[width=.2\linewidth]{figures/object_recon/top/rock_top00.png} \\
+    (a) & (b) & (c) & (d) \\
+	\end{tabular}
+	\caption{
+    Closed reconstructions of the (a) Teddy, (b) Dinosaur Head, 
+    (c) Chair and (d) Rock sequences.
+	}
+\end{figure}
 
 \section{Quantitative Results}
