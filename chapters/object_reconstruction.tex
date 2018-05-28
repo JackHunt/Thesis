@@ -866,6 +866,41 @@ of consistency constraints.
 	}
 \end{figure}
 
-The gaps in the isosurface depicted in Figure \ref{fig:probobj_gappy_teddy} (a, b)...
+The gaps in the isosurface depicted in Figure \ref{fig:probobj_gappy_teddy} (a, b) 
+demonstrate the impact that drift in the Pose Estimation stage can have on the resultant 
+reconstruction; drift can incur irregularities in the extraction and rendering of the objects 
+isosurface. Note that the reconstructions given in Figure \ref{fig:probobj_gappy_teddy} 
+(c, d) do not suffer such irregularities when utilising the object reconstruction pipeline 
+presented in this chapter.
 
 \section{Quantitative Results}
+In this section the performance of the proposed system is evaluated quantitatively with respect 
+to both Pose Estimation accuracy and Reconstruction accuracy. 
+
+For Pose evaluation, the \textit{3D Object Reconstrucytion} subset of the 
+\textit{RGB-D SLAM Dataset and Benchmark} \cite{Sturm2012}. The objects of interest in 
+the dataset vary largely in both geometry and appearance. As with the quantitative 
+evaluation presented in Section \ref{sec:moseg_quantitative}, the 
+\textit{Absolute Trajectory Error} is the primary metric of interest.
+
+\begin{table}[ht]
+  \label{tbl:probobj_ate}
+  \centering
+  \begin{tabular}{l@{\hskip 1cm} c c}
+    \emph{Sequence Name} & \emph{Proposed Approach ATE (m)} & \emph{InfiniTAM ATE (m)}\\
+    \midrule
+    \textsf{freiburg3\_cabinet} & 0.077903 & 0.520693\\
+    \textsf{freiburg3\_teddy}   & 0.030596 & 0.048560 \\
+    \textsf{freiburg1\_plant}   & DNR & DNR \\
+    \textsf{freiburg2\_coke}   & DNR & DNR \\
+    \textsf{freiburg2\_dishes}   & DNR & DNR \\
+    \textsf{freiburg2\_flowerbouquet}   & DNR & DNR \\
+    \textsf{freiburg2\_flowerbouquet\_brownbackground}   & DNR & DNR \\
+    \textsf{freiburg2\_metallic\_sphere}   & DNR & DNR \\
+    \textsf{freiburg2\_metallic\_sphere2}   & DNR & DNR \\
+    \textsf{freiburg3\_large\_cabinet}   & DNR & DNR
+  \end{tabular}
+  \caption{ATE (Absolute Trajectory Error) results achieved by the proposed approach versus 
+  InfiniTAM with object segmentation.
+  }
+\end{table}
