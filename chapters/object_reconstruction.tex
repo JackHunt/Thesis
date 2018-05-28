@@ -887,7 +887,7 @@ evaluation presented in Section \ref{sec:moseg_quantitative}, the
   \label{tbl:probobj_ate}
   \centering
   \begin{tabular}{l@{\hskip 1cm} c c}
-    \emph{Sequence Name} & \emph{Proposed Approach ATE (m)} & \emph{InfiniTAM ATE (m)}\\
+    \emph{Sequence Name} & \emph{Proposed Approach ATE (m)} & \emph{InfiniTAM + Segmentation ATE (m)}\\
     \midrule
     \textsf{freiburg3\_cabinet} & 0.077903 & 0.520693\\
     \textsf{freiburg3\_teddy}   & 0.030596 & 0.048560 \\
@@ -904,3 +904,14 @@ evaluation presented in Section \ref{sec:moseg_quantitative}, the
   InfiniTAM with object segmentation.
   }
 \end{table}
+
+It can be seen from Table \ref{tbl:probobj_ate} that on the \textit{freiburg3\_cabinet} 
+and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this work 
+yields a marked improvement in Absolute Trajectory Error over that of the standard KinectFusion 
+pipeline with Object Segmentation. The remaining sequences that have the ATE marked as DNR did 
+not yield an interpretable reconstruction; sequences with ATE metrics marked DNR did not 
+reconstruct. In the case of the \textit{freiburg2\_metallic\_sphere(2)} sequences...
+
+The trajectories of the two approaches evaluated on the \textit{freiburg3\_cabinet} 
+and \textit{\textsf{freiburg3\_teddy}} sequences are plotted versus the ground truth trajectories 
+in Figure \ref{fig}
