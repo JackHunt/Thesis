@@ -53,15 +53,17 @@ utilising a Normal weighting and a Lagrangian optimisation scheme. However, it i
 highlighted that prior to the optimisation procedure it is necessary to trim outliers 
 from the point data sets.
 
-Newcombe et.al. \cite{Newcombe2011}
-\begin{itemize}
-	\item Real time mapping of indoor scenes with Kinect sensor.
-	\item Invariance to lighting.
-	\item Observations fused in to SDF like volume of Curless et al - TSDF
-	\item Multilevel ICP(coarse to fine) used to obtain pose.
-	\item Measurement->integration->isosurface extraction->pose update.
-	\item Limited to static scenes.
-\end{itemize}
+Culminating much of the aforementioned work, in 2011 \textit{Newcombe et al} introduced 
+the seminal \textit{KinectFusion} pipeline, allowing for real time mapping of indoor 
+scenes with the Kinect RGBD sensor from Microsoft. The authors utilise a sparser form 
+of the SDF structure introduced by \textit{Curless \& Levoy} \cite{Curless1996}, the 
+TSDF(Truncated Signed Distance Function), allowing for reconstruction at scene scale. 
+For pose estimation, a multi-level variant of the ICP algorithm utilising a Point-to-Plane 
+metric similar to that of \textit{PL-ICP} \cite{Censi2008} is used. The pipeline consists 
+of four phases; \textit{Measurement}, \textit{Integration}, \textit{Isosurface Extraction} 
+and \textit{Pose Update}. Applications of the presented system however are limited only to 
+those that require the reconstruction of static scenes; dynamic scenes are not supported 
+by \textit{KinectFusion}.
 
 %TO-DO:fix name
 Neissner et.al. \cite{NieBner2013}
