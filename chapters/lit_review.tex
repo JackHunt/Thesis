@@ -6,41 +6,52 @@
 %% Tracking and Mapping.
 \section{Tracking and Mapping}
 \label{sec:lit_review_tam}
-Besl and McKay \cite{Besl1992}
-\begin{itemize}
-	\item 3D Shape Registration.
-	\item Full 6DoF pose estimation.
-	\item Requires shape complexity - geometrically distinctive.
-	\item Compute closest point, compute \& apply registration, iterate until MSE low. 
-	\item Convergence not guaranteed, determined empirically to be rapid over first few iterations.
-\end{itemize}
+There has been much research in the field of Tracking and Mapping in recent 
+years, with many large scale works being driven by the availibility of once 
+costly depth sensing equipment. The availability of such equipment combined 
+with the ever increasingly parallel nature of modern GPU's has seen the 
+field advance greatly beyond the seminal but resource limited works of it's 
+infancy. This advancement is most predominant within the Dense SLAM(Simultaneous 
+Localisation and Mapping) literature. This section shall first explore the 
+earlier, fundamental works of this area of research, followed by a treatment 
+of the current state of the art.
 
-Curless and Levoy \cite{Curless1996}
-\begin{itemize}
-	\item Early volumetric reconstruction work.
-	\item Integrates aligned range images in to a volume.
-	\item Volume introduced is SDF - cumulative and weighted.
-	\item Isosurface extracted from SDF - Marching Cubes.
-	\item Gaps filled by tesselation.
-\end{itemize}
+\textit{Besl \& McKay} \cite{Besl1992} introduced their seminal work on 3D shape 
+registration in 1992, providing a method to estimate full 6DoF(Six Degrees of 
+Freedom) pose between 3D point sets. The authors present an Iterative Closest 
+Point Algorithm that consists of three operations per iteration; computation 
+of closest point, computation of a 6DoF Transformation and application of 
+the Transformation. The authors present a proof of convergence based on that 
+of Least Squares minimisation, however there must be sufficiently complex 
+geometry present in the structure of the data to optimise to a meaningful 
+Transformation.
 
-Zhou et.al. \cite{Zhou2008}
-\begin{itemize}
-	\item Alternative representation to Curless and Levoy.
-	\item Massively parallel KD-Tree construction.
-	\item Suitable for real-time use.
-	\item Parallelism achieved by building tree with BFS.
-	\item Example use given for Ray Tracing and Photon Mapping.
-\end{itemize}
+Complementary to the aforementioned works of \textit{Besl \& McKay} \cite{Besl1992} 
+in the foundational aspects of Dense SLAM is that of \textit{Curless \& Levoy} 
+\cite{Curless1996}, 1996. The authors present an early volumetric integration 
+framework for the reconstruction of shapes from range data obtained from a 
+sensor such as a laser scanner. The authors introduce the SDF(Signed Distance Function), 
+a volumetric, implicit shape representation in which entries are cumulatively updated 
+in a weighted manner. Once observations have been integrated in to the SDF volume, an 
+Isosurface representation of the shape is extracted by a Marching Cubes \cite{MC} 
+procedure. Though the approach may lead to gaps in the resultant model, the authors 
+mitigate this by introducing a Surface Tesselation step.
 
-Censi \cite{Censi2008}
-\begin{itemize}
-	\item PL-ICP, ICP using point-to-line metric.
-	\item Closed form solution in planar case.
-	\item Quadratic convergence in finite amount of steps.
-	\item New formulation weighted by normal and solved by reducing to quadratic form and introducing Lagrange Multipliers.
-	\item Prior to optimisation, trimming procedure used to remove outliers.
-\end{itemize}
+Later work by \textit{Zhou et al} \cite{Zhou2008} in 2008 introduces an alternative 
+shape representation to that of \textit{Curless \& Levoy} \cite{Curless1996}, based 
+on the spatial KD-Tree data structure and a highly data parallel BFS(Breadth First 
+Search) construction algorithm. The level of parallelism introduced allows for 
+application to problems that require real time performance. The authors provide 
+examples of use in Ray Tracing \cite{RT} and Photon Mapping \cite{PM}.
+
+In the same year, \textit{Censi} \cite{Censi2008} introduced \textit{PL-ICP}, a 
+variant of the ICP algorithm introduced by \textit{Besl \& McKay} \cite{Besl1992}. 
+The presented approach utilises a Point-to-Line metric rather than a Point-to-Point 
+metric and has a closed form solution in the planar case. For the non planar case 
+the presented approach acheives quadratic convergence in a finite number of steps, 
+utilising a Normal weighting and a Lagrangian optimisation scheme. However, it is 
+highlighted that prior to the optimisation procedure it is necessary to trim outliers 
+from the point data sets.
 
 Newcombe et.al. \cite{Newcombe2011}
 \begin{itemize}
