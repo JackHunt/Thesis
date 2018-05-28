@@ -927,3 +927,68 @@ in Figure \ref{fig:probobj_traj}
   \caption{Trajectory plots for the \textit{freiburg3\_cabinet} (a) 
   and \textit{\textsf{freiburg3\_teddy}} (b) sequences.}
 \end{figure}
+
+The proposed system is additionally evaluated quantitatively with respect to reconstruction 
+quality. Reference models are obtained by reconstructing both the object of interest and it's 
+surrounding scene(for maximal Pose Estimation accuracy), followed by a manual segmentation of 
+the object of interest in 3-space. To quantify the reconstruction quality the Hausdorff 
+Distance \cite{Hausdorff} for subsets of metric spaces is used, where in this case the metric 
+space is Euclidean. The Hausdorff Distance is defined as follows in Equation \ref{eqn:probobj_hauss}
+\begin{equation}
+  \label{eqn:probobj_hauss}
+  d_{H}(X, Y) = \max \Bigg[
+  \sup_{x \in X} \inf_{y \in Y} d(x, y), \sup_{y \in Y} \inf_{x \in X} d(x, y) 
+  \Bigg]
+\end{equation}
+In Equation \ref{eqn:probobj_hauss}, $X$ is the ground truth dense SLAM reconstruction, 
+$Y$ is the reconstruction outputted by the proposed system and $d(.)$ is the Euclidean 
+distance.
+
+The resultant quantitative comparisons may be found in Table \ref{tbl:probobj_hauss}.
+\begin{table}[ht]
+  \label{tbl:probobj_hauss}
+  \centering
+  \begin{tabular}{lcccc}
+    \emph{Sequence} & \emph{Min Dist} & \emph{Max Dist} & \emph{Mean Dist} & \emph{RMS}\\
+    \midrule
+    \textsf{Bear} & 0 & 0.102777 & 0.013588 & 0.019796 \\
+    \textsf{Brain} & 0 & 0.026465 & 0.008745 & 0.011349 \\
+    \textsf{Chair} & 0 & 0.053441 & 0.012349 & 0.016422 \\
+    \textsf{Dinosaur Head} & 0 & 0.035252 & 0.007919 & 0.010676
+  \end{tabular}
+  \caption{Minimum, Maximum, Mean and RMSE distances between the reconstructions yielded by 
+  the proposed system and the baseline.}
+\end{table}
+
+As can be seen by the similarity measures presented, the proposed system is capable of 
+yielding reconstructions to a high quality despite the markedly more difficult Pose Estimation 
+scenario of utilising the observations of a single object rather than those an entire scene. 
+It can be seen that the presented output reconstructions are geometrically close to those 
+reconstructed with a dense SLAM system \cite{Prisacariu2014} following the KinectFusion 
+\cite{Newcombe2011} pipeline that is modelling and tracking the entire scene and thus has 
+much more geometrical data with which to estimate pose.
+
+Figure \ref{}...
+
+\begin{figure}[ht]
+  \label{fig:probobj_hauss}
+  \centering
+  \begin{tabular}{@{}c@{}}
+    \begin{tabular}{cccc}
+      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/bear.png}&
+      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/brain.png}&
+      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/chair.png}&
+      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/dino.png} \\
+      (a) & (b) & (c) & (d) \\
+    \end{tabular} \\
+    \begin{tabular}{ccc}
+      \textit{Max} & 
+      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/colour_range.png} & 
+      \textit{Min} \\
+      & (e) & \\
+    \end{tabular}
+  \end{tabular}
+  \caption{Renderings of the sequences evaluated in Table \ref{tbl:probobj_hauss} textured 
+  on Hausdorff Distance (a, b, c, d). The minimum and maximum values given in Table 
+  \ref{tbl:probobj_hauss} are mapped to the colour range of (e).}
+\end{figure}
