@@ -74,33 +74,35 @@ introduced to dynamically handle data transmission between the CPU and GPU, allo
 reconstruction of scenes that may exceed the GRAM bounds of commodity GPU's. The proposed 
 system is capable of running at $\approx46Hz$ on an NVIDIA Titan GPU.
 
-Thomas et.al. \cite{Thomas2013}
-\begin{itemize}
-	\item Represent scene as a set of planes with attributes.
-	\item Motivated by planar nature of objects such as tables and cabinets.
-	\item Attributes are bump(normal) image for geometry encoding, mask image encoding confidence and RGB image.
-	\item Rendering by quadrangulation. %Cite this
-	\item Tracking as with KF - linearized GICP.
-\end{itemize}
+In the same year, \textit{Thomas et al} \cite{Thomas2013} introduced an alternative scene 
+representation, based on the notion that a scene may be represented as a set of Planar 
+components with attributes such as Surface Normals, confidences and RGB colour. The motivation 
+of the author's approach is that many common scenes that one might reconstruct are indoors and 
+consist of components that are planar in nature, such as walls, floors and ceilings. Additionally, 
+many planar objects are common, such as tables and cabinets. The author presents an alternative 
+rendering approach based on Quadrangulation \cite{QUAD} and utilise a \textit{KinectFusion} 
+\cite{Newcombe2011} like ICP based algorithm for pose estimation.
 
-Salas-Moreno et.al. \cite{Salas-Moreno2013}
-\begin{itemize}
-	\item Introduce a new "Object Orientated" Dense SLAM paradigm.
-	\item Incorporates prior knowledge that many scenes have repeated structure.
-	\item Scene split in to graph of objects. Pose graph optimisation used.
-	\item ICP run against object renderings, followed by detection and insertion of objects. Finally graph optimisation.
-	\item Graph based re-localisation.
-	\item Requires database of known objects.
-\end{itemize}
+\textit{Salas-Moreno et al} \cite{Salas-Moreno2013} in 2013 also, introduced another alternative 
+approach to that of the \textit{KinectFusion} \cite{Newcombe2011} like pipelines that similarly to 
+\textit{Thomas et al} \cite{Thomas2013}, utilises the prior information that many scenes consist 
+of predictable, repeated structures. As such, the authors introduce a so called ``Object Oriented'' 
+Dense SLAM paradigm, in which the reconstruction of the scene is split in to a graph of observed 
+objects. Pose estimation is achieved by running an ICP based algorithm against renderings of the 
+individual objects in the reconstructed scene model. Following pose estimation, the proposed 
+system detects newly observed objects and inserts the appropriate object model in to the scene 
+model. Consistency between scene components is enforced with Pose Graph Optimisation, with 
+relocalisation achieved in a similar manner. The proposed approach does however require a 
+database of known objects a-priori.
 
-%TO-DO:fix name
-Stuckler et.al. \cite{Stuckler2014}
-\begin{itemize}
-	\item Uses multiple resolution, probabilistic surfel maps as representation. \cite{Pfister2000}
-	\item Octree with spatial and appearance statistics at each level.
-	\item Randomised loop closure - graph and key-view based.
-	\item Pose estimation by maximising observation likelihood with uncertainty measure.
-\end{itemize}
+\textit{St{\"u}ckler et al} \cite{Stuckler2014} in 2014 introduced a non implicit, non volumetric 
+representation based on multiple resolution Surfel \cite{Pfister2000} Maps. The core data structure 
+used for scene representation is a Voxel Octree \cite{OCTREE} containing both Surfels and 
+Probability Distributions over appearance and shape. Pose estimation is achieved by optimising for 
+a Unit Quaternion \cite{QUAT} and Translation Vector within a Maximum Likelihood framework, in which 
+the Energy Function to be maximised is the Likelihood of the RGBD observations given the accumulated 
+Probability Distributions stored in the Octree. The presented pipeline also incorporates a randomised, 
+graph and keyframe based loop closure component.
 
 Salas-Moreno et.al. \cite{Salas-Moreno2014}
 \begin{itemize}
