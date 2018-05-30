@@ -104,14 +104,14 @@ the Energy Function to be maximised is the Likelihood of the RGBD observations g
 Probability Distributions stored in the Octree. The presented pipeline also incorporates a randomised, 
 graph and keyframe based loop closure component.
 
-Salas-Moreno et.al. \cite{Salas-Moreno2014}
-\begin{itemize}
-	\item Exploits planar structure in the scene, like Thomas.
-	\item Focus on detection and modelling of planes, refined over time.
-	\item From generated Surfel maps, planes are segmented and holes filled over time. \cite{Pfister2000}
-	\item Fern encoding used for relocalisation. %Reference Fern Encoding - Glocker et al
-	\item ICP between measured vertex map and predicted vertex map.
-\end{itemize}
+Following the approach of \textit{Thomas et al} \cite{Thomas2013}, \textit{Salas-Moreno et al} 
+\cite{Salas-Moreno2014} in 2014 introduced another reconstruction system that utilises the
+planarity property of many common scenes. The proposed approach focuses on the detection and 
+modelling of planes in the scene, proceeding with their refinement over time. 
+The proposed approach generates Surfel \cite{Pfister2000} Maps from observed RGBD frames, from 
+which the planar regions are detected and integrated, filling holes in the reconstruction over time.
+The authors utilise an ICP algorithm to register the vertex maps of the RGBD observations and the 
+reconstructed model. Additionally, relocalisation is achieved by the use of Fern Encoding \cite{FERN}. 
 
 Prisacariu et.al \cite{Prisacariu2014} Followed up by tech report \cite{Kahler2015}
 \begin{itemize}
