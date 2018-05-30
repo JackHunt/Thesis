@@ -65,15 +65,14 @@ and \textit{Pose Update}. Applications of the presented system however are limit
 those that require the reconstruction of static scenes; dynamic scenes are not supported 
 by \textit{KinectFusion}.
 
-%TO-DO:fix name
-Neissner et.al. \cite{NieBner2013}
-\begin{itemize}
-	\item Pipeline follows that of KinectFusion.
-	\item Introduce a spatial Hashing data structure.
-	\item TSDF split in to Voxel Blocks which are hashed.
-	\item Low space and time complexity.
-	\item Streaming system to reduce GPU memory usage.
-\end{itemize}
+Further optimisations were made in 2013 by \textit{Nei{\ss}ner at al} to the \textit{KinectFusion} 
+pipeline proposed by \textit{Newcombe et al}. The authors introduce a spatially hashed TSDF data 
+structure, in which the TSDF is split in to hashed Voxel Blocks allowing for very fast Voxel 
+lookups. The presented approach yields low space and time complexity for such operations, vastly 
+increasing the potential for real time, large scale use. Additionally, a streaming system is 
+introduced to dynamically handle data transmission between the CPU and GPU, allowing for the 
+reconstruction of scenes that may exceed the GRAM bounds of commodity GPU's. The proposed 
+system is capable of running at $\approx46Hz$ on an NVIDIA Titan GPU.
 
 Thomas et.al. \cite{Thomas2013}
 \begin{itemize}

@@ -1,42 +1,31 @@
-\documentclass[12pt]{report}
+\documentclass[12pt, twoside]{report}
+\usepackage[T1]{fontenc}
+\usepackage[linedheaders,parts,pdfspacing]{classicthesis}
 \usepackage[utf8]{inputenc}
-\usepackage[a4paper,margin=30mm,top=25mm,bottom=25mm]{geometry}
+\usepackage[inner=3cm,outer=2cm,top=2cm,bottom=2cm,includehead,includefoot]{geometry}
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{fancyhdr}
 \usepackage[numbers]{natbib}
 \usepackage{setspace}
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{booktabs}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{mathtools}
+\usepackage{lscape}
 \usepackage[toc,page]{appendix}
-\usepackage[ocgcolorlinks]{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue, 
-    filecolor=magenta,      
-    urlcolor=cyan,
-  }
+%\usepackage[ocgcolorlinks]{hyperref}
+%\hypersetup{
+%    colorlinks=true,
+%    linkcolor=black, 
+%    filecolor=magenta,      
+%    urlcolor=cyan,
+%  }
 
 %Tikz packages.
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{positioning}
 \usetikzlibrary{bayesnet}
-
-%Set header and footer.
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[LE]{\slshape \rightmark} %section
-\fancyhead[RE]{\thepage}
-\fancyhead[RO]{\slshape \leftmark} % chapter
-\fancyhead[LO]{\thepage}
-\setlength{\textfloatsep}{1cm plus 0.5cm minus 0.5cm}
-\setlength{\intextsep}{1cm plus 0.5cm minus 0.5cm}
-\setlength{\floatsep}{1cm plus 0.5cm minus 0.5cm}
 
 %Set double spacing.
 \doublespacing
@@ -73,8 +62,8 @@
 \input{pre_chapters/notation}
 
 \tableofcontents 
-\listoffigures
-\listoftables
+%\listoffigures
+%\listoftables
 \chapter{Introduction}
 \input{chapters/introduction}
 
