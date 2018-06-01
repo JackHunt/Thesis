@@ -65,14 +65,14 @@ and \textit{Pose Update}. Applications of the presented system however are limit
 those that require the reconstruction of static scenes; dynamic scenes are not supported 
 by \textit{KinectFusion}.
 
-Further optimisations were made in 2013 by \textit{Nei{\ss}ner at al} to the \textit{KinectFusion} 
-pipeline proposed by \textit{Newcombe et al}. The authors introduce a spatially hashed TSDF data 
-structure, in which the TSDF is split in to hashed Voxel Blocks allowing for very fast Voxel 
-lookups. The presented approach yields low space and time complexity for such operations, vastly 
-increasing the potential for real time, large scale use. Additionally, a streaming system is 
-introduced to dynamically handle data transmission between the CPU and GPU, allowing for the 
-reconstruction of scenes that may exceed the GRAM bounds of commodity GPU's. The proposed 
-system is capable of running at $\approx46Hz$ on an NVIDIA Titan GPU.
+Further optimisations were made in 2013 by \textit{Nei{\ss}ner at al} \cite{NieBner2013} to the 
+\textit{KinectFusion} pipeline proposed by \textit{Newcombe et al}. The authors introduce a 
+spatially hashed TSDF data structure, in which the TSDF is split in to hashed Voxel Blocks 
+allowing for very fast Voxel lookups. The presented approach yields low space and time complexity 
+for such operations, vastly increasing the potential for real time, large scale use. Additionally, 
+a streaming system is introduced to dynamically handle data transmission between the CPU and GPU, 
+allowing for the reconstruction of scenes that may exceed the GRAM bounds of commodity GPU's. The 
+proposed system is capable of running at $\approx46Hz$ on an NVIDIA Titan GPU.
 
 In the same year, \textit{Thomas et al} \cite{Thomas2013} introduced an alternative scene 
 representation, based on the notion that a scene may be represented as a set of Planar 
@@ -113,39 +113,41 @@ which the planar regions are detected and integrated, filling holes in the recon
 The authors utilise an ICP algorithm to register the vertex maps of the RGBD observations and the 
 reconstructed model. Additionally, relocalisation is achieved by the use of Fern Encoding \cite{FERN}. 
 
-Prisacariu et.al \cite{Prisacariu2014} Followed up by tech report \cite{Kahler2015}
-\begin{itemize}
-	\item Open source implementation of Voxel Hashing.
-	\item A number of optimisations to the data structure(allocation \& integration) and raycaster.
-	\item IMU data to supplement camera observations for tracking.
-	\item 47Hz NVIDIA Shield tablet, 910Hz Titan X.
-\end{itemize}
+\textit{Prisacariu et al} \cite{Prisacariu2014, Kahler2015} in 2014 followed up the optimisations 
+to the \textit{KinectFusion} pipeline proposed by \textit{Nei{\ss}ner et al} \cite{NieBner2013}. 
+The authors presented in addition to the original publication, a Technical Report and an Open 
+Source implementation. The proposed further improvements to those of \textit{Nei{\ss}ner et al} 
+\cite{NieBner2013} include a number of low level optimisations to the core Hashed TSDF data 
+structure, it's allocation and update(integration of observation points) and the rendering 
+phase of the pipeline. In addition, the authors demonstrate that pose estimation quality may 
+be greatly improved by the use of commodity IMU(Inertial Motion Unit) devices, commonly found 
+on mobile phones and tablet computers. \textit{Prisacariu et al} report runtimes of 
+$\approx47Hz$ on an NVIDIA Shield Tablet and $\approx910Hz$ with a commodity NVIDIA Titan X GPU.
 
-Whelan et.al \cite{Whelan2015}
-\begin{itemize}
-	\item Like KF but large scale(hundreds of meters), achieved using GPU cyclic buffers.
-	\item Geometric and photometric camera pose constraints.
-	\item Map updated by frame recognition, as-rigid-as-possible. %Reference as-rigid-as-possible
-	\item Pose graph based loop closure.
-\end{itemize}
+\textit{Whelan et al} \cite{Whelan2015} in 2015 proposed another \textit{KinectFusion} 
+\cite{Newcombe2011} like pipeline intended to enable reconstruction of large scale scenes, 
+acheiving reconstruction over hundreds of metres. The approach taken by the authors to enable 
+such large scale reconstructions is centered around the use of a GPU Cyclic Buffer. For pose 
+estimation, the authors impose both geometric and photometric constraints on the camera pose. 
+Additionally, the proposed approach performs map updates in an as-rigid-as-possible \cite{ARAP} 
+manner, combining frame recognition such that on a recognition event, a map update is performed.
+The proposed pipeline provides loop closure capabilites by utilising Pose Graph Optimisation 
+\cite{PGO}.
 
-Zhou et.al. \cite{Zhou2015}
-\begin{itemize}
-	\item Uses contour cues to improve camera tracking.
-	\item Contour cues extracted from noisy and incomplete depth images.
-	\item Correspondence constraints using scene geometry enforced on pose estimation.
-	\item Based on KF pipeline.
-	\item Depth image inpainting used before contour extraction.
-\end{itemize}
+\textit{Zhou et al} \cite{Zhou2015} also in 2015 proposed another variant of the 
+\textit{KinectFusion} \cite{Newcombe2011} pipeline proposed by \textit{Newcombe et al}. 
+The authors present improvements on the pose estimation phase of the pipeline, utilising 
+contour cues to aid association and enforcing correspondence constraints on the estimated 
+pose, w.r.t scene geometry. Central to the presented approach is the depth image preprocessing 
+steps of inpainting regions of the depth image for which there are no depth measurements, 
+followed by the aforementioned contour extraction stage.
 
-%TO-DO: fix name.
-Kahler et.al \cite{Kahler2016} 
-\begin{itemize}
-	\item Based on KF pipeline and InfiniTAM.
-	\item Online submap alignment algorithm for drift correction.
-	\item Inter-submap corrections based on graph optimisation.
-	\item Loop closure detected using fern conservatories. %cite glocker
-\end{itemize}
+The optimised pipeline proposed in 2014 by \textit{Prisacariu et al} was in 2016 improved with 
+the addition of loop closure handling by \textit{Kahler et al} \cite{Kahler2016}; \textit{Kahler} 
+being one of the authors of the original 2014 contribution. Drift correction is acheived by the 
+use of a multiple scene representation, with online alignment being performed periodically 
+between the scenes. Corrections between the scenes are made via the use of Pose Graph Optimisation. 
+Loop closures are detected by the use of Fern Conservatories \cite{GLOCKER}.
 
 %% Semantic SLAM.
 \section{Semantic SLAM}
