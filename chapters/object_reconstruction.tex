@@ -93,7 +93,8 @@ Figure \ref{fig:probobj_pipeline_diagram}.
   \label{fig:probobj_pipeline_diagram}
   \centering
   \includegraphics[width=\linewidth]{figures/object_recon/pipeline.pdf}
-  \caption{The pipeline of the proposed Object Reconstruction approach.}
+  \caption[Probabilistic Object Reconstruction Pipeline]
+  {The pipeline of the proposed Object Reconstruction approach.}
 \end{figure}
 
 \section{Probabilistic Formulation of Object Reconstruction}
@@ -170,7 +171,8 @@ Graphical Model of Figure \ref{fig:pgm}.
       \edge {u} {phi}
     \end{tikzpicture}
   }
-  \caption{Probabilistic Graphical Model representing the full Joint
+  \caption[Probabilistic Object Reconstruction Formulation I]
+  {Probabilistic Graphical Model representing the full Joint
     Distribution over the shape $\mathbf{\Phi}$ of the object of interest.}
 \end{figure}
 
@@ -223,7 +225,8 @@ be removed as shown in Figure \ref{fig:probobj_pgm2}.
       \edge {u} {phi}
     \end{tikzpicture}
   }
-  \caption{Probabilistic Graphical Model representing the simplified Joint
+  \caption[Probabilistic Object Reconstruction Formulation II]
+  {Probabilistic Graphical Model representing the simplified Joint
     Distribution over the shape $\mathbf{\Phi}$ of the object of interest.}
 \end{figure}
 
@@ -709,7 +712,8 @@ in Figure \ref{fig:probobj_crf}
       \end{scope}
     \end{tikzpicture}
   }
-  \caption{The 3D CRF model over Voxel space.}
+  \caption[3D CRF over Voxels]
+  {The 3D CRF model over Voxel space.}
 \end{figure}
 
 The following Energy Function consists of the Appearance Posterior Probabilities
@@ -756,7 +760,8 @@ evaluation of Reconstruction quality is given.
     \includegraphics[width=.6\linewidth]{figures/object_recon/strips/rock.png} \\ 
     (b)\\
   \end{tabular}
-  \caption{(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
+  \caption[Probabilistic Object Reconstruction Qualitative Results I]
+  {(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
   from RGBD observations on the Museum Rock sequence. (b) The proposed system reconstructing 
   the same object from observations of the Museum Rock sequence.}
 \end{figure}
@@ -776,7 +781,8 @@ the object of interest, contary to the approach outlined in this chapter.
     \includegraphics[width=.6\linewidth]{figures/object_recon/strips/dino.png} \\ 
     (b) \\
   \end{tabular}
-  \caption{(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
+  \caption[Probabilistic Object Reconstruction Qualitative Results II]
+  {(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
   from RGBD observations on the Museum Dinosaur Head sequence. (b) The proposed system 
   reconstructing same the object from observations of the Museum Dinosaur Head sequence.}
 \end{figure}
@@ -815,7 +821,8 @@ for tracking, versus utilising only that of a single, potentially small object.
     \includegraphics[width=.2\linewidth]{figures/object_recon/comp/itm/dino00.png} \\
     (e) & (f) & (g) & (h) \\
   \end{tabular}
-  \caption{(a, b, c, d) Base reconstructions extracted from the output of the 
+  \caption[Probabilistic Object Reconstruction Qualitative Results III]
+  {(a, b, c, d) Base reconstructions extracted from the output of the 
   standard KinectFusion pipeline. (e, f, g, h) Reconstructions yielded by 
   the proposed approach.}
 \end{figure}
@@ -836,7 +843,8 @@ the top-down views presented in Figure \ref{fig:probobj_comp_itm}.
     \includegraphics[width=.2\linewidth]{figures/object_recon/top/rock_top00.png} \\
     (a) & (b) & (c) & (d) \\
 	\end{tabular}
-	\caption{
+  \caption[Probabilistic Object Reconstruction Qualitative Results IV]
+  {
     Closed reconstructions of the (a) Teddy, (b) Dinosaur Head, 
     (c) Chair and (d) Rock sequences.
 	}
@@ -860,7 +868,8 @@ of consistency constraints.
     \includegraphics[width=.2\linewidth]{figures/object_recon/gappy/multi_scene01.png}\\
     (c) & (d)\\
 	\end{tabular}
-	\caption{
+  \caption[Probabilistic Object Reconstruction Qualitative Results V]
+  {
     Teddy reconstruction with InfiniTAM (a, b) versus the system proposed in this 
     work (c, d).
 	}
@@ -900,7 +909,8 @@ evaluation presented in Section \ref{sec:moseg_quantitative}, the
     \textsf{freiburg2\_metallic\_sphere2}   & DNR & DNR \\
     \textsf{freiburg3\_large\_cabinet}   & DNR & DNR
   \end{tabular}
-  \caption{ATE (Absolute Trajectory Error) results achieved by the proposed approach versus 
+  \caption[Probabilistic Object Reconstruction ATE]
+  {ATE (Absolute Trajectory Error) results achieved by the proposed approach versus 
   InfiniTAM with object segmentation.
   }
 \end{table}
@@ -924,7 +934,8 @@ in Figure \ref{fig:probobj_traj}
   \includegraphics[width=.5\linewidth]{figures/object_recon/plots/traj/ted_traj.eps} \\
   (a) & (b)
   \end{tabular}
-  \caption{Trajectory plots for the \textit{freiburg3\_cabinet} (a) 
+  \caption[Probabilistic Object Reconstruction Trajectory Plots]
+  {Trajectory plots for the \textit{freiburg3\_cabinet} (a) 
   and \textit{\textsf{freiburg3\_teddy}} (b) sequences.}
 \end{figure}
 
@@ -956,7 +967,8 @@ The resultant quantitative comparisons may be found in Table \ref{tbl:probobj_ha
     \textsf{Chair} & 0 & 0.053441 & 0.012349 & 0.016422 \\
     \textsf{Dinosaur Head} & 0 & 0.035252 & 0.007919 & 0.010676
   \end{tabular}
-  \caption{Minimum, Maximum, Mean and RMSE distances between the reconstructions yielded by 
+  \caption[Probabilistic Object Reconstruction Hausdorff Distance]
+  {Minimum, Maximum, Mean and RMSE distances between the reconstructions yielded by 
   the proposed system and the baseline.}
 \end{table}
 
@@ -991,7 +1003,8 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
       & (e) & \\
     \end{tabular}
   \end{tabular}
-  \caption{Renderings of the sequences evaluated in Table \ref{tbl:probobj_hauss} textured 
+  \caption[Probabilistic Object Reconstruction Hausdorff Distance]
+  {Renderings of the sequences evaluated in Table \ref{tbl:probobj_hauss} textured 
   on Hausdorff Distance (a, b, c, d). The minimum and maximum values given in Table 
   \ref{tbl:probobj_hauss} are mapped to the colour range of (e).}
 \end{figure}
