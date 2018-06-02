@@ -278,24 +278,22 @@ utilises an explicit, flat data structure for scene representation, it does not 
 it's highly optimised volumetric counterparts, such as that proposed by \textit{Prisacariu et al} 
 \cite{Prisacariu2011}. As such, scalability is limited.
 
-Perera et.al. \cite{Perera2015}
-\begin{itemize}
-	\item Motion segmentation in TSDF volumes,
-	\item Based on MAP inference over a CRF on the TSDF.
-	\item Can handle minor and major displacements.
-	\item Motion labels and parameters found w.r.t. live frame and TSDF.
-	\item $256^{3}$ voxel grid does not run real time. Scalability issues.
-\end{itemize}
+In 2015, \textit{Perera et al} \cite{Perera2015} presented an approach to Motion Segmentation in 
+TSDF Volumes. Similar to it's planar counterparts presented by \textit{Sun et al} \cite{Sun2012} 
+and \textit{Unger et al} \cite{Unger2012}, the authors utilise a Markov Network over the domain 
+of interest. Motion Segmentation is posed as a MAP(Maximum a Posteriori) inference problem over 
+a CRF(Conditional Random Field) defined over TSDF Voxels. The proposed system is able to segment 
+objects undergoing both minor and major displacements, with motion labels and parameters found 
+w.r.t. the live frame and the TSDF. However, the proposed approach is limited only to very small 
+scenes, with very long runtimes reported for TSDF Volumes of dimensionality $256^{3}$.
 
-Newcombe et.al. \cite{Newcombe2015}
-\begin{itemize}
-	\item Handles non-rigidly deforming scenes.
-	\item Built on KinectFusion pipeline.
-	\item 6DoF motion field estimated that warps model to live frame.
-	\item Warp field used to fuse new measurements in to canonical model.
-	\item Warp field solved for by Dual Quaternion Blending. \cite{Kavan2006}
-	\item Limitations, such as lack of robustness to open/closed topology changes(hands). Authors highlight scalability issues.
-\end{itemize}
+\textit{Newcombe et al} \cite{Newcombe2015} again in 2015, introduced a Dynamic Dense SLAM 
+system based on the earlier \textit{KinectFusion} \cite{Newcombe2015} pipeline, with the addition 
+of the ability to handle non-rigidly deforming scenes. Nonrigid deformations are handled by the 
+estimation of a 6DoF motion field that warps model represented by the TSDF to live frame. The 
+solving of the warp field is acheived by the use of Dual Quaternion blending \cite{Kavan2006}. 
+Though promising results are presented, there are limitations, such as lack of robustness to 
+open/closed topology changes(hands). In addition, the authors highlight scalability issues.
 
 %% Object Reconstruction.
 \section{Object Reconstruction}
