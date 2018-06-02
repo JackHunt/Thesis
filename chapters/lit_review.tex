@@ -250,33 +250,33 @@ Variational formulation for motion estimation and segmentation with occlusion ha
 the contributions of \textit{Sun et al} \cite{Sun2012}, the authors utilise a parametric labelling 
 of the flow field for each object undergoing motion, with labels encoded with an MRF Potts model.
 However, contrary to \textit{Sun et al} \cite{Sun2012} who utilise a Max Flow algorithm over the 
-MRF models, \textit{Unger et al} solver for flow and labels within a Primal-Dual based optimisation 
+MRF models, \textit{Unger et al} solved for flow and labels within a Primal-Dual based optimisation 
 framework.
 
-Herbst et.al. \cite{Herbst2013}
-\begin{itemize}
-	\item Extension of Optical Flow to 3D scenes.
-	\item Scene flow computed from RGB-D data, i.e. Kinect.
-	\item Approach based on Brox et.al. \cite{Brox2004}
-	\item Variational formulation and optimisation framework.
-\end{itemize}
+In the same year, \textit{Herbst et al} \cite{Herbst2013} proposed an extension to Optical 
+Flow to 3D scenes; the proposed system solves for Scene Flow based on RGBD data. The proposed 
+approach is similar to that of \textit{Brox et al} \cite{Brox2004}, with Scene Flow being 
+formulated as a Variational Optimisation problem. The presented approach is a generalisation 
+of the well established Variational Optical Flow algorithm of \textit{Brox et al} \cite{Brox2004}.
 
-Stuckler et.al. \cite{Stueckler2013}
-\begin{itemize}
-	\item EM framework to segment rigid body motion from RGBD data.
-	\item Robust to simultaneous fg and bg motion by treating both with parity.
-	\item Sites of motion as well as motion params are posed as latent variables.
-	\item No reconstruction, but feasibly could be extended.
-\end{itemize}
+In the following year, \textit{St{\"u}ckler et al} \cite{Stueckler2013} presented a framework 
+for the segmentation of Rigid Body Motion from RGBD data. The authors represent regions undergoing 
+Rigid Body Motion and their associated motion parameters as latent variables, with the resultant 
+segmentations and parameters being solve for within an EM(Expectation Maximisation) framework. 
+The presented approach is robust to both simultaneous foreground and background motion by giving 
+each parity.
 
-Keller et.al. \cite{Keller2013}
-\begin{itemize}
-	\item Dense SLAM system capable of handling scene dynamics.
-	\item Works with RGB-D data.
-	\item Uses ICP outliers to determine dynamic scene components followed by flood fill.
-	\item Surfel representation \cite{Pfister2000}
-	\item Flat data structure. Does not have advantages of Voxel Hashing.
-\end{itemize}
+Though the motion estimation and segmentation approaches reviewed up to this point have not 
+been within the SLAM framework, \textit{Keller et al} \cite{Keller2013} in 2013 introduced an 
+RGBD based Dense SLAM system capable of performing Motion Segmentation. Unlike the \textit{KinectFusion} 
+\cite{Newcombe2011} inspired Dense SLAM pipelines, the presented approach does not utilise an 
+implicit, volumetric representation. Rather, the authors opt for an explicit Surfel \cite{Pfister2000} 
+based representation. Whilst performing live reconstruction, the proposed system detects and uses ICP 
+outliers to determine dynamic scene components. With the information gained from detecting ICP outliers, 
+the proposed system then propagates thses detections by a flood fill operation. As the proposed approach 
+utilises an explicit, flat data structure for scene representation, it does not have advantages of 
+it's highly optimised volumetric counterparts, such as that proposed by \textit{Prisacariu et al} 
+\cite{Prisacariu2011}. As such, scalability is limited.
 
 Perera et.al. \cite{Perera2015}
 \begin{itemize}
