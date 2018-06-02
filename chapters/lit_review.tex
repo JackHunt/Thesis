@@ -226,43 +226,32 @@ and Optical Flow. As such, the general focus of the work surveyed in this sectio
 detection, estimation and segmentation of motion in dynamic scenes.
 
 \textit{Tsap et al} \cite{Tsap2000} in 2000 presented an Algorithm for nonrigid motion 
-tracking.
-\begin{itemize}
-	\item Algorithm for nonrigid motion tracking.
-	\item Solve for dense motion vector fields between 3D objects via Finite Element Methods. %Cite FEM
-	\item Iteratively analyses difference between actual and predicted behaviour.
-	\item Iterative descent to find optimal parameters of nonlinear FEM.
-	\item Tracking improved by using point correspondences.
-	\item Not scene based.
-\end{itemize}
+tracking of objects. The presented approach solves for dense motion Vector Fields between 
+3D objects by modelling motion with Finite Elements. The proposed system analyses differences 
+between actual and predicted behaviour, using iterative descent optimisation to find a set of 
+optimal parameters for the nonlinear FEM(Finite Element Model). Additionally, pose estimation 
+is improved by using point correspondences.
 
-Chen et.al \cite{Chen2011}
-\begin{itemize}
-	\item Nonrigid motion tracking applied to human body.
-	\item Surface mesh extracted from multi view video and skinned.
-	\item Hierarchical(w.r.t articulation) Weighted ICP is then applied.
-	\item ICP points weighted by Approximate Nearest Neighbour %cite
-	\item Prior human skeleton fitted.
-	\item Not scene based.
-\end{itemize}
+\textit{Chen et al} \cite{Chen2011} in 2011 introduced a system to perform nonrigid motion 
+tracking of the human body. The proposed system extracts and skins a surface mesh from 
+multi-view video, after being fitted with a skeleton prior. To solve for nonrigid, articulated 
+motion, the authors utilise a Weighted Hierarchical ICP algorithm, where weightings are obtained 
+by the Approximate Nearest Neighbour \cite{ANN} algorithm.
 
-Sun et.al. \cite{Sun2012}
-\begin{itemize}
-	\item Layered optical flow. Layered over detected moving objects.
-	\item Depth ordered MRF's and Max Flow used for layering.%cite MF
-	\item Number of layers automatically determined.
-	\item Max Flow used to solve for discretised flow field cost function.
-	\item Motion tracking only, no reconstruction.
-\end{itemize}
+In the following year, \textit{Sun et al} \cite{Sun2012} proposed an approach to motion estimation 
+for objects in images. The proposed approach performs Optical Flow in a layered manner, where each 
+layer pertains to an object undergoing Rigid Body Motion, with the number of layers being determined 
+automatically. The authors utilise Max Flow \cite{MAXFLOW} to solve as discretised flow field cost 
+function for each layer, where object layers are a set of depth ordered MRF's(Markov Random Field).
 
-Unger et.al. \cite{Unger2012}
-\begin{itemize}
-	\item Variational formulation for motion estimation and segmentation with occlusion handling.
-	\item Parametric labelling of flow field for each object undergoing motion.
-	\item Labels encoded with an MRF Potts model as with Sun. %cite potts model.
-	\item Flow and labels solved for via Primal-Dual optimisation framework. %cite primal dual
-	\item Again, motion only. No reconstruction.
-\end{itemize}
+\textit{Unger et al} \cite{Unger2012} again in 2012, proposed an alternative system for the 
+estimation of motion of objects undergoing Rigid Body Motion in images. The authors present a 
+Variational formulation for motion estimation and segmentation with occlusion handling. As with 
+the contributions of \textit{Sun et al} \cite{Sun2012}, the authors utilise a parametric labelling 
+of the flow field for each object undergoing motion, with labels encoded with an MRF Potts model.
+However, contrary to \textit{Sun et al} \cite{Sun2012} who utilise a Max Flow algorithm over the 
+MRF models, \textit{Unger et al} solver for flow and labels within a Primal-Dual based optimisation 
+framework.
 
 Herbst et.al. \cite{Herbst2013}
 \begin{itemize}
