@@ -298,60 +298,61 @@ open/closed topology changes(hands). In addition, the authors highlight scalabil
 %% Object Reconstruction.
 \section{Object Reconstruction}
 \label{sec:lit_review_obj_recon}
-Curless and Levoy \cite{Curless1996}
-\begin{itemize}
-	\item Object reconstruction from different viewpoints but statically.
-	\item No pose tracking in the TAM sense.
-\end{itemize}
+It is evident from Sections \ref{sec:lit_review_tam}, \ref{sec:lit_review_dynamic} and 
+\ref{sec:lit_review_semantic} that much progess has been made in the fields of TAM/SLAM, 
+Dynamic SLAM and Semantic SLAM. However, Object Reconstruction remains a very open and active 
+field of research. This Section provides a review of pertinent literature on the task of 
+reconstructing consistent models of objects, rather than full scale scenes. The problem of 
+interest in this section, though related to SLAM, incurs additional complications with regards 
+to pose estimation.
 
-Kolev et.al. \cite{Kolev2006}
-\begin{itemize}
-	\item Probabilistic 3D segmentation.
-	\item Rather than direct reconstruction like Curless, the most probable image w.r.t. images is inferred.
-	\item Level set representation used.
-	\item Level set has analogous probability volume(pF,pB)
-	\item Level set is evolved via a variational framework over probability volume.
-	\item Only evaluated on synthetic data.
-	\item Designed for objects with distinct appearance and homogeneous background, though some tolerance to noise is claimed.
-\end{itemize}
+\textit{Curless \& Levoy} \cite{Curless1996} as introduced in Section \ref{sec:lit_review_tam} 
+presented a method of statically reconstructing shapes from range images taken from different 
+viewpoints. However, the presented approach predates many of the advancements that have allowed 
+for simultaneous Tracking and Mapping.
 
-Weise et.al. \cite{Weise2009}
-\begin{itemize}
-	\item 3D in hand scanning system.
-	\item Point cloud representation, Surfel rendering. \cite{Pfister2000}
-	\item Objects rotated in front of a sensor, suggests limited tracking ability.
-	\item Drift offset in as-rigid-as-possible manner. %cite as-rigid-as-possible
-	\item ICP registration. Topology graph used for deformation.
-	\item Uses range scanner. No indication of RGBD capability. May need high quality equipment.
-\end{itemize}
+\textit{Kolev et al} \cite{Kolev2006} in 2006 presented a probabilistic approach to 3D shape 
+segmentation and recovery. Rather than the direct reconstruction approach taken by 
+\textit{Curless \& Levoy} \cite{Curless1996}, the authors take the approach of inferring the most 
+probable shape w.r.t. the observed image sequences. The shape to be inferred is encoded as a Zero 
+Level Set, extracted from a Level Set representation(such as an SDF). The Level Set of the shape is 
+evolved over time within a Variational framework, w.r.t. a volume of segmentation probabilities(foregound 
+vs background). However, the proposed approach does not have an additional pose estimation phase and has 
+only been evaluated on synthetic data of very polarised appearance.
 
-Ren et.al. \cite{Ren2013}
-\begin{itemize}
-	\item Probabilistic framework for tracking and reconstruction of objects.
-	\item Initialised with a shape prior level set, which is then evolved as per observations.
-	\item Works with RGBD data.
-	\item Pixel-Wise-Posteriors used for segmentation. Prob volume like Kolev. \cite{Bibby2008}
-	\item Experiments show limitations.
-\end{itemize}
+\textit{Weise et al} \cite{Weise2009} in 2009 proposed an approach to the in hand scanning of 3D objects. 
+The authors utilise an explicit Point Cloud representation of shape, rendered as Surfels \cite{Pfister2000}. 
+Objects are rotated in front of a sensor with poses recovered by the use of an ICP like algorithm. During 
+pose estimation, a Topology graph is built which is used to offset drift in estimated poses in an 
+as-rigis-as-possible \cite{ARAP} manner. However, the specification of object rotation in front of a 
+sensor is suggestive of limited tracking ability. In addition, the type of sensor is not specified, 
+as such it is not clear what quality of sensing equipment is required to yield high quality results.
 
-Dou et.al. \cite{Dou2015}
-\begin{itemize}
-	\item Reconstruction of deformable objects with a Kinect sensor.
-	\item Loop closures automatically detected, distributing drift error over the loop.
-	\item Latent shape and nonrigid deformation solved for with bundle adjustment.
-	\item Surface represented as a triangular mesh.
-	\item Experiments show high quality reconstructions, but with overnight run times.
-\end{itemize}
+In 2013, \textit{Ren et al} \cite{Ren2013} poposed an approach to the tracking and reconstruction of 
+objects. Like \textit{Kolev et al} \cite{Kolev2006}, the authors utilise a probabilistic formulation 
+based on the evolution of a Level Set representation. Initialised with a Shape Prior Level Set, the 
+proposed approach evolves the Shape Prior w.r.t. observations. Crucially, unlike the approach of 
+\textit{Kolev et al} \cite{Kolev2006}, the proposed approach simultaneously optimises for object pose.
+The proposed system works with RGBD data and segments the object of interest using Pixel Wise Posteriors 
+\cite{Bibby2008}. It is noteworthy however that there are performance limitations of the proposed approach 
+and experiments show success for a limited set of target shapes.
 
-Gupta et.al. \cite{Gupta2016}
-\begin{itemize}
-	\item 3D reconstruction and segmentation of objects with an RGBD sensor.
-	\item Implicit representation, i.e. volumetric. Fusion with Softmax rather than weighted average like KF.
-	\item Each voxel gets a label{obj, bg, empty}. Segmentation with graph cut and alpha expansion.
-	\item Keyframe based loop closure.
-	\item Pose estimation via photometric loss. Authors report drift to be a problem.
-	\item Authors report difficulty in building a granular reconstruction.
-\end{itemize}
+Later in 2015, \textit{Dou et al} \cite{Dou2015} present a system for the reconstruction of deformable 
+objects using a Microsoft Kinect RGBD sensor. The proposed approach solves for a latent target shape 
+and shape deformations by utlising Bundle Adjustment \cite{BA}. The authors report that loop closures 
+are automatically detected, with errors incurred by drift being distributed backwards from the detection 
+point. The resultant shape surface is extracted as a triangular mesh. The presented experiments demonstrate 
+high quality reconstruction results, but with overnight run times and so is not suitable for real time use.
+
+In the following year, \textit{Gupta et al} \cite{Gupta2016} proposed a system for the reconstruction and 
+segmentation of 3D objects from data obtained from an RGBD sensor. The reconstructed object is represented 
+implicitly within an SDF volume, but notably observations are integrated using the Softmax function rather 
+than weighted means as with \textit{KinectFusion} \cite{Newcombe2011}. Each Voxel in the volume is 
+assigned a label pertaining to it's membership of the object set, with objects refined utilising Graph 
+Cuts and Alpha Expansions. The proposed approach utilises a photometric loss to optimise for object pose, 
+with keyframe based loop closure detection. However, the authors report difficulties in building 
+sufficiently granular reconstructions. In addition, the authors report drift in pose estimation to be 
+problematic.
 
 %% Object Shape Prediction.
 \section{Shape and Pose Prediction}
