@@ -357,21 +357,25 @@ problematic.
 %% Object Shape Prediction.
 \section{Shape and Pose Prediction}
 \label{sec:lit_review_prediction}
+Section \ref{sec:lit_review_obj_recon} provided a review of pertinent Object Reconstruction research, 
+which demonstrates that although much progress has been made since the early work of \textit{Curless \& 
+Levoy} \cite{Curless1996}, many open research problems remain. This section provides a survey of research 
+into an alternative, inference driven approach to obtaining three dimensional models of observed 
+objects, whereby rather than direct optimisation and integration being used for pose estimation and 
+model building, the process is posed as a Probabilistic Inference procedure.
 
-Prisacariu et.al. \cite{Prisacariu2011}
-\begin{itemize}
-	\item Shape prediction, segmentation(optimisation based) and pose optimisation.
-	\item Hierarchical(early deep?) GPLVM's for Shape Latent Space Embedding. \cite{Lawrence2005}
-	\item Unified energy function.
-	\item Candidate shapes generated as one off regression in latent space.
-\end{itemize}
+\textit{Prisacariu et al} \cite{Prisacariu2011} in 2011 introduced an approach to shape prediction, 
+segmentation and pose estimation. Shape is predicted from a Hierarchy of generative Gaussian Process 
+Latent Space Models \cite{Lawrence2005}, encoding a Latent Space embedding of common shape properties. 
+Candidate shapes are generated as a one off regression in latent space, with a unified Energy Function 
+optimised w.r.t. the shape latent space point and the object pose parameters.
 
-Dame et.al. \cite{Dame2013}
-\begin{itemize}
-	\item Dense object reconstruction from monocular image source.
-	\item Shape priors used to aid reconstruction and segmentation, GPLVM.
-	\item Depth maps optimised for with Primal Dual with TV. Poses are known from PTAM.
-\end{itemize}
+In 2013, \textit{Dame et al} \cite{Dame2013} proposed an approach to dense object reconstruction from a 
+monocular image source. Like the approach of \textit{Prisacariu et al} \cite{Prisacariu2011}, the authors 
+utilise Gaussian Process Latent Variable Models as a Shape Prior to aid reconstruction and segmentation 
+of the object of interest. Depth maps for the observed monocular sequence are optimised for within a 
+Primal Dual framework, utilising TV(Total Variation) regularisation. However, there is no pose estimation 
+ability in the formulation, as poses are known a priori from PTAM \cite{PTAM}.
 
 Toshev et.al. \cite{Toshev2014}
 \begin{itemize}
