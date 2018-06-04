@@ -377,48 +377,35 @@ of the object of interest. Depth maps for the observed monocular sequence are op
 Primal Dual framework, utilising TV(Total Variation) regularisation. However, there is no pose estimation 
 ability in the formulation, as poses are known a priori from PTAM \cite{PTAM}.
 
-Toshev et.al. \cite{Toshev2014}
-\begin{itemize}
-	\item Human pose estimation(articulated estimation) with Deep Neural Networks.
-	\item Cascaded DNN regressors.
-	\item No reconstruction, pose estimation only.
-\end{itemize}
+In the following year, \textit{Toshev et al} \cite{Toshev2014} proposed an approach to pose estimation 
+utilising cascaded DNN(Deep Neural Network) Regressors. The authors utilise the DNN framework for the 
+complex task of articulated human pose estimation.
 
-Wohlhart et.al. \cite{Wohlhart2015}
-\begin{itemize}
-	\item 3D object detection and pose recovery.
-	\item CNN descriptors used with Nearest Neighbour Cost for detection and rough pose.
-	\item Problem posed as KNN search in Descriptor Space.
-	\item Object and Pose are coupled in training(i.e. two similar cars with different poses have distant descriptors)
-\end{itemize}
+\textit{Wohlhart et al} \cite{Wohlhart2015} in 2015 presented an approach to the 3D detection and pose 
+recovery of objects. The proposed approach, utilises features extracted from a CNN(Convolutional Neural 
+Network) within a Nearest Neighbour cost function for object detection and recovery of rough pose. As such, 
+the proposed approach poses the problem as a KNN(K-Nearest Neighbour) search in descriptor space. Object 
+and Pose are coupled in training(i.e. two similar cars with different poses will have distant descriptors).
 
-Chang et.al. \cite{Chang2015}
-\begin{itemize}
-	\item Large scale dataset of 3D shapes.
-	\item Synthetic data with no "source" sequence, i.e. no depth.
-	\item Can be used to learn rich latent space embeddings.
-\end{itemize}
+\textit{Chang et al} \cite{Chang2015} also in 2015 presented a large scale dataset of 3D shapes. The 
+dataset can be used for a variety of 3D vison tasks due to the potential of modern Machine Learning 
+techniques to learn rich latent space embeddings, as the approaches of \textit{Prisacariu et al} 
+\cite{Prisacariu2011} and \textit{Dame et al} \cite{Dame2013} do. However, the shapes in the dataset 
+are synthetic and as such have no depth sequences. Though, such sequences may be artificially rendered.
 
-Rock et.al. \cite{Rock2015}
-\begin{itemize}
-	\item Recovers a complete 3D model from a depth image of an object.
-	\item Input depth image matched to database of objects via a Random Forest.
-	\item Matched shape coarsely matched to depth map, then deformed at a higher granularity.
-	\item Deformation manually optimised for.
-\end{itemize}
+Also proposed in 2015 by \textit{Rock et al} \cite{Rock2015} is an approach to the recovery of complete 
+3D models from a single depth image of an object of interest. The input depth image is regressed into a 
+database of a priori known objects by the use of a Random Forest. The matched shapes are coarsly matched 
+to the input depth map, then later deformed at a higher granularity by a separate optimisation process.
 
-Zhou et.al. \cite{Zhou2017_2}
-\begin{itemize}
-	\item Object detection from 3D Point Clouds.
-	\item End-to-end trainable Convolutional, Region Proposal Network.
-	\item Trained on KITTI LIDAR dataset. \cite{Geiger2013}
-	\item Voxelisation of point cloud used for region detections.
-\end{itemize}
+In 2017, \textit{Zhou et al} \cite{Zhou2017_2} introduced an approach to object detection from 3D Point 
+Clouds. Central to the proposed approach is an end-to-end trainable Convolutional RPN(Region Proposal 
+Network) \cite{RPN}. The authors evaluate the proposed approach on the KITTI LIDAR \cite{Geiger2013} 
+dataset, with input Point Clouds quantized into a Voxel volume prior to training and prediction.
 
-Gwak et.al \cite{Gwak2017}
-\begin{itemize}
-	\item GAN like shape prediction with log-barrier ojective.
-	\item Weakly supervised with sillhouettes and 3D shapes.
-	\item May not work "in the wild"
-\end{itemize}
+\textit{Gwak et al} \cite{Gwak2017}, also in 2017 introduced a GAN(Generalised Adversarial Network) like 
+approach to shape prediction. The proposed network is trained in a weakly supervised manner on 
+silhouettes and 3D shapes with a log-barrier \cite{LB} objective function. However, the appliability 
+to ``real world'' scenarios is questionable, due to the synthetic nature of the data used to train and 
+evaluate the network.
 
