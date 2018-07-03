@@ -151,34 +151,34 @@ Loop closures are detected by the use of Fern Conservatories \cite{GLOCKER}.
 
 %% Semantic SLAM.
 \section{Semantic SLAM}
-Over the years there has been much interest within the Computer Vision research community on 
-the Semantic understanding of our environment. The ability of machines to recognise and extract 
+Over the years there has been much interest within the computer vision research community on 
+the semantic understanding of our environment. The ability of machines to recognise and extract 
 information about their environments and the components of them has wide application potential, 
 ranging from autonomous robotics to augmented reality video games. The application potential 
-of this Semantic Scene Understanding ability is amplified when it is combined with the vast 
-progress that has been made in Dense SLAM. This section shall provide a survey of research 
-that amalgamates the two fields of Semantic Scene Understanding and SLAM.
+of this semantic scene understanding ability is amplified when it is combined with the vast 
+progress that has been made in dense SLAM. This section shall provide a survey of research 
+that amalgamates the two fields of semantic scene understanding and SLAM.
 
 Bengio et.al. \cite{Bengio2013} - representation learning.
 Girshick et.al \cite{Girshick2014} - feature hierarchies.
 
 \label{sec:lit_review_semantic}
-\textit{Civera et al} \cite{Civera2011} in 2011 introduced an approach to Semantic SLAM 
+\textit{Civera et al} \cite{Civera2011} in 2011 introduced an approach to semantic SLAM 
 that utilises image based features to attach semantic meaning to 3D observations. The SLAM 
-system itself is based on Monocular EKF SLAM with semantics added to points via 
-correspondences between SURF image features extracted from the observed RGB frames and 
+system itself is based on Monocular EKF SLAM \cite{EKFSLAM} with semantics added to points via 
+correspondences between SURF\cite{SURF} image features extracted from the observed RGB frames and 
 precomputed object descriptors. Consistency is then enforced by a geometric compatibility 
 measure.
 
-\textit{St{\"u}ckler et al} \cite{Stuckler2012} in 2012 presented a Semantic Dense SLAM 
+\textit{St{\"u}ckler et al} \cite{Stuckler2012} in 2012 presented a semantic dense SLAM 
 pipeline for the object centric integration of RGBD images. Given an RGBD frame, objects 
-are detected using a Random Forest classifier trained on hand crafted features extracted 
-from RGBD images. The proposed approach does not reconstruct an entire scene, rather it 
+are detected using a Random Forest (RF) \cite{RF} classifier trained on hand crafted features 
+extracted from RGBD images. The proposed approach does not reconstruct an entire scene, rather it 
 reconstructs scene components(such as objects) that have been semantically segmented 
 from the current RGBD frame.
 
-\textit{Valentin et al} \cite{Valentin2015} in 2015 proposed a fully integrated Dense SLAM 
-and Semantic Scene Understanding pipeline with interaction being a primary focus. The 
+\textit{Valentin et al} \cite{Valentin2015} in 2015 proposed a fully integrated dense SLAM 
+and semantic scene understanding pipeline with interaction being a primary focus. The 
 proposed pipeline at it's core is based on that of \textit{KinectFusion} \cite{Newcombe2011}, 
 so requires the use of RGBD images and is restricted to the reconstruction of static scenes. 
 Once a scene has been reconstructed, the author's pipeline allows users to interact with 
@@ -186,33 +186,33 @@ objects in the scene to provide training data for Streaming Random Forests\cite{
 which are used to detect and label parts of the rendered Isosurface belonging to a given 
 object class. Segmentations are refined using Variational Bayesian Mean Field Inference 
 \cite{Xing2002} optimised by \cite{Krahenbuhl2011}. The features extracted for this training 
-process are named \textit{Voxel Oriented Patch} features and consist of Surface Normals 
-and CIELab appearance information.
+process are named \textit{Voxel Oriented Patch} features and consist of surface normals 
+and CIELab \cite{CIELAB} appearance information.
 
-\textit{Golodetz et al} \cite{Golodetz2015} in the same year released an Open Source 
+\textit{Golodetz et al} \cite{Golodetz2015} in the same year released an open source 
 implementation of the pipeline proposed by \textit{Valentin et al} \cite{Valentin2015}, 
 utilising the implementation of the \textit{KinectFusion} \cite{Newcombe2011} pipeline 
 provided by \textit{Prisacariu et al} \cite{Prisacariu2014}. The framework proposed by 
 the authors extends that of \textit{Valentin et al} \cite{Valentin2015} greatly, for 
-example by supporting the use of Motion Capture systems and Virtual Reality headsets. 
+example by supporting the use of motion capture systems and virtual reality headsets. 
 In addition, the implementation provided is optimised to allow for real time use.
 
 \textit{Handa et al} \cite{Handa2015}, again in 2015 introduced an alternative, 
-real time Dense Semantic SLAM pipeline. Much like the approaches of \textit{Valentin et al} 
+real time dense semantic SLAM pipeline. Much like the approaches of \textit{Valentin et al} 
 \cite{Valentin2015} and \textit{Golodetz et al} \cite{Golodetz2015}, the proposed system 
 is based on the \textit{KinectFusion} \cite{Newcombe2011} pipeline, with semantic scene 
-understanding performed on the rendered Isosurface. Contrary to previous approaches however, 
+understanding performed on the rendered isosurface. Contrary to previous approaches however, 
 the authors make use of stacked Deep Autoencoders \cite{DAA}, trained on synthetic depth 
 images a priori. As such, the proposed system makes use only of depth cues and may not be 
 adapted to new object classes on an ad-hoc basis.
 
 \textit{Cavallari et al} \cite{Cavallari2016} in the following year presented another 
-Semantic Dense SLAM pipeline built on top of the Dense SLAM system presented by 
+semantic dense SLAM pipeline built on top of the dense SLAM system presented by 
 \textit{Nei{\ss}ner et al} \cite{NieBner2013}. Much like the work of \textit{Handa et al} 
 \cite{Handa2015}, the proposed approach depends on a model pretrained on a set of object 
 classes. Unlike \textit{Handa et al} \cite{Handa2015}, the authors make use of an 
-FCN(Fully Connected Network) \cite{FCN}, taking the PMF output to determine the class 
-to be assigned to an Isosurface region.
+Fully Connected Network (FCN) \cite{FCN}, taking the Probabilituy Mass Function (PMF) output to 
+determine the class to be assigned to an isosurface region.
 
 %% Dynamic SLAM.
 \section{Dynamic SLAM, Motion Segmentation and Optical Flow}
