@@ -5,13 +5,13 @@
 
 \section{Introduction}
 \label{sec:probobj_introduction}
-Dense SLAM (Simultaneous Localisation and Mapping) has proven to be an effective
-paradigm for the reconstruction of scenes of moderate size, with much research
-on the topic driven by the availability of consumer grade depth sensing
-equipment. However, there is a heavy reliance on descriptive geometry in the
-scene when there is a lack of texture. Less descriptive geometry leads to an
-increase in camera tracking error and causes model inconsistencies, especially
-when a loop closure event occurs.
+Dense SLAM has proven to be an effective paradigm for the reconstruction of 
+scenes of moderate size, with much research on the topic driven by the 
+availability of consumer grade depth sensing equipment. However, there is a 
+heavy reliance on descriptive geometry in the scene when there is a lack of 
+texture. Less descriptive geometry leads to an increase in camera tracking 
+error and causes model inconsistencies, especially when a loop closure event 
+occurs.
 
 As object reconstruction can be seen as a smaller scale equivalent of the scene
 based dense reconstruction problem, it too is prone to the tracking drift and
@@ -37,8 +37,8 @@ of the object.
 
 Over time, multiple volumes containing both surface and probabilistic appearance
 information are maintained and manipulated to yield a robust and temporally
-consistent model. Finally, the optimum object shape is optimised for within a
-CRF (Conditional Random Field) framework.
+consistent model. Finally, the optimum object shape is optimised for within a 
+Conditional Random Field (CRF) \cite{CRF} framework.
 
 The proposed system is inspired by\cite{Kolev2006} in that the representation
 used for the shape of the object to be modelled is a volume of probabilities,
@@ -48,44 +48,45 @@ surface or not. In the proposed system this volume of posterior probabilities is
 KinectFusion\cite{Newcombe2011} and InfiniTAM\cite{Prisacariu2014}.
 
 The probabilities that are ``fused'' into the volume are generated from an
-appearance model, initialised prior to reconstruction by a Maximum Likelihood
-procedure over the first frame of the RGB image. There are two appearance
-models, one for the foreground object and one for the background, with the
-foreground object indicated by a bounding box on the first RGB frame. A normal
-distribution is fitted over the colour features of each class, foreground and
-background. During the fusion process, the PDF's of these distributions are
-evaluated on the latest colour observation for a voxel and posterior's are
-computed and updated accordingly in the probability volume. Only those voxels
-with a posterior higher for the foreground are rendered.
+appearance model, initialised prior to reconstruction by a Maximum Likelihood 
+Estimation (MLE) \cite{MLE} procedure over the first frame of the RGB image. 
+There are two appearance models, one for the foreground object and one for the 
+background, with the foreground object indicated by a bounding box on the first 
+RGB frame. A normal distribution is fitted over the colour features of each class, 
+foreground and background. During the fusion process, the PDF's of these 
+distributions are evaluated on the latest colour observation for a voxel and 
+posteriors are computed \& updated accordingly in the probability volume. Only 
+those voxels with a posterior higher for the foreground than the background 
+are rendered.
 
 \section{Related Work}
 \label{sec:probobj_related_work}
 
 \section{Algorithm Overview}
-In the proposed system, the object model is divided into Subvolumes, each
-consisting of a TSDF, colour volume and object Probability Volume. Additionally,
-each has associated with it a Rigid Body Transform that specifies its pose
-relative to the global coordinate frame.
+In the proposed system, the object model is divided into \textit{subvolumes}, 
+each consisting of a TSDF, colour volume and object Probability Volume. 
+Additionally, each has associated with it a rigid body transform that specifies 
+it's pose relative to the global coordinate frame.
 
 At each time step, a segmentation model is applied to the RGB input image to
 generate an object \textit{Probability Map} defining the segmented region to be
 the object of interest and the remainder the background, to be discarded. Using
 these generated Probability Maps, the system accumulates the probabilities into
-the object \textit{Probability Volume} of the active Subvolume.
+the object \textit{Probability Volume} of the active subvolume.
 
-As with the Dense SLAM system outlined earlier in this work, the proposed system
+As with the dense SLAM system outlined earlier in this work, the proposed system
 also has \textit{Integration}, \textit{Tracking} and \textit{Rendering}
-stages in it's pipeline(all of which are run at each time step). However, in
+stages in it's pipeline (all of which are run at each time step). However, in
 the proposed system, there are an additional two stages to the pipeline;
 \textit{Online Model Correction} and \textit{CRF Based Segmentation}.
 
 At the end of each frame, the online model correction algorithm is run, which
 infers the relative poses between the subvolumes, mitigating tracking drift.
-Once the reconstruction process is finished, we perform a CRF-based optimisation
-to refine the resulting object segmentation over all Subvolumes.
+Once the reconstruction process is finished, a CRF-based optimisation is 
+performed to refine the resulting object segmentation over all subvolumes.
 
 The proposed approach is not tied to the use of any one probabilistic model,
-though in the presented experiments PwP (Pixel Wise Posteriors) are used
+though in the presented experiments Pixel Wise Posteriors (PwP) are used
 \cite{Bibby2008}. An overview of the object reconstruction pipeline is shown in
 Figure \ref{fig:probobj_pipeline_diagram}.
 
