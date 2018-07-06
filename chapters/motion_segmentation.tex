@@ -609,18 +609,18 @@ An overview of the proposed pipeline is given in Figure \ref{fig:moseg_pipeline}
 \subsection{Stability Labelling}
 \label{sub:moseg_stability_labelling}
 The purpose of the stability labelling section of the pipeline is to distinguish
-between Stable and Unstable Voxel Blocks in the Dynamic Model, resulting in
-parts of the scene that are moving being excluded from the Static Model.
+between stable and unstable voxel blocks in the dynamic model, resulting in
+parts of the scene that are moving being excluded from the static model.
 
-For each Voxel Block in the Dynamic Model, a \emph{Stability Value} is
-maintained, representing the extent to which the instantaneous TSDF values for
-the Voxels in a given Voxel Block(visible in the current View Frustrum under the
-current Pose) have remained similar to the existing TSDF values for those voxels
+For each voxel block in the dynamic model, a stability value is maintained, 
+representing the extent to which the instantaneous TSDF values for the voxels 
+in a given voxel block (visible in the current view frustrum under the current 
+pose) have remained similar to the existing TSDF values for those voxels
 over time.
 
 The stability value for each voxel block in the scene is initialised to nought.
-At each frame, the instantaneous TSDF values for the Voxels in each visible
-Voxel Block are computed. For each Voxel Block, the Mean Absolute Difference
+At each frame, the instantaneous TSDF values for the voxels in each visible
+voxel block are computed. For each voxel block, the mean absolute difference
 $\tau$, between the instantaneous and existing TSDF values is computed as
 follows.
 \begin{equation}
@@ -628,8 +628,8 @@ follows.
   \tau_{\mathcal{V}} = \Bigg[ \frac{1}{|\mathcal{V}|} \sum_{v \in \mathcal{V}}
   \bigg|\mathbf{\Phi}^{d}(v) - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
 \end{equation}
-The Stability Label $l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\}$ for
-a given Voxel Block $\mathcal{V}$ is determined by thresholding on $\xi$
+The stability label $l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\}$ for
+a given voxel block $\mathcal{V}$ is determined by thresholding on $\xi$ 
 (empirically set to $0.3m$) as follows.
 \begin{equation}
   \label{eqn:moseg_stability_labelling}
@@ -639,11 +639,11 @@ a given Voxel Block $\mathcal{V}$ is determined by thresholding on $\xi$
     \text{unstable} & \textbf{if} \mkern4mu \tau > \xi
   \end{cases}
 \end{equation}
-If the label $l_{\mathcal{V}}$ is ``stable'', the implication is that the Voxel
-Block contains few disparities between the current scene and the stored model.
+If the label $l_{\mathcal{V}}$ is ``stable'', the implication is that the voxel
+block contains few disparities between the current scene and the stored model.
 In this case, it's stability value is incremented. If however
 $l_{\mathcal{V}}$ has the label ``unstable'', the implication is that the
-contents of the Voxel Block are changing, so it's stability value is reset to
+contents of the voxel block are changing, so it's stability value is reset to
 nought, as follows.
 \begin{equation}
   \label{eqn:moseg_stability_update}
@@ -655,21 +655,21 @@ nought, as follows.
   \end{cases}
 \end{equation}
 
-Voxel Blocks that are observed to be stable over a sufficiently long period of
-time (empirically set to $40$ frames) will be Integrated into the Static Model,
+Voxel blocks that are observed to be stable over a sufficiently long period of
+time (empirically set to $40$ frames) will be integrated into the static model,
 as follows in Section \ref{sub:moseg_static_to_dynamic}.
 
 \subsection{Integration into Static Model from Dynamic Model}
 \label{sub:moseg_static_to_dynamic}
-For a time step $t$, each Voxel Block in the Dynamic Model that has assigned to
-it a stable label has the entirety its Voxel TSDF values Integrated in to the
+For a time step $t$, each voxel block in the dynamic model that has assigned to
+it a stable label has the entirety of it's voxel TSDF values integrated into the
 static model. In a similar formulation to that of Equation \ref{eqn:sdf_update}
-in Section \ref{subsec:moseg_static_integration}, the update comprises
-Integration of new data in to a running average.
+in Section \ref{subsec:moseg_static_integration}, the update comprises 
+integration of new data in to a running average.
 
-The weight update for a given Voxel $v$ in the Stable Model $\mathbf{\Phi}^{s}$
-with respect to a Voxel(belonging to a Voxel Block labelled ``stable'') 
-$\bar{v}$ in the Dynamic Model $\mathbf{\Phi}^{d}$ is given as follows.
+The weight update for a given voxel $v$ in the stable model $\mathbf{\Phi}^{s}$
+with respect to a voxel (belonging to a voxel block labelled ``stable'') 
+$\bar{v}$ in the dynamic model $\mathbf{\Phi}^{d}$ is given as follows.
 \begin{equation}
   \label{eqn:moseg_weight_update}
   \phi^{s}_{t}(v) = \phi(v)^{s}_{t-1}(v) + \phi(\bar{v})^{d}_{t-1}(\bar{v})
