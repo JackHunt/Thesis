@@ -685,14 +685,14 @@ Similarly, the update for the TSDF values is as follows.
 
 \section{Qualitative Results}
 \label{sec:moseg_qualitative}
-Empirically, the proposed Motion Segmentation system is capable of retaining
-globally consistent tracking within the Dense SLAM framework for a range of
-scenarios that would prove to be problematic for other, static Dense SLAM
+Empirically, the proposed motion segmentation system is capable of retaining
+globally consistent tracking within the dense SLAM framework for a range of
+scenarios that would prove to be problematic for other, static dense SLAM
 systems. The experiments performed demonstrate a robustness	to dynamics in
 various scenes, both in terms of tracking and noise artefacts in the static
 model. In addition, the system is robust to the addition and removal of scene
 components and is robust to short term occlusions, such as a person walking in
-front of the camera. An example of a person moving in to the the View Frustrum
+front of the camera. An example of a person moving in to the the view frustrum
 and sitting on a Setee is given in Figure \ref{fig:moseg_qualitative_setee}.
 
 \begin{figure}[ht]
@@ -718,7 +718,7 @@ In addition to the ability to reconstruct a moving object that becomes static in
 the scene as shown in Figure \ref{fig:moseg_qualitative_setee}, the proposed
 system is also capable of segmenting dynamic objects in a scene that are
 undergoing nonrigid motion. Whilst these objects are segmented and labelled as
-``dynamic'' they are not used for Camera Pose Estimation. An example of this
+``dynamic'' they are not used for camera pose estimation. An example of this
 behaviour may be observed in Figure \ref{fig:moseg_qualitative_chair}.
 
 \begin{figure}[ht]
@@ -738,18 +738,18 @@ behaviour may be observed in Figure \ref{fig:moseg_qualitative_chair}.
     (a) A static scene containing a Chair is reconstructed.
     (b) A person enters the scene, is marked as ``dynamic'' and sits down.
     (c) After gaining a sufficient confidence score, the person is labelled
-    ``static'' and is integrated in to the Static Model.
+    ``static'' and is integrated in to the static model.
     (d) The person gets up from the Chair and leaves the scene. The original
-    reconstruction of the chair from (a) is in tact.}
+    reconstruction of the Chair from (a) is in tact.}
 \end{figure}
 
 \section{Quantitative Results}
 \label{sec:moseg_quantitative}
 In this section, a quantitative evaluation of the system's efficacy in terms of
-and Camera Tracking ability is provided.
+and camera tracking ability is provided.
 
-For the quantitative analysis, the system has been evaluated on the Dynamic
-Objects subset of the TUM RGBD dataset \cite{Sturm2012} with respect to
+For the quantitative analysis, the system has been evaluated on the dynamic
+objects subset of the TUM RGBD dataset \cite{Sturm2012} with respect to
 trajectory quality. The scenes provided in the dataset contain a range of
 dynamic components ranging from arm movement to people walking around, occluding
 parts of the scene. Comparison is drawn against the standard InfiniTAM framework
@@ -802,9 +802,9 @@ The results of Table \ref{tbl:moseg_ate} are visualised in Figure
 In addition to evaluating quantitatively in terms of Absolute Trajectory Error,
 additional results are provided in terms of Relative Trajectory Error
 \cite{Sturm2012}. RTE measures the relative pose error over a fixed time
-interval, with the final score being the RMSE over all time windows. RTE results
-are provided in Table \ref{tbl:moseg_rte} and visualised in Figure
-\ref{fig:moseg_rte}.
+interval, with the final score being the Root Mean Squared Error (RMSE) over all 
+time windows. RTE results are provided in Table \ref{tbl:moseg_rte} and visualised 
+in Figure \ref{fig:moseg_rte}.
 
 \begin{table}[ht]
   \label{tbl:moseg_rte}
@@ -852,19 +852,19 @@ In this section, it is therefore show that classifiers may be trained for the
 moving objects and used to recognise new instances of those objects as they
 enter the scene.
 
-The Voxel Blocks in the Dynamic Model that were identified as ``unstable''
+The voxel blocks in the dynamic model that were identified as ``unstable''
 provide a natural representation of the dynamic parts of the scene. Where
 multiple dynamic objects are present, they can be separated by finding the
-connected components of these Voxel Blocks. For each object, a one-class Support
-Vector Machine (SVM) with a Polynomial Kernel is trained and used to recognise
-new instances of the object.
+connected components of these voxel blocks. For each object, a one-class Support
+Vector Machine (SVM) \cite{PEGASOS} with a polynomial kernel is trained and used 
+to recognise new instances of the object class.
 
-On seeing a new object, the system first tries to classify the object as one
+Upon seeing a new object, the system first tries to classify the object as one
 that has already been seen using all of the existing SVMs. If this fails, the
 system generates a label for the object and trains a new SVM for it. To make the
 training examples for the object, points are uniformly sampled from the object's
-surface (Voxels in the object's component that belong to the Zero Level Set) and
-compute Fast Point Feature Histogram (FPFH) descriptors \cite{Rusu2009} 
+surface (voxels in the object's component that belong to the Zero Level Set of the 
+TSDF) and compute Fast Point Feature Histogram (FPFH) descriptors \cite{Rusu2009} 
 at those points. FPFH descriptors are geometric features that provide a
 per-point statistic of the curvature within some neighbourhood of the point
 (empirically, a $2.5$cm radius around the point was used).
@@ -888,10 +888,10 @@ prediction process for dynamic objects.
   \caption[Motion Segmentation Object Recognition]
   {An example of the training and prediction process for dynamic
     objects:
-    (a) a teapot is placed in the scene;
-    (b) the teapot is recognised as a new object and an SVM is trained for it;
-    (c) a box is placed in the scene; (d) the box is recognised as being
+    (a) A teapot is placed in the scene;
+    (b) The teapot is recognised as a new object and an SVM is trained for it;
+    (c) A box is placed in the scene; (d) the box is recognised as being
     distinct from the teapot, and a separate SVM is trained for it;
-    (e); another teapot is placed in the scene; (f) the new teapot is recognised
+    (e) Another teapot is placed in the scene; (f) the new teapot is recognised
     as being a teapot rather than a box, and is labelled accordingly.}
 \end{figure}
