@@ -5,20 +5,20 @@
 
 \section{Introduction}
 \label{sec: moseg_introduction}
-Progress in Dense Volumetric Fusion has been accelerated in recent years with
+Progress in dense volumetric fusion has been accelerated in recent years with
 the availability of comsumer grade RGBD sensors such as the Microsoft Kinect and
-the Asus Xtion coupled with the increasingly parallel nature of GPU hardware.
-Systems such as the seminal KinectFusion \cite{Newcombe2011} allow one to build
-high quality, globally consistent scene models trivially. Applications of such
-reconstruction pipelines however are limited due to the inability of such
-systems to handle scenes in which there are dynamics; such systems are unable
-to yield reliable reconstructions when there is motion in the sensors field
-of view independent of the sensors own motion. Such a scenario introduces
-additional error to the Pose Estimation component in the pipeline and as such
+the Asus Xtion coupled with the increasingly parallel nature of Grapical Processing 
+Unit (GPU) hardware.Systems such as the seminal KinectFusion \cite{Newcombe2011} 
+allow one to build high quality, globally consistent scene models trivially. 
+Applications of such reconstruction pipelines however are limited due to the 
+inability of such systems to handle scenes in which there are dynamics; such 
+systems are unable to yield reliable reconstructions when there is motion in the 
+sensors field of view independent of the sensors own motion. Such a scenario introduces
+additional error to the pose estimation component in the pipeline and as such
 causes model corruption.
 
 In this chapter an approach to solving the problem of performing robust
-Dense Volumetric Reconstruction in dynamic scenes is presented. Central to the
+dense volumetric reconstruction in dynamic scenes is presented. Central to the
 pipeline is the introduction of a dual scene representation based on the use
 of an implicit TSDF \cite{Curless1996}. The use of a dual TSDF approach allows
 for the segmentation of moving components in the scene from static components,
@@ -36,19 +36,19 @@ mitigated.
 
 Once a part of the dynamic model has been stable for a sufficient period, it's
 volumetric data is integrated in to the static model and it is used for the
-tracking phase of the pipeline. The use of Volumetric structures in this work
+tracking phase of the pipeline. The use of volumetric structures in this work
 is motivated by previous works on Voxel Block Hashing \cite{NieBner2013},
 providing efficient, real time lookup operations. The presented approach
-exploits the abstraction that Voxel Blocks provide; a block of voxels is
+exploits the abstraction that voxel blocks provide; a block of voxels is
 interpreted as a region of space that can be either static or dynamic.
-Voxel Block Stability is determined by a confidence measure over the Voxel
-Blocks in the Dynamic Scene, such that Isosurface information is not transferred
-to the Static Model(used for Camera Tracking) until there is sufficient
-confidence in it's stability.
-From a survey of the literature, it appears that this approach is the first to
-utilise such a dual representation for the motion segmentation problem.
+Voxel block stability is determined by a confidence measure over the voxel
+blocks in the dynamic scene, such that isosurface information is not transferred
+to the static model(used for camera tracking) until there is sufficient
+confidence in it's stability. From a survey of the literature, it appears that 
+this approach is the first to utilise such a dual representation for the motion 
+segmentation problem.
 
-A graphical representation of the Voxel Block based structure of a given Scene
+A graphical representation of the voxel block based structure of a given Scene
 is presented in Figure \ref{fig:voxel_blocks}.
 % Based on http://www.texample.net/tikz/examples/sudoku-3d-cube/.
 \begin{figure}[h]
@@ -145,8 +145,9 @@ is presented in Figure \ref{fig:voxel_blocks}.
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \end{tikzpicture}
   }
-  \caption[TSDF split in to Voxel Blocks]{A graphical representation of an SDF/TSDF with it's 
-  Voxels subdivided into Voxel Blocks. In the above, $vb$ represents Voxel Blocks and $v$ Voxels.}
+  \caption[TSDF split in to voxel blocks]{A graphical representation of an 
+  SDF/TSDF with it's voxels subdivided into voxel blocks. In the above, $vb$ 
+  represents voxel blocks and $v$ voxels.}
 \end{figure}
 
 The remainder of this chapter is structured as follows.
@@ -154,7 +155,7 @@ Section \ref{sec:moseg_related_work} presents an assessment of related and
 relevant literature. Section \ref{sec:moseg_static_fusion} introduces
 preliminaries pertaining to the static Fusion pipeline followed by Section
 \ref{sec:moseg_dynamic_fusion} describing the dynamic Fusion component of the
-pipeline. Qualitative and Quantitative results are presented in Sections
+pipeline. Qualitative and quantitative results are presented in Sections
 \ref{sec:moseg_qualitative} and \ref{sec:moseg_quantitative}, respectively.
 Finally, an application to interactive object recognition is given in Section
 \ref{sec:moseg_semantic}.
@@ -164,10 +165,9 @@ Finally, an application to interactive object recognition is given in Section
 
 \section{Static Volumetric Fusion}
 \label{sec:moseg_static_fusion}
-The Volumetric Fusion approach taken in this work draws on previous Volumetric
-integration techniques \cite{Curless1996, Newcombe2011, NieBner2013,
-  Prisacariu2014}
-and shall be introduced in this section as preliminary material and shall be
+The volumetric fusion approach taken in this work draws on previous Volumetric
+integration techniques \cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2014} 
+and shall be introduced in this section as preliminary material as it shall be
 referred to in later chapters. Following this approach, at each frame the camera
 is tracked against the current scene, after which new data is fused into the
 scene model which is then rendered using Raycasting to prepare for tracking in
@@ -186,15 +186,15 @@ In the case of 3D environment modelling, the values pertain to distances from
 surfaces, within some truncation region.
 
 Given a vertex map generated from the back projection of the points in a depth
-image, the vertices pertain to the zero crossing point with Voxels either side
+image, the vertices pertain to the zero crossing point with voxels either side
 representing distances to the zero crossing point; positive in front of the
 surface, negative behind. Surface points are known as the Zero Level Set.
 \begin{figure}[h]
   \label{fig:sdf_example}
   \centering
   \includegraphics[width=.5\linewidth]{figures/moseg/3d_sdf.eps}
-  \caption[Signed Distance Function]{An example of a Sphere embedded within a 
-  Three Dimensional Signed Distance Function.}
+  \caption[Signed Distance Function]{An example of a sphere embedded within a 
+  three dimensional SDF.}
 \end{figure}
 
 For a given TSDF $\mathbf{\Phi}$, the Zero Level Set is defined as follows
@@ -203,16 +203,16 @@ For a given TSDF $\mathbf{\Phi}$, the Zero Level Set is defined as follows
   \mathcal{S} = \{v \given \mathbf{\Phi}(v) = 0\}, 
   \mkern2mu \forall \mkern2mu v \in \mathbf{\Phi}
 \end{equation}
-where $v$ denotes a TSDF Voxel. An example of such an embedding is given in
+where $v$ denotes a TSDF voxel. An example of such an embedding is given in
 Figure \ref{fig:sdf_example}.
 
-To facilitate real time fusion, the InfiniTAM framework employs a Voxel Block
-Hashing mechanism for fast access to scene Voxels \cite{NieBner2013}. Within
-this context, Voxel Blocks are collections of $N \times N \times N$ TSDF Voxels,
-stored in a Hash Table for fast access. As such, each Hash Table entry
-corresponds to a portion of a global Voxel Block Array, pertaining to a region
-in the scene. This division of the scene into Voxel Blocks is used for the later
-process of determining and labelling dynamic regions in the scene.
+To facilitate real time fusion, the InfiniTAM framework employs a voxel block
+hashing mechanism for fast access to scene voxels \cite{NieBner2013}. Within
+this context, voxel blocks are collections of $N^{3}$ TSDF voxels, stored in a 
+hash table for fast access. As such, each hash table entry corresponds to a portion 
+of a global voxel block array, pertaining to a region in the scene. This division 
+of the scene into voxel blocks is used for the later process of determining and 
+labelling dynamic regions in the scene.
 
 \subsection{Camera Tracking}
 \label{subsec:moseg_static_camera_tracking}
