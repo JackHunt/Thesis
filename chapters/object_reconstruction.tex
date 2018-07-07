@@ -356,7 +356,7 @@ is given. As outlined in Section \ref{subsec:probobj_alignment_map}, the prior
 on the constraints $L_{s, s'}$ has the form of a Multivariate Gaussian
 Distribution of the form $\mathcal{N}(\mathbf{0}, \mathbf{I})$.
 
-As such, the analytic form of the Likelihood term $P(L_{s, s'} | \Omega, p)$ is
+As such, the analytic form of the likelihood term $P(L_{s, s'} | \Omega, p)$ is
 given as follows.
 \begin{equation}
   \label{eqn:probobj_likelihood_analytic}
@@ -368,7 +368,7 @@ given as follows.
 \end{equation}
 
 In Equation \ref{eqn:probobj_likelihood_analytic}, the function $\Lambda(.)$
-applies the resultant $\mathbb{SE}(3)$ Transform to a given Voxel position
+applies the resultant $\mathbb{SE}(3)$ transform to a given voxel position
 $\mathbf{x}$ and is defined as follows.
 \begin{equation}
   \label{eqn:probobj_lambda_fn}
@@ -376,16 +376,15 @@ $\mathbf{x}$ and is defined as follows.
   \mathbf{R}_{\mathbf{p}} \mathbf{x} + \mathbf{t}
 \end{equation}
 In Equation \ref{eqn:probobj_lambda_fn} $R_{\mathbf{p}}$ is the $\mathbb{SO}(3)$
-Rotation Matrix generated from the Rodrigues Parameters given by the Vector
-$\mathbf{p}$. Recall the definition of the Rodrigues Paramaterisation given in
+rotation matrix generated from the Rodrigues parameters given by the Vector
+$\mathbf{p}$. Recall the definition of the Rodrigues paramaterisation given in
 Equation \ref{eqn:rodriguez_matrix_eq} of Section
 \ref{subsub:moseg_static_camera_attitude}.
 
-The form of the aforementioned Surface Prior $P(\Phi)$ is taken to be that of
+The form of the aforementioned surface prior $P(\Phi)$ is taken to be that of
 the Logistic Distribution, due to the ``symmetric'' $1 - f(x) = f(-x)$
 and ``squashing'' $\text{Range}[f(x)] = [0, 1]$ properties of it's Cumulative
-Density Function. The Probability Density Function of the Logistic Distribution
-is given as follows.
+Density Function (CDF). The PDF of the Logistic Distribution is given as follows.
 \begin{equation}
   \label{eqn:probobj_logistic_dist}
   \text{Logistic}(x \given \mu, \sigma) = \frac
@@ -393,11 +392,11 @@ is given as follows.
   {\sigma \big( 1 + e^{-\frac{x - \mu}{\sigma}} \big)^{2}}
 \end{equation}
 
-To encode the probability of a given Voxel $\psi \in \mathbf{\Psi}$ encoding an
-Isosurface point, represented as the Zero Level Set defined in Equation
+To encode the probability of a given voxel $\psi \in \mathbf{\Psi}$ encoding an
+isosurface point, represented as the Zero Level Set defined in Equation
 \ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
 probability with a function that has the aforementioned properties. As such, the
-Cumulative Density Function of $P(\Phi)$ is derived as follows.
+CDF of $P(\Phi)$ is derived as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior_cdf}
   % Line 1.
@@ -439,7 +438,7 @@ Cumulative Density Function of $P(\Phi)$ is derived as follows.
   &= \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
 \end{align}
 Given the Cumulative Density Function derived in Equation
-\ref{eqn:probobj_surface_prior_cdf}, the Prior $P(\Phi)$ is defined as follows.
+\ref{eqn:probobj_surface_prior_cdf}, the prior $P(\Phi)$ is defined as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior}
   P(\Phi) &= \left. \int_{-\infty}^{b} \frac
@@ -451,11 +450,11 @@ Given the Cumulative Density Function derived in Equation
 It is evident from Equation \ref{eqn:probobj_surface_prior} that under a certain
 paramaterisation the CDF of the Logistic Distribution is the Logistic Sigmoid
 function, prevelant in the Artificial Neural Network literature. As given in
-Equation \ref{eqn:probobj_surface_prior} the Mean $\mu$ and Standard Deviation
+Equation \ref{eqn:probobj_surface_prior} the mean $\mu$ and standard deviation
 $\sigma$ are $0$ and $1$, respectively.
 
-Finally, the analytic form of the Log-Posterior is given as follows, optimising
-for the Rodrigues Parameters $p$ and Translation Vector $t$ of the constraint
+Finally, the analytic form of the log-posterior is given as follows, optimising
+for the Rodrigues parameters $p$ and translation vector $t$ of the constraint
 $L_{s, s'}$ between subvolumes $s$ and $s'$.
 \begin{align}
   \label{eqn:probobj_log_posterior}
@@ -492,20 +491,20 @@ $L_{s, s'}$ between subvolumes $s$ and $s'$.
 \subsection{Optimisation for MAP Inference}
 \label{subsec:probobj_map_optimisation}
 To infer the optimal consistency constraints between adjacent subvolumes, the
-Log-Posterior given in Equation \ref{eqn:probobj_log_posterior} may be optimised
-using Second Order Gradient based methods such as Levenberg-Marquardt. As with
+log-posterior given in Equation \ref{eqn:probobj_log_posterior} may be optimised
+using second order gradient based methods such as Levenberg-Marquardt. As with
 the ICP procedure outlined in Section \ref{subsub:moseg_static_camera_poserec},
-the optimisation is performed with respect to the three Rodrigues Rotation
-Parameters $\alpha$, $\beta$, $\gamma$ and Translation Parameters $t_{x}$,
-$t_{y}$ and $t_{z}$ of the target $\mathbb{SE}(3)$ Transformation.
+the optimisation is performed with respect to the three Rodrigues rotation
+parameters $\alpha$, $\beta$, $\gamma$ and translation parameters $t_{x}$,
+$t_{y}$ and $t_{z}$ of the target $\mathbb{SE}(3)$ transformation.
 
 In a similar manner to the process outlined in Section
-\ref{subsub:moseg_static_camera_poserec}, the target Energy function must be
+\ref{subsub:moseg_static_camera_poserec}, the target energy function must be
 differentiated with respect to each of the $\mathbb{SE}(3)$ parameters. In this
-case, the Log-Posterior if Equation \ref{eqn:probobj_log_posterior} is the
-target Energy function and shall be denoted $E(.)$ in the following derivation.
-The derivation of the Partial Derivatives of $E(.)$ with respect
-to the Rodrigues Rotational parameters is as follows for some parameter
+case, the log-posterior of Equation \ref{eqn:probobj_log_posterior} is the
+target energy function and shall be denoted $E(.)$ in the following derivation.
+The derivation of the partial derivatives of $E(.)$ with respect
+to the Rodrigues rotational parameters is as follows for some parameter
 $\tau \in \{\alpha, \beta, \gamma\}$.
 \begin{align}
   \label{eqn:probobj_log_post_rot_grad}
@@ -557,16 +556,16 @@ $\tau \in \{\alpha, \beta, \gamma\}$.
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
 The final component of the proposed pipeline performs a segmentation in three
-dimensional observed model space to perform refinements over the Appearance
-Posteriors that separate the Voxels pertaining to the object of interest from
+dimensional observed model space to perform refinements over the appearance
+posteriors that separate the voxels pertaining to the object of interest from
 those that have irrelevant measurements integrated, i.e. background measurements
 that have not been used to perform pose estimation and have not been rendered.
 
 This segmentation is formulated within a CRF framework, with each node in the
-CRF Graph representing a set of neighbouring Voxels in space, where connections
-are made between adjacent Voxel neighbourhoods. This segmentation process is
-posed as an Energy Minimisation problem to optimise for a cut in downsampled
-Voxel space between observations pertaining to the object of interest and those,
+CRF graph representing a set of neighbouring voxels in space, where connections
+are made between adjacent voxel neighbourhoods. This segmentation process is
+posed as an energy minimisation problem to optimise for a cut in downsampled
+voxel space between observations pertaining to the object of interest and those,
 of irrelevant observations, such that a segmentation in 3D is obtained. The
 central purpose of this segmentation is to refine the resultant output model of
 the proposed object reconstruction system. The described CRF model is depicted
@@ -714,11 +713,11 @@ in Figure \ref{fig:probobj_crf}
   {The 3D CRF model over Voxel space.}
 \end{figure}
 
-The following Energy Function consists of the Appearance Posterior Probabilities
+The following energy function consists of the appearance posterior probabilities
 accumulated during the on-line fusion process for a region in space as the
-CRF Unary Potentials. The pairwise smoothing term represents the physical
+CRF unary potentials. The pairwise smoothing term represents the physical
 appearance similarity of the observation regions represented by the
-Voxel neighbourhoods $\gamma$ and $\gamma^{'}$:
+voxel neighbourhoods $\gamma$ and $\gamma^{'}$:
 \begin{equation}
   \label{eqn:probobj_crf_energy}
   E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \Psi_{n}}
@@ -727,17 +726,17 @@ Voxel neighbourhoods $\gamma$ and $\gamma^{'}$:
 \end{equation}
 
 In Equation \ref{eqn:probobj_crf_energy} the terms $\mathbb{E}[c]_{\gamma}$ and
-$\mathbb{E}[c]_{\gamma'}$ of the Pairwise component of the Energy function  are
+$\mathbb{E}[c]_{\gamma'}$ of the pairwise component of the energy function are
 the expected values over appearance for the 3D regions $\gamma$ and $\gamma'$
-respectively. Recall the Unary term $P(\psi \in \Phi \given \Omega_{t}, p_{t})$
+respectively. Recall the unary term $P(\psi \in \Phi \given \Omega_{t}, p_{t})$
 from Equation \ref{eqn:probobj_voxel_posterior} of Section
 \ref{subsec:probobj_vol_appearance_model}.
 
-In the implementation used in this work, the aforementioned cut in Voxel space
-is obtained by optimising the Energy function of Equation
-\ref{eqn:probobj_crf_energy} within a Max-Flow framework \cite{BOYKOV} due to GPU
-parallelisation potential. However it should be noted that alternatives such as
-Variational Bayesian Mean Field approximations may also be of use \cite{KRAHENBUHL}.
+In the implementation used in this work, the aforementioned cut in voxel space
+is obtained by optimising the energy function of Equation \ref{eqn:probobj_crf_energy} 
+within a Max-Flow framework \cite{BOYKOV} due to GPU parallelisation potential. However 
+it should be noted that alternatives such as Variational Bayesian Mean Field approximations 
+may also be of use \cite{KRAHENBUHL}.
 
 \section{Qualitative Results}
 Empirically the proposed system is capable of reconstructing a range of objects 
@@ -759,13 +758,13 @@ evaluation of Reconstruction quality is given.
     (b)\\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results I]
-  {(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
+  {(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a shape prior SDF 
   from RGBD observations on the Museum Rock sequence. (b) The proposed system reconstructing 
   the same object from observations of the Museum Rock sequence.}
 \end{figure}
 
 As can be observed in Figure \ref{fig:probobj_rock_s3d}, the proposed system of 
-\textit{Ren et al} begins with a discretised SDF Shape Prior of a Sphere that is 
+\textit{Ren et al} begins with a discretised SDF shape prior of a sphere that is 
 evolved over time whilst simultaneously optimising for pose. However, it is evident 
 that through the course of the sequence it is unable to evolve sufficiently to model 
 the object of interest, contary to the approach outlined in this chapter.
@@ -780,14 +779,14 @@ the object of interest, contary to the approach outlined in this chapter.
     (b) \\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results II]
-  {(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a Shape Prior SDF 
+  {(a) The system of \textit{Ren et al} \cite{Ren2013} evolving a shape prior SDF 
   from RGBD observations on the Museum Dinosaur Head sequence. (b) The proposed system 
   reconstructing same the object from observations of the Museum Dinosaur Head sequence.}
 \end{figure}
 
 As with the example given in Figure \ref{fig:probobj_rock_s3d}, it can be seen in 
-Figure \ref{fig:probobj_dino_s3d} that the System of \textit{Ren et al} is again 
-unable to evolve the SDF Shape Prior suffiently to model the object of interest. As 
+Figure \ref{fig:probobj_dino_s3d} that the system of \textit{Ren et al} is again 
+unable to evolve the SDF shape prior suffiently to model the object of interest. As 
 can be observed, again the proposed system of this work is capable of yielding a suitable 
 reconstruction.
 
@@ -796,12 +795,12 @@ a range of objects versus that of an implementation of the standard KinectFusion
 pipeline as outlined in Section \ref{MOSEG INTRO}. The central difference in the use 
 of the two approaches for the purposes of this comparison is that in the proposed system, 
 only the observed points of the live frame and of the reconstruction that belong to the 
-object of interest are used for Pose Estimation. In the KinectFusion pipeline used 
+object of interest are used for pose estimation. In the KinectFusion pipeline used 
 as a base of comparison however, the entire scene is modelled as the camera is moved, 
 with the reconstruction of the object of interest being segmented as a post processing 
 step. As such, the results extracted from the KinectFusion pipeline are taken to be the 
 ground truth reconstructions of the object of interest. This is due to the more robust 
-Pose Estimation that would be expected from utilising all available geometric data 
+pose estimation that would be expected from utilising all available geometric data 
 for tracking, versus utilising only that of a single, potentially small object.
 
 \begin{figure}[ht]
@@ -874,7 +873,7 @@ of consistency constraints.
 \end{figure}
 
 The gaps in the isosurface depicted in Figure \ref{fig:probobj_gappy_teddy} (a, b) 
-demonstrate the impact that drift in the Pose Estimation stage can have on the resultant 
+demonstrate the impact that drift in the pose estimation stage can have on the resultant 
 reconstruction; drift can incur irregularities in the extraction and rendering of the objects 
 isosurface. Note that the reconstructions given in Figure \ref{fig:probobj_gappy_teddy} 
 (c, d) do not suffer such irregularities when utilising the object reconstruction pipeline 
@@ -882,9 +881,9 @@ presented in this chapter.
 
 \section{Quantitative Results}
 In this section the performance of the proposed system is evaluated quantitatively with respect 
-to both Pose Estimation accuracy and Reconstruction accuracy. 
+to both pose estimation accuracy and reconstruction accuracy. 
 
-For Pose evaluation, the \textit{3D Object Reconstruction} subset of the 
+For pose evaluation, the \textit{3D Object Reconstruction} subset of the 
 \textit{RGB-D SLAM Dataset and Benchmark} \cite{Sturm2012}. The objects of interest in 
 the dataset vary largely in both geometry and appearance. As with the quantitative 
 evaluation presented in Section \ref{sec:moseg_quantitative}, the 
@@ -908,15 +907,13 @@ evaluation presented in Section \ref{sec:moseg_quantitative}, the
     \textsf{freiburg3\_large\_cabinet}   & DNR & DNR
   \end{tabular}
   \caption[Probabilistic Object Reconstruction ATE]
-  {ATE (Absolute Trajectory Error) results achieved by the proposed approach versus 
-  InfiniTAM with object segmentation.
-  }
+  {ATE results achieved by the proposed approach versus InfiniTAM with object segmentation.}
 \end{table}
 
 It can be seen from Table \ref{tbl:probobj_ate} that on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this work 
 yields a marked improvement in Absolute Trajectory Error over that of the standard KinectFusion 
-pipeline with Object Segmentation. The remaining sequences that have the ATE marked as DNR did 
+pipeline with object segmentation. The remaining sequences that have the ATE marked as DNR did 
 not yield an interpretable reconstruction; sequences with ATE metrics marked DNR did not 
 reconstruct. In the case of the \textit{freiburg2\_metallic\_sphere(2)} sequences...
 
@@ -939,7 +936,7 @@ in Figure \ref{fig:probobj_traj}
 
 The proposed system is additionally evaluated quantitatively with respect to reconstruction 
 quality. Reference models are obtained by reconstructing both the object of interest and it's 
-surrounding scene(for maximal Pose Estimation accuracy), followed by a manual segmentation of 
+surrounding scene (for maximal Pose Estimation accuracy), followed by a manual segmentation of 
 the object of interest in 3-space. To quantify the reconstruction quality the Hausdorff 
 Distance \cite{Hausdorff} for subsets of metric spaces is used, where in this case the metric 
 space is Euclidean. The Hausdorff Distance is defined as follows in Equation \ref{eqn:probobj_hauss}
@@ -966,12 +963,12 @@ The resultant quantitative comparisons may be found in Table \ref{tbl:probobj_ha
     \textsf{Dinosaur Head} & 0 & 0.035252 & 0.007919 & 0.010676
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Hausdorff Distance]
-  {Minimum, Maximum, Mean and RMSE distances between the reconstructions yielded by 
+  {Minimum, maximum, mean and RMSE distances between the reconstructions yielded by 
   the proposed system and the baseline.}
 \end{table}
 
 As can be seen by the similarity measures presented, the proposed system is capable of 
-yielding reconstructions to a high quality despite the markedly more difficult Pose Estimation 
+yielding reconstructions to a high quality despite the markedly more difficult pose estimation 
 scenario of utilising the observations of a single object rather than those an entire scene. 
 It can be seen that the presented output reconstructions are geometrically close to those 
 reconstructed with a dense SLAM system \cite{Prisacariu2014} following the KinectFusion 
@@ -980,7 +977,7 @@ much more geometrical data with which to estimate pose.
 
 Figure \ref{fig:probobj_hauss} presents renderings of the \textit{Teddy}, 
 \textit{Brain}, \textit{Chair} and \textit{Dinosaur Head} sequences textured 
-on the Haussdorf distance between the output reconstructions of the presented 
+on the Haussdorf Distance between the output reconstructions of the presented 
 system and the base reconstructions extracted from the KinectFusion like pipeline.
 
 \begin{figure}[ht]
