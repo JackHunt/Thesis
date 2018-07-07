@@ -10,7 +10,7 @@ There has been much research in the field of Tracking and Mapping (TAM) in recen
 years, with many large scale works being driven by the availibility of once 
 costly depth sensing equipment. The availability of such equipment combined 
 with the ever increasingly parallel nature of modern GPU's has seen the 
-field advance greatly beyond the seminal but resource limited works of it's 
+field advance greatly beyond the seminal but compute resource limited works of it's 
 infancy. This advancement is most predominant within the Dense Simultaneous 
 Localisation and Mapping (SLAM) literature. This section shall first explore the 
 earlier, fundamental works of this area of research, followed by a treatment 
@@ -23,7 +23,7 @@ Point Algorithm that consists of three operations per iteration; computation
 of closest point, computation of a 6DoF transformation and application of 
 the transformation. The authors present a proof of convergence based on that 
 of least squares minimisation, however there must be sufficiently complex 
-geometry present in the structure of the data to optimise to a meaningful 
+geometry present in the structure of the data to converge to a meaningful 
 transformation.
 
 Complementary to the aforementioned works of \textit{Besl \& McKay} \cite{Besl1992} 
@@ -33,7 +33,7 @@ framework for the reconstruction of shapes from range data obtained from a
 sensor such as a laser scanner. The authors introduce the Signed Distance Function (SDF), 
 a volumetric, implicit shape representation in which entries are cumulatively updated 
 in a weighted manner. Once observations have been integrated in to the SDF volume, an 
-isosurface representation of the shape is extracted by a Marching Cubes \cite{MC} 
+isosurface representation of the shape is extracted by a Marching Cubes \cite{Lorensen1987} 
 procedure. Though the approach may lead to gaps in the resultant model, the authors 
 mitigate this by introducing a surface tesselation step.
 
@@ -42,33 +42,33 @@ shape representation to that of \textit{Curless \& Levoy} \cite{Curless1996}, ba
 on the spatial KD-Tree data structure and a highly data parallel Breadth First 
 Search (BFS) construction algorithm. The level of parallelism introduced allows for 
 application to problems that require real time performance. The authors provide 
-examples of use in ray tracing \cite{RT} and photon mapping \cite{PM}.
+examples of use in ray tracing \cite{Purcell2002} and photon mapping \cite{Kajiya1986}.
 
 In the same year, \textit{Censi} \cite{Censi2008} introduced \textit{PL-ICP}, a 
-variant of the ICP algorithm introduced by \textit{Besl \& McKay} \cite{Besl1992}. 
-The presented approach utilises a point-to-line metric rather than a point-to-point 
-metric and has a closed form solution in the planar case. For the non planar case 
-the presented approach acheives quadratic convergence in a finite number of steps, 
-utilising a normal weighting and a Lagrangian optimisation scheme. However, it is 
+variant of the ICP algorithm introduced in the work ok \textit{Besl \& McKay} 
+\cite{Besl1992}. The presented approach utilises a point-to-line metric rather than 
+a point-to-point metric and has a closed form solution in the planar case. For the non 
+planar case the presented approach acheives quadratic convergence in a finite number of 
+steps, utilising a normal weighting and a Lagrangian optimisation scheme. However, it is 
 highlighted that prior to the optimisation procedure it is necessary to trim outliers 
 from the point data sets.
 
-Culminating much of the aforementioned work, in 2011 \textit{Newcombe et al} introduced 
-the seminal \textit{KinectFusion} pipeline, allowing for real time mapping of indoor 
-scenes with the Kinect RGBD sensor from Microsoft. The authors utilise a sparser form 
-of the SDF structure introduced by \textit{Curless \& Levoy} \cite{Curless1996}, the 
-Truncated Signed Distance Function (TSDF), allowing for reconstruction at scene scale. 
-For pose estimation, a multi-level variant of the ICP algorithm utilising a point-to-plane 
-metric similar to that of \textit{PL-ICP} \cite{Censi2008} is used. The pipeline consists 
-of four phases; \textit{measurement}, \textit{integration}, \textit{isosurface extraction} 
+Culminating much of the aforementioned work, in 2011 \textit{Newcombe et al} 
+\cite{Newcombe2011} introduced the seminal \textit{KinectFusion} pipeline, allowing 
+for real time mapping of indoor scenes with the Kinect RGBD sensor from Microsoft. The 
+authors utilise a sparser form of the SDF structure introduced by \textit{Curless \& Levoy} 
+\cite{Curless1996}, the Truncated Signed Distance Function (TSDF), allowing for reconstruction 
+at scene scale. For pose estimation, a multi-level variant of the ICP algorithm utilising a 
+point-to-plane metric similar to that of \textit{PL-ICP} \cite{Censi2008} is used. The pipeline 
+consists of four phases; \textit{measurement}, \textit{integration}, \textit{isosurface extraction} 
 and \textit{pose update}. Applications of the presented system however are limited only to 
 those that require the reconstruction of static scenes; dynamic scenes are not supported 
 by \textit{KinectFusion}.
 
 Further optimisations were made in 2013 by \textit{Nei{\ss}ner at al} \cite{NieBner2013} to the 
-\textit{KinectFusion} pipeline proposed by \textit{Newcombe et al}. The authors introduce a 
-spatially hashed TSDF data structure, in which the TSDF is split in to hashed blocks of voxels 
-allowing for very fast voxel lookups. The presented approach yields low space and time complexity 
+\textit{KinectFusion} pipeline proposed by \textit{Newcombe et al} \cite{Newcombe2011. The authors 
+introduce a spatially hashed TSDF data structure, in which the TSDF is split in to hashed blocks of 
+voxels allowing for very fast voxel lookups. The presented approach yields low space and time complexity 
 for such operations, vastly increasing the potential for real time, large scale use. Additionally, 
 a streaming system is introduced to dynamically handle data transmission between the CPU and GPU, 
 allowing for the reconstruction of scenes that may exceed the GRAM bounds of commodity GPU's. The 
@@ -77,13 +77,13 @@ proposed system is capable of running at $\approx46Hz$ on an NVIDIA Titan GPU.
 In the same year, \textit{Thomas et al} \cite{Thomas2013} introduced an alternative scene 
 representation, based on the notion that a scene may be represented as a set of Planar 
 components with attributes such as Surface Normals, confidences and RGB colour. The motivation 
-of the author's approach is that many common scenes that one might reconstruct are indoors and 
+of the authors approach is that many common scenes that one might reconstruct are indoors and 
 consist of components that are planar in nature, such as walls, floors and ceilings. Additionally, 
-many planar objects are common, such as tables and cabinets. The author presents an alternative 
-rendering approach based on quadrangulation \cite{QUAD} and utilise a \textit{KinectFusion} 
+many planar objects are common, such as tables and cabinets. The authors present an alternative 
+rendering approach based on quadrangulation \cite{Dong2006} and utilise a \textit{KinectFusion} 
 \cite{Newcombe2011} like ICP based algorithm for pose estimation.
 
-\textit{Salas-Moreno et al} \cite{Salas-Moreno2013} in 2013 also, introduced another alternative 
+\textit{Salas-Moreno et al} \cite{Salas-Moreno2013} in 2013 also, introduced an alternative 
 approach to that of the \textit{KinectFusion} \cite{Newcombe2011} like pipelines that similarly to 
 \textit{Thomas et al} \cite{Thomas2013}, utilises the prior information that many scenes consist 
 of predictable, repeated structures. As such, the authors introduce a so called ``Object Oriented'' 
@@ -97,12 +97,12 @@ database of known objects a-priori.
 
 \textit{St{\"u}ckler et al} \cite{Stuckler2014} in 2014 introduced a non implicit, non volumetric 
 representation based on multiple resolution Surfel \cite{Pfister2000} maps. The core data structure 
-used for scene representation is a Voxel Octree \cite{OCTREE} containing both Surfels and 
+used for scene representation is a Voxel Octree \cite{Laine2010} containing both Surfels and 
 probability distributions over appearance and shape. Pose estimation is achieved by optimising for 
-a unit quaternion \cite{QUAT} and translation vector within a maximum likelihood framework, in which 
-the energy function to be maximised is the likelihood of the RGBD observations given the accumulated 
-Probability Distributions stored in the Octree. The presented pipeline also incorporates a randomised, 
-graph and keyframe based loop closure component.
+a unit quaternion \cite{Mukundan2002} and translation vector within a maximum likelihood framework, 
+in which the energy function to be maximised is the likelihood of the RGBD observations given the 
+accumulated Probability Distributions stored in the Octree. The presented pipeline also incorporates 
+a randomised, graph and keyframe based loop closure component.
 
 Following the approach of \textit{Thomas et al} \cite{Thomas2013}, \textit{Salas-Moreno et al} 
 \cite{Salas-Moreno2014} in 2014 introduced another reconstruction system that utilises the
@@ -111,16 +111,17 @@ modelling of planes in the scene, proceeding with their refinement over time.
 The proposed approach generates Surfel \cite{Pfister2000} Maps from observed RGBD frames, from 
 which the planar regions are detected and integrated, filling holes in the reconstruction over time.
 The authors utilise an ICP algorithm to register the vertex maps of the RGBD observations and the 
-reconstructed model. Additionally, relocalisation is achieved by the use of Fern Encoding \cite{FERN}. 
+reconstructed model. Additionally, relocalisation is achieved by the use of Fern Encoding 
+\cite{Glocker2014}. 
 
 \textit{Prisacariu et al} \cite{Prisacariu2014, Kahler2015} in 2014 followed up the optimisations 
 to the \textit{KinectFusion} pipeline proposed by \textit{Nei{\ss}ner et al} \cite{NieBner2013}. 
 The authors presented in addition to the original publication, a technical report and an open 
-source implementation. The proposed further improvements to those of \textit{Nei{\ss}ner et al} 
-\cite{NieBner2013} include a number of low level optimisations to the core hashed TSDF data 
-structure, it's allocation and update(integration of observation points) and the rendering 
-phase of the pipeline. In addition, the authors demonstrate that pose estimation quality may 
-be greatly improved by the use of commodity Inertial Motion Unit (IMU) devices, commonly found 
+source implementation. The proposed work provides further improvements to those of 
+\textit{Nei{\ss}ner et al} \cite{NieBner2013} including a number of low level optimisations to the 
+core hashed TSDF data structure, it's allocation and update(integration of observation points) and 
+the rendering phase of the pipeline. In addition, the authors demonstrate that pose estimation quality 
+may be greatly improved by the use of commodity Inertial Motion Unit (IMU) devices, commonly found 
 on mobile phones and tablet computers. \textit{Prisacariu et al} report runtimes of 
 $\approx47Hz$ on an NVIDIA Shield tablet and $\approx910Hz$ with a commodity NVIDIA Titan X GPU.
 
@@ -129,50 +130,50 @@ $\approx47Hz$ on an NVIDIA Shield tablet and $\approx910Hz$ with a commodity NVI
 acheiving reconstruction over hundreds of metres. The approach taken by the authors to enable 
 such large scale reconstructions is centered around the use of a cyclic buffer on the GPU. For pose 
 estimation, the authors impose both geometric and photometric constraints on the camera pose. 
-Additionally, the proposed approach performs map updates in an as-rigid-as-possible \cite{ARAP} 
+Additionally, the proposed approach performs map updates in an as-rigid-as-possible \cite{Igarashi2005} 
 manner, combining frame recognition such that on a recognition event, a map update is performed.
 The proposed pipeline provides loop closure capabilites by utilising Pose Graph Optimisation 
-\cite{PGO}.
+\cite{Grisetti2010}.
 
 \textit{Zhou et al} \cite{Zhou2015} also in 2015 proposed another variant of the 
 \textit{KinectFusion} \cite{Newcombe2011} pipeline proposed by \textit{Newcombe et al}. 
-The authors present improvements on the pose estimation phase of the pipeline, utilising 
+The authors present improvements to the pose estimation phase of the pipeline, utilising 
 contour cues to aid association and enforcing correspondence constraints on the estimated 
 pose, with respect to scene geometry. Central to the presented approach is the depth image 
-preprocessing steps of inpainting regions of the depth image for which there are no depth 
-measurements, followed by the aforementioned contour extraction stage.
+preprocessing steps of inpainting \cite{Bertalmio2000} regions of the depth image for which 
+there are no depth measurements, followed by the aforementioned contour extraction stage.
 
-The optimised pipeline proposed in 2014 by \textit{Prisacariu et al} was in 2016 improved with 
-the addition of loop closure handling by \textit{Kahler et al} \cite{Kahler2016}; \textit{Kahler} 
-being one of the authors of the original 2014 contribution. Drift correction is acheived by the 
-use of a multiple scene representation, with online alignment being performed periodically 
-between the scenes. Corrections between the scenes are made via the use of Pose Graph Optimisation. 
-Loop closures are detected by the use of Fern Conservatories \cite{GLOCKER}.
+The optimised pipeline proposed in 2014 by \textit{Prisacariu et al} \cite{Prisacariu2014} was 
+in 2016 improved with the addition of loop closure handling by \textit{Kahler et al} \cite{Kahler2016}; 
+\textit{Kahler} being one of the authors of the original 2014 contribution. Drift correction is acheived 
+by the use of a multiple scene representation, with online alignment being performed periodically 
+between the scenes. Corrections between the scenes are made via the use of Pose Graph Optimisation 
+\cite{Grisetti2010}. Loop closures are detected by the use of Fern Conservatories \cite{Glocker2014}.
 
 %% Semantic SLAM.
 \section{Semantic SLAM}
 Over the years there has been much interest within the computer vision research community on 
 the semantic understanding of our environment. The ability of machines to recognise and extract 
-information about their environments and the components of them has wide application potential, 
-ranging from autonomous robotics to augmented reality video games. The application potential 
-of this semantic scene understanding ability is amplified when it is combined with the vast 
-progress that has been made in dense SLAM. This section shall provide a survey of research 
-that amalgamates the two fields of semantic scene understanding and SLAM.
+information about their environments and the components of them (such as people and objects) has 
+wide application potential, ranging from autonomous robotics to augmented reality video games. 
+The application potential of this semantic scene understanding ability is amplified when it is 
+combined with the vast progress that has been made in dense SLAM. This section shall provide a 
+survey of research that amalgamates the two fields of semantic scene understanding and SLAM.
 
-Bengio et.al. \cite{Bengio2013} - representation learning.
-Girshick et.al \cite{Girshick2014} - feature hierarchies.
+%Bengio et.al. \cite{Bengio2013} - representation learning.
+%Girshick et.al \cite{Girshick2014} - feature hierarchies.
 
 \label{sec:lit_review_semantic}
 \textit{Civera et al} \cite{Civera2011} in 2011 introduced an approach to semantic SLAM 
 that utilises image based features to attach semantic meaning to 3D observations. The SLAM 
-system itself is based on Monocular EKF SLAM \cite{EKFSLAM} with semantics added to points via 
-correspondences between SURF\cite{SURF} image features extracted from the observed RGB frames and 
+system itself is based on Monocular EKF SLAM \cite{Smith1990} with semantics added to points via 
+correspondences between SURF\cite{Bay2006} image features extracted from the observed RGB frames and 
 precomputed object descriptors. Consistency is then enforced by a geometric compatibility 
 measure.
 
 \textit{St{\"u}ckler et al} \cite{Stuckler2012} in 2012 presented a semantic dense SLAM 
 pipeline for the object centric integration of RGBD images. Given an RGBD frame, objects 
-are detected using a Random Forest (RF) \cite{RF} classifier trained on hand crafted features 
+are detected using a Random Forest (RF) \cite{Ho1995} classifier trained on hand crafted features 
 extracted from RGBD images. The proposed approach does not reconstruct an entire scene, rather it 
 reconstructs scene components(such as objects) that have been semantically segmented 
 from the current RGBD frame.
@@ -185,7 +186,7 @@ Once a scene has been reconstructed, the author's pipeline allows users to inter
 objects in the scene to provide training data for Streaming Random Forests\cite{Abdulsalam2007}, 
 which are used to detect and label parts of the rendered Isosurface belonging to a given 
 object class. Segmentations are refined using Variational Bayesian Mean Field Inference 
-\cite{Xing2002} optimised by \cite{Krahenbuhl2011}. The features extracted for this training 
+\cite{Xing2002, Krahenbuhl2011}. The features extracted for this training 
 process are named \textit{Voxel Oriented Patch} features and consist of surface normals 
 and CIELab \cite{CIELAB} appearance information.
 
