@@ -425,20 +425,21 @@ may be multiplied with $\mathbf{x}$ and combined in to the following Rotation Ja
 \end{align}
 
 Note that the derivation for the partial derivatives
-$\frac{\partial E}{\partial \mathbf{t}_{\{x, y, z\}}}$ is analogous with that of
-Equation \ref{eqn:icp_update_derivation_rot}, with the result given as follows
+$\frac{\partial E}{\partial \mathbf{t}_{\bar{\lambda}}} \forall \bar{\lambda} \in \{x, y, z\}$ 
+is analogous with that of Equation \ref{eqn:icp_update_derivation_rot}, with the result given as 
+follows
 \begin{equation}
   \label{eqn:icp_update_derivation_trans}
-  \frac{\partial E}{\partial \mathbf{t}_{\{x, y, z\}}} =
+  \frac{\partial E}{\partial \mathbf{t}_{\bar{\lambda}}} =
   \sum_{p \in \mathbf{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
-  \bigg[ \frac{\partial \mathbf{t}}{\partial \{x, y, z\}}\bigg]^{T}
+  \bigg[ \frac{\partial \mathbf{t}}{\partial \bar{\lambda}}\bigg]^{T}
   \mathcal{N}(\bar{\mathbf{x}})
 \end{equation}
 
 The translational partial derivatives
-$\frac{\partial \mathbf{t}}{\partial \{x, y, z\}}$ may also be combined in to
-the following translation Jacobian
+$\frac{\partial \mathbf{t}}{\partial \lambda} \forall \bar{\lambda} \in \{x, y, z\}$ may also 
+be combined in to the following translation Jacobian as in Equation \ref{eqn:rot_jac}.
 \begin{equation}
   \label{eqn:trans_jac}
   \mathbf{J}_{t} =
@@ -524,10 +525,15 @@ that follows.
   \par
 }
 
+Note that for numerical stability, the matrix inverse in Equation \ref{eqn:lm_update} 
+may be avoided by utilising the \texttt{chol} and \texttt{backsub} routines to 
+compute the Cholesky Decomposition \ref{CHOL} and solve a linear system with 
+Backsubstitution \ref{BACKSUB}, respectively.
+
 \subsection{Volumetric Integration}
 \label{subsec:moseg_static_integration}
 The second phase in the scene reconstruction pipeline is volumetric integration.
-That is, the integration of observed depth images in to a consistent, implicit
+That is, the integration of observed depth images into a consistent, implicit
 volumetric representation, in this case the existing TSDF model of the scene,
 providing the basis for an updated rendering to be used in the ICP procedure
 for camera tracking at the next time step.
@@ -540,7 +546,8 @@ is given in Figure \ref{fig:sdf_example}.
 As with KinectFusion \cite{Newcombe2011} the global (scene) location
 $\mathbf{x}_{v}$ of each voxel $v \in \mathbf{\Phi}$ that is visible in the
 current view frustum is transformed into the camera's coordinate frame via the
-following transformation (noting that $\mathbf{x}_{v}$ is in homogeneous form)
+following transformation (noting that $\mathbf{x}_{v}$ is in homogeneous 
+\cite{HOMOGENEOUS} form)
 \begin{equation}
 \label{eqn:project_tsdf_to_image}
 \mathbf{x}_{\Omega} = \mathbf{K}\mathbf{T}_i^{-1}\mathbf{x}_{v}
@@ -548,7 +555,19 @@ following transformation (noting that $\mathbf{x}_{v}$ is in homogeneous form)
 where $\mathbf{K}$ is the camera's intrinsic calibration matrix, $\mathbf{T}$ is
 the transformation optimised for at time $t$, with the form given in Equation
 \ref{eqn:trans_mat_definition} and $\mathbf{x}_{\Omega}$ is the resultant
-projected coordinates.
+projected coordinates. The form of the camera intrinsic calibration is as 
+follows.
+\begin{equation}
+  \label{eqn:camera_matrix}
+  \mathbf{K} = 
+  \begin{bmatrix}
+    f_{x} & s & x_{0} & 0\\
+    0 & f_{y} & y_{0} & 0\\
+    0 & 0 & 1 & 0
+  \end{bmatrix}
+\end{equation}
+Where in Equation \ref{eqn:camera_matrix}, $f_{x}$, $f_{y}$, $s$, $x_{0}$ and $y_{0}$ are 
+the focal lengths, scale and camera principal points respectively.
 
 The integration of new data points into the TSDF volume is achieved by computing 
 running averages; each voxel contains a running average of its SDF value over
@@ -564,8 +583,8 @@ yields the depth offset from the surface, as follows
 \end{equation}
 
 If $\eta \geq -\mu$, that is that the depth of the point is not beyond the
-truncation band of the TSDF behind the isosurface (Zero Level Set), where $\mu$ 
-is half thewidth of the truncation band, then the TSDF depth measurement update 
+truncation band of the TSDF behind the isosurface, where $\mu$ is half the 
+width of the truncation band, then the TSDF depth measurement update 
 proceeds as follows for a voxel $\mathbf{x}_{v} \in \mathbf{\Phi}$.
 \begin{equation}
 \label{eqn:sdf_update}
@@ -574,6 +593,12 @@ proceeds as follows for a voxel $\mathbf{x}_{v} \in \mathbf{\Phi}$.
 \text{min} \bigg( 1, \frac{\eta}{\mu} \bigg)
 \bigg]
 \end{equation}
+
+\begin{figure}[h]
+  \label{fig:truncation_band}
+  \caption{TODO}
+\end{figure}
+
 In addition, the weight $\phi(\mathbf{x}_{v})$ is updated as follows.
 \begin{equation}
   \label{eqn:sdf_weight_update}
@@ -588,9 +613,9 @@ of the scene image is generated to provide an updated view for the tracking
 stage outlined in Section \ref{subsec:moseg_static_camera_tracking}, at the next
 time step.
 
-Rendering in the pipeline is achieved by Raycasting, the process of ``casting'' a
-ray from the camera frame into the scene, to find intersections with the scene
-isosurface. 
+Rendering in the pipeline is achieved by Raycasting \cite{RAYCAST}, the process of 
+``casting'' a ray from the camera frame into the scene, to find intersections with 
+the scene isosurface. 
 % A complete treatment of the Raycasting procedure may be found in the computer
 % graphics literature \cite{Parker:1998:IRT:288216.288266}.
 
