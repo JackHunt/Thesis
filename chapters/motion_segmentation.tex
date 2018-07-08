@@ -35,7 +35,7 @@ scene components, this inteference in the ICP pose estimation process can be
 mitigated.
 
 Once a part of the dynamic model has been stable for a sufficient period, it's
-volumetric data is integrated in to the static model and it is used for the
+volumetric data is integrated in to the static model and is used for the
 tracking phase of the pipeline. The use of volumetric structures in this work
 is motivated by previous works on Voxel Block Hashing \cite{NieBner2013},
 providing efficient, real time lookup operations. The presented approach
@@ -313,7 +313,7 @@ along it's respective axis.
 \subsubsection{Pose Recovery Formulation}
 \label{subsub:moseg_static_camera_poserec}
 The recovery of the camera pose change between frames $t$ and $t-1$ may be
-formulated as the following energy minimisation problem
+formulated as the following point-to-plane energy minimisation problem
 \begin{equation}
   \label{eqn:pose_estimation_kf}
   E(\mathbf{R}, \mathbf{t}, \mathbf{\Omega}, \mathbf{\Phi}) =
@@ -323,22 +323,35 @@ formulated as the following energy minimisation problem
   \right]^{T}
   \mathcal{N}(\bar{\mathbf{x}})}
 \end{equation}
-where $\mathbf{R}$ and $\mathbf{t}$ are the aforementioned rotation matrix and
-translation vector of the transformation $\mathbf{T}$. $\mathbf{x}$ is the 3D
-point extracted from the depth image $\mathbf{\Omega}$ and the point
-$\bar{\mathbf{x}}$ is the 3D point in the TSDF volume $\mathbf{\Phi}$ found by
-raycasting from $\mathbf{\Omega}$ under the transformation $\mathbf{T}$.
-Finally, $\mathcal{N}$ is a normal map of $\mathbf{\Phi}$ and is defined as
-follows
+where in Equation \ref{eqn:pose_estimation_kf} $\mathbf{R}$ and $\mathbf{t}$ are 
+the aforementioned rotation matrix and translation vector of the transformation 
+$\mathbf{T}$. $\mathbf{x}$ is the 3D point extracted from the depth image 
+$\mathbf{\Omega}$ and the point $\bar{\mathbf{x}}$ is the 3D point in the TSDF 
+volume $\mathbf{\Phi}$ found by raycasting from $\mathbf{\Omega}$ under the 
+transformation $\mathbf{T}$. Finally, $\mathcal{N}$ is a normal map of 
+$\mathbf{\Phi}$ and is defined as follows
 \begin{equation}
   \label{eqn:normal_map_definition}
   \mathcal{N} = \frac{\nabla \mathbf{\Phi}}{\norm{\nabla \mathbf{\Phi}}}
 \end{equation}
-where $\nabla \mathbf{\Phi}$ is approximated with central finite differencing.
+where $\nabla \mathbf{\Phi}$ is approximated with central finite differencing, 
+as follows in Equation \ref{eqn:sdf_central_diff}.
+\begin{equation}
+  \label{eqn:sdf_central_diff}
+  \nabla \mathbf{\Phi} = 
+    \begin{bmatrix}
+      \mathbf{\Phi} \big(\mathbf{v}_{x} + \frac{1}{2}\delta \mathbf{v}_{x}\big) -
+      \mathbf{\Phi} \big(\mathbf{v}_{x} - \frac{1}{2}\delta \mathbf{v}_{x}\big)\\
+      \mathbf{\Phi} \big(\mathbf{v}_{y} + \frac{1}{2}\delta \mathbf{v}_{y}\big) -
+      \mathbf{\Phi} \big(\mathbf{v}_{y} - \frac{1}{2}\delta \mathbf{v}_{y}\big)\\
+      \mathbf{\Phi} \big(\mathbf{v}_{z} + \frac{1}{2}\delta \mathbf{v}_{z}\big) -
+      \mathbf{\Phi} \big(\mathbf{v}_{z} - \frac{1}{2}\delta \mathbf{v}_{z}\big)
+    \end{bmatrix}
+\end{equation}
 
 For the gradient update phase of the ICP algorithm, the partial derivatives
-$\frac{\partial E}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}$ may be
-derived as follows in Equation \ref{eqn:icp_update_derivation}.
+$\frac{\partial E}{\partial \mathbf{R}_{\lambda}} \forall \lambda \in \{\alpha, \beta, \gamma\}$ 
+may be derived as follows in Equation \ref{eqn:icp_update_derivation}.
 As a first step, the following definition is made
 \begin{equation}
   \label{eqn:icp_deriv_sub}
@@ -352,39 +365,39 @@ With this substitution in place, the derivation proceeds as follows
 \begin{align}
   \label{eqn:icp_update_derivation_rot}
   % Line 1.
-  \frac{\partial E}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}} & =
-  \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
+  \frac{\partial E}{\partial \lambda} & =
+  \frac{\partial}{\partial \lambda}
   \sum_{p \in \mathbf{\Omega}}
   \norm{\phi(.)}\\
   % Line 2.
   & = \sum_{p \in \mathbf{\Omega}}
-  \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
+  \frac{\partial}{\partial \lambda}
   \norm{\phi(.)}\\
   % Line 3.
   & = \sum_{p \in \mathbf{\Omega}}
   \frac{\partial}{\partial \phi(.)} \norm{\phi(.)}
-  \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+  \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 4.
   & = \sum_{p \in \mathbf{\Omega}}
   \frac{1}{2}\frac{2 \phi(.)}{\sqrt{\phi(.)^{T}\phi(.)}}
-  \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+  \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 5.
   & = \sum_{p \in \mathbf{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
-  \frac{\partial \phi(.)}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}\\
+  \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 6
   & = \sum_{p \in \mathbf{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
-  \Bigg[ \frac{\partial}{\partial \mathbf{R_{\{\alpha, \beta, \gamma\}}}}
+  \Bigg[ \frac{\partial}{\partial \lambda}
   \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
   \mathcal{N}(\bar{\mathbf{x}}) + 
   \bigg[ \mathbf{Rx} + \mathbf{t} - \mathcal{V}(\bar{\mathbf{x}}) \bigg]^{T}
-  \frac{\partial}{\partial \mathbf{R}_{\{\alpha, \beta, \gamma\}}}
+  \frac{\partial}{\partial \lambda}
   \mathcal{N}(\bar{\mathbf{x}})\Bigg]\\
   % Line 6
   & = \sum_{p \in \mathbf{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
-  \bigg[ \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}
+  \bigg[ \frac{\partial \mathbf{R}}{\partial \lambda}
   \mathbf{x}\bigg]^{T}
   \mathcal{N}(\bar{\mathbf{x}})
 \end{align}
@@ -396,13 +409,13 @@ and \ref{eqn:rodrigues_full_gamma_deriv} respectively, of Appendix
 \ref{appendix:mathematical}.
 
 The partial derivatives
-$\frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}}$ may be
-multiplied with $\mathbf{x}$ and combined in to the following Rotation Jacobian
+$\frac{\partial \mathbf{R}}{\partial \lambda} \forall \lambda \in \{\alpha, \beta, \gamma\}$ 
+may be multiplied with $\mathbf{x}$ and combined in to the following Rotation Jacobian
 \begin{align}
   \label{eqn:rot_jac}
   \mathbf{J}_{R} & = \left. \bigg[
-    \frac{\partial \mathbf{R}}{\partial \{\alpha, \beta, \gamma\}} \mathbf{x}
-    \bigg]^{T} \right\vert_{\alpha,\beta,\gamma = 0} \\
+    \frac{\partial \mathbf{R}}{\partial \lambda} \mathbf{x}
+    \bigg]^{T} \right\vert_{\lambda = 0} \\
   & =
   \begin{bmatrix}
     0 & -z & y \\
