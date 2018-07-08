@@ -265,13 +265,18 @@ to the subsegments of the reconstructed shape (the subvolumes) to correct their
 alignment when there are intra subsegment tracking inconsistencies. As inference
 on the Joint Distribution of the presented probabilistic model is intractable, 
 conditional independence assumptions are made that empirically do not appear to 
-cause any functional issues. Note that only voxels whose...TODO
+cause any functional issues. 
+
+Note that only voxels whose appearance posterior is greater for the foreground 
+class are used in the correction procedure; only voxels that satisfy the probabilistic 
+condition $P(\psi \in \Phi | \Omega, p) > 1 - P(\psi \in \Phi | \Omega, p)$ are 
+considered.
 
 \subsection{Appearance Marginal}
 Continuing on from the formulation given in Equation \ref{eqn:probobj_simplified_joint}, 
 the appearance model $u$ may be marginalised as follows.
 \begin{align}
-  \label{eqn:probobj_appearanc_marginal}
+  \label{eqn:probobj_appearance_marginal}
   % Line 1.
   P(\Phi, \Omega, p, L) & =
   \int_{-\infty}^{\infty} \Bigg[ 
@@ -331,10 +336,11 @@ derived as follows.
 \end{align}
 Note that in the third step of Equation \ref{eqn:probobj_map_estimate} the
 distributions $P(\Omega | p)$ and $P(p)$ are taken to be uniform and as such may
-be omitted whilst retaining proportionality. The distribution $P(L_{s, s'})$ is
+be omitted whilst retaining proportionality. The prior distribution $P(L_{s, s'})$ is
 conjugate to $P(L_{s, s'} | \Omega, p)$ and is of the form of a Multivariate
 Gaussian Distribution $\mathcal{N}(\mathbf{0} \given \mathbf{I})$ over the
-$\mathbb{SE}(3)$ deformation parameters. The choice of such a prior distribution
+$\mathbb{SE}(3)$ deformation parameters described in Section 
+\ref{subsub:moseg_static_camera_attitude}. The choice of such a prior distribution
 is motivated by the assumption that motion between consecutive frames is minor,
 thus the given prior will have the effect of constraining the $\mathbb{SE}(3)$
 transformation as such. The prior distribution $P(\Phi)$ serves as a
@@ -370,8 +376,8 @@ given as follows.
   \label{eqn:probobj_likelihood_analytic}
   P(L_{s, s'} | \Omega, p) = \prod_{(s, s') \in \mathcal{S}}
   \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) -
-  \Phi_{s'}(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}
+  \exp{\frac{-\Big[\Phi_{s}\Big(\mathbf{x}\Big) -
+  \Phi_{s'}\Big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\Big)\Big]^{2}}
   {2\sigma^{2}}}
 \end{equation}
 
