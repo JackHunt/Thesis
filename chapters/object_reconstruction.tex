@@ -384,11 +384,17 @@ given as follows.
 In Equation \ref{eqn:probobj_likelihood_analytic}, the function $\Lambda(.)$
 applies the resultant $\mathbb{SE}(3)$ transform to a given voxel position
 $\mathbf{x}$ and is defined as follows.
-\begin{equation}
+\begin{align}
   \label{eqn:probobj_lambda_fn}
-  \Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}) =
-  \mathbf{R}_{\mathbf{p}} \mathbf{x} + \mathbf{t}
-\end{equation}
+  \Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}) &=
+  \mathbf{R}_{\mathbf{p}} \mathbf{x} + \mathbf{t}\\
+  &= 
+  \begin{bmatrix}
+    \mathbf{R}_{\mathbf{p}} & \mathbf{t} \\
+    \mathbf{0} & 1
+  \end{bmatrix}
+  \mathbf{x}
+\end{align}
 In Equation \ref{eqn:probobj_lambda_fn} $R_{\mathbf{p}}$ is the $\mathbb{SO}(3)$
 rotation matrix generated from the Rodrigues parameters given by the Vector
 $\mathbf{p}$. Recall the definition of the Rodrigues paramaterisation given in
@@ -397,7 +403,7 @@ Equation \ref{eqn:rodriguez_matrix_eq} of Section
 
 The form of the aforementioned surface prior $P(\Phi)$ is taken to be that of
 the Logistic Distribution, due to the ``symmetric'' $1 - f(x) = f(-x)$
-and ``squashing'' $\text{Range}[f(x)] = [0, 1]$ properties of it's Cumulative
+and ``squashing'' $\texttt{Range}[f(x)] = [0, 1]$ properties of it's Cumulative
 Density Function (CDF). The PDF of the Logistic Distribution is given as follows.
 \begin{equation}
   \label{eqn:probobj_logistic_dist}
@@ -417,55 +423,56 @@ CDF of $P(\Phi)$ is derived as follows.
   %P(\Phi < b) &= \int_{-\infty}^{b} \text{Logistic}
   %(\Phi \given \mu, \sigma) \intd{\Phi}\\
   % Line 2.
-  P(\Phi < b) &= \int_{-\infty}^{b} \frac
+  \bar{P}(\Phi) &\propto P(\Phi < b)\\
+  &\propto \int_{-\infty}^{b} \frac
   {e^{-\frac{\Phi - \mu}{\sigma}}}
   {\sigma \Big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \Big)^{2}} \intd{\Phi}\\
   % Line 3.
-  &= \lim_{y\to -\infty} \int_{y}^{b} \frac
+  &\propto \lim_{y\to -\infty} \int_{y}^{b} \frac
   {e^{\frac{-\Phi + \mu}{\sigma}}}
   {\sigma \Big( 1 + e^{\frac{-\Phi + \mu}{\sigma}} \Big)^{2}} \intd{\Phi}\\
   % Line 4.
-  &= \lim_{y\to -\infty} \frac{1}{\sigma} \int_{y}^{b}
+  &\propto \lim_{y\to -\infty} \frac{1}{\sigma} \int_{y}^{b}
   \frac{e^{\frac{u}{s}}}{\Big( 1 + e^{\frac{u}{\sigma}} \Big)^{2}} \intd{u}\\
   \shortintertext{Where $u = -\Phi + \mu$ and $\intd{u} = -\intd{\Phi}$}
   % Line 5.
-  &= \lim_{y\to -\infty} -\int_{y}^{b}
+  &\propto \lim_{y\to -\infty} -\int_{y}^{b}
   \frac{e^{p}}{\Big( 1 + e^{p} \Big)^{2}} \intd{p}\\
   \shortintertext{Where $p = \frac{u}{\sigma}$ and $\intd{p} = \frac{1}{\sigma}
   \intd{u}$}
   % Line 6.
-  &= \lim_{y\to -\infty} -\int_{y}^{b} \frac{1}{w^{2}} \intd{w}\\
+  &\propto \lim_{y\to -\infty} -\int_{y}^{b} \frac{1}{w^{2}} \intd{w}\\
   \shortintertext{Where $w = 1 + e^{p}$ and $\intd{w} = e^{p} \intd{p}$}
   % Line 7.
-  &= \lim_{y\to -\infty} \Bigg[ \frac{1}{w} + C \Bigg]_{y}^{b}\\
+  &\propto \lim_{y\to -\infty} \Bigg[ \frac{1}{w} + C \Bigg]_{y}^{b}\\
   % Line 8.
-  &= \lim_{y\to -\infty} \Bigg[ \frac{1}{1 + e^{p}} + C \Bigg]_{y}^{b}\\
+  &\propto \lim_{y\to -\infty} \Bigg[ \frac{1}{1 + e^{p}} + C \Bigg]_{y}^{b}\\
   % Line 9.
   &= \lim_{y\to -\infty} \Bigg[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C
   \Bigg]_{y}^{b}\\
   % Line 10.
-  &= \lim_{y\to -\infty} \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} +
+  &\propto \lim_{y\to -\infty} \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} +
   C \Bigg]_{y}^{b}\\
-  &= \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]_{\Phi = b}
+  &\propto \Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]_{\Phi = b}
   - \Bigg[ \left. \lim_{y\to -\infty} \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
   \right\rvert_{\Phi = y} + C \Bigg]\\
-  &= \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
+  &\propto \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
 \end{align}
 Given the Cumulative Density Function derived in Equation
 \ref{eqn:probobj_surface_prior_cdf}, the prior $P(\Phi)$ is defined as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior}
-  P(\Phi) &= \left. \int_{-\infty}^{b} \frac
+  \bar{P}(\Phi) &\propto \left. \int_{-\infty}^{b} \frac
   {e^{-\frac{\Phi - \mu}{\sigma}}}
   {\sigma \Big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \Big)^{2}} \intd{\Phi}
   \right\rvert_{\mu = 0, \sigma = 1}\\
-  &= \frac{1}{1 + e^{-\Phi}}
+  &\propto \frac{1}{1 + e^{-\Phi}}
 \end{align}
-It is evident from Equation \ref{eqn:probobj_surface_prior} that under a certain
-paramaterisation the CDF of the Logistic Distribution is the Logistic Sigmoid
-function, prevelant in the Artificial Neural Network literature. As given in
-Equation \ref{eqn:probobj_surface_prior} the mean $\mu$ and standard deviation
-$\sigma$ are $0$ and $1$, respectively.
+It is evident from Equation \ref{eqn:probobj_surface_prior} that under an 
+appropriate paramaterisation, the CDF of the Logistic Distribution is the 
+Logistic Sigmoid function prevelant in the Artificial Neural Network literature. 
+As given in Equation \ref{eqn:probobj_surface_prior} the mean $\mu$ and standard 
+deviation $\sigma$ are $0$ and $1$, respectively.
 
 Finally, the analytic form of the log-posterior is given as follows, optimising
 for the Rodrigues parameters $p$ and translation vector $t$ of the constraint
@@ -474,33 +481,40 @@ $L_{s, s'}$ between subvolumes $s$ and $s'$.
   \label{eqn:probobj_log_posterior}
   % Line 1.
   \ln P(\Omega, p | L_{s, s'}) &\propto \ln
-  \prod_{s, s' \in \mathcal{s}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})P(\Phi)\\
+  \prod_{s, s' \in \mathcal{s}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})\bar{P}(\Phi)\\
   % Line 2.
   &\propto \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'} | \Omega, p) +
   \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'}) +
-  \sum_{s, s' \in \mathcal{S}} \ln P(\Phi)\\
+  \sum_{s, s' \in \mathcal{S}} \ln \bar{P}(\Phi)\\
   % Line 3.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[\ln \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-\big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}
-  (\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}
-  {2\sigma^{2}}} +
-  \ln \frac{-\frac{1}{2} e^{\mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p}}}
+  \exp{\frac{-\Big[\Phi_{s}\big(\mathbf{x}\big) - \Phi_{s'}
+  \big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\big)\Big]^{2}}
+  {2\sigma^{2}}} \\
+  &\phantom{\propto \sum_{s, s' \in \mathcal{S}} \Bigg[} % SPLIT LINE
+  + \ln \frac{-\frac{1}{2} e^{\mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p}}}
   {\sqrt{(2\pi)^{k}\left|\mathbf{\Sigma}\right|}} +
   \ln \frac{1}{1 + e^{-\Phi}}\Bigg]\\
   % Line 4.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
-  \frac{\big(\Phi_{s}(\mathbf{x}) -
-  \Phi_{s'}(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}{2\sigma^{2}} -
-  \frac{1}{2} \ln \left|\mathbf{\Sigma}\right| -
-  \frac{1}{2} \mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p} -
+  \frac{\Big[\Phi_{s}\big(\mathbf{x}\big) -
+  \Phi_{s'}\big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\big)\Big]^{2}}{2\sigma^{2}} -
+  \frac{1}{2} \ln \left|\mathbf{\Sigma}\right|\\ 
+  &\phantom{\propto \sum_{s, s' \in \mathcal{S}} \Bigg[} % SPLIT LINE
+  - \frac{1}{2} \mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p} -
   \ln(1 + e^{-\Phi}) \Bigg]\\
   % Line 5.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
-  \frac{\big(\Phi_{s}(\mathbf{x}) -
-  \Phi_{s'}(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}))\big)^{2}}{2\sigma^{2}} -
-  \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
-  \ln(1 + e^{-\Phi}) \Bigg]
+  \frac{\Big[\Phi_{s}(\mathbf{x}) -
+  \Phi_{s'}\big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\big)\Big]^{2}}{2\sigma^{2}} -
+  \frac{1}{2} \mathbf{p}^{T}\mathbf{p} \\
+  &\phantom{\propto \sum_{s, s' \in \mathcal{S}} \Bigg[} % SPLIT LINE
+  - \ln(1 + e^{-\Phi}) \Bigg]
 \end{align}
+
+As with the gradients derived in Section \ref{subsec:moseg_static_camera_tracking}, the 
+gradient update when optimising Equation \ref{eqn:probobj_log_posterior} takes the familiar 
+Levenberg-Marquardt update form, akin to that of Equation \ref{eqn:lm_update}.
 
 \subsection{Optimisation for MAP Inference}
 \label{subsec:probobj_map_optimisation}
@@ -526,15 +540,15 @@ $\tau \in \{\alpha, \beta, \gamma\}$.
   \frac{\partial E}{\partial \tau} &=
   \sum_{s, s' \in \mathcal{S}} \Bigg[ - \frac{\partial}{\partial \tau}
   \ln(2\pi\sigma) - \frac{\partial}{\partial \tau}
-  \frac{\big(\Phi_{s}(\mathbf{x}) -
-  \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}}{2\sigma^{2}} -
+  \frac{\Big[\Phi_{s}\big(\mathbf{x}\big) -
+  \Phi_{s'}\big(\Lambda(\mathbf{x})\big)\Big]^{2}}{2\sigma^{2}} -
   \frac{\partial}{\partial \tau} \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 2.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial}{\partial \tau}
-  \big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2} -
+  \Big[\Phi_{s}\big(\mathbf{x}\big) - \Phi_{s'}\big(\Lambda(\mathbf{x})\big)\Big]^{2} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
   \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
@@ -573,7 +587,7 @@ The final component of the proposed pipeline performs a segmentation in three
 dimensional observed model space to perform refinements over the appearance
 posteriors that separate the voxels pertaining to the object of interest from
 those that have irrelevant measurements integrated, i.e. background measurements
-that have not been used to perform pose estimation and have not been rendered.
+that have not been used to perform pose estimation and as such have not been rendered.
 
 This segmentation is formulated within a CRF framework, with each node in the
 CRF graph representing a set of neighbouring voxels in space, where connections
