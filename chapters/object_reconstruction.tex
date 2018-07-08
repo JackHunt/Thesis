@@ -11,11 +11,13 @@ availability of consumer grade depth sensing equipment. However, there is a
 heavy reliance on descriptive geometry in the scene when there is a lack of 
 texture. Less descriptive geometry leads to an increase in camera tracking 
 error and causes model inconsistencies, especially when a loop closure event 
-occurs.
+occurs. This is due to the small but cumulative errors incurred in pose 
+estimation that prevent a reconstructed model from being closed when the 
+camera return to it's staring position.
 
 As object reconstruction can be seen as a smaller scale equivalent of the scene
 based dense reconstruction problem, it too is prone to the tracking drift and
-loop closure problem, sometimes to a prohibitive level. Often it may be
+loop closure problems, sometimes to a prohibitive level. Often it may be
 desirable to perform object reconstruction in an interactive way, for example,
 as a component of a scene understanding system, or to procure training data for
 the object in question.
@@ -38,23 +40,24 @@ of the object.
 Over time, multiple volumes containing both surface and probabilistic appearance
 information are maintained and manipulated to yield a robust and temporally
 consistent model. Finally, the optimum object shape is optimised for within a 
-Conditional Random Field (CRF) \cite{CRF} framework.
+Conditional Random Field (CRF) \cite{BishopPRML} framework.
 
-The proposed system is inspired by\cite{Kolev2006} in that the representation
-used for the shape of the object to be modelled is a volume of probabilities,
-pertaining to posteriors over a voxels assignment to being either on the objects
-surface or not. In the proposed system this volume of posterior probabilities is
-``fused'' into with each frame, much like the fusion process in systems such as
-KinectFusion\cite{Newcombe2011} and InfiniTAM\cite{Prisacariu2014}.
+The proposed system is inspired by that of \textit{Kolev et al} \cite{Kolev2006} 
+in that the representation used for the shape of the object to be modelled is a 
+volume of probabilities, pertaining to posteriors over a voxels assignment to 
+being either on the objects surface or not. In the proposed system this volume 
+of posterior probabilities is ``fused'' into with each frame, much like the 
+fusion process in systems such as KinectFusion \cite{Newcombe2011} and 
+InfiniTAM \cite{Prisacariu2014}.
 
 The probabilities that are ``fused'' into the volume are generated from an
 appearance model, initialised prior to reconstruction by a Maximum Likelihood 
-Estimation (MLE) \cite{MLE} procedure over the first frame of the RGB image. 
+Estimation (MLE) \cite{BishopPRML} procedure over the first frame of the RGB image. 
 There are two appearance models, one for the foreground object and one for the 
-background, with the foreground object indicated by a bounding box on the first 
-RGB frame. A normal distribution is fitted over the colour features of each class, 
-foreground and background. During the fusion process, the PDF's of these 
-distributions are evaluated on the latest colour observation for a voxel and 
+background, with the foreground object indicated by a user inputted bounding box 
+on the first RGB frame. An appearance distribution is fitted over the colour features 
+of each class, foreground and background. During the fusion process, the PDF's of 
+these distributions are evaluated on the latest colour observation for a voxel and 
 posteriors are computed \& updated accordingly in the probability volume. Only 
 those voxels with a posterior higher for the foreground than the background 
 are rendered.
@@ -65,8 +68,9 @@ are rendered.
 \section{Algorithm Overview}
 In the proposed system, the object model is divided into \textit{subvolumes}, 
 each consisting of a TSDF, colour volume and object Probability Volume. 
-Additionally, each has associated with it a rigid body transform that specifies 
-it's pose relative to the global coordinate frame.
+Additionally, each has associated with it a rigid body transform 
+$\mathbf{T} \in \mathbb{SE}(3)$ that specifies it's pose relative to the global 
+coordinate frame.
 
 At each time step, a segmentation model is applied to the RGB input image to
 generate an object \textit{Probability Map} defining the segmented region to be
@@ -86,8 +90,8 @@ Once the reconstruction process is finished, a CRF-based optimisation is
 performed to refine the resulting object segmentation over all subvolumes.
 
 The proposed approach is not tied to the use of any one probabilistic model,
-though in the presented experiments Pixel Wise Posteriors (PwP) are used
-\cite{Bibby2008}. An overview of the object reconstruction pipeline is shown in
+though in the presented experiments Pixel Wise Posteriors (PwP) of \textit{Bibby et al} 
+\cite{Bibby2008} are used. An overview of the object reconstruction pipeline is shown in
 Figure \ref{fig:probobj_pipeline_diagram}.
 
 \begin{figure}[ht]
@@ -117,7 +121,8 @@ voxels have been allocated and have had SDF data integrated. By ensuring overlap
 between the subvolumes, transformations between them can be found and pose
 inconsistencies addressed, online. Empirically, the threshold for starting a new
 subvolume is defined as the event when $50\%$ of the voxels fused in to the
-current volume are newly observed points.
+current volume are newly observed points, such that there is sufficient overlap 
+between two subvolumes that shall later be registered.
 
 \subsection{Volumetric Appearance Model}
 \label{subsec:probobj_vol_appearance_model}
@@ -133,12 +138,13 @@ P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty}
 P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 \end{equation}
 where $\Psi$ is the volume of voxels for which measurements are accumulated,
-$\Phi$  is the volume of voxels pertaining to the object, $\Omega_{t}$ is the
-current RGBD image observation at time $t$ and $p_{t}$ is the currently tracked
-pose at time $t$. This encodes the probability of a voxel belonging to the
-object of interest as the product of instantaneous appearance-derived pixel-wise
-conditionals. Note that in the above, $\Phi$ is a discretisation of the
-continuous $\Phi$ in the probabilistic formulation that follows.
+$\Phi$  is the volume of voxels pertaining to the object $\mathbf{\Phi}$ of 
+interest, $\Omega_{t}$ is the current RGBD image observation at time $t$ and 
+$p_{t}$ is the currently tracked pose at time $t$. Equation 
+\ref{eqn:probobj_voxel_posterior} encodes the probability of a voxel belonging 
+to the object of interest as the product of instantaneous appearance-derived 
+pixel-wise conditionals. Note that in the above, $\Phi$ is a discretisation of 
+the continuous $\Phi$ in the probabilistic formulation that follows.
 
 \subsection{Full Joint Definition}
 \label{subsec:probobj_full_joint}
@@ -178,10 +184,11 @@ Graphical Model (PGM) of Figure \ref{fig:probobj_pgm1}.
 
 Where $\Phi$ is the shape of the object to be reconstructed (represented as a
 subset of voxels for which surface data has been integrated into the relevant
-TSDF), $u$ is the appearance model volume (aforementioned appearance Posteriors),
-$L$ is the set of consistency constraints for each adjacent sub volume pair in
-the form of rigid body transformations, $\Omega$ is the set of RGBD image pixels 
-and $p$ the set of poses over time.
+TSDF), $u$ is the appearance model volume (aforementioned appearance Posteriors 
+of Equation \ref{eqn:probobj_voxel_posterior}), $L$ is the set of consistency 
+constraints for each adjacent sub volume pair in the form of rigid body 
+transformations, $\Omega$ is the set of RGBD image pixels and $p$ the set of 
+poses over time.
 
 The PGM given in Figure \ref{fig:probobj_pgm1} leads to the following
 factorisation over the full Joint Distribution.
@@ -197,8 +204,9 @@ factorisation over the full Joint Distribution.
 \end{equation}
 Where in Equation \ref{eqn:probobj_full_joint}, $\Psi$ is the set of voxels
 across all subvolumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
-frame and $\mathcal{S}$ is the set of subvolumes. Note that the notation
-$s, s' \in \mathcal{S}$ refers to pairs of overlapping subvolumes.
+frame $\Omega_{t}$ and $\mathcal{S}$ is the set of subvolumes. Note that the 
+notation $s, s' \in \mathcal{S}$ refers to pairs of adjacent, overlapping 
+subvolumes.
 
 If pixel-wise independence is assumed in the RGBD observations and temporal
 independence is assumed in the poses, the plate containing $\Omega$ and $p$ can
@@ -246,7 +254,7 @@ The formalisms defined in Figures \ref{fig:probobj_pgm1} and
 \ref{eqn:probobj_simplified_joint} describe a probabilistic framework in which
 online corrections can be made to the reconstructed model (piecewise over
 subvolumes) to counter errors caused by pose tracking inconsistencies. As with
-scene scale dense SLAM systems \cite{Newcombe2011, Prisacariu2014, Niessner2013},
+scene scale dense SLAM systems \cite{Newcombe2011, Prisacariu2014, NieBner2013},
 the presented system follows a pipeline that consists of a tracking stage and an
 integration stage, as outlined in Section \ref{sec:moseg_static_fusion}.
 
@@ -257,7 +265,7 @@ to the subsegments of the reconstructed shape (the subvolumes) to correct their
 alignment when there are intra subsegment tracking inconsistencies. As inference
 on the Joint Distribution of the presented probabilistic model is intractable, 
 conditional independence assumptions are made that empirically do not appear to 
-cause any functional issues.
+cause any functional issues. Note that only voxels whose...TODO
 
 \subsection{Appearance Marginal}
 Continuing on from the formulation given in Equation \ref{eqn:probobj_simplified_joint}, 
