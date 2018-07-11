@@ -94,7 +94,7 @@ though in the presented experiments Pixel Wise Posteriors (PwP) of \textit{Bibby
 \cite{Bibby2008} are used. An overview of the object reconstruction pipeline is shown in
 Figure \ref{fig:probobj_pipeline_diagram}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_pipeline_diagram}
   \centering
   \includegraphics[width=\linewidth]{figures/object_recon/pipeline.pdf}
@@ -153,8 +153,7 @@ posterior probabilities pertaining to a voxel wise membership of either the
 object voxel set or the non object (background) voxel set. This allows
 formulation of the full joint distribution over the object as the Probabilistic
 Graphical Model (PGM) of Figure \ref{fig:probobj_pgm1}.
-
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_pgm1}
   \centering
   \resizebox {0.4\linewidth}{!}{
@@ -211,7 +210,7 @@ subvolumes.
 If pixel-wise independence is assumed in the RGBD observations and temporal
 independence is assumed in the poses, the plate containing $\Omega$ and $p$ can
 be removed as shown in Figure \ref{fig:probobj_pgm2}.
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_pgm2}
   \centering
   \resizebox {0.4\linewidth}{!}{
@@ -776,7 +775,7 @@ chapter and through that of \textit{Ren et al}, with output snapshots taken at
 quarterly intervals for each sequence. In Section \ref{QUANT}, a Quantitative 
 evaluation of Reconstruction quality is given.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_rock_s3d}
   \centering
   \begin{tabular}{@{}c@{}}
@@ -797,7 +796,7 @@ evolved over time whilst simultaneously optimising for pose. However, it is evid
 that through the course of the sequence it is unable to evolve sufficiently to model 
 the object of interest, contary to the approach outlined in this chapter.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_dino_s3d}
   \centering
   \begin{tabular}{@{}c@{}}
@@ -831,7 +830,7 @@ ground truth reconstructions of the object of interest. This is due to the more 
 pose estimation that would be expected from utilising all available geometric data 
 for tracking, versus utilising only that of a single, potentially small object.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_comp_itm}
   \centering
   \begin{tabular}{cccc}
@@ -858,7 +857,7 @@ aesthetically similar manner to a well established baseline. The proposed
 system provides globally consistent, closed reconstructions as is evident from 
 the top-down views presented in Figure \ref{fig:probobj_comp_itm}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_comp_itm}
 	\centering
 	\begin{tabular}{cccc}
@@ -882,7 +881,7 @@ utilises only a single representation of the object of interest. Figure
 not utilising the multiple subvolume representation and it's accompanying enforcement 
 of consistency constraints. 
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_gappy_teddy}
 	\centering
 	\begin{tabular}{cc}
@@ -917,7 +916,7 @@ the dataset vary largely in both geometry and appearance. As with the quantitati
 evaluation presented in Section \ref{sec:moseg_quantitative}, the 
 \textit{Absolute Trajectory Error} is the primary metric of interest.
 
-\begin{table}[ht]
+\begin{table}[h]
   \label{tbl:probobj_ate}
   \centering
   \begin{tabular}{l@{\hskip 1cm} c c}
@@ -949,7 +948,7 @@ The trajectories of the two approaches evaluated on the \textit{freiburg3\_cabin
 and \textit{\textsf{freiburg3\_teddy}} sequences are plotted versus the ground truth trajectories 
 in Figure \ref{fig:probobj_traj}
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_traj}
   \centering
   \begin{tabular}{cc}
@@ -979,7 +978,7 @@ $Y$ is the reconstruction outputted by the proposed system and $d(.)$ is the Euc
 distance.
 
 The resultant quantitative comparisons may be found in Table \ref{tbl:probobj_hauss}.
-\begin{table}[ht]
+\begin{table}[h]
   \label{tbl:probobj_hauss}
   \centering
   \begin{tabular}{lcccc}
@@ -1008,7 +1007,7 @@ Figure \ref{fig:probobj_hauss} presents renderings of the \textit{Teddy},
 on the Haussdorf Distance between the output reconstructions of the presented 
 system and the base reconstructions extracted from the KinectFusion like pipeline.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:probobj_hauss}
   \centering
   \begin{tabular}{@{}c@{}}
@@ -1031,3 +1030,6 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
   on Hausdorff Distance (a, b, c, d). The minimum and maximum values given in Table 
   \ref{tbl:probobj_hauss} are mapped to the colour range of (e).}
 \end{figure}
+
+\section{Discussion}
+\label{sec:probobj_discussion}

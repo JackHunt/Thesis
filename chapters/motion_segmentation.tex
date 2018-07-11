@@ -635,7 +635,7 @@ valid isosurface data to track against, preventing moving objects in the scene
 from contributing to tracking drift.
 
 An overview of the proposed pipeline is given in Figure \ref{fig:moseg_pipeline}
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:moseg_pipeline}
   \centering
   \includegraphics[width=\linewidth]{figures/moseg/pipeline.pdf}
@@ -733,7 +733,7 @@ components and is robust to short term occlusions, such as a person walking in
 front of the camera. An example of a person moving in to the the view frustrum
 and sitting on a Setee is given in Figure \ref{fig:moseg_qualitative_setee}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:moseg_qualitative_setee}
   \centering
   \begin{tabular}{ccc}
@@ -759,7 +759,7 @@ undergoing nonrigid motion. Whilst these objects are segmented and labelled as
 ``dynamic'' they are not used for camera pose estimation. An example of this
 behaviour may be observed in Figure \ref{fig:moseg_qualitative_chair}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:moseg_qualitative_chair}
   \centering
   \begin{tabular}{cc}
@@ -794,7 +794,7 @@ parts of the scene. Comparison is drawn against the standard InfiniTAM framework
 on which the proposed system is based, using standard, static InfiniTAM as a
 baseline.
 
-\begin{table}[ht]
+\begin{table}[h]
   \label{tbl:moseg_ate}
 \begin{center}
   \begin{tabular}{l@{\hskip 1cm} c c}
@@ -829,7 +829,7 @@ sequence, for a given TUM Dynamic Objects sequence.
 The results of Table \ref{tbl:moseg_ate} are visualised in Figure
 \ref{fig:moseg_ate}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:moseg_ate}
   \centering
   \includegraphics[width=\linewidth]{figures/moseg/ate.eps}
@@ -844,7 +844,7 @@ interval, with the final score being the Root Mean Squared Error (RMSE) over all
 time windows. RTE results are provided in Table \ref{tbl:moseg_rte} and visualised 
 in Figure \ref{fig:moseg_rte}.
 
-\begin{table}[ht]
+\begin{table}[h]
   \label{tbl:moseg_rte}
 \begin{center}
   \begin{tabular}{l@{\hskip 1cm} c c}
@@ -870,7 +870,7 @@ in Figure \ref{fig:moseg_rte}.
   highlighted in bold.}
 \end{table}
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:moseg_rte}
   \centering
   \includegraphics[width=\linewidth]{figures/moseg/rte.eps}
@@ -910,7 +910,7 @@ per-point statistic of the curvature within some neighbourhood of the point
 Figure \ref{fig:moseg_recognition} shows an example of this training and
 prediction process for dynamic objects.
 
-\begin{figure}[ht]
+\begin{figure}[h]
   \label{fig:moseg_recognition}
   \centering
   \begin{tabular}{ccc}
