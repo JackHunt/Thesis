@@ -766,6 +766,7 @@ it should be noted that alternatives such as Variational Bayesian Mean Field app
 may also be of use \cite{KRAHENBUHL}.
 
 \section{Qualitative Results}
+\label{sec:probobj_qualitative}
 Empirically the proposed system is capable of reconstructing a range of objects 
 characterised by a range of different sizes and geometries. The experiments in 
 this section demonstrate efficacy over the approach of \textit{Ren et al} 
@@ -907,6 +908,7 @@ isosurface. Note that the reconstructions given in Figure \ref{fig:probobj_gappy
 presented in this chapter.
 
 \section{Quantitative Results}
+\label{sec:probobj_quantitative}
 In this section the performance of the proposed system is evaluated quantitatively with respect 
 to both pose estimation accuracy and reconstruction accuracy. 
 
@@ -1033,3 +1035,19 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
 
 \section{Discussion}
 \label{sec:probobj_discussion}
+It is evident from Sections \ref{sec:sec:probobj_qualitative} and \ref{sec:probobj_quantitative} 
+that the proposed approach is capable of densely reconstructing a range of rigid objects, providing 
+closed and consistent object models, versus the state-of-the-art approach of \textit{Ren et al} 
+\cite{Ren2013}, which failed to reconstruct any of the objects with nontrivial geometry that it 
+was evaluated on. Additionally, the proposed approach shows an improvement over direct segmentation 
+in image space of the object of interest in terms of pose estimation. When evaluating the output 
+reconstructions of the proposed system versus those extracted from a standard \textit{KinectFusion} 
+like pipeline (post reconstruction), the proposed system is capable of producing reconstructions that 
+are geometrically similar.
+
+The probabilistic formulation proposed in this work is intended to be easily generalised, such that 
+it may be adapted for a range of use cases. For example, when utilising stereo sensors where a noise 
+model may not be known a-priori, the framework allows for a suitable prior to be used. Additionally, 
+the proposed approach is intentionally decoupled from the object segmentation model, allowing for 
+ease of adaption for multiple object scenarios, or those where a continuous distribution over voxel 
+labellings is required.
