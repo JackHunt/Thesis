@@ -933,3 +933,31 @@ prediction process for dynamic objects.
     (e) Another teapot is placed in the scene; (f) the new teapot is recognised
     as being a teapot rather than a box, and is labelled accordingly.}
 \end{figure}
+
+\section{Discussion}
+\label{sec:moseg_discussion}
+As outlined in Sections \ref{sec:moseg_qualitative} and \ref{sec:moseg_quantitative}, the 
+proposed approach provides an improvement to the quality of camera pose estimation when 
+performing dense reconstruction in scenes that have dynamic components, versus the 
+standard \textit{KinectFusion} \cite{Newcombe2011} like pipeline as implemented by 
+\textit{Prisacariu et al} \cite{Prisacariu2014}. Additionally, it is evident that the 
+proposed approach is capable of segmenting dynamic components (such as people moving in 
+an articulated fashion) that are visible in the camera's view frustrum, from those that 
+are static (such as furniture in the scene). This segmentation also demonstrates a novel 
+way of obtaining 3D geometry information to perform rudimentary scene understanding.
+
+The novel dual volumetric representation approach taken in this work of maintaining both a 
+\textit{static} and a \textit{dynamic} scene, utilising only the former for camera pose 
+estimation provides a simple and robust system for dense 3D reconstruction in environments 
+that would otherwise be troublesome. Contrary to existing approaches outlined in Section 
+\ref{sec:lit_review_dynamic}, the presented system has scope for use in large-scale 
+reconstruction scenarios, due to it's leverage of efficient, hashed volumetric data structures. 
+In addition, by utilising such data structures, the proposed system is performant to the 
+level of highly optimised \cite{Prisacariu2014} \textit{KinectFusion} \cite{Newcombe2011} 
+impolementations, demonstrating feasibility for application to problems that require 
+real time performance.
+
+With the contributions outlined in this work, the proposed approach provides a platform 
+for further research into problems such as live semantic scene understanding and dense scene 
+flow. The proposed approach has the potential to be further developed in to a fully dynamic, 
+semantic scene understanding and reconstruction system.
