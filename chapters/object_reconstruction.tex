@@ -64,7 +64,7 @@ are rendered.
 In the proposed system, the object model is divided into \textit{subvolumes}, 
 each consisting of a TSDF, colour volume and object Probability Volume. 
 Additionally, each has associated with it a rigid body transform 
-$\mathbf{T} \in \mathbb{SE}(3)$ that specifies it's pose relative to the global 
+$\bm{T} \in \mathbb{SE}(3)$ that specifies it's pose relative to the global 
 coordinate frame.
 
 At each time step, a segmentation model is applied to the RGB input image to
@@ -133,7 +133,7 @@ P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty}
 P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 \end{equation}
 where $\Psi$ is the volume of voxels for which measurements are accumulated,
-$\Phi$  is the volume of voxels pertaining to the object $\mathbf{\Phi}$ of 
+$\Phi$  is the volume of voxels pertaining to the object $\bm{\Phi}$ of 
 interest, $\Omega_{t}$ is the current RGBD image observation at time $t$ and 
 $p_{t}$ is the currently tracked pose at time $t$. Equation 
 \ref{eqn:probobj_voxel_posterior} encodes the probability of a voxel belonging 
@@ -173,7 +173,7 @@ Graphical Model (PGM) of Figure \ref{fig:probobj_pgm1}.
   }
   \caption[Probabilistic Object Reconstruction Formulation I]
   {Probabilistic Graphical Model representing the full Joint
-    Distribution over the shape $\mathbf{\Phi}$ of the object of interest.}
+    Distribution over the shape $\bm{\Phi}$ of the object of interest.}
 \end{figure}
 
 Where $\Phi$ is the shape of the object to be reconstructed (represented as a
@@ -229,16 +229,16 @@ be removed as shown in Figure \ref{fig:probobj_pgm2}.
   }
   \caption[Probabilistic Object Reconstruction Formulation II]
   {Probabilistic Graphical Model representing the simplified Joint
-    Distribution over the shape $\mathbf{\Phi}$ of the object of interest.}
+    Distribution over the shape $\bm{\Phi}$ of the object of interest.}
 \end{figure}
 
 The simplifications transforming the PGM of Figure \ref{fig:probobj_pgm1} in to
 that of Figure \ref{fig:probobj_pgm2} lead to the following factorisation of the
-Joint Distribution over $\mathbf{\Phi}$.
+Joint Distribution over $\bm{\Phi}$.
 \begin{equation}
   \label{eqn:probobj_simplified_joint}
   P(\Phi, \Omega, p, u, L) = 
-  \prod_{\psi \in \mathbf{\Psi}}P(\Phi \given u_{\psi})
+  \prod_{\psi \in \bm{\Psi}}P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega)
 \end{equation}
@@ -274,21 +274,21 @@ the appearance model $u$ may be marginalised as follows.
   % Line 1.
   P(\Phi, \Omega, p, L) & =
   \int_{-\infty}^{\infty} \Bigg[ 
-  \prod_{\psi \in \mathbf{\Psi}} P(\Phi \given u_{\psi})
+  \prod_{\psi \in \bm{\Psi}} P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
   % Line 2.
-  & = \prod_{\psi \in \mathbf{\Psi}} 
+  & = \prod_{\psi \in \bm{\Psi}} 
   \int_{-\infty}^{\infty} \Bigg[ P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
   & = \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
-  P(L_{s, s'})P(p)P(\Omega)P(\mathbf{\Phi})
+  P(L_{s, s'})P(p)P(\Omega)P(\bm{\Phi})
 \end{align}
 Note that the Appearance Posterior Volume outlined in Section 
 \ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
 Section \ref{} for the purposes of subvolume alignment and determining the
-subset of voxels $\mathbf{\Phi} \subset \mathbf{\Psi}$ that determine the target
+subset of voxels $\bm{\Phi} \subset \bm{\Psi}$ that determine the target
 object shape.
 
 Further details pertaining to the inference procedure for the per-subvolume
@@ -332,7 +332,7 @@ Note that in the third step of Equation \ref{eqn:probobj_map_estimate} the
 distributions $P(\Omega | p)$ and $P(p)$ are taken to be uniform and as such may
 be omitted whilst retaining proportionality. The prior distribution $P(L_{s, s'})$ is
 conjugate to $P(L_{s, s'} | \Omega, p)$ and is of the form of a Multivariate
-Gaussian Distribution $\mathcal{N}(\mathbf{0} \given \mathbf{I})$ over the
+Gaussian Distribution $\mathcal{N}(\bm{0} \given \bm{I})$ over the
 $\mathbb{SE}(3)$ deformation parameters described in Section 
 \ref{subsub:moseg_static_camera_attitude}. The choice of such a prior distribution
 is motivated by the assumption that motion between consecutive frames is minor,
@@ -362,7 +362,7 @@ quantifying the likelihood only for voxels in $s$ and $s'$ that are visible in
 the current view frustrum at time $t$, the posterior $P(\Omega, p | L_{s, s'})$
 is given. As outlined in Section \ref{subsec:probobj_alignment_map}, the prior
 on the constraints $L_{s, s'}$ has the form of a Multivariate Gaussian
-Distribution of the form $\mathcal{N}(\mathbf{0}, \mathbf{I})$.
+Distribution of the form $\mathcal{N}(\bm{0}, \bm{I})$.
 
 As such, the analytic form of the likelihood term $P(L_{s, s'} | \Omega, p)$ is
 given as follows.
@@ -370,28 +370,28 @@ given as follows.
   \label{eqn:probobj_likelihood_analytic}
   P(L_{s, s'} | \Omega, p) = \prod_{(s, s') \in \mathcal{S}}
   \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-\Big[\Phi_{s}\Big(\mathbf{x}\Big) -
-  \Phi_{s'}\Big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\Big)\Big]^{2}}
+  \exp{\frac{-\Big[\Phi_{s}\Big(\bm{x}\Big) -
+  \Phi_{s'}\Big(\Lambda(\bm{x}, \bm{p}, \bm{t})\Big)\Big]^{2}}
   {2\sigma^{2}}}
 \end{equation}
 
 In Equation \ref{eqn:probobj_likelihood_analytic}, the function $\Lambda(.)$
 applies the resultant $\mathbb{SE}(3)$ transform to a given voxel position
-$\mathbf{x}$ and is defined as follows.
+$\bm{x}$ and is defined as follows.
 \begin{align}
   \label{eqn:probobj_lambda_fn}
-  \Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t}) &=
-  \mathbf{R}_{\mathbf{p}} \mathbf{x} + \mathbf{t}\\
+  \Lambda(\bm{x}, \bm{p}, \bm{t}) &=
+  \bm{R}_{\bm{p}} \bm{x} + \bm{t}\\
   &= 
   \begin{bmatrix}
-    \mathbf{R}_{\mathbf{p}} & \mathbf{t} \\
-    \mathbf{0} & 1
+    \bm{R}_{\bm{p}} & \bm{t} \\
+    \bm{0} & 1
   \end{bmatrix}
-  \mathbf{x}
+  \bm{x}
 \end{align}
-In Equation \ref{eqn:probobj_lambda_fn} $R_{\mathbf{p}}$ is the $\mathbb{SO}(3)$
+In Equation \ref{eqn:probobj_lambda_fn} $R_{\bm{p}}$ is the $\mathbb{SO}(3)$
 rotation matrix generated from the Rodrigues parameters given by the Vector
-$\mathbf{p}$. Recall the definition of the Rodrigues paramaterisation given in
+$\bm{p}$. Recall the definition of the Rodrigues paramaterisation given in
 Equation \ref{eqn:rodriguez_matrix_eq} of Section
 \ref{subsub:moseg_static_camera_attitude}.
 
@@ -406,7 +406,7 @@ Density Function (CDF). The PDF of the Logistic Distribution is given as follows
   {\sigma \big( 1 + e^{-\frac{x - \mu}{\sigma}} \big)^{2}}
 \end{equation}
 
-To encode the probability of a given voxel $\psi \in \mathbf{\Psi}$ encoding an
+To encode the probability of a given voxel $\psi \in \bm{\Psi}$ encoding an
 isosurface point, represented as the Zero Level Set defined in Equation
 \ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
 probability with a function that has the aforementioned properties. As such, the
@@ -482,26 +482,26 @@ $L_{s, s'}$ between subvolumes $s$ and $s'$.
   \sum_{s, s' \in \mathcal{S}} \ln \bar{P}(\Phi)\\
   % Line 3.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[\ln \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-\Big[\Phi_{s}\big(\mathbf{x}\big) - \Phi_{s'}
-  \big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\big)\Big]^{2}}
+  \exp{\frac{-\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}
+  \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]^{2}}
   {2\sigma^{2}}} \\
   &\phantom{\propto \sum_{s, s' \in \mathcal{S}} \Bigg[} % SPLIT LINE
-  + \ln \frac{-\frac{1}{2} e^{\mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p}}}
-  {\sqrt{(2\pi)^{k}\left|\mathbf{\Sigma}\right|}} +
+  + \ln \frac{-\frac{1}{2} e^{\bm{p}^{T}\bm{\Sigma}^{-1}\bm{p}}}
+  {\sqrt{(2\pi)^{k}\left|\bm{\Sigma}\right|}} +
   \ln \frac{1}{1 + e^{-\Phi}}\Bigg]\\
   % Line 4.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
-  \frac{\Big[\Phi_{s}\big(\mathbf{x}\big) -
-  \Phi_{s'}\big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\big)\Big]^{2}}{2\sigma^{2}} -
-  \frac{1}{2} \ln \left|\mathbf{\Sigma}\right|\\ 
+  \frac{\Big[\Phi_{s}\big(\bm{x}\big) -
+  \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]^{2}}{2\sigma^{2}} -
+  \frac{1}{2} \ln \left|\bm{\Sigma}\right|\\ 
   &\phantom{\propto \sum_{s, s' \in \mathcal{S}} \Bigg[} % SPLIT LINE
-  - \frac{1}{2} \mathbf{p}^{T}\mathbf{\Sigma}^{-1}\mathbf{p} -
+  - \frac{1}{2} \bm{p}^{T}\bm{\Sigma}^{-1}\bm{p} -
   \ln(1 + e^{-\Phi}) \Bigg]\\
   % Line 5.
   &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
-  \frac{\Big[\Phi_{s}(\mathbf{x}) -
-  \Phi_{s'}\big(\Lambda(\mathbf{x}, \mathbf{p}, \mathbf{t})\big)\Big]^{2}}{2\sigma^{2}} -
-  \frac{1}{2} \mathbf{p}^{T}\mathbf{p} \\
+  \frac{\Big[\Phi_{s}(\bm{x}) -
+  \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]^{2}}{2\sigma^{2}} -
+  \frac{1}{2} \bm{p}^{T}\bm{p} \\
   &\phantom{\propto \sum_{s, s' \in \mathcal{S}} \Bigg[} % SPLIT LINE
   - \ln(1 + e^{-\Phi}) \Bigg]
 \end{align}
@@ -534,46 +534,46 @@ $\tau \in \{\alpha, \beta, \gamma\}$.
   \frac{\partial E}{\partial \tau} &=
   \sum_{s, s' \in \mathcal{S}} \Bigg[ - \frac{\partial}{\partial \tau}
   \ln(2\pi\sigma) - \frac{\partial}{\partial \tau}
-  \frac{\Big[\Phi_{s}\big(\mathbf{x}\big) -
-  \Phi_{s'}\big(\Lambda(\mathbf{x})\big)\Big]^{2}}{2\sigma^{2}} -
-  \frac{\partial}{\partial \tau} \frac{1}{2} \mathbf{p}^{T}\mathbf{p} -
+  \frac{\Big[\Phi_{s}\big(\bm{x}\big) -
+  \Phi_{s'}\big(\Lambda(\bm{x})\big)\Big]^{2}}{2\sigma^{2}} -
+  \frac{\partial}{\partial \tau} \frac{1}{2} \bm{p}^{T}\bm{p} -
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 2.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial}{\partial \tau}
-  \Big[\Phi_{s}\big(\mathbf{x}\big) - \Phi_{s'}\big(\Lambda(\mathbf{x})\big)\Big]^{2} -
+  \Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}\big(\Lambda(\bm{x})\big)\Big]^{2} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
-  \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+  \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 3.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial \phi}{\partial \Phi} \frac{\partial \Phi}{\partial \Lambda}
-  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} -
+  \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
-  \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+  \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   \shortintertext{Where $\phi(.) =
-  \big(\Phi_{s}(\mathbf{x}) - \Phi_{s'}(\Lambda(\mathbf{x}))\big)^{2}$}
+  \big(\Phi_{s}(\bm{x}) - \Phi_{s'}(\Lambda(\bm{x}))\big)^{2}$}
   % Line 4.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
-  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} -
+  \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
-  \mathbf{p}^{T}\mathbf{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
+  \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 5.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
-  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} - \mathbf{p}^{T} -
+  \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} - \bm{p}^{T} -
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
     \Bigg]\\
   % Line 6.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
-  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} - \mathbf{p}^{T} +
+  \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} - \bm{p}^{T} +
   \frac{1}{1 + e^{\Phi}} \frac{\partial \Phi}{\partial \Lambda}
-  \frac{\partial \Lambda}{\partial \mathbf{R}_{\tau}} \Bigg]
+  \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} \Bigg]
 \end{align}
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
