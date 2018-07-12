@@ -273,13 +273,13 @@ the appearance model $u$ may be marginalised as follows.
   \label{eqn:probobj_appearance_marginal}
   % Line 1.
   P(\Phi, \Omega, p, L) & =
-  \int_{-\infty}^{\infty} \Bigg[ 
+  \int \Bigg[ 
   \prod_{\psi \in \bm{\Psi}} P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
   % Line 2.
   & = \prod_{\psi \in \bm{\Psi}} 
-  \int_{-\infty}^{\infty} \Bigg[ P(\Phi \given u_{\psi})
+  \int \Bigg[ P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
   & = \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
@@ -319,7 +319,7 @@ derived as follows.
   P(\Omega, p | L_{s, s'}) & \propto \prod_{s, s' \in \mathcal{S}}
   \frac{P(L_{s, s'} | \Omega, p) 
   P(\Omega | p)P(p)P(L_{s, s'})}
-  {\displaystyle\int_{-\infty}^{\infty} P(L_{s, s'} \given \Omega, p)
+  {\displaystyle\int P(L_{s, s'} \given \Omega, p)
   \intd{L_{s, s'}}} P(\Phi) \\
   % Line 2.
   & \propto \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p) P(\Omega | p)
