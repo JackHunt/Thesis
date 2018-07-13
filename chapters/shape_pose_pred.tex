@@ -10,6 +10,85 @@
 
 \section{Algorithmic Overview}
 \label{sec:spp_algorithm}
+\subsection{Gaussian Process Marginal Likelihood}
+\label{subsec:spp_gp_marginal_likelihood}
+Given a Latent Variable Model of the following form
+\begin{equation}
+  \label{eqn:spp_gp_lvm}
+  P(\bm{Y} \given \bm{X}, \bm{W}, \beta) = P(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
+\end{equation}
+Where in Equation \ref{eqn:spp_gp_lvm} the observed data $\bm{Y} \in \mathbb{R}^{N \times D}$ 
+is mapped to a lower dimensionality manifold $\bm{X} \in \mathbb{R}^{N \times P}$, by parameters 
+$\bm{W} \in \mathbb{R}^{P \times D}$ and variance $\beta$.
+
+The marginal likelihood of $\bm{X}$ is of the form outlined in Equation \ref{eqn:spp_gp_marginal}.
+\begin{equation}
+  \label{eqn:spp_gp_marginal}
+  P(\bm{Y} \given \bm{X}, \beta) = \int P(\bm{Y} \given \bm{X}, \bm{W}, \beta) P(\bm{W}) \intd{\bm{W}}
+\end{equation}
+Where in Equation \ref{eqn:spp_gp_marginal}, $P(\bm{W})$ is a Gaussian conjugate prior of the 
+form $\mathcal{N}(\bm{W} \given \bm{0}, \bm{I})$.
+
+To find the marginal distribution outlined in Equation \ref{eqn:spp_gp_marginal}, it's form may 
+be simplified as follows in Equation \ref{}.
+\begin{align}
+  \label{eqn:spp_gp_marginal_simplify}
+  % Line 1.
+  P(\bm{Y} \given \bm{X}, \beta) &= \int \mathcal{N}(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
+  \mathcal{N}(\bm{W} \given \bm{0}, \bm{I}) \intd{\bm{W}} \\
+  % Line 2.
+  &= \int \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \exp{ 
+  \Bigg[
+    -\frac{\beta}{2} \big( \bm{Y} - \bm{WX} \big)^{T} \big( \bm{Y} - \bm{WX} \big) 
+  \Bigg]}
+  \frac{1}{\sqrt{\left|2\pi\bm{I}\right|}} \exp{ 
+  \Bigg[
+    -\frac{1}{2} \bm{W}^{T}\bm{W}
+  \Bigg]} \intd{\bm{W}} \\
+  % Line 3.
+  &= \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \frac{1}{\sqrt{\left|2\pi\bm{I}\right|}} 
+  \int \exp{
+  \Bigg[
+    -\frac{\beta}{2} \big( \bm{Y} - \bm{WX} \big)^{T} \big( \bm{Y} - \bm{WX} \big) 
+    -\frac{1}{2} \bm{W}^{T}\bm{W}
+  \Bigg]} \intd{\bm{W}} \\
+  % Line 4.
+  &\propto \int \exp{
+  \Bigg[
+    -\frac{\beta}{2} \big( \bm{Y} - \bm{WX} \big)^{T} \big( \bm{Y} - \bm{WX} \big) 
+    -\frac{1}{2} \bm{W}^{T}\bm{W}
+  \Bigg]} \intd{\bm{W}} \\
+  % Line 5.
+  &\propto \int \exp{ 
+  \Bigg[ -\frac{1}{2} \Big[
+    \beta \big( \bm{Y} - \bm{X}^{T}\bm{W} \big)^{T} \big( \bm{Y} - \bm{X}^{T}\bm{W} \big) 
+    + \bm{W}^{T}\bm{W}
+  \Big] \Bigg]} \intd{\bm{W}} \\
+  % Line 6.
+  &\propto \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
+  \int \exp{
+  \Bigg[ -\frac{1}{2} \Big[
+    -\beta \big( \bm{Y}^{T}\bm{X}^{T}\bm{W} \big) 
+    -\beta \big( \bm{W}^{T}\bm{XY} \big)^{T}
+    +\beta \bm{W}^{T}\bm{XX}^{T}\bm{W}
+    + \bm{W}^{T}\bm{W}
+  \Big] \Bigg]} \intd{\bm{W}} \\
+  % Line 7.
+  &\propto \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
+  \int \exp{
+  \Bigg[ -\frac{1}{2} \Big[
+    -2\beta \bm{Y}^{T}\bm{X}^{T}\bm{W}
+    +\beta \bm{W}^{T}\bm{XX}^{T}\bm{W}
+    + \bm{W}^{T}\bm{W}
+  \Big] \Bigg]} \intd{\bm{W}} \\
+  % Line 7.
+  &\propto \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
+  \int \exp{
+  \Bigg[ -\frac{1}{2} \Big[
+    \bm{W}^{T} \big( \beta \bm{XX}^{T} + \bm{I} \big) \bm{W}
+    -2\beta \bm{Y}^{T}\bm{X}^{T}\bm{W}
+  \Big] \Bigg]} \intd{\bm{W}}
+\end{align}
 
 \section{Qualitative Results}
 \label{sec:spp_qualitative}
