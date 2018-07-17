@@ -90,6 +90,70 @@ be simplified as follows in Equation \ref{}.
   \Big] \Bigg]} \intd{\bm{W}}
 \end{align}
 
+To make the integral over $\bf{W}$ tractable in Equation \ref{eqn:spp_gp_marginal_simplify}, 
+the distribution $P(\bf{Y} \given \bf{X}, \beta)$ must be of a Gaussian form; an exponential 
+of a quadratic form. Completing the square in $\bf{W}$ allows the marginal to be expressed 
+in such a form. First, making the change of variables as in Equation 
+\ref{eqn:spp_gp_marginal_change}, the procedure is as follows in Equation \ref{eqn:spp_gp_complete}.
+\begin{align}
+  \label{eqn:spp_gp_marginal_change}
+  \bf{A} &= \beta \bf{XX}^{T} + \bf{I}\\
+  \bf{b} &= \beta \bf{Y}^{T} \bf{X}^{T}
+\end{align}
+
+\begin{align}
+  \label{eqn:spp_gp_complete}
+  % Line 1.
+  P(\bf{Y} \given \bf{X}, \beta) &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  \int \exp{\Big[ -\frac{1}{2} 
+  \big[
+    \bf{W}^{T}\bf{AW} - 2\bf{bW}  
+  \big]
+  \Big]} \intd{\bf{W}}\\
+  % Line 2.
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  \int \exp{\Big[ 
+    -\frac{1}{2} \bf{W}^{T}\bf{AW} 
+    - 2\bf{bW} 
+    - \bf{b}^{T}\bf{A}^{-1}\bf{b}  
+  \Big]} \intd{\bf{W}}\\
+  % Line 3.
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  \int \exp{\Big[ 
+    -\frac{1}{2} \bf{W}^{T}\bf{AW} 
+    - 2\bf{bA}\bf{A}^{-1}\bf{W}
+    + \bf{b}^{T}\bf{A}^{-1}\bf{AA}^{-1}\bf{b}  
+  \Big]} \intd{\bf{W}}\\
+  % Line 4.
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  \int \exp{\Big[ -\frac{1}{2} \big[ 
+      \big( \bf{W} - \bf{A}^{-1}\bf{b} \big)^{T}
+      \bf{A}
+      \big( \bf{W} - \bf{A}^{-1}\bf{b} \big)
+      - \bf{b}^{T}\bf{A}^{-1}\bf{b}
+    \big]
+  \Big]} \intd{\bf{W}}\\
+  % Line 5.
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  \exp{\Big[ -\frac{1}{2} \big[
+      \sqrt{\left| 2 \pi \bf{A} \right|}
+      - \bf{b}^{T}\bf{A}^{-1}\bf{b}
+    \big]
+  \Big]}\\
+  % Line 6.
+  &\propto \exp{\Big[ \frac{1}{2} \big[
+    \beta \bf{Y}^{T}\beta{Y}
+    - \bf{b}^{T}\bf{A}^{-1}\bf{b}
+    \big]
+  \Big]}\\
+  % Line 7.
+  &\propto \exp{\Big[ -\frac{1}{2}
+  \bf{Y}^{T} \big(
+    \beta \bf{I} - \beta^{2}\bf{X}^{T}\bf{A}^{-1}\bf{X}
+    \big)\bf{Y}
+  \Big]}\\
+\end{align}
+
 \section{Qualitative Results}
 \label{sec:spp_qualitative}
 
