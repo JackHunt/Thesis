@@ -4,8 +4,6 @@
   twoside
 ]{report}
 
-\usepackage[T1]{fontenc}
-
 \usepackage
 [
   linedheaders,
@@ -14,8 +12,8 @@
   eulermath,
   eulerchapternumbers,
   floatperchapter,
-  minionpro,
-  minionprospacing,
+  %minionpro,
+  %minionprospacing,
   listings
 ]{classicthesis}
 \usepackage[utf8]{inputenc}
@@ -57,6 +55,8 @@
 \newcommand{\given}[1][]{\:#1\vert\:}
 \newcommand{\std}[1]{{\footnotesize $\pm${#1}}}
 \newcommand{\intd}[1]{{\mathrm d{#1}}}
+
+\renewcommand{\bm}{\mathbold}
 
 % Adjust align spacing.
 \addtolength{\jot}{1.25em}
