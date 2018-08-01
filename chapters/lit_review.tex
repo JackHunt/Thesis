@@ -1,6 +1,6 @@
 %% Tracking and Mapping.
 \section{Tracking and Mapping}
-\label{sec:lit_review_tam}
+~\label{sec:lit_review_tam}
 There has been much research in the field of Tracking and Mapping (TAM) in recent 
 years, with many large scale works being driven by the availibility of once 
 costly depth sensing equipment. The availability of such equipment combined 
@@ -67,7 +67,7 @@ voxels allowing for very fast voxel lookups. The presented approach yields low s
 for such operations, vastly increasing the potential for real time, large scale use. Additionally, 
 a streaming system is introduced to dynamically handle data transmission between the CPU and GPU, 
 allowing for the reconstruction of scenes that may exceed the GRAM bounds of commodity GPU's. The 
-proposed system is capable of running at \(\approx46Hz\) on an NVIDIA Titan GPU.
+proposed system is capable of running at \(\approx46Hz\) on an NVIDIA Titan GPU.\@
 
 In the same year, \textit{Thomas et al}~\cite{Thomas2013} introduced an alternative scene 
 representation, based on the notion that a scene may be represented as a set of Planar 
@@ -114,16 +114,16 @@ to the \textit{KinectFusion} pipeline proposed by \textit{Nei{\ss}ner et al}~\ci
 The authors presented in addition to the original publication, a technical report and an open 
 source implementation. The proposed work provides further improvements to those of 
 \textit{Nei{\ss}ner et al}~\cite{NieBner2013} including a number of low level optimisations to the 
-core hashed TSDF data structure, it's allocation and update(integration of observation points) and 
+core hashed TSDF data structure, it's allocation and update (integration of observation points) and 
 the rendering phase of the pipeline. In addition, the authors demonstrate that pose estimation quality 
 may be greatly improved by the use of commodity Inertial Motion Unit (IMU) devices, commonly found 
 on mobile phones and tablet computers. \textit{Prisacariu et al} report runtimes of 
-\(\approx47Hz\) on an NVIDIA Shield tablet and \(\approx910Hz\) with a commodity NVIDIA Titan X GPU.
+\(\approx47Hz\) on an NVIDIA Shield tablet and \(\approx910Hz\) with a commodity NVIDIA Titan X GPU.\@
 
 \textit{Whelan et al}~\cite{Whelan2015} in 2015 proposed another \textit{KinectFusion} 
 ~\cite{Newcombe2011} like pipeline intended to enable reconstruction of large scale scenes, 
 acheiving reconstruction over hundreds of metres. The approach taken by the authors to enable 
-such large scale reconstructions is centered around the use of a cyclic buffer on the GPU. For pose 
+such large scale reconstructions is centered around the use of a cyclic buffer on the GPU.\@ For pose 
 estimation, the authors impose both geometric and photometric constraints on the camera pose. 
 Additionally, the proposed approach performs map updates in an as-rigid-as-possible~\cite{Igarashi2005} 
 manner, combining frame recognition such that on a recognition event, a map update is performed.
@@ -147,18 +147,17 @@ between the scenes. Corrections between the scenes are made via the use of Pose 
 
 %% Semantic SLAM.
 \section{Semantic SLAM}
+~\label{sec:lit_review_semantic}
 Over the years there has been much interest within the computer vision research community on 
 the semantic understanding of our environment. The ability of machines to recognise and extract 
 information about their environments and the components of them (such as people and objects) has 
 wide application potential, ranging from autonomous robotics to augmented reality video games. 
 The application potential of this semantic scene understanding ability is amplified when it is 
-combined with the vast progress that has been made in dense SLAM. This section shall provide a 
-survey of research that amalgamates the two fields of semantic scene understanding and SLAM.
+combined with the vast progress that has been made in dense SLAM.\@ This section shall provide a 
+survey of research that amalgamates the two fields of semantic scene understanding and SLAM.\@
 
 %Bengio et.al.~\cite{Bengio2013} - representation learning.
 %Girshick et.al~\cite{Girshick2014} - feature hierarchies.
-
-\label{sec:lit_review_semantic}
 \textit{Civera et al}~\cite{Civera2011} in 2011 introduced an approach to semantic SLAM 
 that utilises image based features to attach semantic meaning to 3D observations. The SLAM 
 system itself is based on Monocular EKF SLAM~\cite{Smith1990} with semantics added to points via 
@@ -170,7 +169,7 @@ measure.
 pipeline for the object centric integration of RGBD images. Given an RGBD frame, objects 
 are detected using a Random Forest (RF)~\cite{Ho1995} classifier trained on hand crafted features 
 extracted from RGBD images. The proposed approach does not reconstruct an entire scene, rather it 
-reconstructs scene components(such as objects) that have been semantically segmented 
+reconstructs scene components (such as objects) that have been semantically segmented 
 from the current RGBD frame.
 
 \textit{Valentin et al}~\cite{Valentin2015} in 2015 proposed a fully integrated dense SLAM 
@@ -212,9 +211,9 @@ output to determine the class to be assigned to an isosurface region.
 
 %% Dynamic SLAM.
 \section{Dynamic SLAM, Motion Segmentation and Optical Flow}
-\label{sec:lit_review_dynamic}
+~\label{sec:lit_review_dynamic}
 Sections~\ref{sec:lit_review_tam} and~\ref{sec:lit_review_semantic} provided an assesment 
-of pertinent literature in the fields of SLAM and Semantic SLAM. However, all of the 
+of pertinent literature in the fields of SLAM and Semantic SLAM.\@ However, all of the 
 aproaches outlined in these sections are limited to use in static scenes only without 
 the capability to accurately operate in an environment that contains moving objects. This 
 section shall explore pertinent literature on the topics of \textit{Dynamic SLAM}, 
@@ -283,7 +282,7 @@ of interest. Motion segmentation is posed as a Maximum a Posteriori (MAP)
 ~\cite{BishopPRML, Murphy2012ML} inference problem over a Conditional Random Field (CRF) 
 ~\cite{Krahenbuhl2011} defined over TSDF voxels. The proposed system is able to segment objects 
 undergoing both minor and major displacements, with motion labels and parameters found with 
-respect to the live frame and the TSDF. However, the proposed approach is limited only to very 
+respect to the live frame and the TSDF\@ However, the proposed approach is limited only to very 
 small scenes, with very long runtimes reported for TSDF volumes of dimensionality \(256^{3}\).
 
 \textit{Newcombe et al}~\cite{Newcombe2015} again in 2015, introduced a dynamic dense SLAM 
@@ -296,10 +295,10 @@ open/closed topology changes, such as hands. In addition, the authors highlight 
 
 %% Object Reconstruction.
 \section{Object Reconstruction}
-\label{sec:lit_review_obj_recon}
+~\label{sec:lit_review_obj_recon}
 It is evident from Sections~\ref{sec:lit_review_tam},~\ref{sec:lit_review_dynamic} and 
 ~\ref{sec:lit_review_semantic} that much progess has been made in the fields of TAM/SLAM, 
-dynamic SLAM and semantic SLAM. However, \textit{Object Reconstruction} remains a very open 
+dynamic SLAM and semantic SLAM.\@ However, \textit{Object Reconstruction} remains a very open 
 and active field of research. This Section provides a review of pertinent literature on the 
 task of reconstructing consistent models of objects, rather than full scale scenes. The problem of 
 interest in this section, though related to SLAM, incurs additional complications with regards 
@@ -356,7 +355,7 @@ to be problematic.
 
 %% Object Shape Prediction.
 \section{Shape and Pose Prediction}
-\label{sec:lit_review_prediction}
+~\label{sec:lit_review_prediction}
 Section~\ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
 which demonstrates that although much progress has been made since the early work of \textit{Curless \& 
 Levoy}~\cite{Curless1996}, many open research problems remain. This section provides a survey of research 
