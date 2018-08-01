@@ -64,7 +64,7 @@ are rendered.
 In the proposed system, the object model is divided into \textit{subvolumes}, 
 each consisting of a TSDF, colour volume and object Probability Volume. 
 Additionally, each has associated with it a rigid body transform 
-$\bm{T} \in \mathbb{SE}(3)$ that specifies it's pose relative to the global 
+\(\bm{T} \in \mathbb{SE}(3)\) that specifies it's pose relative to the global 
 coordinate frame.
 
 At each time step, a segmentation model is applied to the RGB input image to
@@ -86,7 +86,7 @@ performed to refine the resulting object segmentation over all subvolumes.
 
 The proposed approach is not tied to the use of any one probabilistic model,
 though in the presented experiments Pixel Wise Posteriors (PwP) of \textit{Bibby et al} 
-\cite{Bibby2008} are used. An overview of the object reconstruction pipeline is shown in
+~\cite{Bibby2008} are used. An overview of the object reconstruction pipeline is shown in
 Figure~\ref{fig:probobj_pipeline_diagram}.
 
 \begin{figure}[h]
@@ -103,10 +103,10 @@ The surface map and camera pose are estimated using the standard KinectFusion
 like pipeline of~\cite{Newcombe2011,Prisacariu2014}. The surface is represented
 as the Zero Level Set of a TSDF discretised over voxels, with the isosurface 
 embedding built by a weigted mean of new observations, as outlined in Equations
-\ref{eqn:sdf_update} and~\ref{eqn:sdf_weight_update}. Camera pose estimation is
+~\ref{eqn:sdf_update} and~\ref{eqn:sdf_weight_update}. Camera pose estimation is
 performed with ICP, as outlined in Section~\ref{subsec:moseg_static_camera_trackin} 
 and is run quasi-simultaneously against the evolving map. Here, inspired by 
-\cite{Kolev2006}, this procedure is augmented by estimating the posterior probability, 
+~\cite{Kolev2006}, this procedure is augmented by estimating the posterior probability, 
 per map voxel, of belonging to the object of interest. This volume of posterior 
 probabilities is updated at each time step, in parallel to the fusion process in the 
 mapping and pose estimation components of the pipeline. The representation of the 
@@ -115,7 +115,7 @@ patch on the object surface. New subvolumes are created when sufficiently many n
 voxels have been allocated and have had SDF data integrated. By ensuring overlap
 between the subvolumes, transformations between them can be found and pose
 inconsistencies addressed, online. Empirically, the threshold for starting a new
-subvolume is defined as the event when $50\%$ of the voxels fused in to the
+subvolume is defined as the event when \(50\%\) of the voxels fused in to the
 current volume are newly observed points, such that there is sufficient overlap 
 between two subvolumes that shall later be registered.
 
@@ -125,21 +125,21 @@ At each observed RGBD frame, the object posterior probabilities for the visible
 voxels in the active subvolume are updated via an appearance-derived probability
 map for that frame. Under the assumption of conditional independence between
 frames (for sake of tractability), the posterior probability of a given voxel
-$\psi \in \Psi$ belonging to the object has the following form(noting that
-$\Phi \subset \Psi$):
+\(\psi \in \Psi\) belonging to the object has the following form(noting that
+\(\Phi \subset \Psi\)):
 \begin{equation}
 \label{eqn:probobj_voxel_posterior}
 P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty}
 P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 \end{equation}
-where $\Psi$ is the volume of voxels for which measurements are accumulated,
-$\Phi$  is the volume of voxels pertaining to the object $\bm{\Phi}$ of 
-interest, $\Omega_{t}$ is the current RGBD image observation at time $t$ and 
-$p_{t}$ is the currently tracked pose at time $t$. Equation 
-\ref{eqn:probobj_voxel_posterior} encodes the probability of a voxel belonging 
+where \(\Psi\) is the volume of voxels for which measurements are accumulated,
+\(\Phi\)  is the volume of voxels pertaining to the object \(\bm{\Phi}\) of 
+interest, \(\Omega_{t}\) is the current RGBD image observation at time \(t\) and 
+\(p_{t}\) is the currently tracked pose at time \(t\). Equation 
+~\ref{eqn:probobj_voxel_posterior} encodes the probability of a voxel belonging 
 to the object of interest as the product of instantaneous appearance-derived 
-pixel-wise conditionals. Note that in the above, $\Phi$ is a discretisation of 
-the continuous $\Phi$ in the probabilistic formulation that follows.
+pixel-wise conditionals. Note that in the above, \(\Phi\) is a discretisation of 
+the continuous \(\Phi\) in the probabilistic formulation that follows.
 
 \subsection{Full Joint Definition}
 \label{subsec:probobj_full_joint}
@@ -154,15 +154,15 @@ Graphical Model (PGM) of Figure~\ref{fig:probobj_pgm1}.
   \resizebox {0.4\linewidth}{!}{
     \begin{tikzpicture}
       % Declare nodes.
-      \node[latent] (phi) {$\Phi$};
-      \node[latent, right=of phi] (u) {$u$};
-      \node[latent, below=of u] (L) {$L$};
-      \node[obs, right=of u, yshift=-1cm] (omega) {$\Omega$};
-      \node[obs, right=of u, yshift=1cm] (p) {$p$};
+      \node[latent] (phi) {\(\Phi\)};
+      \node[latent, right=of phi] (u) {\(u\)};
+      \node[latent, below=of u] (L) {\(L\)};
+      \node[obs, right=of u, yshift=-1cm] (omega) {\(\Omega\)};
+      \node[obs, right=of u, yshift=1cm] (p) {\(p\)};
       
       % Setup plates.
       \plate[inner sep=0.25cm] {plate1} {(omega) (p)} {t, p};
-      \plate[inner sep=0.25cm] {plate2} {(u) (phi)} {$\Psi$};
+      \plate[inner sep=0.25cm] {plate2} {(u) (phi)} {\(\Psi\)};
       \plate[inner sep=0.25cm] {plate3} {(L)} {s, s'};
       
       % Setup edges.
@@ -173,15 +173,15 @@ Graphical Model (PGM) of Figure~\ref{fig:probobj_pgm1}.
   }
   \caption[Probabilistic Object Reconstruction Formulation I]
   {Probabilistic Graphical Model representing the full Joint
-    Distribution over the shape $\bm{\Phi}$ of the object of interest.}
+    Distribution over the shape \(\bm{\Phi}\) of the object of interest.}
 \end{figure}
 
-Where $\Phi$ is the shape of the object to be reconstructed (represented as a
+Where \(\Phi\) is the shape of the object to be reconstructed (represented as a
 subset of voxels for which surface data has been integrated into the relevant
-TSDF), $u$ is the appearance model volume (aforementioned appearance Posteriors 
-of Equation~\ref{eqn:probobj_voxel_posterior}), $L$ is the set of consistency 
+TSDF), \(u\) is the appearance model volume (aforementioned appearance Posteriors 
+of Equation~\ref{eqn:probobj_voxel_posterior}), \(L\) is the set of consistency 
 constraints for each adjacent sub volume pair in the form of rigid body 
-transformations, $\Omega$ is the set of RGBD image pixels and $p$ the set of 
+transformations, \(\Omega\) is the set of RGBD image pixels and \(p\) the set of 
 poses over time.
 
 The PGM given in Figure~\ref{fig:probobj_pgm1} leads to the following
@@ -196,14 +196,14 @@ factorisation over the full Joint Distribution.
   P(L_{s, s'} \given \Omega_{p, t}, p_{t})
   P(L_{s, s'})P(p_{t})P(\Omega_{p, t})
 \end{equation}
-Where in Equation~\ref{eqn:probobj_full_joint}, $\Psi$ is the set of voxels
-across all subvolumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
-frame $\Omega_{t}$ and $\mathcal{S}$ is the set of subvolumes. Note that the 
-notation $s, s' \in \mathcal{S}$ refers to pairs of adjacent, overlapping 
+Where in Equation~\ref{eqn:probobj_full_joint}, \(\Psi\) is the set of voxels
+across all subvolumes, \(\mathcal{P}\) is the set of RGBD pixels for a given 
+frame \(\Omega_{t}\) and \(\mathcal{S}\) is the set of subvolumes. Note that the 
+notation \(s, s' \in \mathcal{S}\) refers to pairs of adjacent, overlapping 
 subvolumes.
 
 If pixel-wise independence is assumed in the RGBD observations and temporal
-independence is assumed in the poses, the plate containing $\Omega$ and $p$ can
+independence is assumed in the poses, the plate containing \(\Omega\) and \(p\) can
 be removed as shown in Figure~\ref{fig:probobj_pgm2}.
 \begin{figure}[h]
   \label{fig:probobj_pgm2}
@@ -211,15 +211,15 @@ be removed as shown in Figure~\ref{fig:probobj_pgm2}.
   \resizebox {0.4\linewidth}{!}{
     \begin{tikzpicture}
       % Declare nodes.
-      \node[latent] (phi) {$\Phi$};
-      \node[latent, right=of phi] (u) {$u$};
-      \node[latent, below=of u] (L) {$L$};
-      \node[obs, right=of u, yshift=-1cm] (omega) {$\Omega$};
-      \node[obs, right=of u, yshift=1cm] (p) {$p$};
+      \node[latent] (phi) {\(\Phi\)};
+      \node[latent, right=of phi] (u) {\(u\)};
+      \node[latent, below=of u] (L) {\(L\)};
+      \node[obs, right=of u, yshift=-1cm] (omega) {\(\Omega\)};
+      \node[obs, right=of u, yshift=1cm] (p) {\(p\)};
       
       % Setup plates.
       \plate[inner sep=0.25cm] {plate3} {(L)} {s, s'};
-      \plate[inner sep=0.25cm] {plate2} {(u) (phi)} {$\Psi$};
+      \plate[inner sep=0.25cm] {plate2} {(u) (phi)} {\(\Psi\)};
       
       % Setup edges.
       \edge {omega, p} {u, L}
@@ -229,12 +229,12 @@ be removed as shown in Figure~\ref{fig:probobj_pgm2}.
   }
   \caption[Probabilistic Object Reconstruction Formulation II]
   {Probabilistic Graphical Model representing the simplified Joint
-    Distribution over the shape $\bm{\Phi}$ of the object of interest.}
+    Distribution over the shape \(\bm{\Phi}\) of the object of interest.}
 \end{figure}
 
 The simplifications transforming the PGM of Figure~\ref{fig:probobj_pgm1} in to
 that of Figure~\ref{fig:probobj_pgm2} lead to the following factorisation of the
-Joint Distribution over $\bm{\Phi}$.
+Joint Distribution over \(\bm{\Phi}\).
 \begin{equation}
   \label{eqn:probobj_simplified_joint}
   P(\Phi, \Omega, p, u, L) = 
@@ -244,8 +244,8 @@ Joint Distribution over $\bm{\Phi}$.
 \end{equation}
 
 The formalisms defined in Figures~\ref{fig:probobj_pgm1} and
-\ref{fig:probobj_pgm2} and Equations~\ref{eqn:probobj_full_joint} and
-\ref{eqn:probobj_simplified_joint} describe a probabilistic framework in which
+~\ref{fig:probobj_pgm2} and Equations~\ref{eqn:probobj_full_joint} and
+~\ref{eqn:probobj_simplified_joint} describe a probabilistic framework in which
 online corrections can be made to the reconstructed model (piecewise over
 subvolumes) to counter errors caused by pose tracking inconsistencies. As with
 scene scale dense SLAM systems~\cite{Newcombe2011, Prisacariu2014, NieBner2013},
@@ -263,12 +263,12 @@ cause any functional issues.
 
 Note that only voxels whose appearance posterior is greater for the foreground 
 class are used in the correction procedure; only voxels that satisfy the probabilistic 
-condition $P(\psi \in \Phi | \Omega, p) > 1 - P(\psi \in \Phi | \Omega, p)$ are 
+condition \(P(\psi \in \Phi | \Omega, p) > 1 - P(\psi \in \Phi | \Omega, p)\) are 
 considered.
 
 \subsection{Appearance Marginal}
 Continuing on from the formulation given in Equation~\ref{eqn:probobj_simplified_joint}, 
-the appearance model $u$ may be marginalised as follows.
+the appearance model \(u\) may be marginalised as follows.
 \begin{align}
   \label{eqn:probobj_appearance_marginal}
   % Line 1.
@@ -286,9 +286,9 @@ the appearance model $u$ may be marginalised as follows.
   P(L_{s, s'})P(p)P(\Omega)P(\bm{\Phi})
 \end{align}
 Note that the Appearance Posterior Volume outlined in Section 
-\ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
+~\ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
 Section~\ref{} for the purposes of subvolume alignment and determining the
-subset of voxels $\bm{\Phi} \subset \bm{\Psi}$ that determine the target
+subset of voxels \(\bm{\Phi} \subset \bm{\Psi}\) that determine the target
 object shape.
 
 Further details pertaining to the inference procedure for the per-subvolume
@@ -296,10 +296,10 @@ deformations is provided in Section~\ref{sec:probobj_model_correction}.
 
 \section{Online Model Correction}
 \label{sec:probobj_model_correction}
-The tracking consistency constraints denoted by the variables $L_{s, s'}$ such
-that $s, s' \in \mathcal{S}$ with $\mathcal{S}$ being the set of overlapping
-subvolume pairs $s, s'$ in the Probabilistic Graphical Models given by Figures
-\ref{fig:probobj_pgm1} and~\ref{fig:probobj_pgm2} can be enforced in terms of
+The tracking consistency constraints denoted by the variables \(L_{s, s'}\) such
+that \(s, s' \in \mathcal{S}\) with \(\mathcal{S}\) being the set of overlapping
+subvolume pairs \(s, s'\) in the Probabilistic Graphical Models given by Figures
+~\ref{fig:probobj_pgm1} and~\ref{fig:probobj_pgm2} can be enforced in terms of
 minimising the disparity between each pair of adjacent subvolumes. The effect of
 this minimsation being that consistency in the pose estimation phase of the
 pipeline outlined in Figure~\ref{fig:probobj_pipeline_diagram} is enforced. The
@@ -310,8 +310,8 @@ transformation for the subvolume pair.
 \label{subsec:probobj_alignment_map}
 Referring back to the joint distribution of Equation~\ref{eqn:probobj_simplified_joint}, 
 to achieve the aforementioned minimisation of disparity between overlapping subvolumes, 
-a Maximum a Posteriori (MAP) estimate is desirable. As such, a MAP estimate over $L_{s, s'}$ 
-in Equation~\ref{eqn:probobj_simplified_joint} for a given subvolume pair $s, s'$ may be
+a Maximum a Posteriori (MAP) estimate is desirable. As such, a MAP estimate over \(L_{s, s'}\) 
+in Equation~\ref{eqn:probobj_simplified_joint} for a given subvolume pair \(s, s'\) may be
 derived as follows.
 \begin{align}
   \label{eqn:probobj_map_estimate}
@@ -329,22 +329,22 @@ derived as follows.
   P(\Phi)
 \end{align}
 Note that in the third step of Equation~\ref{eqn:probobj_map_estimate} the
-distributions $P(\Omega | p)$ and $P(p)$ are taken to be uniform and as such may
-be omitted whilst retaining proportionality. The prior distribution $P(L_{s, s'})$ is
-conjugate to $P(L_{s, s'} | \Omega, p)$ and is of the form of a Multivariate
-Gaussian Distribution $\mathcal{N}(\bm{0} \given \bm{I})$ over the
-$\mathbb{SE}(3)$ deformation parameters described in Section 
-\ref{subsub:moseg_static_camera_attitude}. The choice of such a prior distribution
+distributions \(P(\Omega | p)\) and \(P(p)\) are taken to be uniform and as such may
+be omitted whilst retaining proportionality. The prior distribution \(P(L_{s, s'})\) is
+conjugate to \(P(L_{s, s'} | \Omega, p)\) and is of the form of a Multivariate
+Gaussian Distribution \(\mathcal{N}(\bm{0} \given \bm{I})\) over the
+\(\mathbb{SE}(3)\) deformation parameters described in Section 
+~\ref{subsub:moseg_static_camera_attitude}. The choice of such a prior distribution
 is motivated by the assumption that motion between consecutive frames is minor,
-thus the given prior will have the effect of constraining the $\mathbb{SE}(3)$
-transformation as such. The prior distribution $P(\Phi)$ serves as a
+thus the given prior will have the effect of constraining the \(\mathbb{SE}(3)\)
+transformation as such. The prior distribution \(P(\Phi)\) serves as a
 \textit{Surface Prior} to mitigate the effect of noise introduced in to the TSDF
-volumes. The form of $P(\Phi)$ shall be discussed in Section
-\ref{subsec:probobj_analytic_alignment_map}.
+volumes. The form of \(P(\Phi)\) shall be discussed in Section
+~\ref{subsec:probobj_analytic_alignment_map}.
 
 The rationale of Equation~\ref{eqn:probobj_map_estimate} is that the deformation
-$L_{s, s'}$ applied to the subvolume $s$ maximises the posterior probability of
-observing the current pose $p$ given the current RGBD frame $\Omega$ by reducing
+\(L_{s, s'}\) applied to the subvolume \(s\) maximises the posterior probability of
+observing the current pose \(p\) given the current RGBD frame \(\Omega\) by reducing
 the variance of the result of the pose estimation phase of the pipeline. As such,
 global tracking variance (quantified by the proportion of outliers in the result
 of the ICP component of the pipeline) is reduced by enforcing local consistency,
@@ -356,15 +356,15 @@ reconstruction.
 With the probabilistic framework now outlined, the analytic form of the
 posterior given in Equation~\ref{eqn:probobj_map_estimate} may be explored. The
 likelihood term in Equation~\ref{eqn:probobj_map_estimate} quantifies the
-ability of the constraint $L_{s, s'}$ to maximise consistency between subvolumes
-$s$ and $s'$, with respect to observed RGBD frame $\Omega$ and pose $p$. By
-quantifying the likelihood only for voxels in $s$ and $s'$ that are visible in
-the current view frustrum at time $t$, the posterior $P(\Omega, p | L_{s, s'})$
+ability of the constraint \(L_{s, s'}\) to maximise consistency between subvolumes
+\(s\) and \(s'\), with respect to observed RGBD frame \(\Omega\) and pose \(p\). By
+quantifying the likelihood only for voxels in \(s\) and \(s'\) that are visible in
+the current view frustrum at time \(t\), the posterior \(P(\Omega, p | L_{s, s'})\)
 is given. As outlined in Section~\ref{subsec:probobj_alignment_map}, the prior
-on the constraints $L_{s, s'}$ has the form of a Multivariate Gaussian
-Distribution of the form $\mathcal{N}(\bm{0}, \bm{I})$.
+on the constraints \(L_{s, s'}\) has the form of a Multivariate Gaussian
+Distribution of the form \(\mathcal{N}(\bm{0}, \bm{I})\).
 
-As such, the analytic form of the likelihood term $P(L_{s, s'} | \Omega, p)$ is
+As such, the analytic form of the likelihood term \(P(L_{s, s'} | \Omega, p)\) is
 given as follows.
 \begin{equation}
   \label{eqn:probobj_likelihood_analytic}
@@ -375,9 +375,9 @@ given as follows.
   {2\sigma^{2}}}
 \end{equation}
 
-In Equation~\ref{eqn:probobj_likelihood_analytic}, the function $\Lambda(.)$
-applies the resultant $\mathbb{SE}(3)$ transform to a given voxel position
-$\bm{x}$ and is defined as follows.
+In Equation~\ref{eqn:probobj_likelihood_analytic}, the function \(\Lambda(.)\)
+applies the resultant \(\mathbb{SE}(3)\) transform to a given voxel position
+\(\bm{x}\) and is defined as follows.
 \begin{align}
   \label{eqn:probobj_lambda_fn}
   \Lambda(\bm{x}, \bm{p}, \bm{t}) &=
@@ -389,15 +389,15 @@ $\bm{x}$ and is defined as follows.
   \end{bmatrix}
   \bm{x}
 \end{align}
-In Equation~\ref{eqn:probobj_lambda_fn} $R_{\bm{p}}$ is the $\mathbb{SO}(3)$
+In Equation~\ref{eqn:probobj_lambda_fn} \(R_{\bm{p}}\) is the \(\mathbb{SO}(3)\)
 rotation matrix generated from the Rodrigues parameters given by the Vector
-$\bm{p}$. Recall the definition of the Rodrigues paramaterisation given in
+\(\bm{p}\). Recall the definition of the Rodrigues paramaterisation given in
 Equation~\ref{eqn:rodriguez_matrix_eq} of Section
-\ref{subsub:moseg_static_camera_attitude}.
+~\ref{subsub:moseg_static_camera_attitude}.
 
-The form of the aforementioned surface prior $P(\Phi)$ is taken to be that of
-the Logistic Distribution, due to the ``symmetric'' $1 - f(x) = f(-x)$
-and ``squashing'' $\texttt{Range}[f(x)] = [0, 1]$ properties of it's Cumulative
+The form of the aforementioned surface prior \(P(\Phi)\) is taken to be that of
+the Logistic Distribution, due to the ``symmetric'' \(1 - f(x) = f(-x)\)
+and ``squashing'' \(\texttt{Range}[f(x)] = [0, 1]\) properties of it's Cumulative
 Density Function (CDF). The PDF of the Logistic Distribution is given as follows.
 \begin{equation}
   \label{eqn:probobj_logistic_dist}
@@ -406,11 +406,11 @@ Density Function (CDF). The PDF of the Logistic Distribution is given as follows
   {\sigma \big( 1 + e^{-\frac{x - \mu}{\sigma}} \big)^{2}}
 \end{equation}
 
-To encode the probability of a given voxel $\psi \in \bm{\Psi}$ encoding an
+To encode the probability of a given voxel \(\psi \in \bm{\Psi}\) encoding an
 isosurface point, represented as the Zero Level Set defined in Equation
-\ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
+~\ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
 probability with a function that has the aforementioned properties. As such, the
-CDF of $P(\Phi)$ is derived as follows.
+CDF of \(P(\Phi)\) is derived as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior_cdf}
   % Line 1.
@@ -428,14 +428,14 @@ CDF of $P(\Phi)$ is derived as follows.
   % Line 4.
   &\propto \lim_{y\to -\infty} \frac{1}{\sigma} \int_{y}^{b}
   \frac{e^{\frac{u}{s}}}{\Big( 1 + e^{\frac{u}{\sigma}} \Big)^{2}} \intd{u}\\
-  \shortintertext{Where $u = -\Phi + \mu$ and $\intd{u} = -\intd{\Phi}$}
+  \shortintertext{Where \(u = -\Phi + \mu\) and \(\intd{u} = -\intd{\Phi}\)}
   % Line 5.
   &\propto \lim_{y\to -\infty} -\int_{y}^{b}
   \frac{e^{p}}{\Big( 1 + e^{p} \Big)^{2}} \intd{p}\\
-  \shortintertext{Where $p = \frac{u}{\sigma}$ and $\intd{p} = \frac{1}{\sigma} \intd{u}$}
+  \shortintertext{Where \(p = \frac{u}{\sigma}\) and \(\intd{p} = \frac{1}{\sigma} \intd{u}\)}
   % Line 6.
   &\propto \lim_{y\to -\infty} -\int_{y}^{b} \frac{1}{w^{2}} \intd{w}\\
-  \shortintertext{Where $w = 1 + e^{p}$ and $\intd{w} = e^{p} \intd{p}$}
+  \shortintertext{Where \(w = 1 + e^{p}\) and \(\intd{w} = e^{p} \intd{p}\)}
   % Line 7.
   &\propto \lim_{y\to -\infty} \Bigg[ \frac{1}{w} + C \Bigg]_{y}^{b}\\
   % Line 8.
@@ -452,7 +452,7 @@ CDF of $P(\Phi)$ is derived as follows.
   &\propto \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
 \end{align}
 Given the Cumulative Density Function derived in Equation
-\ref{eqn:probobj_surface_prior_cdf}, the prior $P(\Phi)$ is defined as follows.
+~\ref{eqn:probobj_surface_prior_cdf}, the prior \(P(\Phi)\) is defined as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior}
   \bar{P}(\Phi) &\propto \left. \int_{-\infty}^{b} \frac
@@ -464,12 +464,12 @@ Given the Cumulative Density Function derived in Equation
 It is evident from Equation~\ref{eqn:probobj_surface_prior} that under an 
 appropriate paramaterisation, the CDF of the Logistic Distribution is the 
 Logistic Sigmoid function prevelant in the Artificial Neural Network literature. 
-As given in Equation~\ref{eqn:probobj_surface_prior} the mean $\mu$ and standard 
-deviation $\sigma$ are $0$ and $1$, respectively.
+As given in Equation~\ref{eqn:probobj_surface_prior} the mean \(\mu\) and standard 
+deviation \(\sigma\) are \(0\) and \(1\), respectively.
 
 Finally, the analytic form of the log-posterior is given as follows, optimising
-for the Rodrigues parameters $p$ and translation vector $t$ of the constraint
-$L_{s, s'}$ between subvolumes $s$ and $s'$.
+for the Rodrigues parameters \(p\) and translation vector \(t\) of the constraint
+\(L_{s, s'}\) between subvolumes \(s\) and \(s'\).
 \begin{align}
   \label{eqn:probobj_log_posterior}
   % Line 1.
@@ -516,17 +516,17 @@ log-posterior given in Equation~\ref{eqn:probobj_log_posterior} may be optimised
 using second order gradient based methods such as Levenberg-Marquardt. As with
 the ICP procedure outlined in Section~\ref{subsub:moseg_static_camera_poserec},
 the optimisation is performed with respect to the three Rodrigues rotation
-parameters $\alpha$, $\beta$, $\gamma$ and translation parameters $t_{x}$,
-$t_{y}$ and $t_{z}$ of the target $\mathbb{SE}(3)$ transformation.
+parameters \(\alpha\), \(\beta\), \(\gamma\) and translation parameters \(t_{x}\),
+\(t_{y}\) and \(t_{z}\) of the target \(\mathbb{SE}(3)\) transformation.
 
 In a similar manner to the process outlined in Section
-\ref{subsub:moseg_static_camera_poserec}, the target energy function must be
-differentiated with respect to each of the $\mathbb{SE}(3)$ parameters. In this
+~\ref{subsub:moseg_static_camera_poserec}, the target energy function must be
+differentiated with respect to each of the \(\mathbb{SE}(3)\) parameters. In this
 case, the log-posterior of Equation~\ref{eqn:probobj_log_posterior} is the
-target energy function and shall be denoted $E(.)$ in the following derivation.
-The derivation of the partial derivatives of $E(.)$ with respect
+target energy function and shall be denoted \(E(.)\) in the following derivation.
+The derivation of the partial derivatives of \(E(.)\) with respect
 to the Rodrigues rotational parameters is as follows for some parameter
-$\tau \in \{\alpha, \beta, \gamma\}$.
+\(\tau \in \{\alpha, \beta, \gamma\}\).
 \begin{align}
   \label{eqn:probobj_log_post_rot_grad}
   % Line 1.
@@ -552,8 +552,8 @@ $\tau \in \{\alpha, \beta, \gamma\}$.
   \frac{1}{2} \frac{\partial}{\partial \tau}
   \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
-  \shortintertext{Where $\phi(.) =
-  \big(\Phi_{s}(\bm{x}) - \Phi_{s'}(\Lambda(\bm{x}))\big)^{2}$}
+  \shortintertext{Where \(\phi(.) =
+  \big(\Phi_{s}(\bm{x}) - \Phi_{s'}(\Lambda(\bm{x}))\big)^{2}\)}
   % Line 4.
   &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
@@ -579,7 +579,7 @@ $\tau \in \{\alpha, \beta, \gamma\}$.
 The final component of the proposed pipeline performs a segmentation in three
 dimensional observed model space to perform refinements over the appearance
 posteriors that separate the voxels pertaining to the object of interest from
-those that have irrelevant measurements integrated, i.e. background measurements
+those that have irrelevant measurements integrated, i.e.\ background measurements
 that have not been used to perform pose estimation and as such have not been rendered.
 
 This segmentation is formulated within a CRF framework, with each node in the
@@ -738,7 +738,7 @@ The following energy function consists of the appearance posterior probabilities
 accumulated during the on-line fusion process for a region in space as the
 CRF unary potentials. The pairwise smoothing term represents the physical
 appearance similarity of the observation regions represented by the
-voxel neighbourhoods $\gamma$ and $\gamma^{'}$:
+voxel neighbourhoods \(\gamma\) and \(\gamma^{'}\):
 \begin{equation}
   \label{eqn:probobj_crf_energy}
   E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \Psi_{n}}
@@ -746,12 +746,12 @@ voxel neighbourhoods $\gamma$ and $\gamma^{'}$:
   P(\mathbb{E}[c]_{\gamma} \given \mathbb{E}[c]_{\gamma'})
 \end{equation}
 
-In Equation~\ref{eqn:probobj_crf_energy} the terms $\mathbb{E}[c]_{\gamma}$ and
-$\mathbb{E}[c]_{\gamma'}$ of the pairwise component of the energy function are
-the expected values over appearance for the 3D regions $\gamma$ and $\gamma'$
-respectively. Recall the unary term $P(\psi \in \Phi \given \Omega_{t}, p_{t})$
+In Equation~\ref{eqn:probobj_crf_energy} the terms \(\mathbb{E}[c]_{\gamma}\) and
+\(\mathbb{E}[c]_{\gamma'}\) of the pairwise component of the energy function are
+the expected values over appearance for the 3D regions \(\gamma\) and \(\gamma'\)
+respectively. Recall the unary term \(P(\psi \in \Phi \given \Omega_{t}, p_{t})\)
 from Equation~\ref{eqn:probobj_voxel_posterior} of Section
-\ref{subsec:probobj_vol_appearance_model}.
+~\ref{subsec:probobj_vol_appearance_model}.
 
 In the implementation used in this work, the aforementioned cut in voxel space
 is obtained by optimising the energy function of Equation~\ref{eqn:probobj_crf_energy} 
@@ -764,7 +764,7 @@ may also be of use~\cite{KRAHENBUHL}.
 Empirically the proposed system is capable of reconstructing a range of objects 
 characterised by a range of different sizes and geometries. The experiments in 
 this section demonstrate efficacy over the approach of \textit{Ren et al} 
-\cite{Ren2013} for the task of obtaining closed, small object reconstructions 
+~\cite{Ren2013} for the task of obtaining closed, small object reconstructions 
 from RGBD data. Each evaluation sequence is run on the system proposed in this 
 chapter and through that of \textit{Ren et al}, with output snapshots taken at 
 quarterly intervals for each sequence. In Section~\ref{QUANT}, a Quantitative 
@@ -872,7 +872,7 @@ the top-down views presented in Figure~\ref{fig:probobj_comp_itm}.
 The efficacy of the approach described in this work is further demonstrated when comparing
 the pipeline as outlined in Figure~\ref{fig:probobj_pipeline_diagram} to a version that 
 utilises only a single representation of the object of interest. Figure 
-\ref{fig:probobj_gappy_teddy} demonstrates the difference in reconstruction output when 
+~\ref{fig:probobj_gappy_teddy} demonstrates the difference in reconstruction output when 
 not utilising the multiple subvolume representation and it's accompanying enforcement 
 of consistency constraints. 
 
@@ -969,8 +969,8 @@ space is Euclidean. The Hausdorff Distance is defined as follows in Equation~\re
   \sup_{x \in X} \inf_{y \in Y} d(x, y), \sup_{y \in Y} \inf_{x \in X} d(x, y) 
   \Bigg]
 \end{equation}
-In Equation~\ref{eqn:probobj_hauss}, $X$ is the ground truth dense SLAM reconstruction, 
-$Y$ is the reconstruction outputted by the proposed system and $d(.)$ is the Euclidean 
+In Equation~\ref{eqn:probobj_hauss}, \(X\) is the ground truth dense SLAM reconstruction, 
+\(Y\) is the reconstruction outputted by the proposed system and \(d(.)\) is the Euclidean 
 distance.
 
 The resultant quantitative comparisons may be found in Table~\ref{tbl:probobj_hauss}.
@@ -995,7 +995,7 @@ yielding reconstructions to a high quality despite the markedly more difficult p
 scenario of utilising the observations of a single object rather than those an entire scene. 
 It can be seen that the presented output reconstructions are geometrically close to those 
 reconstructed with a dense SLAM system~\cite{Prisacariu2014} following the KinectFusion 
-\cite{Newcombe2011} pipeline that is modelling and tracking the entire scene and thus has 
+~\cite{Newcombe2011} pipeline that is modelling and tracking the entire scene and thus has 
 much more geometrical data with which to estimate pose.
 
 Figure~\ref{fig:probobj_hauss} presents renderings of the \textit{Teddy}, 
@@ -1024,7 +1024,7 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
   \caption[Probabilistic Object Reconstruction Hausdorff Distance]
   {Renderings of the sequences evaluated in Table~\ref{tbl:probobj_hauss} textured 
   on Hausdorff Distance (a, b, c, d). The minimum and maximum values given in Table 
- ~\ref{tbl:probobj_hauss} are mapped to the colour range of (e).}
+~\ref{tbl:probobj_hauss} are mapped to the colour range of (e).}
 \end{figure}
 
 \section{Discussion}
@@ -1032,7 +1032,7 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
 It is evident from Sections~\ref{sec:sec:probobj_qualitative} and~\ref{sec:probobj_quantitative} 
 that the proposed approach is capable of densely reconstructing a range of rigid objects, providing 
 closed and consistent object models, versus the state-of-the-art approach of \textit{Ren et al} 
-\cite{Ren2013}, which failed to reconstruct any of the objects with nontrivial geometry that it 
+~\cite{Ren2013}, which failed to reconstruct any of the objects with nontrivial geometry that it 
 was evaluated on. Additionally, the proposed approach shows an improvement over direct segmentation 
 in image space of the object of interest in terms of pose estimation. When evaluating the output 
 reconstructions of the proposed system versus those extracted from a standard \textit{KinectFusion} 
