@@ -17,20 +17,20 @@ Given a Latent Variable Model of the following form
   \label{eqn:spp_gp_lvm}
   P(\bm{Y} \given \bm{X}, \bm{W}, \beta) = P(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
 \end{equation}
-Where in Equation \ref{eqn:spp_gp_lvm} the observed data $\bm{Y} \in \mathbb{R}^{N \times D}$ 
+Where in Equation~\ref{eqn:spp_gp_lvm} the observed data $\bm{Y} \in \mathbb{R}^{N \times D}$ 
 is mapped to a lower dimensionality manifold $\bm{X} \in \mathbb{R}^{N \times P}$, by parameters 
 $\bm{W} \in \mathbb{R}^{P \times D}$ and variance $\beta$.
 
-The marginal likelihood of $\bm{X}$ is of the form outlined in Equation \ref{eqn:spp_gp_marginal}.
+The marginal likelihood of $\bm{X}$ is of the form outlined in Equation~\ref{eqn:spp_gp_marginal}.
 \begin{equation}
   \label{eqn:spp_gp_marginal}
   P(\bm{Y} \given \bm{X}, \beta) = \int P(\bm{Y} \given \bm{X}, \bm{W}, \beta) P(\bm{W}) \intd{\bm{W}}
 \end{equation}
-Where in Equation \ref{eqn:spp_gp_marginal}, $P(\bm{W})$ is a Gaussian conjugate prior of the 
+Where in Equation~\ref{eqn:spp_gp_marginal}, $P(\bm{W})$ is a Gaussian conjugate prior of the 
 form $\mathcal{N}(\bm{W} \given \bm{0}, \bm{I})$.
 
-To find the marginal distribution outlined in Equation \ref{eqn:spp_gp_marginal}, it's form may 
-be simplified as follows in Equation \ref{}.
+To find the marginal distribution outlined in Equation~\ref{eqn:spp_gp_marginal}, it's form may 
+be simplified as follows in Equation~\ref{}.
 
 \begin{align}
   \label{eqn:spp_gp_marginal_simplify}
@@ -90,11 +90,11 @@ be simplified as follows in Equation \ref{}.
   \Big] \Bigg]} \intd{\bm{W}}
 \end{align}
 
-To make the integral over $\bf{W}$ tractable in Equation \ref{eqn:spp_gp_marginal_simplify}, 
+To make the integral over $\bf{W}$ tractable in Equation~\ref{eqn:spp_gp_marginal_simplify}, 
 the distribution $P(\bf{Y} \given \bf{X}, \beta)$ must be of a Gaussian form; an exponential 
 of a quadratic form. Completing the square in $\bf{W}$ allows the marginal to be expressed 
 in such a form. First, making the change of variables as in Equation 
-\ref{eqn:spp_gp_marginal_change}, the procedure is as follows in Equation \ref{eqn:spp_gp_complete}.
+\ref{eqn:spp_gp_marginal_change}, the procedure is as follows in Equation~\ref{eqn:spp_gp_complete}.
 
 \begin{align}
   \label{eqn:spp_gp_marginal_change}
@@ -157,7 +157,7 @@ a
 \end{align}
 
 With the distribution $P(\bf{Y} \given \bf{X}, \beta)$ derived as being proportional to  
-an exponentiated quadratic form as in Equation \ref{eqn::eqn:spp_gp_complete}, it is 
+an exponentiated quadratic form as in Equation~\ref{eqn::eqn:spp_gp_complete}, it is 
 clear that the inverse covariance matrix $\bf{\Sigma}^{-1}$ of the Gaussian distribution 
 corresponding to $P(\bf{Y} \given \bf{X}, \beta)$ is as follows in Equation 
 \ref{eqn:spp_sig_inv}.

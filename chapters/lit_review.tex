@@ -11,7 +11,7 @@ Localisation and Mapping (SLAM) literature. This section shall first explore the
 earlier, fundamental works of this area of research, followed by a treatment 
 of the current state of the art.
 
-\textit{Besl \& McKay} \cite{Besl1992} introduced their seminal work on 3D shape 
+\textit{Besl \& McKay}~\cite{Besl1992} introduced their seminal work on 3D shape 
 registration in 1992, providing a method to estimate the full Six Degrees of 
 Freedom (DoF) pose between 3D point sets. The authors present an Iterative Closest 
 Point Algorithm that consists of three operations per iteration; computation 
@@ -21,25 +21,25 @@ of least squares minimisation, however there must be sufficiently complex
 geometry present in the structure of the data to converge to a meaningful 
 transformation.
 
-Complementary to the aforementioned works of \textit{Besl \& McKay} \cite{Besl1992} 
+Complementary to the aforementioned works of \textit{Besl \& McKay}~\cite{Besl1992} 
 in the foundational aspects of Dense SLAM is that of \textit{Curless \& Levoy} 
 \cite{Curless1996}, 1996. The authors present an early volumetric integration 
 framework for the reconstruction of shapes from range data obtained from a 
 sensor such as a laser scanner. The authors introduce the Signed Distance Function (SDF), 
 a volumetric, implicit shape representation in which entries are cumulatively updated 
 in a weighted manner. Once observations have been integrated in to the SDF volume, an 
-isosurface representation of the shape is extracted by a Marching Cubes \cite{Lorensen1987} 
+isosurface representation of the shape is extracted by a Marching Cubes~\cite{Lorensen1987} 
 procedure. Though the approach may lead to gaps in the resultant model, the authors 
 mitigate this by introducing a surface tesselation step.
 
-Later work by \textit{Zhou et al} \cite{Zhou2008} in 2008 introduces an alternative 
-shape representation to that of \textit{Curless \& Levoy} \cite{Curless1996}, based 
+Later work by \textit{Zhou et al}~\cite{Zhou2008} in 2008 introduces an alternative 
+shape representation to that of \textit{Curless \& Levoy}~\cite{Curless1996}, based 
 on the spatial KD-Tree data structure and a highly data parallel Breadth First 
 Search (BFS) construction algorithm. The level of parallelism introduced allows for 
 application to problems that require real time performance. The authors provide 
-examples of use in ray tracing \cite{Purcell2002} and photon mapping \cite{Kajiya1986}.
+examples of use in ray tracing~\cite{Purcell2002} and photon mapping~\cite{Kajiya1986}.
 
-In the same year, \textit{Censi} \cite{Censi2008} introduced \textit{PL-ICP}, a 
+In the same year, \textit{Censi}~\cite{Censi2008} introduced \textit{PL-ICP}, a 
 variant of the ICP algorithm introduced in the work ok \textit{Besl \& McKay} 
 \cite{Besl1992}. The presented approach utilises a point-to-line metric rather than 
 a point-to-point metric and has a closed form solution in the planar case. For the non 
@@ -54,14 +54,14 @@ for real time mapping of indoor scenes with the Kinect RGBD sensor from Microsof
 authors utilise a sparser form of the SDF structure introduced by \textit{Curless \& Levoy} 
 \cite{Curless1996}, the Truncated Signed Distance Function (TSDF), allowing for reconstruction 
 at scene scale. For pose estimation, a multi-level variant of the ICP algorithm utilising a 
-point-to-plane metric similar to that of \textit{PL-ICP} \cite{Censi2008} is used. The pipeline 
+point-to-plane metric similar to that of \textit{PL-ICP}~\cite{Censi2008} is used. The pipeline 
 consists of four phases; \textit{measurement}, \textit{integration}, \textit{isosurface extraction} 
 and \textit{pose update}. Applications of the presented system however are limited only to 
 those that require the reconstruction of static scenes; dynamic scenes are not supported 
 by \textit{KinectFusion}.
 
-Further optimisations were made in 2013 by \textit{Nei{\ss}ner at al} \cite{NieBner2013} to the 
-\textit{KinectFusion} pipeline proposed by \textit{Newcombe et al} \cite{Newcombe2011}. The authors 
+Further optimisations were made in 2013 by \textit{Nei{\ss}ner at al}~\cite{NieBner2013} to the 
+\textit{KinectFusion} pipeline proposed by \textit{Newcombe et al}~\cite{Newcombe2011}. The authors 
 introduce a spatially hashed TSDF data structure, in which the TSDF is split in to hashed blocks of 
 voxels allowing for very fast voxel lookups. The presented approach yields low space and time complexity 
 for such operations, vastly increasing the potential for real time, large scale use. Additionally, 
@@ -69,18 +69,18 @@ a streaming system is introduced to dynamically handle data transmission between
 allowing for the reconstruction of scenes that may exceed the GRAM bounds of commodity GPU's. The 
 proposed system is capable of running at $\approx46Hz$ on an NVIDIA Titan GPU.
 
-In the same year, \textit{Thomas et al} \cite{Thomas2013} introduced an alternative scene 
+In the same year, \textit{Thomas et al}~\cite{Thomas2013} introduced an alternative scene 
 representation, based on the notion that a scene may be represented as a set of Planar 
 components with attributes such as Surface Normals, confidences and RGB colour. The motivation 
 of the authors approach is that many common scenes that one might reconstruct are indoors and 
 consist of components that are planar in nature, such as walls, floors and ceilings. Additionally, 
 many planar objects are common, such as tables and cabinets. The authors present an alternative 
-rendering approach based on quadrangulation \cite{Dong2006} and utilise a \textit{KinectFusion} 
+rendering approach based on quadrangulation~\cite{Dong2006} and utilise a \textit{KinectFusion} 
 \cite{Newcombe2011} like ICP based algorithm for pose estimation.
 
-\textit{Salas-Moreno et al} \cite{Salas-Moreno2013} in 2013 also, introduced an alternative 
-approach to that of the \textit{KinectFusion} \cite{Newcombe2011} like pipelines that similarly to 
-\textit{Thomas et al} \cite{Thomas2013}, utilises the prior information that many scenes consist 
+\textit{Salas-Moreno et al}~\cite{Salas-Moreno2013} in 2013 also, introduced an alternative 
+approach to that of the \textit{KinectFusion}~\cite{Newcombe2011} like pipelines that similarly to 
+\textit{Thomas et al}~\cite{Thomas2013}, utilises the prior information that many scenes consist 
 of predictable, repeated structures. As such, the authors introduce a so called ``Object Oriented'' 
 Dense SLAM paradigm, in which the reconstruction of the scene is split in to a graph of observed 
 objects. Pose estimation is achieved by running an ICP based algorithm against renderings of the 
@@ -90,60 +90,60 @@ model. Consistency between scene components is enforced with pose graph optimisa
 relocalisation achieved in a similar manner. The proposed approach does however require a 
 database of known objects a-priori.
 
-\textit{St{\"u}ckler et al} \cite{Stuckler2014} in 2014 introduced a non implicit, non volumetric 
-representation based on multiple resolution Surfel \cite{Pfister2000} maps. The core data structure 
-used for scene representation is a Voxel Octree \cite{Laine2010} containing both Surfels and 
+\textit{St{\"u}ckler et al}~\cite{Stuckler2014} in 2014 introduced a non implicit, non volumetric 
+representation based on multiple resolution Surfel~\cite{Pfister2000} maps. The core data structure 
+used for scene representation is a Voxel Octree~\cite{Laine2010} containing both Surfels and 
 probability distributions over appearance and shape. Pose estimation is achieved by optimising for 
-a unit quaternion \cite{Mukundan2002} and translation vector within a maximum likelihood framework, 
+a unit quaternion~\cite{Mukundan2002} and translation vector within a maximum likelihood framework, 
 in which the energy function to be maximised is the likelihood of the RGBD observations given the 
 accumulated Probability Distributions stored in the Octree. The presented pipeline also incorporates 
 a randomised, graph and keyframe based loop closure component.
 
-Following the approach of \textit{Thomas et al} \cite{Thomas2013}, \textit{Salas-Moreno et al} 
+Following the approach of \textit{Thomas et al}~\cite{Thomas2013}, \textit{Salas-Moreno et al} 
 \cite{Salas-Moreno2014} in 2014 introduced another reconstruction system that utilises the
 planarity property of many common scenes. The proposed approach focuses on the detection and 
 modelling of planes in the scene, proceeding with their refinement over time. 
-The proposed approach generates Surfel \cite{Pfister2000} Maps from observed RGBD frames, from 
+The proposed approach generates Surfel~\cite{Pfister2000} Maps from observed RGBD frames, from 
 which the planar regions are detected and integrated, filling holes in the reconstruction over time.
 The authors utilise an ICP algorithm to register the vertex maps of the RGBD observations and the 
 reconstructed model. Additionally, relocalisation is achieved by the use of Fern Encoding 
 \cite{Glocker2014}. 
 
-\textit{Prisacariu et al} \cite{Prisacariu2014, Kahler2015} in 2014 followed up the optimisations 
-to the \textit{KinectFusion} pipeline proposed by \textit{Nei{\ss}ner et al} \cite{NieBner2013}. 
+\textit{Prisacariu et al}~\cite{Prisacariu2014, Kahler2015} in 2014 followed up the optimisations 
+to the \textit{KinectFusion} pipeline proposed by \textit{Nei{\ss}ner et al}~\cite{NieBner2013}. 
 The authors presented in addition to the original publication, a technical report and an open 
 source implementation. The proposed work provides further improvements to those of 
-\textit{Nei{\ss}ner et al} \cite{NieBner2013} including a number of low level optimisations to the 
+\textit{Nei{\ss}ner et al}~\cite{NieBner2013} including a number of low level optimisations to the 
 core hashed TSDF data structure, it's allocation and update(integration of observation points) and 
 the rendering phase of the pipeline. In addition, the authors demonstrate that pose estimation quality 
 may be greatly improved by the use of commodity Inertial Motion Unit (IMU) devices, commonly found 
 on mobile phones and tablet computers. \textit{Prisacariu et al} report runtimes of 
 $\approx47Hz$ on an NVIDIA Shield tablet and $\approx910Hz$ with a commodity NVIDIA Titan X GPU.
 
-\textit{Whelan et al} \cite{Whelan2015} in 2015 proposed another \textit{KinectFusion} 
+\textit{Whelan et al}~\cite{Whelan2015} in 2015 proposed another \textit{KinectFusion} 
 \cite{Newcombe2011} like pipeline intended to enable reconstruction of large scale scenes, 
 acheiving reconstruction over hundreds of metres. The approach taken by the authors to enable 
 such large scale reconstructions is centered around the use of a cyclic buffer on the GPU. For pose 
 estimation, the authors impose both geometric and photometric constraints on the camera pose. 
-Additionally, the proposed approach performs map updates in an as-rigid-as-possible \cite{Igarashi2005} 
+Additionally, the proposed approach performs map updates in an as-rigid-as-possible~\cite{Igarashi2005} 
 manner, combining frame recognition such that on a recognition event, a map update is performed.
 The proposed pipeline provides loop closure capabilites by utilising Pose Graph Optimisation 
 \cite{Grisetti2010}.
 
-\textit{Zhou et al} \cite{Zhou2015} also in 2015 proposed another variant of the 
-\textit{KinectFusion} \cite{Newcombe2011} pipeline proposed by \textit{Newcombe et al}. 
+\textit{Zhou et al}~\cite{Zhou2015} also in 2015 proposed another variant of the 
+\textit{KinectFusion}~\cite{Newcombe2011} pipeline proposed by \textit{Newcombe et al}. 
 The authors present improvements to the pose estimation phase of the pipeline, utilising 
 contour cues to aid association and enforcing correspondence constraints on the estimated 
 pose, with respect to scene geometry. Central to the presented approach is the depth image 
-preprocessing steps of inpainting \cite{Bertalmio2000} regions of the depth image for which 
+preprocessing steps of inpainting~\cite{Bertalmio2000} regions of the depth image for which 
 there are no depth measurements, followed by the aforementioned contour extraction stage.
 
-The optimised pipeline proposed in 2014 by \textit{Prisacariu et al} \cite{Prisacariu2014} was 
-in 2016 improved with the addition of loop closure handling by \textit{Kahler et al} \cite{Kahler2016}; 
+The optimised pipeline proposed in 2014 by \textit{Prisacariu et al}~\cite{Prisacariu2014} was 
+in 2016 improved with the addition of loop closure handling by \textit{Kahler et al}~\cite{Kahler2016}; 
 \textit{Kahler} being one of the authors of the original 2014 contribution. Drift correction is acheived 
 by the use of a multiple scene representation, with online alignment being performed periodically 
 between the scenes. Corrections between the scenes are made via the use of Pose Graph Optimisation 
-\cite{Grisetti2010}. Loop closures are detected by the use of Fern Conservatories \cite{Glocker2014}.
+\cite{Grisetti2010}. Loop closures are detected by the use of Fern Conservatories~\cite{Glocker2014}.
 
 %% Semantic SLAM.
 \section{Semantic SLAM}
@@ -155,27 +155,27 @@ The application potential of this semantic scene understanding ability is amplif
 combined with the vast progress that has been made in dense SLAM. This section shall provide a 
 survey of research that amalgamates the two fields of semantic scene understanding and SLAM.
 
-%Bengio et.al. \cite{Bengio2013} - representation learning.
-%Girshick et.al \cite{Girshick2014} - feature hierarchies.
+%Bengio et.al.~\cite{Bengio2013} - representation learning.
+%Girshick et.al~\cite{Girshick2014} - feature hierarchies.
 
 \label{sec:lit_review_semantic}
-\textit{Civera et al} \cite{Civera2011} in 2011 introduced an approach to semantic SLAM 
+\textit{Civera et al}~\cite{Civera2011} in 2011 introduced an approach to semantic SLAM 
 that utilises image based features to attach semantic meaning to 3D observations. The SLAM 
-system itself is based on Monocular EKF SLAM \cite{Smith1990} with semantics added to points via 
+system itself is based on Monocular EKF SLAM~\cite{Smith1990} with semantics added to points via 
 correspondences between SURF\cite{Bay2006} image features extracted from the observed RGB frames and 
 precomputed object descriptors. Consistency is then enforced by a geometric compatibility 
 measure.
 
-\textit{St{\"u}ckler et al} \cite{Stuckler2012} in 2012 presented a semantic dense SLAM 
+\textit{St{\"u}ckler et al}~\cite{Stuckler2012} in 2012 presented a semantic dense SLAM 
 pipeline for the object centric integration of RGBD images. Given an RGBD frame, objects 
-are detected using a Random Forest (RF) \cite{Ho1995} classifier trained on hand crafted features 
+are detected using a Random Forest (RF)~\cite{Ho1995} classifier trained on hand crafted features 
 extracted from RGBD images. The proposed approach does not reconstruct an entire scene, rather it 
 reconstructs scene components(such as objects) that have been semantically segmented 
 from the current RGBD frame.
 
-\textit{Valentin et al} \cite{Valentin2015} in 2015 proposed a fully integrated dense SLAM 
+\textit{Valentin et al}~\cite{Valentin2015} in 2015 proposed a fully integrated dense SLAM 
 and semantic scene understanding pipeline with interaction being a primary focus. The 
-proposed pipeline at it's core is based on that of \textit{KinectFusion} \cite{Newcombe2011}, 
+proposed pipeline at it's core is based on that of \textit{KinectFusion}~\cite{Newcombe2011}, 
 so requires the use of RGBD images and is restricted to the reconstruction of static scenes. 
 Once a scene has been reconstructed, the author's pipeline allows users to interact with 
 objects in the scene to provide training data for Streaming Random Forests\cite{Abdulsalam2007}, 
@@ -185,35 +185,35 @@ object class. Segmentations are refined using Variational Bayesian Mean Field In
 process are named \textit{Voxel Oriented Patch} features and consist of surface normals 
 and CIELab appearance information.
 
-\textit{Golodetz et al} \cite{Golodetz2015} in the same year released an open source 
-implementation of the pipeline proposed by \textit{Valentin et al} \cite{Valentin2015}, 
-utilising the implementation of the \textit{KinectFusion} \cite{Newcombe2011} pipeline 
-provided by \textit{Prisacariu et al} \cite{Prisacariu2014}. The framework proposed by 
-the authors extends that of \textit{Valentin et al} \cite{Valentin2015} greatly, for 
+\textit{Golodetz et al}~\cite{Golodetz2015} in the same year released an open source 
+implementation of the pipeline proposed by \textit{Valentin et al}~\cite{Valentin2015}, 
+utilising the implementation of the \textit{KinectFusion}~\cite{Newcombe2011} pipeline 
+provided by \textit{Prisacariu et al}~\cite{Prisacariu2014}. The framework proposed by 
+the authors extends that of \textit{Valentin et al}~\cite{Valentin2015} greatly, for 
 example by supporting the use of motion capture systems and virtual reality headsets. 
 In addition, the implementation provided is optimised to allow for real time use.
 
-\textit{Handa et al} \cite{Handa2015}, again in 2015 introduced an alternative, 
+\textit{Handa et al}~\cite{Handa2015}, again in 2015 introduced an alternative, 
 real time dense semantic SLAM pipeline. Much like the approaches of \textit{Valentin et al} 
-\cite{Valentin2015} and \textit{Golodetz et al} \cite{Golodetz2015}, the proposed system 
-is based on the \textit{KinectFusion} \cite{Newcombe2011} pipeline, with semantic scene 
+\cite{Valentin2015} and \textit{Golodetz et al}~\cite{Golodetz2015}, the proposed system 
+is based on the \textit{KinectFusion}~\cite{Newcombe2011} pipeline, with semantic scene 
 understanding performed on the rendered isosurface. Contrary to previous approaches however, 
-the authors make use of stacked Deep Autoencoders \cite{Liou2008}, trained on synthetic depth 
+the authors make use of stacked Deep Autoencoders~\cite{Liou2008}, trained on synthetic depth 
 images a priori. As such, the proposed system makes use only of depth cues and may not be 
 adapted to new object classes on an ad-hoc basis.
 
-\textit{Cavallari et al} \cite{Cavallari2016} in the following year presented another 
+\textit{Cavallari et al}~\cite{Cavallari2016} in the following year presented another 
 semantic dense SLAM pipeline built on top of the dense SLAM system presented by 
-\textit{Nei{\ss}ner et al} \cite{NieBner2013}. Much like the work of \textit{Handa et al} 
+\textit{Nei{\ss}ner et al}~\cite{NieBner2013}. Much like the work of \textit{Handa et al} 
 \cite{Handa2015}, the proposed approach depends on a model pretrained on a set of object 
-classes. Unlike \textit{Handa et al} \cite{Handa2015}, the authors make use of an 
-Fully Connected Network (FCN) \cite{Long2015}, taking the Probabilituy Mass Function (PMF) 
+classes. Unlike \textit{Handa et al}~\cite{Handa2015}, the authors make use of an 
+Fully Connected Network (FCN)~\cite{Long2015}, taking the Probabilituy Mass Function (PMF) 
 output to determine the class to be assigned to an isosurface region.
 
 %% Dynamic SLAM.
 \section{Dynamic SLAM, Motion Segmentation and Optical Flow}
 \label{sec:lit_review_dynamic}
-Sections \ref{sec:lit_review_tam} and \ref{sec:lit_review_semantic} provided an assesment 
+Sections~\ref{sec:lit_review_tam} and~\ref{sec:lit_review_semantic} provided an assesment 
 of pertinent literature in the fields of SLAM and Semantic SLAM. However, all of the 
 aproaches outlined in these sections are limited to use in static scenes only without 
 the capability to accurately operate in an environment that contains moving objects. This 
@@ -222,42 +222,42 @@ section shall explore pertinent literature on the topics of \textit{Dynamic SLAM
 work surveyed in this section is the detection, estimation and segmentation of motion in 
 dynamic scenes.
 
-\textit{Tsap et al} \cite{Tsap2000} in 2000 presented an algorithm for nonrigid motion 
+\textit{Tsap et al}~\cite{Tsap2000} in 2000 presented an algorithm for nonrigid motion 
 tracking of objects. The presented approach solves for dense motion vector fields between 
 3D objects by modelling motion with finite elements. The proposed system analyses differences 
-between actual and predicted behaviour, using iterative descent optimisation \cite{IDO} to find 
+between actual and predicted behaviour, using iterative descent optimisation~\cite{IDO} to find 
 a set of optimal parameters for the nonlinear Finite Element Model (FEM). Additionally, pose 
 estimation is improved by using point correspondences.
 
-\textit{Chen et al} \cite{Chen2011} in 2011 introduced a system to perform nonrigid motion 
+\textit{Chen et al}~\cite{Chen2011} in 2011 introduced a system to perform nonrigid motion 
 tracking of the human body. The proposed system extracts and skins a surface mesh from 
 multi-view video, after being fitted with a skeleton prior. To solve for nonrigid, articulated 
 motion, the authors utilise a weighted, hierarchical ICP algorithm, where weightings are obtained 
-by the Approximate Nearest Neighbour \cite{Indyk2000} algorithm.
+by the Approximate Nearest Neighbour~\cite{Indyk2000} algorithm.
 
-In the following year, \textit{Sun et al} \cite{Sun2012} proposed an approach to motion estimation 
+In the following year, \textit{Sun et al}~\cite{Sun2012} proposed an approach to motion estimation 
 for objects in images. The proposed approach estimates optical flow in a layered manner, where each 
 layer pertains to an object undergoing rigid body motion, with the number of layers being determined 
-automatically. The authors utilise Maximum Flow \cite{Lamich2017} to solve a discretised flow field cost 
+automatically. The authors utilise Maximum Flow~\cite{Lamich2017} to solve a discretised flow field cost 
 function for each layer, where object layers are a set of depth ordered Markov Random Fields (MRF) 
 \cite{BishopPRML, Murphy2012ML}.
 
-\textit{Unger et al} \cite{Unger2012} again in 2012, proposed an alternative system for the 
+\textit{Unger et al}~\cite{Unger2012} again in 2012, proposed an alternative system for the 
 estimation of motion of objects undergoing rigid body motion in images. The authors present a 
 variational formulation for motion estimation and segmentation with occlusion handling. As with 
-the contributions of \textit{Sun et al} \cite{Sun2012}, the authors utilise a parametric labelling 
+the contributions of \textit{Sun et al}~\cite{Sun2012}, the authors utilise a parametric labelling 
 of the flow field for each object undergoing motion, with labels encoded with an MRF Potts Model 
-\cite{Levada2008}. However, contrary to \textit{Sun et al} \cite{Sun2012} who utilise a Maximum Flow 
+\cite{Levada2008}. However, contrary to \textit{Sun et al}~\cite{Sun2012} who utilise a Maximum Flow 
 algorithm over the MRF models, \textit{Unger et al} solved for flow and labels within a Primal-Dual 
 \cite{Boyd2004Convex} based optimisation framework.
 
-In the same year, \textit{Herbst et al} \cite{Herbst2013} proposed an extension to optical 
+In the same year, \textit{Herbst et al}~\cite{Herbst2013} proposed an extension to optical 
 flow estimation to 3D scenes; the proposed system solves for Scene Flow based on RGBD data. 
-The proposed approach is similar to that of \textit{Brox et al} \cite{Brox2004}, with scene flow 
+The proposed approach is similar to that of \textit{Brox et al}~\cite{Brox2004}, with scene flow 
 being formulated as a variational optimisation problem. The presented approach is a generalisation 
-of the well established variational optical flow algorithm of \textit{Brox et al} \cite{Brox2004}.
+of the well established variational optical flow algorithm of \textit{Brox et al}~\cite{Brox2004}.
 
-In the following year, \textit{St{\"u}ckler et al} \cite{Stueckler2013} presented a framework 
+In the following year, \textit{St{\"u}ckler et al}~\cite{Stueckler2013} presented a framework 
 for the segmentation of rigid body motion from RGBD data. The authors represent regions undergoing 
 rigid body motion and their associated motion parameters as latent variables, with the resultant 
 segmentations and parameters being solved for within an Expectation Maximisation (EM) 
@@ -265,20 +265,20 @@ segmentations and parameters being solved for within an Expectation Maximisation
 foreground and background motion by giving each parity in the probabilistic model.
 
 Though the motion estimation and segmentation approaches reviewed up to this point have not 
-been within the SLAM framework, \textit{Keller et al} \cite{Keller2013} in 2013 introduced an 
+been within the SLAM framework, \textit{Keller et al}~\cite{Keller2013} in 2013 introduced an 
 RGBD based dense SLAM system capable of segmenting motion in a reconstructed scene. Unlike the 
-\textit{KinectFusion} \cite{Newcombe2011} inspired dense SLAM pipelines, the presented approach 
+\textit{KinectFusion}~\cite{Newcombe2011} inspired dense SLAM pipelines, the presented approach 
 does not utilise an implicit, volumetric representation. Rather, the authors opt for an explicit 
-Surfel \cite{Pfister2000} based representation. Whilst performing live reconstruction, the proposed 
+Surfel~\cite{Pfister2000} based representation. Whilst performing live reconstruction, the proposed 
 system detects and uses ICP outliers to determine dynamic scene components. With the information gained 
 from detecting ICP outliers, the proposed system then propagates thses detections by a flood fill operation. 
 As the proposed approach utilises an explicit, flat data structure for scene representation, it does not 
 have the advantages of it's highly optimised volumetric counterparts, such as that proposed by 
-\textit{Prisacariu et al} \cite{Prisacariu2011}. As such, scalability is limited.
+\textit{Prisacariu et al}~\cite{Prisacariu2011}. As such, scalability is limited.
 
-In 2015, \textit{Perera et al} \cite{Perera2015} presented an approach to motion segmentation in 
-TSDF volumes. Similar to it's planar counterparts presented by \textit{Sun et al} \cite{Sun2012} 
-and \textit{Unger et al} \cite{Unger2012}, the authors utilise a markov network over the domain 
+In 2015, \textit{Perera et al}~\cite{Perera2015} presented an approach to motion segmentation in 
+TSDF volumes. Similar to it's planar counterparts presented by \textit{Sun et al}~\cite{Sun2012} 
+and \textit{Unger et al}~\cite{Unger2012}, the authors utilise a markov network over the domain 
 of interest. Motion segmentation is posed as a Maximum a Posteriori (MAP) 
 \cite{BishopPRML, Murphy2012ML} inference problem over a Conditional Random Field (CRF) 
 \cite{Krahenbuhl2011} defined over TSDF voxels. The proposed system is able to segment objects 
@@ -286,18 +286,18 @@ undergoing both minor and major displacements, with motion labels and parameters
 respect to the live frame and the TSDF. However, the proposed approach is limited only to very 
 small scenes, with very long runtimes reported for TSDF volumes of dimensionality $256^{3}$.
 
-\textit{Newcombe et al} \cite{Newcombe2015} again in 2015, introduced a dynamic dense SLAM 
-system based on the earlier \textit{KinectFusion} \cite{Newcombe2015} pipeline, with the addition 
+\textit{Newcombe et al}~\cite{Newcombe2015} again in 2015, introduced a dynamic dense SLAM 
+system based on the earlier \textit{KinectFusion}~\cite{Newcombe2015} pipeline, with the addition 
 of the ability to handle non-rigidly deforming scenes. Nonrigid deformations are handled by the 
 estimation of a 6DoF motion field that warps the model represented by the TSDF to the live frame. The 
-solving of the warp field is acheived by the use of Dual Quaternion blending \cite{Kavan2006}. 
+solving of the warp field is acheived by the use of Dual Quaternion blending~\cite{Kavan2006}. 
 Though promising results are presented, there are limitations, such as lack of robustness to 
 open/closed topology changes, such as hands. In addition, the authors highlight scalability issues.
 
 %% Object Reconstruction.
 \section{Object Reconstruction}
 \label{sec:lit_review_obj_recon}
-It is evident from Sections \ref{sec:lit_review_tam}, \ref{sec:lit_review_dynamic} and 
+It is evident from Sections~\ref{sec:lit_review_tam},~\ref{sec:lit_review_dynamic} and 
 \ref{sec:lit_review_semantic} that much progess has been made in the fields of TAM/SLAM, 
 dynamic SLAM and semantic SLAM. However, \textit{Object Reconstruction} remains a very open 
 and active field of research. This Section provides a review of pertinent literature on the 
@@ -305,51 +305,51 @@ task of reconstructing consistent models of objects, rather than full scale scen
 interest in this section, though related to SLAM, incurs additional complications with regards 
 to pose estimation.
 
-\textit{Curless \& Levoy} \cite{Curless1996} as introduced in Section \ref{sec:lit_review_tam} 
+\textit{Curless \& Levoy}~\cite{Curless1996} as introduced in Section~\ref{sec:lit_review_tam} 
 presented a method of statically reconstructing shapes from range images taken from different 
 viewpoints. However, the presented approach predates many of the advancements that have allowed 
 for simultaneous tracking and mapping.
 
-\textit{Kolev et al} \cite{Kolev2006} in 2006 presented a probabilistic approach to 3D shape 
+\textit{Kolev et al}~\cite{Kolev2006} in 2006 presented a probabilistic approach to 3D shape 
 segmentation and recovery. Rather than the direct reconstruction approach taken by 
-\textit{Curless \& Levoy} \cite{Curless1996}, the authors take the approach of inferring the most 
+\textit{Curless \& Levoy}~\cite{Curless1996}, the authors take the approach of inferring the most 
 probable shape with respect to the observed image sequences. The shape to be inferred is encoded as a 
 zero level set, extracted from a level set representation (such as an SDF). The Level Set of the shape is 
 evolved over time within a variational framework, with respect to a volume of segmentation 
 probabilities (foregound vs background). However, the proposed approach does not have an additional pose 
 estimation phase and has only been evaluated on synthetic data of very polarised appearance.
 
-\textit{Weise et al} \cite{Weise2009} in 2009 proposed an approach to the in hand scanning of 3D objects. 
-The authors utilise an explicit Point Cloud representation of shape, rendered as Surfels \cite{Pfister2000}. 
+\textit{Weise et al}~\cite{Weise2009} in 2009 proposed an approach to the in hand scanning of 3D objects. 
+The authors utilise an explicit Point Cloud representation of shape, rendered as Surfels~\cite{Pfister2000}. 
 Objects are rotated in front of a sensor with poses recovered by the use of an ICP like algorithm. During 
 pose estimation, a topology graph is built which is used to offset drift in estimated poses in an 
-as-rigid-as-possible \cite{Igarashi2005} manner. However, the specification of object rotation in front of 
+as-rigid-as-possible~\cite{Igarashi2005} manner. However, the specification of object rotation in front of 
 a sensor is suggestive of limited tracking ability. In addition, the type of sensor is not specified, 
 as such it is not clear what quality of sensing equipment is required to yield high quality results.
 
-In 2013, \textit{Ren et al} \cite{Ren2013} poposed an approach to the tracking and reconstruction of 
-objects. Like \textit{Kolev et al} \cite{Kolev2006}, the authors utilise a probabilistic formulation 
+In 2013, \textit{Ren et al}~\cite{Ren2013} poposed an approach to the tracking and reconstruction of 
+objects. Like \textit{Kolev et al}~\cite{Kolev2006}, the authors utilise a probabilistic formulation 
 based on the evolution of a level set representation. Initialised with a shape prior level set, the 
 proposed approach evolves the shape prior with respect to observations. Crucially, unlike the approach of 
-\textit{Kolev et al} \cite{Kolev2006}, the proposed approach simultaneously optimises for object pose.
+\textit{Kolev et al}~\cite{Kolev2006}, the proposed approach simultaneously optimises for object pose.
 The proposed system works with RGBD data and segments the object of interest using Pixel Wise Posteriors 
-(PWP) \cite{Bibby2008}. It is noteworthy however that there are performance limitations of the proposed 
+(PWP)~\cite{Bibby2008}. It is noteworthy however that there are performance limitations of the proposed 
 approach and experiments show success for a limited set of target shapes.
 
-Later in 2015, \textit{Dou et al} \cite{Dou2015} present a system for the reconstruction of deformable 
+Later in 2015, \textit{Dou et al}~\cite{Dou2015} present a system for the reconstruction of deformable 
 objects using a Microsoft Kinect RGBD sensor. The proposed approach solves for a latent target shape 
-and shape deformations by utilising bundle adjustment \cite{Triggs1999}. The authors report that loop 
+and shape deformations by utilising bundle adjustment~\cite{Triggs1999}. The authors report that loop 
 closures are automatically detected, with errors incurred by drift being distributed backwards from the 
 detection point. The resultant shape surface is extracted as a triangular mesh. The presented experiments 
 demonstrate high quality reconstruction results, but with overnight run times indicating that it is not 
 suitable for real time use.
 
-In the following year, \textit{Gupta et al} \cite{Gupta2016} proposed a system for the reconstruction and 
+In the following year, \textit{Gupta et al}~\cite{Gupta2016} proposed a system for the reconstruction and 
 segmentation of 3D objects from data obtained with an RGBD sensor. The reconstructed object is represented 
-implicitly within an SDF volume, but notably observations are integrated using the Softmax \cite{SOFTMAX} 
-function rather than weighted means as with \textit{KinectFusion} \cite{Newcombe2011}. Each Voxel in the 
+implicitly within an SDF volume, but notably observations are integrated using the Softmax~\cite{SOFTMAX} 
+function rather than weighted means as with \textit{KinectFusion}~\cite{Newcombe2011}. Each Voxel in the 
 volume is assigned a label pertaining to it's membership of the object set, with objects refined utilising 
-Graph Cuts and Alpha Expansions \cite{CLRS}. The proposed approach utilises a photometric loss to optimise 
+Graph Cuts and Alpha Expansions~\cite{CLRS}. The proposed approach utilises a photometric loss to optimise 
 for object pose, with keyframe based loop closure detection. However, the authors report difficulties in 
 building sufficiently granular reconstructions. In addition, the authors report drift in pose estimation 
 to be problematic.
@@ -357,58 +357,58 @@ to be problematic.
 %% Object Shape Prediction.
 \section{Shape and Pose Prediction}
 \label{sec:lit_review_prediction}
-Section \ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
+Section~\ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
 which demonstrates that although much progress has been made since the early work of \textit{Curless \& 
-Levoy} \cite{Curless1996}, many open research problems remain. This section provides a survey of research 
+Levoy}~\cite{Curless1996}, many open research problems remain. This section provides a survey of research 
 into an alternative, inference driven approach to obtaining three dimensional models of observed 
 objects, whereby rather than direct optimisation and integration being used for pose estimation and 
 model building, the process is posed as a Probabilistic Inference procedure.
 
-\textit{Prisacariu et al} \cite{Prisacariu2011} in 2011 introduced an approach to shape prediction, 
+\textit{Prisacariu et al}~\cite{Prisacariu2011} in 2011 introduced an approach to shape prediction, 
 segmentation and pose estimation. Shape is predicted from a hierarchy of generative Gaussian Process 
-Latent Variable Models (GPLVM) \cite{Lawrence2005}, encoding a latent space embedding of common shape 
+Latent Variable Models (GPLVM)~\cite{Lawrence2005}, encoding a latent space embedding of common shape 
 properties. Candidate shapes are generated as a one off regression in latent space, with a unified 
 energy function optimised with respect to the shape latent space point and the object pose parameters.
 
-In 2013, \textit{Dame et al} \cite{Dame2013} proposed an approach to dense object reconstruction from a 
-monocular image source. Like the approach of \textit{Prisacariu et al} \cite{Prisacariu2011}, the authors 
+In 2013, \textit{Dame et al}~\cite{Dame2013} proposed an approach to dense object reconstruction from a 
+monocular image source. Like the approach of \textit{Prisacariu et al}~\cite{Prisacariu2011}, the authors 
 utilise GPLVM's as shape priors to aid reconstruction and segmentation of the object of interest. Depth maps 
 for the observed monocular sequence are optimised for within a Primal Dual framework, utilising 
-Total Variation (TV) \cite{Rudin1992} regularisation. However, there is no pose estimation 
-ability in the formulation, as poses are known a priori from PTAM \cite{Klein2007}.
+Total Variation (TV)~\cite{Rudin1992} regularisation. However, there is no pose estimation 
+ability in the formulation, as poses are known a priori from PTAM~\cite{Klein2007}.
 
-In the following year, \textit{Toshev et al} \cite{Toshev2014} proposed an approach to pose estimation 
-utilising cascaded Deep Neural Network (DNN) \cite{LeCun2015} regressors. The authors utilise the DNN 
+In the following year, \textit{Toshev et al}~\cite{Toshev2014} proposed an approach to pose estimation 
+utilising cascaded Deep Neural Network (DNN)~\cite{LeCun2015} regressors. The authors utilise the DNN 
 framework for the complex task of articulated human pose estimation.
 
-\textit{Wohlhart et al} \cite{Wohlhart2015} in 2015 presented an approach to the 3D detection and pose 
+\textit{Wohlhart et al}~\cite{Wohlhart2015} in 2015 presented an approach to the 3D detection and pose 
 recovery of objects. The proposed approach, utilises features extracted from a Convolutional Neural 
-Network (CNN) \cite{LeCun2015} within a nearest neighbour cost function for object detection and recovery 
+Network (CNN)~\cite{LeCun2015} within a nearest neighbour cost function for object detection and recovery 
 of rough pose. As such, the proposed approach poses the problem as a K-Nearest Neighbour (KNN) 
 \cite{Altman1992} search in descriptor space. Object and pose are coupled in training (i.e. two similar 
 cars with different poses will have spatially distant descriptors).
 
-\textit{Chang et al} \cite{Chang2015} also in 2015 presented a large scale dataset of 3D shapes. The 
+\textit{Chang et al}~\cite{Chang2015} also in 2015 presented a large scale dataset of 3D shapes. The 
 dataset can be used for a variety of 3D vison tasks due to the potential of modern machine learning 
 techniques to learn rich latent space embeddings, as demonstrated by the approaches of 
-\textit{Prisacariu et al} \cite{Prisacariu2011} and \textit{Dame et al} \cite{Dame2013}. However, the 
+\textit{Prisacariu et al}~\cite{Prisacariu2011} and \textit{Dame et al}~\cite{Dame2013}. However, the 
 shapes in the dataset are synthetic and as such have no depth sequences. Though, such sequences may be 
 artificially rendered.
 
-Also proposed in 2015 by \textit{Rock et al} \cite{Rock2015} is an approach to the recovery of complete 
+Also proposed in 2015 by \textit{Rock et al}~\cite{Rock2015} is an approach to the recovery of complete 
 3D models from a single depth image of an object of interest. The input depth image is regressed into a 
-database of a priori known objects by the use of a Random Forest \cite{Ho1995}. The matched shapes are 
+database of a priori known objects by the use of a Random Forest~\cite{Ho1995}. The matched shapes are 
 coarsely matched to the input depth map, then later deformed at a higher granularity by a separate 
 optimisation process.
 
-In 2017, \textit{Zhou et al} \cite{Zhou2017_2} introduced an approach to object detection from 3D point 
+In 2017, \textit{Zhou et al}~\cite{Zhou2017_2} introduced an approach to object detection from 3D point 
 clouds. Central to the proposed approach is an end-to-end trainable convolutional Region Proposal 
-Network (RPN) \cite{Girshick2015_2}. The authors evaluate the proposed approach on the KITTI LIDAR 
+Network (RPN)~\cite{Girshick2015_2}. The authors evaluate the proposed approach on the KITTI LIDAR 
 \cite{Geiger2013} dataset, with input point clouds quantized into a voxel volume prior to training 
 and prediction.
 
-\textit{Gwak et al} \cite{Gwak2017}, also in 2017 introduced a Generalised Adversarial Network 
-(GAN) \cite{Goodfellow2014} like approach to shape prediction. The proposed network is trained in a 
+\textit{Gwak et al}~\cite{Gwak2017}, also in 2017 introduced a Generalised Adversarial Network 
+(GAN)~\cite{Goodfellow2014} like approach to shape prediction. The proposed network is trained in a 
 weakly supervised manner on silhouettes and 3D shapes with a log-barrier objective function. 
 However, the appliability to ``real world'' scenarios is questionable, due to the synthetic nature of 
 the data used to train and evaluate the network.

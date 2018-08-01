@@ -3,7 +3,7 @@
 Progress in dense volumetric fusion has been accelerated in recent years with
 the availability of comsumer grade RGBD sensors such as the Microsoft Kinect and
 the Asus Xtion coupled with the increasingly parallel nature of Grapical Processing 
-Unit (GPU) hardware.Systems such as the seminal KinectFusion \cite{Newcombe2011} 
+Unit (GPU) hardware.Systems such as the seminal KinectFusion~\cite{Newcombe2011} 
 allow one to build high quality, globally consistent scene models trivially. 
 Applications of such reconstruction pipelines however are limited due to the 
 inability of such systems to handle scenes in which there are dynamics; such 
@@ -15,7 +15,7 @@ causes model corruption.
 In this chapter an approach to solving the problem of performing robust
 dense volumetric reconstruction in dynamic scenes is presented. Central to the
 pipeline is the introduction of a dual scene representation based on the use
-of an implicit TSDF \cite{Curless1996}. The use of a dual TSDF approach allows
+of an implicit TSDF~\cite{Curless1996}. The use of a dual TSDF approach allows
 for the segmentation of moving components in the scene from static components,
 e.g. segmenting a person getting up from a chair from the chair itself. One of
 the two scene representations is the ``static'' scene and the other the
@@ -32,7 +32,7 @@ mitigated.
 Once a part of the dynamic model has been stable for a sufficient period, it's
 volumetric data is integrated in to the static model and is used for the
 tracking phase of the pipeline. The use of volumetric structures in this work
-is motivated by previous works on Voxel Block Hashing \cite{NieBner2013},
+is motivated by previous works on Voxel Block Hashing~\cite{NieBner2013},
 providing efficient, real time lookup operations. The presented approach
 exploits the abstraction that voxel blocks provide; a block of voxels is
 interpreted as a region of space that can be either static or dynamic.
@@ -44,7 +44,7 @@ this approach is the first to utilise such a dual representation for the motion
 segmentation problem.
 
 A graphical representation of the voxel block based structure of a given Scene
-is presented in Figure \ref{fig:voxel_blocks}.
+is presented in Figure~\ref{fig:voxel_blocks}.
 % Based on http://www.texample.net/tikz/examples/sudoku-3d-cube/.
 \begin{figure}[h]
   \centering
@@ -146,12 +146,12 @@ is presented in Figure \ref{fig:voxel_blocks}.
 \end{figure}
 
 The remainder of this chapter is structured as follows.
-Section \ref{sec:moseg_related_work} presents an assessment of related and
-relevant literature. Section \ref{sec:moseg_static_fusion} introduces
+Section~\ref{sec:moseg_related_work} presents an assessment of related and
+relevant literature. Section~\ref{sec:moseg_static_fusion} introduces
 preliminaries pertaining to the static Fusion pipeline followed by Section
 \ref{sec:moseg_dynamic_fusion} describing the dynamic Fusion component of the
 pipeline. Qualitative and quantitative results are presented in Sections
-\ref{sec:moseg_qualitative} and \ref{sec:moseg_quantitative}, respectively.
+\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, respectively.
 Finally, an application to interactive object recognition is given in Section
 \ref{sec:moseg_semantic}.
 
@@ -161,7 +161,7 @@ Finally, an application to interactive object recognition is given in Section
 \section{Static Volumetric Fusion}
 \label{sec:moseg_static_fusion}
 The volumetric fusion approach taken in this work draws on previous Volumetric
-integration techniques \cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2014} 
+integration techniques~\cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2014} 
 and shall be introduced in this section as preliminary material as it shall be
 referred to in later chapters. Following this approach, at each frame the camera
 is tracked against the current scene, after which new data is fused into the
@@ -199,10 +199,10 @@ For a given TSDF $\bm{\Phi}$, the Zero Level Set is defined as follows
   \mkern2mu \forall \mkern2mu v \in \bm{\Phi}
 \end{equation}
 where $v$ denotes a TSDF voxel. An example of such an embedding is given in
-Figure \ref{fig:sdf_example}.
+Figure~\ref{fig:sdf_example}.
 
 To facilitate real time fusion, the InfiniTAM framework employs a voxel block
-hashing mechanism for fast access to scene voxels \cite{NieBner2013}. Within
+hashing mechanism for fast access to scene voxels~\cite{NieBner2013}. Within
 this context, voxel blocks are collections of $N^{3}$ TSDF voxels, stored in a 
 hash table for fast access. As such, each hash table entry corresponds to a portion 
 of a global voxel block array, pertaining to a region in the scene. This division 
@@ -211,12 +211,12 @@ labelling dynamic regions in the scene.
 
 \subsection{Camera Tracking}
 \label{subsec:moseg_static_camera_tracking}
-As in previous works \cite{Newcombe2011, Prisacariu2014}, the gradient
+As in previous works~\cite{Newcombe2011, Prisacariu2014}, the gradient
 optimisation based ICP algorithm is utilised to register consecutive images
 to derive the camera pose at time $t$ with respect to time $t-1$, that is to
 optimise for the rigid body transform $\bm{T} \in \mathbb{SE}(3)$ of the
 camera between the two frames using the Levenberg-Marquardt nonlinear least
-squares method \cite{NumericalRecipes}. The rendering stage of the pipeline
+squares method~\cite{NumericalRecipes}. The rendering stage of the pipeline
 is used to generate the image from the TSDF at time $t-1$ to which a new frame
 at time $t$ is registered.
 
@@ -242,7 +242,7 @@ Rotation Matrices.
 \subsubsection{Attitude Representation}
 \label{subsub:moseg_static_camera_attitude}
 The rotation matrix component of the transformation $\bm{T}$ is
-generated by a Rodriguez paramaterization \cite{Shuster1993}, whereby the
+generated by a Rodriguez paramaterization~\cite{Shuster1993}, whereby the
 $\mathbb{SO}(3)$ rotation matrix $\bm{R}$ is generated by three rotational
 parameters, $\alpha$, $\beta$ and $\gamma$. Each parameter represents a rotation
 around one of three principal axes.
@@ -271,7 +271,7 @@ the cross product matrix operator and is defined as follows
   \end{bmatrix}
 \end{equation}
 
-Evaluating Equation \ref{eqn:rodriguez_matrix_eq} leads to the following form
+Evaluating Equation~\ref{eqn:rodriguez_matrix_eq} leads to the following form
 of the rotation matrix $\bm{R}$
 \begin{equation}
   \label{eqn:rodriguez_matrix}
@@ -318,7 +318,7 @@ formulated as the following point-to-plane energy minimisation problem
   \right]^{T}
   \mathcal{N}(\bar{\bm{x}})}
 \end{equation}
-where in Equation \ref{eqn:pose_estimation_kf} $\bm{R}$ and $\bm{t}$ are 
+where in Equation~\ref{eqn:pose_estimation_kf} $\bm{R}$ and $\bm{t}$ are 
 the aforementioned rotation matrix and translation vector of the transformation 
 $\bm{T}$. $\bm{x}$ is the 3D point extracted from the depth image 
 $\bm{\Omega}$ and the point $\bar{\bm{x}}$ is the 3D point in the TSDF 
@@ -330,7 +330,7 @@ $\bm{\Phi}$ and is defined as follows
   \mathcal{N} = \frac{\nabla \bm{\Phi}}{\norm{\nabla \bm{\Phi}}}
 \end{equation}
 where $\nabla \bm{\Phi}$ is approximated with central finite differencing, 
-as follows in Equation \ref{eqn:sdf_central_diff}.
+as follows in Equation~\ref{eqn:sdf_central_diff}.
 \begin{equation}
   \label{eqn:sdf_central_diff}
   \nabla \bm{\Phi} = 
@@ -346,7 +346,7 @@ as follows in Equation \ref{eqn:sdf_central_diff}.
 
 For the gradient update phase of the ICP algorithm, the partial derivatives
 $\frac{\partial E}{\partial \bm{R}_{\lambda}} \forall \lambda \in \{\alpha, \beta, \gamma\}$ 
-may be derived as follows in Equation \ref{eqn:icp_update_derivation}.
+may be derived as follows in Equation~\ref{eqn:icp_update_derivation}.
 As a first step, the following definition is made
 \begin{equation}
   \label{eqn:icp_deriv_sub}
@@ -399,8 +399,8 @@ With this substitution in place, the derivation proceeds as follows
 The full partial derivatives $\frac{\partial \bm{R}}{\partial \alpha}$,
 $\frac{\partial \bm{R}}{\partial \beta}$ and
 $\frac{\partial \bm{R}}{\partial \gamma}$ may be found Equations
-\ref{eqn:rodrigues_full_alpha_deriv}, \ref{eqn:rodrigues_full_beta_deriv}
-and \ref{eqn:rodrigues_full_gamma_deriv} respectively, of Appendix 
+\ref{eqn:rodrigues_full_alpha_deriv},~\ref{eqn:rodrigues_full_beta_deriv}
+and~\ref{eqn:rodrigues_full_gamma_deriv} respectively, of Appendix 
 \ref{appendix:mathematical}.
 
 The partial derivatives
@@ -421,7 +421,7 @@ may be multiplied with $\bm{x}$ and combined in to the following Rotation Jacobi
 
 Note that the derivation for the partial derivatives
 $\frac{\partial E}{\partial \bm{t}_{\bar{\lambda}}} \forall \bar{\lambda} \in \{x, y, z\}$ 
-is analogous with that of Equation \ref{eqn:icp_update_derivation_rot}, with the result given as 
+is analogous with that of Equation~\ref{eqn:icp_update_derivation_rot}, with the result given as 
 follows
 \begin{equation}
   \label{eqn:icp_update_derivation_trans}
@@ -434,7 +434,7 @@ follows
 
 The translational partial derivatives
 $\frac{\partial \bm{t}}{\partial \lambda} \forall \bar{\lambda} \in \{x, y, z\}$ may also 
-be combined in to the following translation Jacobian as in Equation \ref{eqn:rot_jac}.
+be combined in to the following translation Jacobian as in Equation~\ref{eqn:rot_jac}.
 \begin{equation}
   \label{eqn:trans_jac}
   \bm{J}_{t} =
@@ -461,7 +461,7 @@ The overall combined Jacobian for the energy function defined in Equation
 \label{subsub:moseg_static_camera_poserec_opt}
 With the gradient derivations in place, this section will now detail the
 pose recovery procedure. As highlighted, the optimisation routine used is the
-Levenberg-Marquardt \cite{NumericalRecipes} algorithm for solving nonlinear least
+Levenberg-Marquardt~\cite{NumericalRecipes} algorithm for solving nonlinear least
 squares problems. The gradient update equation for the Levenberg-Marquardt
 algorithm is given as follows
 \begin{equation}
@@ -472,7 +472,7 @@ algorithm is given as follows
 \end{equation}
 where $\theta_{t} = [\alpha, \beta, \gamma, t_{x}, t_{y}, t_{z}]^{T}$ is the
 parameter vector of $\bm{T}$ at time $t$, $\bm{J}$ is the Jacobian
-introduced in Equation \ref{eqn:pose_jacobian} and $\bm{H}$ is the Hessian,
+introduced in Equation~\ref{eqn:pose_jacobian} and $\bm{H}$ is the Hessian,
 approximated by $\bm{H} = \bm{J}^{T}\bm{J}$. The parameter $\lambda$
 controls the influence of the gradient on the update step and is adjusted
 according to the change in error, as shall be evident in the algorithm
@@ -495,7 +495,7 @@ that follows.
         \State $\epsilon \gets \epsilon_{old}$
         \While{$\epsilon >= \tau$}
         \State $\epsilon \gets E(.)$
-        \Comment{Evaluate Equation \ref{eqn:pose_estimation_kf}}
+        \Comment{Evaluate Equation~\ref{eqn:pose_estimation_kf}}
         \If{$\epsilon \leq \epsilon_{old}$}
         \State $\lambda \gets 10\lambda$
         \State $\theta_{t} \gets \theta_{tmp}$
@@ -505,7 +505,7 @@ that follows.
         \State $\theta_{tmp} \gets \theta_{t}$
         \EndIf
         \State $\bm{J} \gets \nabla E$
-        \Comment{Evaluate Equation \ref{eqn:pose_jacobian}}
+        \Comment{Evaluate Equation~\ref{eqn:pose_jacobian}}
         \State $\bm{H} = \bm{J}^{T}\bm{J}$
         \State $\bm{C} = \text{chol}(\bm{H} +
         \lambda \text{diag}(\bm{H}))$
@@ -520,10 +520,10 @@ that follows.
   \par
 }
 
-Note that for numerical stability, the matrix inverse in Equation \ref{eqn:lm_update} 
+Note that for numerical stability, the matrix inverse in Equation~\ref{eqn:lm_update} 
 may be avoided by utilising the \texttt{chol} and \texttt{backsub} routines to 
-compute the Cholesky Decomposition \ref{CHOL} and solve a linear system with 
-Backsubstitution \ref{BACKSUB}, respectively.
+compute the Cholesky Decomposition~\ref{CHOL} and solve a linear system with 
+Backsubstitution~\ref{BACKSUB}, respectively.
 
 \subsection{Volumetric Integration}
 \label{subsec:moseg_static_integration}
@@ -535,10 +535,10 @@ for camera tracking at the next time step.
 
 As previously outlined, the TSDF may be defined as a volume of distances to an
 isosurface, with the isosurface itself being given by the Zero Level Set, as
-defined in Equation \ref{eqn:zero_level_definition}. A graphical representation
-is given in Figure \ref{fig:sdf_example}.
+defined in Equation~\ref{eqn:zero_level_definition}. A graphical representation
+is given in Figure~\ref{fig:sdf_example}.
 
-As with KinectFusion \cite{Newcombe2011} the global (scene) location
+As with KinectFusion~\cite{Newcombe2011} the global (scene) location
 $\bm{x}_{v}$ of each voxel $v \in \bm{\Phi}$ that is visible in the
 current view frustum is transformed into the camera's coordinate frame via the
 following transformation (noting that $\bm{x}_{v}$ is in homogeneous 
@@ -561,7 +561,7 @@ follows.
     0 & 0 & 1 & 0
   \end{bmatrix}
 \end{equation}
-Where in Equation \ref{eqn:camera_matrix}, $f_{x}$, $f_{y}$, $s$, $x_{0}$ and $y_{0}$ are 
+Where in Equation~\ref{eqn:camera_matrix}, $f_{x}$, $f_{y}$, $s$, $x_{0}$ and $y_{0}$ are 
 the focal lengths, scale and camera principal points respectively.
 
 The integration of new data points into the TSDF volume is achieved by computing 
@@ -605,14 +605,14 @@ In addition, the weight $\phi(\bm{x}_{v})$ is updated as follows.
 Following the integration process outlined in Section
 \ref{subsec:moseg_static_integration} is the rendering stage in which an image
 of the scene image is generated to provide an updated view for the tracking
-stage outlined in Section \ref{subsec:moseg_static_camera_tracking}, at the next
+stage outlined in Section~\ref{subsec:moseg_static_camera_tracking}, at the next
 time step.
 
-Rendering in the pipeline is achieved by Raycasting \cite{RAYCAST}, the process of 
+Rendering in the pipeline is achieved by Raycasting~\cite{RAYCAST}, the process of 
 ``casting'' a ray from the camera frame into the scene, to find intersections with 
 the scene isosurface. 
 % A complete treatment of the Raycasting procedure may be found in the computer
-% graphics literature \cite{Parker:1998:IRT:288216.288266}.
+% graphics literature~\cite{Parker:1998:IRT:288216.288266}.
 
 \section{Volumetric Fusion with Dynamic Scenes}
 \label{sec:moseg_dynamic_fusion}
@@ -629,7 +629,7 @@ Camera tracking is performed against the static model as soon as it contains
 valid isosurface data to track against, preventing moving objects in the scene
 from contributing to tracking drift.
 
-An overview of the proposed pipeline is given in Figure \ref{fig:moseg_pipeline}
+An overview of the proposed pipeline is given in Figure~\ref{fig:moseg_pipeline}
 \begin{figure}[h]
   \label{fig:moseg_pipeline}
   \centering
@@ -690,14 +690,14 @@ nought, as follows.
 
 Voxel blocks that are observed to be stable over a sufficiently long period of
 time (empirically set to $40$ frames) will be integrated into the static model,
-as follows in Section \ref{sub:moseg_static_to_dynamic}.
+as follows in Section~\ref{sub:moseg_static_to_dynamic}.
 
 \subsection{Integration into Static Model from Dynamic Model}
 \label{sub:moseg_static_to_dynamic}
 For a time step $t$, each voxel block in the dynamic model that has assigned to
 it a stable label has the entirety of it's voxel TSDF values integrated into the
-static model. In a similar formulation to that of Equation \ref{eqn:sdf_update}
-in Section \ref{subsec:moseg_static_integration}, the update comprises 
+static model. In a similar formulation to that of Equation~\ref{eqn:sdf_update}
+in Section~\ref{subsec:moseg_static_integration}, the update comprises 
 integration of new data in to a running average.
 
 The weight update for a given voxel $v$ in the stable model $\bm{\Phi}^{s}$
@@ -726,7 +726,7 @@ various scenes, both in terms of tracking and noise artefacts in the static
 model. In addition, the system is robust to the addition and removal of scene
 components and is robust to short term occlusions, such as a person walking in
 front of the camera. An example of a person moving in to the the view frustrum
-and sitting on a Setee is given in Figure \ref{fig:moseg_qualitative_setee}.
+and sitting on a Setee is given in Figure~\ref{fig:moseg_qualitative_setee}.
 
 \begin{figure}[h]
   \label{fig:moseg_qualitative_setee}
@@ -739,7 +739,7 @@ and sitting on a Setee is given in Figure \ref{fig:moseg_qualitative_setee}.
   \end{tabular}
   \caption[Motion Segmentation Qualitative Results I]
   {A qualitative comparison between the proposed system and InfiniTAM
-    \cite{Prisacariu2014}.
+   ~\cite{Prisacariu2014}.
     (a) A static scene containing a Setee is reconstructed.
     (b) When a person enters the scene using standard InfiniTAM, the tracking
     fails, leading to a corrupted scene model.
@@ -748,11 +748,11 @@ and sitting on a Setee is given in Figure \ref{fig:moseg_qualitative_setee}.
 \end{figure}
 
 In addition to the ability to reconstruct a moving object that becomes static in
-the scene as shown in Figure \ref{fig:moseg_qualitative_setee}, the proposed
+the scene as shown in Figure~\ref{fig:moseg_qualitative_setee}, the proposed
 system is also capable of segmenting dynamic objects in a scene that are
 undergoing nonrigid motion. Whilst these objects are segmented and labelled as
 ``dynamic'' they are not used for camera pose estimation. An example of this
-behaviour may be observed in Figure \ref{fig:moseg_qualitative_chair}.
+behaviour may be observed in Figure~\ref{fig:moseg_qualitative_chair}.
 
 \begin{figure}[h]
   \label{fig:moseg_qualitative_chair}
@@ -782,7 +782,7 @@ In this section, a quantitative evaluation of the system's efficacy in terms of
 and camera tracking ability is provided.
 
 For the quantitative analysis, the system has been evaluated on the dynamic
-objects subset of the TUM RGBD dataset \cite{Sturm2012} with respect to
+objects subset of the TUM RGBD dataset~\cite{Sturm2012} with respect to
 trajectory quality. The scenes provided in the dataset contain a range of
 dynamic components ranging from arm movement to people walking around, occluding
 parts of the scene. Comparison is drawn against the standard InfiniTAM framework
@@ -809,19 +809,19 @@ baseline.
 \caption[Motion Segmentation ATE]
 {The Absolute Trajectory Error (ATE) results (in metres, lower is better
   ) achieved by the proposed approach in comparison to the baseline InfiniTAM
-  \cite{Prisacariu2014} framework on a variety of the standard sequences from
-  the TUM RGBD dataset \cite{Sturm2012}. Results are in the format mean
+ ~\cite{Prisacariu2014} framework on a variety of the standard sequences from
+  the TUM RGBD dataset~\cite{Sturm2012}. Results are in the format mean
   $\pm$ standard deviation. The better result (by mean) on each sequence is
   highlighted in bold.}
 \end{table}
 
-Given in Table \ref{tbl:moseg_ate} is the Absolute Trajectory Error measures
+Given in Table~\ref{tbl:moseg_ate} is the Absolute Trajectory Error measures
 for each of the TUM Dynamic Scenes. The Absolute Trajectory Error utilises the
-method of Horn \cite{Horn1987} to solve for the error incurred by mapping the
+method of Horn~\cite{Horn1987} to solve for the error incurred by mapping the
 trajectory of the proposed system on to the ground truth trajectory of the TUM
 sequence, for a given TUM Dynamic Objects sequence.
 
-The results of Table \ref{tbl:moseg_ate} are visualised in Figure
+The results of Table~\ref{tbl:moseg_ate} are visualised in Figure
 \ref{fig:moseg_ate}.
 
 \begin{figure}[h]
@@ -836,8 +836,8 @@ In addition to evaluating quantitatively in terms of Absolute Trajectory Error,
 additional results are provided in terms of Relative Trajectory Error
 \cite{Sturm2012}. RTE measures the relative pose error over a fixed time
 interval, with the final score being the Root Mean Squared Error (RMSE) over all 
-time windows. RTE results are provided in Table \ref{tbl:moseg_rte} and visualised 
-in Figure \ref{fig:moseg_rte}.
+time windows. RTE results are provided in Table~\ref{tbl:moseg_rte} and visualised 
+in Figure~\ref{fig:moseg_rte}.
 
 \begin{table}[h]
   \label{tbl:moseg_rte}
@@ -859,8 +859,8 @@ in Figure \ref{fig:moseg_rte}.
 \caption[Motion Segmentation RTE]
 {The Relative Trajectory Error (RTE) results (in metres, lower is better
   ) achieved by the proposed approach in comparison to the baseline InfiniTAM
-  \cite{Prisacariu2014} framework on a variety of the standard sequences from
-  the TUM RGBD dataset \cite{Sturm2012}. Results are in the format mean
+ ~\cite{Prisacariu2014} framework on a variety of the standard sequences from
+  the TUM RGBD dataset~\cite{Sturm2012}. Results are in the format mean
   $\pm$ standard deviation. The better result (by mean) on each sequence is
   highlighted in bold.}
 \end{table}
@@ -875,7 +875,7 @@ in Figure \ref{fig:moseg_rte}.
 
 \section{Application to Semantic Scene Understanding}
 \label{sec:moseg_semantic}
-The dynamic scene handling approach described in \ref{sec:moseg_dynamic_fusion}
+The dynamic scene handling approach described in~\ref{sec:moseg_dynamic_fusion}
 can be used to prevent moving objects from being integrated into the static
 scene model, but for many applications, e.g. mobile robotics, there is an
 additional need to understand what objects are present in the scene and where
@@ -889,7 +889,7 @@ The voxel blocks in the dynamic model that were identified as ``unstable''
 provide a natural representation of the dynamic parts of the scene. Where
 multiple dynamic objects are present, they can be separated by finding the
 connected components of these voxel blocks. For each object, a one-class Support
-Vector Machine (SVM) \cite{PEGASOS} with a polynomial kernel is trained and used 
+Vector Machine (SVM)~\cite{PEGASOS} with a polynomial kernel is trained and used 
 to recognise new instances of the object class.
 
 Upon seeing a new object, the system first tries to classify the object as one
@@ -897,12 +897,12 @@ that has already been seen using all of the existing SVMs. If this fails, the
 system generates a label for the object and trains a new SVM for it. To make the
 training examples for the object, points are uniformly sampled from the object's
 surface (voxels in the object's component that belong to the Zero Level Set of the 
-TSDF) and compute Fast Point Feature Histogram (FPFH) descriptors \cite{Rusu2009} 
+TSDF) and compute Fast Point Feature Histogram (FPFH) descriptors~\cite{Rusu2009} 
 at those points. FPFH descriptors are geometric features that provide a
 per-point statistic of the curvature within some neighbourhood of the point
 (empirically, a $2.5$cm radius around the point was used).
 
-Figure \ref{fig:moseg_recognition} shows an example of this training and
+Figure~\ref{fig:moseg_recognition} shows an example of this training and
 prediction process for dynamic objects.
 
 \begin{figure}[h]
@@ -931,11 +931,11 @@ prediction process for dynamic objects.
 
 \section{Discussion}
 \label{sec:moseg_discussion}
-As outlined in Sections \ref{sec:moseg_qualitative} and \ref{sec:moseg_quantitative}, the 
+As outlined in Sections~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, the 
 proposed approach provides an improvement to the quality of camera pose estimation when 
 performing dense reconstruction in scenes that have dynamic components, versus the 
-standard \textit{KinectFusion} \cite{Newcombe2011} like pipeline as implemented by 
-\textit{Prisacariu et al} \cite{Prisacariu2014}. Additionally, it is evident that the 
+standard \textit{KinectFusion}~\cite{Newcombe2011} like pipeline as implemented by 
+\textit{Prisacariu et al}~\cite{Prisacariu2014}. Additionally, it is evident that the 
 proposed approach is capable of segmenting dynamic components (such as people moving in 
 an articulated fashion) that are visible in the camera's view frustrum, from those that 
 are static (such as furniture in the scene). This segmentation also demonstrates a novel 
@@ -948,7 +948,7 @@ that would otherwise be troublesome. Contrary to existing approaches outlined in
 \ref{sec:lit_review_dynamic}, the presented system has scope for use in large-scale 
 reconstruction scenarios, due to it's leverage of efficient, hashed volumetric data structures. 
 In addition, by utilising such data structures, the proposed system is performant to the 
-level of highly optimised \cite{Prisacariu2014} \textit{KinectFusion} \cite{Newcombe2011} 
+level of highly optimised~\cite{Prisacariu2014} \textit{KinectFusion}~\cite{Newcombe2011} 
 impolementations, demonstrating feasibility for application to problems that require 
 real time performance.
 
