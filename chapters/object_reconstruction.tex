@@ -92,7 +92,7 @@ Figure~\ref{fig:probobj_pipeline_diagram}.
 \begin{figure}[!htbp]
 ~\label{fig:probobj_pipeline_diagram}
   \centering
-  \includegraphics[width=\linewidth]{figures/object_recon/pipeline.pdf}
+  \includegraphics[width=0.9\linewidth]{figures/object_recon/pipeline.pdf}
   \caption[Probabilistic Object Reconstruction Pipeline]
   {The pipeline of the proposed Object Reconstruction approach.}
 \end{figure}
@@ -188,13 +188,15 @@ The PGM given in Figure~\ref{fig:probobj_pgm1} leads to the following
 factorisation over the full Joint Distribution.
 \begin{equation}
   \label{eqn:probobj_full_joint}
-  P(\Phi, \Omega, p, u, L) = 
-  \prod_{\psi \in \Psi}\prod_{s, s' \in \mathcal{S}}
-  P(\Phi \given u_{\psi}, L_{s, s'}) 
-  \prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}
-  P(u_{\psi} \given \Omega_{p, t}, p_{t})
-  P(L_{s, s'} \given \Omega_{p, t}, p_{t})
-  P(L_{s, s'})P(p_{t})P(\Omega_{p, t})
+  \begin{split}
+    P(\Phi, \Omega, p, u, L) ={}&
+    \prod_{\psi \in \Psi}\prod_{s, s' \in \mathcal{S}}
+    P(\Phi \given u_{\psi}, L_{s, s'}) 
+    \prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}
+    P(u_{\psi} \given \Omega_{p, t}, p_{t})
+    P(L_{s, s'} \given \Omega_{p, t}, p_{t})\\
+    & P(L_{s, s'})P(p_{t})P(\Omega_{p, t})
+  \end{split}
 \end{equation}
 Where in Equation~\ref{eqn:probobj_full_joint}, \( \Psi \) is the set of voxels
 across all subvolumes, \(\mathcal{P}\) is the set of RGBD pixels for a given 
@@ -272,17 +274,17 @@ the appearance model \(u\) may be marginalised as follows.
 \begin{align}
   \label{eqn:probobj_appearance_marginal}
   % Line 1.
-  P(\Phi, \Omega, p, L) & =
+  P(\Phi, \Omega, p, L) ={}&
   \int \Bigg[ 
   \prod_{\psi \in \bm{\Psi}} P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
   % Line 2.
-  & = \prod_{\psi \in \bm{\Psi}} 
+  =& \prod_{\psi \in \bm{\Psi}} 
   \int \Bigg[ P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
-  & = \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
+  =& \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
   P(L_{s, s'})P(p)P(\Omega)P(\bm{\Phi})
 \end{align}
 Note that the Appearance Posterior Volume outlined in Section 
@@ -316,16 +318,16 @@ derived as follows.
 \begin{align}
   \label{eqn:probobj_map_estimate}
   % Line 1.
-  P(\Omega, p | L_{s, s'}) & \propto \prod_{s, s' \in \mathcal{S}}
+  P(\Omega, p | L_{s, s'}) \propto{}& \prod_{s, s' \in \mathcal{S}}
   \frac{P(L_{s, s'} | \Omega, p) 
   P(\Omega | p)P(p)P(L_{s, s'})}
   {\displaystyle\int P(L_{s, s'} \given \Omega, p)
   \intd{L_{s, s'}}} P(\Phi) \\
   % Line 2.
-  & \propto \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p) P(\Omega | p)
+  \propto& \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p) P(\Omega | p)
   P(p)P(L_{s, s'})P(\Phi) \\
   % Line 3.
-  & \propto \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})
+  \propto& \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})
   P(\Phi)
 \end{align}
 Note that in the third step of Equation~\ref{eqn:probobj_map_estimate} the
@@ -380,9 +382,9 @@ applies the resultant \(\mathbb{SE}(3)\) transform to a given voxel position
 \(\bm{x}\) and is defined as follows.
 \begin{align}
   \label{eqn:probobj_lambda_fn}
-  \Lambda(\bm{x}, \bm{p}, \bm{t}) &=
+  \Lambda(\bm{x}, \bm{p}, \bm{t}) ={}&
   \bm{R}_{\bm{p}} \bm{x} + \bm{t}\\
-  &= 
+  =& 
   \begin{bmatrix}
     \bm{R}_{\bm{p}} & \bm{t} \\
     \bm{0} & 1
@@ -417,49 +419,49 @@ CDF of \(P(\Phi)\) is derived as follows.
   %P(\Phi < b) &= \int_{-\infty}^{b} \text{Logistic}
   %(\Phi \given \mu, \sigma) \intd{\Phi}\\
   % Line 2.
-  \bar{P}(\Phi) &\propto P(\Phi < b)\\
-  &\propto \int_{-\infty}^{b} \frac
+  \bar{P}(\Phi) \propto{}& P(\Phi < b)\\
+  \propto& \int_{-\infty}^{b} \frac
   {e^{-\frac{\Phi - \mu}{\sigma}}}
   {\sigma {\Big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \Big)}^{2}} \intd{\Phi}\\
   % Line 3.
-  &\propto \lim_{y\to -\infty} \int_{y}^{b} \frac
+  \propto& \lim_{y\to -\infty} \int_{y}^{b} \frac
   {e^{\frac{-\Phi + \mu}{\sigma}}}
   {\sigma {\Big( 1 + e^{\frac{-\Phi + \mu}{\sigma}} \Big)}^{2}} \intd{\Phi}\\
   % Line 4.
-  &\propto \lim_{y\to -\infty} \frac{1}{\sigma} \int_{y}^{b}
+  \propto& \lim_{y\to -\infty} \frac{1}{\sigma} \int_{y}^{b}
   \frac{e^{\frac{u}{s}}}{{\Big( 1 + e^{\frac{u}{\sigma}} \Big)}^{2}} \intd{u}\\
   \shortintertext{Where \( u = -\Phi + \mu \) and \(\intd{u} = -\intd{\Phi}\)}
   % Line 5.
-  &\propto \lim_{y\to -\infty} -\int_{y}^{b}
+  \propto& \lim_{y\to -\infty} -\int_{y}^{b}
   \frac{e^{p}}{{\Big( 1 + e^{p} \Big)}^{2}} \intd{p}\\
   \shortintertext{Where \(p = \frac{u}{\sigma}\) and \(\intd{p} = \frac{1}{\sigma} \intd{u}\)}
   % Line 6.
-  &\propto \lim_{y\to -\infty} -\int_{y}^{b} \frac{1}{w^{2}} \intd{w}\\
+  \propto& \lim_{y\to -\infty} -\int_{y}^{b} \frac{1}{w^{2}} \intd{w}\\
   \shortintertext{Where \(w = 1 + e^{p}\) and \(\intd{w} = e^{p} \intd{p}\)}
   % Line 7.
-  &\propto \lim_{y\to -\infty} {\Bigg[ \frac{1}{w} + C \Bigg]}_{y}^{b}\\
+  \propto& \lim_{y\to -\infty} {\Bigg[ \frac{1}{w} + C \Bigg]}_{y}^{b}\\
   % Line 8.
-  &\propto \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 + e^{p}} + C \Bigg]}_{y}^{b}\\
+  \propto& \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 + e^{p}} + C \Bigg]}_{y}^{b}\\
   % Line 9.
-  &= \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C
+  =& \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C
   \Bigg]}_{y}^{b}\\
   % Line 10.
-  &\propto \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} +
+  \propto& \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} +
   C \Bigg]}_{y}^{b}\\
-  &\propto {\Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]}_{\Phi = b}
+  \propto& {\Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} + C \Bigg]}_{\Phi = b}
   - \Bigg[ \left. \lim_{y\to -\infty} \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
   \right\rvert_{\Phi = y} + C \Bigg]\\
-  &\propto \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
+  \propto& \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
 \end{align}
 Given the Cumulative Density Function derived in Equation
 ~\ref{eqn:probobj_surface_prior_cdf}, the prior \(P(\Phi)\) is defined as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior}
-  \bar{P}(\Phi) &\propto \left. \int_{-\infty}^{b} \frac
+  \bar{P}(\Phi) \propto{}& \left. \int_{-\infty}^{b} \frac
   {e^{-\frac{\Phi - \mu}{\sigma}}}
   {\sigma {\Big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \Big)}^{2}} \intd{\Phi}
   \right\rvert_{\mu = 0, \sigma = 1}\\
-  &\propto \frac{1}{1 + e^{-\Phi}}
+  \propto& \frac{1}{1 + e^{-\Phi}}
 \end{align}
 It is evident from Equation~\ref{eqn:probobj_surface_prior} that under an 
 appropriate paramaterisation, the CDF of the Logistic Distribution is the 
@@ -473,14 +475,14 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
 \begin{align}
 \label{eqn:probobj_log_posterior}
   % Line 1.
-  \ln P(\Omega, p | L_{s, s'}) &\propto \ln
+  \ln P(\Omega, p | L_{s, s'}) \propto{}& \ln
   \prod_{s, s' \in \mathcal{s}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})\bar{P}(\Phi)\\
   % Line 2.
-  &\propto \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'} | \Omega, p) +
+  \propto& \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'} | \Omega, p) +
   \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'}) +
   \sum_{s, s' \in \mathcal{S}} \ln \bar{P}(\Phi)\\
   % Line 3.
-  &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[\ln \frac{1}{\sqrt{2 \pi \sigma}}
+  \propto& \sum_{s, s' \in \mathcal{S}} \Bigg[\ln \frac{1}{\sqrt{2 \pi \sigma}}
   \exp{\frac{-\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}
   \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big){\Big]}^{2}}
   {2\sigma^{2}}}
@@ -488,14 +490,14 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
   {\sqrt{{(2\pi)}^{k}\left|\bm{\Sigma}\right|}} +
   \ln \frac{1}{1 + e^{-\Phi}}\Bigg]\\
   % Line 4.
-  &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
+  \propto& \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
   \frac{{\Big[\Phi_{s}\big(\bm{x}\big) -
   \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
   \frac{1}{2} \ln \left|\bm{\Sigma}\right| 
   - \frac{1}{2} \bm{p}^{T}\bm{\Sigma}^{-1}\bm{p} -
   \ln(1 + e^{-\Phi}) \Bigg]\\
   % Line 5.
-  &\propto \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
+  \propto& \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
   \frac{{\Big[\Phi_{s}(\bm{x}) -
   \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
   \frac{1}{2} \bm{p}^{T}\bm{p} - \ln(1 + e^{-\Phi}) \Bigg]
@@ -526,7 +528,7 @@ to the Rodrigues rotational parameters is as follows for some parameter
 \begin{align}
   \label{eqn:probobj_log_post_rot_grad}
   % Line 1.
-  \frac{\partial E}{\partial \tau} &=
+  \frac{\partial E}{\partial \tau} ={}&
   \sum_{s, s' \in \mathcal{S}} \Bigg[ - \frac{\partial}{\partial \tau}
   \ln(2\pi\sigma) - \frac{\partial}{\partial \tau}
   \frac{{\Big[\Phi_{s}\big(\bm{x}\big) -
@@ -535,14 +537,14 @@ to the Rodrigues rotational parameters is as follows for some parameter
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 2.
-  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
+  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial}{\partial \tau}
   {\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}\big(\Lambda(\bm{x})\big)\Big]}^{2} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
   \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 3.
-  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
+  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial \phi}{\partial \Phi} \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
@@ -551,20 +553,20 @@ to the Rodrigues rotational parameters is as follows for some parameter
   \shortintertext{Where \(\phi(.) =
   {\big(\Phi_{s}(\bm{x}) - \Phi_{s'}(\Lambda(\bm{x}))\big)}^{2}\)}
   % Line 4.
-  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
   \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 5.
-  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} - \bm{p}^{T} -
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
     \Bigg]\\
   % Line 6.
-  &= \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} - \bm{p}^{T} +
   \frac{1}{1 + e^{\Phi}} \frac{\partial \Phi}{\partial \Lambda}

@@ -35,10 +35,10 @@ be simplified as follows in Equation~\ref{}.
 \begin{align}
   \label{eqn:spp_gp_marginal_simplify}
   % Line 1.
-  P(\bm{Y} \given \bm{X}, \beta) &= \int \mathcal{N}(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
+  P(\bm{Y} \given \bm{X}, \beta) ={}& \int \mathcal{N}(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
   \mathcal{N}(\bm{W} \given \bm{0}, \bm{I}) \intd{\bm{W}} \\
   % Line 2.
-  &= \int \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \exp{ 
+  =& \int \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \exp{ 
   \Bigg[
     -\frac{\beta}{2} {\big( \bm{Y} - \bm{WX} \big)}^{T} \big( \bm{Y} - \bm{WX} \big) 
   \Bigg]}
@@ -47,26 +47,26 @@ be simplified as follows in Equation~\ref{}.
     -\frac{1}{2} \bm{W}^{T}\bm{W}
   \Bigg]} \intd{\bm{W}} \\
   % Line 3.
-  &= \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \frac{1}{\sqrt{\left|2\pi\bm{I}\right|}} 
+  =& \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \frac{1}{\sqrt{\left|2\pi\bm{I}\right|}} 
   \int \exp{
   \Bigg[
     -\frac{\beta}{2} {\big( \bm{Y} - \bm{WX} \big)}^{T} \big( \bm{Y} - \bm{WX} \big) 
     -\frac{1}{2} \bm{W}^{T}\bm{W}
   \Bigg]} \intd{\bm{W}} \\
   % Line 4.
-  &\propto \int \exp{
+  \propto& \int \exp{
   \Bigg[
     -\frac{\beta}{2} {\big( \bm{Y} - \bm{WX} \big)}^{T} \big( \bm{Y} - \bm{WX} \big) 
     -\frac{1}{2} \bm{W}^{T}\bm{W}
   \Bigg]} \intd{\bm{W}} \\
   % Line 5.
-  &\propto \int \exp{ 
+  \propto& \int \exp{ 
   \Bigg[ -\frac{1}{2} \Big[
     \beta {\big( \bm{Y} - \bm{X}^{T}\bm{W} \big)}^{T} \big( \bm{Y} - \bm{X}^{T}\bm{W} \big) 
     + \bm{W}^{T}\bm{W}
   \Big] \Bigg]} \intd{\bm{W}} \\
   % Line 6.
-  &\propto \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
+  \propto& \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
   \int \exp{
   \Bigg[ -\frac{1}{2} \Big[
     -\beta \big( \bm{Y}^{T}\bm{X}^{T}\bm{W} \big) 
@@ -74,7 +74,7 @@ be simplified as follows in Equation~\ref{}.
     +\beta \bm{W}^{T}\bm{XX}^{T}\bm{W}
     + \bm{W}^{T}\bm{W}\Big] \Bigg]} \intd{\bm{W}} \\
   % Line 7.
-  &\propto \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
+  \propto& \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
   \int \exp{
   \Bigg[ -\frac{1}{2} \Big[
     -2\beta \bm{Y}^{T}\bm{X}^{T}\bm{W}
@@ -82,7 +82,7 @@ be simplified as follows in Equation~\ref{}.
     + \bm{W}^{T}\bm{W}
   \Big] \Bigg]} \intd{\bm{W}} \\
   % Line 7.
-  &\propto \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
+  \propto& \exp{\Bigg[ -\frac{\beta}{2} \bm{Y}^{T}\bm{Y} \Bigg]} 
   \int \exp{
   \Bigg[ -\frac{1}{2} \Big[
     \bm{W}^{T} \big( \beta \bm{XX}^{T} + \bm{I} \big) \bm{W}
@@ -98,36 +98,35 @@ in such a form. First, making the change of variables as in Equation
 
 \begin{align}
   \label{eqn:spp_gp_marginal_change}
-  \bm{A} &= \beta \bm{XX}^{T} + \bm{I}\\
-  \bm{b} &= \beta \bm{Y}^{T} \bm{X}^{T}
+  \bm{A} ={}& \beta \bm{XX}^{T} + \bm{I}\\
+  \bm{b} =& \beta \bm{Y}^{T} \bm{X}^{T}
 \end{align}
 a
 \begin{align}
   \label{eqn:spp_gp_complete}
   % Line 1.
-  P(\bm{Y} \given \bm{X}, \beta) 
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
+  P(\bm{Y} \given \bm{X}, \beta) \propto{}& \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ -\frac{1}{2} 
   \big[
     \bm{W}^{T}\bm{AW} - 2\bm{bW}  
   \big]
   \Big]} \intd{\bm{W}}\\
   % Line 2.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
+  \propto& \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ 
     -\frac{1}{2} \bm{W}^{T}\bm{AW} 
     - 2\bm{bW} 
     - \bm{b}^{T}\bm{A}^{-1}\bm{b}  
   \Big]} \intd{\bm{W}}\\
   % Line 3.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
+  \propto& \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ 
     -\frac{1}{2} \bm{W}^{T}\bm{AW} 
     - 2\bm{bA}\bm{A}^{-1}\bm{W}
     + \bm{b}^{T}\bm{A}^{-1}\bm{AA}^{-1}\bm{b}  
   \Big]} \intd{\bm{W}}\\
   % Line 4.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
+  \propto& \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ -\frac{1}{2} \big[ 
       {\big( \bm{W} - \bm{A}^{-1}\bm{b} \big)}^{T}
       \bm{A}
@@ -136,20 +135,20 @@ a
     \big]
   \Big]} \intd{\bm{W}}\\
   % Line 5.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
+  \propto& \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \exp{\Big[ -\frac{1}{2} \big[
       \sqrt{\left| 2 \pi \bm{A} \right|}
       - \bm{b}^{T}\bm{A}^{-1}\bm{b}
     \big]
   \Big]}\\
   % Line 6.
-  &\propto \exp{\Big[ \frac{1}{2} \big[
+  \propto& \exp{\Big[ \frac{1}{2} \big[
     \beta \bm{Y}^{T} \beta \bm{Y}
     - \bm{b}^{T}\bm{A}^{-1}\bm{b}
     \big]
   \Big]}\\
   % Line 7.
-  &\propto \exp{\Big[ -\frac{1}{2}
+  \propto& \exp{\Big[ -\frac{1}{2}
   \bm{Y}^{T} \big(
     \beta \bm{I} - \beta^{2}\bm{X}^{T}\bm{A}^{-1}\bm{X}
     \big)\bm{Y}
@@ -164,8 +163,8 @@ corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation
 
 \begin{align}
   \label{eqn:spp_sig_inv}
-  \bm{\Sigma}^{-1} &= \beta \bm{I} - \beta^{2} \bm{X}^{T} \bm{A}^{-1} \bm{X}\\
-  &= \beta \bm{I} - \beta^{2} \bm{X}^{T} {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}
+  \bm{\Sigma}^{-1} ={}& \beta \bm{I} - \beta^{2} \bm{X}^{T} \bm{A}^{-1} \bm{X}\\
+  =& \beta \bm{I} - \beta^{2} \bm{X}^{T} {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}
 \end{align}
 
 \section{Qualitative Results}

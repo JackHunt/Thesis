@@ -329,7 +329,7 @@ transformation \(\bm{T}\). Finally, \(\mathcal{N}\) is a normal map of
   \label{eqn:normal_map_definition}
   \mathcal{N} = \frac{\nabla \bm{\Phi}}{\norm{\nabla \bm{\Phi}}}
 \end{equation}
-where \(\nabla \bm{\Phi}\) is approximated with central finite differencing, 
+where \(\nabla \bm{\Phi}\) is approximated by central finite differencing, 
 as follows in Equation~\ref{eqn:sdf_central_diff}.
 \begin{equation}
   \label{eqn:sdf_central_diff}
@@ -360,28 +360,28 @@ With this substitution in place, the derivation proceeds as follows
 \begin{align}
   \label{eqn:icp_update_derivation_rot}
   % Line 1.
-  \frac{\partial E}{\partial \lambda} & =
+  \frac{\partial E}{\partial \lambda} ={}&
   \frac{\partial}{\partial \lambda}
   \sum_{p \in \bm{\Omega}}
   \norm{\phi(.)}\\
   % Line 2.
-  & = \sum_{p \in \bm{\Omega}}
+  =& \sum_{p \in \bm{\Omega}}
   \frac{\partial}{\partial \lambda}
   \norm{\phi(.)}\\
   % Line 3.
-  & = \sum_{p \in \bm{\Omega}}
+  =& \sum_{p \in \bm{\Omega}}
   \frac{\partial}{\partial \phi(.)} \norm{\phi(.)}
   \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 4.
-  & = \sum_{p \in \bm{\Omega}}
+  =& \sum_{p \in \bm{\Omega}}
   \frac{1}{2}{\frac{2 \phi(.)}{\sqrt{\phi(.)}^{T}\phi(.)}}
   \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 5.
-  & = \sum_{p \in \bm{\Omega}}
+  =& \sum_{p \in \bm{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
   \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 6
-  & = \sum_{p \in \bm{\Omega}}
+  =& \sum_{p \in \bm{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
   \Bigg[ \frac{\partial}{\partial \lambda}
   {\bigg[ \bm{Rx} + \bm{t} - \mathcal{V}(\bar{\bm{x}}) \bigg]}^{T}
@@ -390,7 +390,7 @@ With this substitution in place, the derivation proceeds as follows
   \frac{\partial}{\partial \lambda}
   \mathcal{N}(\bar{\bm{x}})\Bigg]\\
   % Line 6
-  & = \sum_{p \in \bm{\Omega}}
+  =& \sum_{p \in \bm{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
   {\bigg[ \frac{\partial \bm{R}}{\partial \lambda}
   \bm{x}\bigg]}^{T}
@@ -408,10 +408,10 @@ The partial derivatives
 may be multiplied with \(\bm{x}\) and combined in to the following Rotation Jacobian
 \begin{align}
   \label{eqn:rot_jac}
-  \bm{J}_{R} & = \left. {\bigg[
+  \bm{J}_{R} ={}& \left. {\bigg[
     \frac{\partial \bm{R}}{\partial \lambda} \bm{x}
     \bigg]}^{T} \right\vert_{\lambda = 0} \\
-  & =
+  =&
   \begin{bmatrix}
     0 & -z & y \\
     z & 0 & -x \\
@@ -633,7 +633,7 @@ An overview of the proposed pipeline is given in Figure~\ref{fig:moseg_pipeline}
 \begin{figure}[!htbp]
 ~\label{fig:moseg_pipeline}
   \centering
-  \includegraphics[width=\linewidth]{figures/moseg/pipeline.pdf}
+  \includegraphics[width=0.95\linewidth]{figures/moseg/pipeline.pdf}
   \caption[Motion Segmentation Pipeline]{The motion segmentation pipeline. 
   Note the additional voxel block labelling stage with a feedback to the model 
   integration stage.}
@@ -743,7 +743,7 @@ and sitting on a Setee is given in Figure~\ref{fig:moseg_qualitative_setee}.
     (b) When a person enters the scene using standard InfiniTAM, the tracking
     fails, leading to a corrupted scene model.
     (c) Using the proposed system, tracking is maintained and the person is
-    Integrated successfully into the scene.}
+    integrated successfully into the scene.}
 \end{figure}
 
 In addition to the ability to reconstruct a moving object that becomes static in
@@ -826,7 +826,7 @@ The results of Table~\ref{tbl:moseg_ate} are visualised in Figure
 \begin{figure}[!htbp]
 ~\label{fig:moseg_ate}
   \centering
-  \includegraphics[width=\linewidth]{figures/moseg/ate.eps}
+  \includegraphics[width=0.95\linewidth]{figures/moseg/ate.eps}
   \caption[Motion Segmentation ATE]
   {Absolute Trajectory Error for the TUM Dynamic Scenes dataset.}
 \end{figure}
@@ -867,7 +867,7 @@ highlighted in bold.}
 \begin{figure}[!htbp]
 ~\label{fig:moseg_rte}
   \centering
-  \includegraphics[width=\linewidth]{figures/moseg/rte.eps}
+  \includegraphics[width=0.95\linewidth]{figures/moseg/rte.eps}
   \caption[Motion Segmentation RTE]
   {Relative Trajectory Error for the TUM Dynamic Scenes dataset.}
 \end{figure}
