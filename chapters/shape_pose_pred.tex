@@ -101,11 +101,12 @@ in such a form. First, making the change of variables as in Equation
   \bf{A} &= \beta \bf{XX}^{T} + \bf{I}\\
   \bf{b} &= \beta \bf{Y}^{T} \bf{X}^{T}
 \end{align}
-
+a
 \begin{align}
   \label{eqn:spp_gp_complete}
   % Line 1.
-  P(\bf{Y} \given \bf{X}, \beta) &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  P(\bf{Y} \given \bf{X}, \beta) 
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
   \int \exp{\Big[ -\frac{1}{2} 
   \big[
     \bf{W}^{T}\bf{AW} - 2\bf{bW}  
@@ -143,7 +144,7 @@ in such a form. First, making the change of variables as in Equation
   \Big]}\\
   % Line 6.
   &\propto \exp{\Big[ \frac{1}{2} \big[
-    \beta \bf{Y}^{T}\beta{Y}
+    \beta \bf{Y}^{T} \beta \bf{Y}
     - \bf{b}^{T}\bf{A}^{-1}\bf{b}
     \big]
   \Big]}\\
