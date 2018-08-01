@@ -1,7 +1,8 @@
 \documentclass[
   12pt, 
-  twoside
-]{report}
+  twoside,
+  final
+]{scrbook}
 
 \usepackage[
   linedheaders,
@@ -34,6 +35,7 @@
 \usepackage{lscape}
 \usepackage[toc, page]{appendix}
 \usepackage{bm}
+\usepackage{microtype}
 
 %Tikz packages.
 \usepackage{tikz}
@@ -52,6 +54,9 @@
 \newcommand{\intd}[1]{{\mathrm d{#1}}}
 
 \renewcommand{\bm}{\mathbold}
+
+\setlength{\headheight}{23pt} 
+\setlength{\footheight}{23pt} 
 
 % Adjust align spacing.
 \addtolength{\jot}{1.25em}

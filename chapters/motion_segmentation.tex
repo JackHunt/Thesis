@@ -1,5 +1,5 @@
 \section{Introduction}
-~\label{sec: moseg_introduction}
+~\label{sec:moseg_introduction}
 Progress in dense volumetric fusion has been accelerated in recent years with
 the availability of comsumer grade RGBD sensors such as the Microsoft Kinect and
 the Asus Xtion coupled with the increasingly parallel nature of Grapical Processing 
@@ -345,8 +345,8 @@ as follows in Equation~\ref{eqn:sdf_central_diff}.
 \end{equation}
 
 For the gradient update phase of the ICP algorithm, the partial derivatives
-\( \frac{\partial E}{\partial \bm{R}_{\lambda}} \forall \lambda \in \{\alpha, \beta, \gamma \) 
-may be derived as follows in Equation~\ref{eqn:icp_update_derivation}.
+\( \frac{\partial E}{\partial \bm{R}_{\lambda}} \forall \lambda \in \{\alpha, \beta, \gamma \} \) 
+may be derived as follows in Equation~\ref{eqn:icp_update_derivation_rot}.
 As a first step, the following definition is made
 \begin{equation}
   \label{eqn:icp_deriv_sub}
@@ -488,31 +488,31 @@ that follows.
       \begin{algorithmic}[1]
         % $.$ used instead of \(\) due to a bug(?) in algorithmic.
         \Procedure{ICP}{$\mathcal{D}_{l}, \mathcal{D}_{m}, \mathcal{V}, \theta_{t-1}$}
-        \State\( \lambda \gets \lambda_{init} \)
-        \State\( \theta_{tmp} \gets \theta_{t-1} \)
-        \State\( \theta_{t} \gets \theta_{tmp} \)
-        \State\( \epsilon_{old} \gets \inf \)
-        \State\( \epsilon \gets \epsilon_{old} \)
+        \State{\( \lambda \gets \lambda_{init} \)}
+        \State{\( \theta_{tmp} \gets \theta_{t-1} \)}
+        \State{\( \theta_{t} \gets \theta_{tmp} \)}
+        \State{\( \epsilon_{old} \gets \inf \)}
+        \State{\( \epsilon \gets \epsilon_{old} \)}
         \While{\( \epsilon >= \tau \)}
-        \State\( \epsilon \gets E(.) \)
+        \State{\( \epsilon \gets E(.) \)}
         \Comment{Evaluate Equation~\ref{eqn:pose_estimation_kf}}
         \If{\( \epsilon \leq \epsilon_{old} \)}
-        \State\( \lambda \gets 10\lambda \)
-        \State\( \theta_{t} \gets \theta_{tmp} \)
-        \Else
-        \State\( \lambda \gets \frac{\lambda}{10} \)
-        \State\( \epsilon_{old} \gets \epsilon \)
-        \State\( \theta_{tmp} \gets \theta_{t} \)
-        \EndIf
-        \State\( \bm{J} \gets \nabla E \)
+        \State{\( \lambda \gets 10\lambda \)}
+        \State{\( \theta_{t} \gets \theta_{tmp} \)}
+        \Else{}
+        \State{\( \lambda \gets \frac{\lambda}{10} \)}
+        \State{\( \epsilon_{old} \gets \epsilon \)}
+        \State{\( \theta_{tmp} \gets \theta_{t} \)}
+        \EndIf{}
+        \State{\( \bm{J} \gets \nabla E \)}
         \Comment{Evaluate Equation~\ref{eqn:pose_jacobian}}
-        \State\( \bm{H} = \bm{J}^{T}\bm{J} \)
-        \State\( \bm{C} = \text{chol}(\bm{H} + \lambda \text{diag}(\bm{H})) \)
-        \State\( \delta = \text{backsub}(\bm{C}, \bm{J}) \)
-        \State\( \theta_{tmp} \gets \theta_{tmp} - \delta \)
-        \EndWhile\\
-        \Return\( \theta_{t} \)
-        \EndProcedure
+        \State{\( \bm{H} = \bm{J}^{T}\bm{J} \)}
+        \State{\( \bm{C} = \text{chol}(\bm{H} + \lambda \text{diag}(\bm{H})) \)}
+        \State{\( \delta = \text{backsub}(\bm{C}, \bm{J}) \)}
+        \State{\( \theta_{tmp} \gets \theta_{tmp} - \delta \)}
+        \EndWhile{\\}
+        \Return{\( \theta_{t} \)}
+        \EndProcedure{}
       \end{algorithmic}
     \end{algorithm}
   \end{minipage}
@@ -522,8 +522,8 @@ that follows.
 
 Note that for numerical stability, the matrix inverse in Equation~\ref{eqn:lm_update} 
 may be avoided by utilising the \texttt{chol} and \texttt{backsub} routines to 
-compute the Cholesky Decomposition~\ref{CHOL} and solve a linear system with 
-Backsubstitution~\ref{BACKSUB}, respectively.
+compute the Cholesky Decomposition~\cite{CHOL} and solve a linear system with 
+Backsubstitution~\cite{BACKSUB}, respectively.
 
 \subsection{Volumetric Integration}
 ~\label{subsec:moseg_static_integration}
@@ -791,7 +791,7 @@ baseline.
 \begin{table}[!htbp]
 ~\label{tbl:moseg_ate}
 \begin{center}
-  \begin{tabular}{l@{\hskip 1cm} c c}
+  \begin{tabular}{l c c}
     \emph{TUM Standard Sequence Name} & \emph{MoSeg} ATE & \emph{Baseline} ATE \\
     \midrule
     \textsf{fr2-desk-with-person} & \textbf{0.158 \std{0.091}} & 0.297 \std{0.193}\\
@@ -841,7 +841,7 @@ in Figure~\ref{fig:moseg_rte}.
 \begin{table}[!htbp]
 ~\label{tbl:moseg_rte}
 \begin{center}
-  \begin{tabular}{l@{\hskip 1cm} c c}
+  \begin{tabular}{l c c}
     \emph{TUM Standard Sequence Name} & \emph{MoSeg} RTE & \emph{Baseline} RTE \\
     \midrule
     \textsf{fr2-desk-with-person} & \textbf{0.023 \std{0.030}} & 0.026 \std{0.037}\\

@@ -90,82 +90,82 @@ be simplified as follows in Equation~\ref{}.
   \Big] \Bigg]} \intd{\bm{W}}
 \end{align}
 
-To make the integral over \(\bf{W}\) tractable in Equation~\ref{eqn:spp_gp_marginal_simplify}, 
-the distribution \(P(\bf{Y} \given \bf{X}, \beta)\) must be of a Gaussian form; an exponential 
-of a quadratic form. Completing the square in \(\bf{W}\) allows the marginal to be expressed 
+To make the integral over \(\bm{W}\) tractable in Equation~\ref{eqn:spp_gp_marginal_simplify}, 
+the distribution \(P(\bm{Y} \given \bm{X}, \beta)\) must be of a Gaussian form; an exponential 
+of a quadratic form. Completing the square in \(\bm{W}\) allows the marginal to be expressed 
 in such a form. First, making the change of variables as in Equation 
 ~\ref{eqn:spp_gp_marginal_change}, the procedure is as follows in Equation~\ref{eqn:spp_gp_complete}.
 
 \begin{align}
   \label{eqn:spp_gp_marginal_change}
-  \bf{A} &= \beta \bf{XX}^{T} + \bf{I}\\
-  \bf{b} &= \beta \bf{Y}^{T} \bf{X}^{T}
+  \bm{A} &= \beta \bm{XX}^{T} + \bm{I}\\
+  \bm{b} &= \beta \bm{Y}^{T} \bm{X}^{T}
 \end{align}
 a
 \begin{align}
   \label{eqn:spp_gp_complete}
   % Line 1.
-  P(\bf{Y} \given \bf{X}, \beta) 
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  P(\bm{Y} \given \bm{X}, \beta) 
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ -\frac{1}{2} 
   \big[
-    \bf{W}^{T}\bf{AW} - 2\bf{bW}  
+    \bm{W}^{T}\bm{AW} - 2\bm{bW}  
   \big]
-  \Big]} \intd{\bf{W}}\\
+  \Big]} \intd{\bm{W}}\\
   % Line 2.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ 
-    -\frac{1}{2} \bf{W}^{T}\bf{AW} 
-    - 2\bf{bW} 
-    - \bf{b}^{T}\bf{A}^{-1}\bf{b}  
-  \Big]} \intd{\bf{W}}\\
+    -\frac{1}{2} \bm{W}^{T}\bm{AW} 
+    - 2\bm{bW} 
+    - \bm{b}^{T}\bm{A}^{-1}\bm{b}  
+  \Big]} \intd{\bm{W}}\\
   % Line 3.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ 
-    -\frac{1}{2} \bf{W}^{T}\bf{AW} 
-    - 2\bf{bA}\bf{A}^{-1}\bf{W}
-    + \bf{b}^{T}\bf{A}^{-1}\bf{AA}^{-1}\bf{b}  
-  \Big]} \intd{\bf{W}}\\
+    -\frac{1}{2} \bm{W}^{T}\bm{AW} 
+    - 2\bm{bA}\bm{A}^{-1}\bm{W}
+    + \bm{b}^{T}\bm{A}^{-1}\bm{AA}^{-1}\bm{b}  
+  \Big]} \intd{\bm{W}}\\
   % Line 4.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \int \exp{\Big[ -\frac{1}{2} \big[ 
-      {\big( \bf{W} - \bf{A}^{-1}\bf{b} \big)}^{T}
-      \bf{A}
-      \big( \bf{W} - \bf{A}^{-1}\bf{b} \big)
-      - \bf{b}^{T}\bf{A}^{-1}\bf{b}
+      {\big( \bm{W} - \bm{A}^{-1}\bm{b} \big)}^{T}
+      \bm{A}
+      \big( \bm{W} - \bm{A}^{-1}\bm{b} \big)
+      - \bm{b}^{T}\bm{A}^{-1}\bm{b}
     \big]
-  \Big]} \intd{\bf{W}}\\
+  \Big]} \intd{\bm{W}}\\
   % Line 5.
-  &\propto \exp{\Big[ -\frac{\beta}{2}\bf{Y}^{T}\bf{Y} \Big]}
+  &\propto \exp{\Big[ -\frac{\beta}{2}\bm{Y}^{T}\bm{Y} \Big]}
   \exp{\Big[ -\frac{1}{2} \big[
-      \sqrt{\left| 2 \pi \bf{A} \right|}
-      - \bf{b}^{T}\bf{A}^{-1}\bf{b}
+      \sqrt{\left| 2 \pi \bm{A} \right|}
+      - \bm{b}^{T}\bm{A}^{-1}\bm{b}
     \big]
   \Big]}\\
   % Line 6.
   &\propto \exp{\Big[ \frac{1}{2} \big[
-    \beta \bf{Y}^{T} \beta \bf{Y}
-    - \bf{b}^{T}\bf{A}^{-1}\bf{b}
+    \beta \bm{Y}^{T} \beta \bm{Y}
+    - \bm{b}^{T}\bm{A}^{-1}\bm{b}
     \big]
   \Big]}\\
   % Line 7.
   &\propto \exp{\Big[ -\frac{1}{2}
-  \bf{Y}^{T} \big(
-    \beta \bf{I} - \beta^{2}\bf{X}^{T}\bf{A}^{-1}\bf{X}
-    \big)\bf{Y}
+  \bm{Y}^{T} \big(
+    \beta \bm{I} - \beta^{2}\bm{X}^{T}\bm{A}^{-1}\bm{X}
+    \big)\bm{Y}
   \Big]}
 \end{align}
 
-With the distribution \(P(\bf{Y} \given \bf{X}, \beta)\) derived as being proportional to  
-an exponentiated quadratic form as in Equation~\ref{eqn::eqn:spp_gp_complete}, it is 
-clear that the inverse covariance matrix \(\bf{\Sigma}^{-1}\) of the Gaussian distribution 
-corresponding to \(P(\bf{Y} \given \bf{X}, \beta)\) is as follows in Equation 
+With the distribution \(P(\bm{Y} \given \bm{X}, \beta)\) derived as being proportional to  
+an exponentiated quadratic form as in Equation~\ref{eqn:spp_gp_complete}, it is 
+clear that the inverse covariance matrix \(\bm{\Sigma}^{-1}\) of the Gaussian distribution 
+corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation 
 ~\ref{eqn:spp_sig_inv}.
 
 \begin{align}
   \label{eqn:spp_sig_inv}
-  \bf{\Sigma}^{-1} &= \beta \bf{I} - \beta^{2} \bf{X}^{T} \bf{A}^{-1} \bf{X}\\
-  &= \beta \bf{I} - \beta^{2} \bf{X}^{T} {\big(\beta \bf{XX}^{T} + \bf{I} \big)}^{-1}
+  \bm{\Sigma}^{-1} &= \beta \bm{I} - \beta^{2} \bm{X}^{T} \bm{A}^{-1} \bm{X}\\
+  &= \beta \bm{I} - \beta^{2} \bm{X}^{T} {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}
 \end{align}
 
 \section{Qualitative Results}

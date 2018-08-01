@@ -104,7 +104,7 @@ like pipeline of~\cite{Newcombe2011,Prisacariu2014}. The surface is represented
 as the Zero Level Set of a TSDF discretised over voxels, with the isosurface 
 embedding built by a weigted mean of new observations, as outlined in Equations
 ~\ref{eqn:sdf_update} and~\ref{eqn:sdf_weight_update}. Camera pose estimation is
-performed with ICP, as outlined in Section~\ref{subsec:moseg_static_camera_trackin} 
+performed with ICP, as outlined in Section~\ref{subsec:moseg_static_camera_tracking} 
 and is run quasi-simultaneously against the evolving map. Here, inspired by 
 ~\cite{Kolev2006}, this procedure is augmented by estimating the posterior probability, 
 per map voxel, of belonging to the object of interest. This volume of posterior 
@@ -763,8 +763,8 @@ this section demonstrate efficacy over the approach of \textit{Ren et al}
 ~\cite{Ren2013} for the task of obtaining closed, small object reconstructions 
 from RGBD data. Each evaluation sequence is run on the system proposed in this 
 chapter and through that of \textit{Ren et al}, with output snapshots taken at 
-quarterly intervals for each sequence. In Section~\ref{QUANT}, a Quantitative 
-evaluation of Reconstruction quality is given.
+quarterly intervals for each sequence. In Section~\ref{sec:probobj_quantitative}, 
+a Quantitative evaluation of Reconstruction quality is given.
 
 \begin{figure}[!htbp]
 ~\label{fig:probobj_rock_s3d}
@@ -810,10 +810,10 @@ reconstruction.
 
 An additional evaluation is performed on the proposed systems ability to reconstruct 
 a range of objects versus that of an implementation of the standard KinectFusion 
-pipeline as outlined in Section~\ref{MOSEG INTRO}. The central difference in the use 
-of the two approaches for the purposes of this comparison is that in the proposed system, 
-only the observed points of the live frame and of the reconstruction that belong to the 
-object of interest are used for pose estimation. In the KinectFusion pipeline used 
+pipeline as outlined in Section~\ref{sec:moseg_introduction}. The central difference in 
+the use of the two approaches for the purposes of this comparison is that in the proposed 
+system, only the observed points of the live frame and of the reconstruction that belong to 
+the object of interest are used for pose estimation. In the KinectFusion pipeline used 
 as a base of comparison however, the entire scene is modelled as the camera is moved, 
 with the reconstruction of the object of interest being segmented as a post processing 
 step. As such, the results extracted from the KinectFusion pipeline are taken to be the 
@@ -911,7 +911,7 @@ evaluation presented in Section~\ref{sec:moseg_quantitative}, the
 \begin{table}[!htbp]
 ~\label{tbl:probobj_ate}
   \centering
-  \begin{tabular}{l@{\hskip 1cm} c c}
+  \begin{tabular}{l c c}
     \emph{Sequence Name} & \emph{Proposed Approach ATE (m)} & \emph{InfiniTAM (m)}\\
     \midrule
     \textsf{freiburg3\_cabinet} & 0.077903 & 0.520693\\
@@ -934,7 +934,7 @@ and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this w
 yields a marked improvement in Absolute Trajectory Error over that of the standard KinectFusion 
 pipeline with object segmentation. The remaining sequences that have the ATE marked as DNR did 
 not yield an interpretable reconstruction; sequences with ATE metrics marked DNR did not 
-reconstruct. In the case of the \textit{freiburg2\_metallic\_sphere(2)} sequences...
+reconstruct. In the case of the \textit{freiburg2\_metallic\_sphere (2)} sequences\ldots
 
 The trajectories of the two approaches evaluated on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences are plotted versus the ground truth trajectories 
@@ -1025,7 +1025,7 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
 
 \section{Discussion}
 ~\label{sec:probobj_discussion}
-It is evident from Sections~\ref{sec:sec:probobj_qualitative} and~\ref{sec:probobj_quantitative} 
+It is evident from Sections~\ref{sec:probobj_qualitative} and~\ref{sec:probobj_quantitative} 
 that the proposed approach is capable of densely reconstructing a range of rigid objects, providing 
 closed and consistent object models, versus the state-of-the-art approach of \textit{Ren et al} 
 ~\cite{Ren2013}, which failed to reconstruct any of the objects with nontrivial geometry that it 
