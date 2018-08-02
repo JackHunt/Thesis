@@ -205,9 +205,12 @@ Equation~\ref{eqn:spp_gp_marginal_simp}
   =& TODO
 \end{align}
 
+\subsection{Gaussian Process Fitting}
+~\label{subsec:spp_gp_fitting}
 To find the most probable latent space embedding, the latent variables \( \bm{X} \) may be 
 found by directly optimising the marginal likelihood of Equation~\ref{eqn:spp_gp_marginal_simp}. 
-As such, the narural logarithm
+As such, the natural logarithm may also be optimised for the latent variables \( \bm{X} \) and 
+is given in Equation~\ref{eqn:eqn:spp_gp_marginal_log}.
 \begin{align}
   \label{eqn:spp_gp_marginal_log}
   % Line 1.
@@ -336,19 +339,61 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
   \frac{\partial \bm{\kappa}}{\partial \lambda} =& \text{TODO}
 \end{align}
 
+\subsection{Gaussian Process Regression}
+~\label{subsec:spp_gp_prediction}
 With the optimised latent variables \( \bm{X} \), the formulation outlined in 
 Equation~\ref{eqn:spp_gp_marginal_simp} defines a Gaussian Process prior 
 over functions of \( \bm{X} \), as follows.
 \begin{equation}
   \label{eqn:gp_prior}
-  f(\bm{x}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{XX}})
+  \bm{f}(\bm{X}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{XX}})
 \end{equation}
 
 A Gaussian Process prior may similarly be constructed for observed latent 
 space points \( \bm{L} \), as follows.
 \begin{equation}
-  \label{eqn:gp_prior}
-  f_{\star}(\bm{l}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{LL}})
+  \label{eqn:gp_prior_latent}
+  \bm{f}_{\star}(\bm{l}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{LL}})
+\end{equation}
+
+It follows from Equations~\ref{eqn:gp_prior} and~\ref{eqn:gp_prior_latent} that 
+the joint distribution over \( \bm{X} \) and \( \bm{L} \) can be formulated as 
+follows in Equation~\ref{eqn:spp_gp_joint}.
+\begin{equation}
+  \label{eqn:spp_gp_joint}
+  \begin{bmatrix}
+    \bm{f}\\
+    \bm{f}_{\star}
+  \end{bmatrix}
+  \sim \mathcal{N} \Bigg(
+    \begin{bmatrix}
+      \bm{0}\\
+      \bm{0}
+    \end{bmatrix},
+    \begin{bmatrix}
+      \bm{\Sigma}_{\bm{XX}} & \bm{\Sigma}_{\bm{XL}}\\
+      \bm{\Sigma}_{\bm{LX}} & \bm{\Sigma}_{\bm{LL}}
+    \end{bmatrix}
+  \Bigg)
+\end{equation}
+
+The posterior of \( \bm{f}_{\star} \) conditioned on \( \bm{f} \) is given by
+the distribution in Equation~\ref{eqn:spp_gp_conditional}.
+\begin{equation}
+  \label{eqn:spp_gp_conditional}
+  P(\bm{f}_{\star} \given \bm{X}, \bm{L}, \bm{f}) = 
+  \mathcal{N} \Big(
+    \bm{\Sigma}_{LX} \bm{\Sigma}_{XX}^{-1} \bm{f}, 
+    \bm{\Sigma}_{LL} - \bm{\Sigma}_{LX} \bm{\Sigma}_{XX}^{-1} \bm{\Sigma}_{XL}
+  \Big) 
+\end{equation}
+
+As such, to obtain a posterior mean prediction for a latent space point \( \bm{l} \), 
+a draw from the distribution outlined in Equation~\ref{eqn:spp_gp_conditional} is 
+taken as follows.
+\begin{equation}
+  \label{eqn:spp_gp_posterior_draw}
+  \bm{f}_{\star} \sim P(\bm{f}_{\star} \given \bm{X}, \bm{L}, \bm{f})
 \end{equation}
 
 \section{Qualitative Results}
