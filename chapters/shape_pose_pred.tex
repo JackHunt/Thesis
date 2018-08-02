@@ -250,6 +250,92 @@ is derived as follows in Equation~\ref{eqn:spp_gp_log_marginal_grad}.
   + \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} \bm{X}
 \end{align}
 
+The gradient derived in Equation~\ref{eqn:spp_gp_log_marginal_grad} holds 
+for the case when \( \bm{\Sigma} = \bm{X}^{T}\bm{X} + \beta^{-1} \bm{I} \). 
+However, for \( \bm{\Sigma} = \bm{\kappa}(.) \) where \( \bm{\kappa} \) is 
+a given kernel function, the result of the derivation of Equation
+~\ref{eqn:spp_gp_log_marginal_grad} is applicable. When subsituting 
+\( \frac{\partial \bm{\Sigma}}{\partial} \bm{X} \) with 
+\( \frac{\partial \bm{\kappa}}{\partial \bm{X}} \), the gradient is thus 
+given in Equation~\ref{eqn:spp_gp_log_marginal_grad_kernel}.
+\begin{equation}
+  \label{eqn:spp_gp_log_marginal_grad_kernel}
+  \frac{\partial \mathcal{L}}{\partial \bm{X}} = 
+  -\frac{1}{2} \Bigg[
+    D \bm{\Sigma}^{-1} \frac{\partial \bm{\kappa}}{\partial \bm{X}}
+    - \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} 
+    \frac{\partial \bm{\kappa}}{\partial \bm{X}}
+  \Bigg]
+\end{equation}
+
+It should be noted that the gradient \( \frac{\partial \bm{\kappa}}{\partial \bm{X}} \)
+may also be substitued for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), for 
+some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \).
+
+A common nonlinear covariance kernel function in the Gaussian Process literature 
+is the Exponentiated Quadratic \cite{EXPQUAD}, which takes the form given in 
+Equation~\ref{eqn:spp_exp_quad}.
+\begin{align}
+  \label{eqn:spp_exp_quad}
+  % Line 1.
+  \bm{\kappa} \big( \bm{x}_{i}, \bm{x}_{j}, \theta_{0}, 
+  \theta_{1}, \theta_{2}, \lambda \big) ={}&
+  \theta_{0} e^{-\frac{\lambda}{2} 
+  \left\lVert \bm{x}_{i} - \bm{x}_{j} \right\rVert^{2}}
+  + \theta_{1} + \theta_{2} \delta \big( -\frac{\lambda}{2} 
+  \left\lVert \bm{x}_{i} - \bm{x}_{j} \right\rVert^{2} \big)\\
+  % Line 2.
+  =& \theta_{0} e^{-\frac{\lambda}{2} 
+  \sum_{n}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}
+  + \theta_{1} + \theta_{2} \delta \big( -\frac{\lambda}{2} 
+  \sum_{n}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2} \big)
+\end{align}
+
+The gradient of the Exponentiated Quadratic kernel of Equation~\ref{eqn:spp_exp_quad},
+\( \frac{\partial \bm{\kappa}}{\partial \bm{x}_{i, n}} \) for the \( n^{th} \) variable 
+of \( \bm{x}_{i} \) can be derived as follows in Equation~\ref{eqn:exp_quad_grad_x}.
+\begin{align}
+  \label{eqn:exp_quad_grad_x}
+  % Line 1.
+  \frac{\partial \bm{\kappa}}{\partial \bm{x}_{i, n}} ={}& 
+  \frac{\partial}{\partial \bm{x}_{i, n}} \theta_{0} e^{-\frac{\lambda}{2} 
+  \sum_{n = 0}^{D} -\frac{\lambda}{2} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}\\
+  % Line 2.
+  =& \frac{\partial}{\partial \bm{x}_{i, n}} \theta_{0} e^{-\frac{\lambda}{2} 
+  \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}} 
+  \frac{\partial}{\partial \bm{x}_{i, n}} \sum_{n = 0}^{D} -\frac{\lambda}{2} 
+  {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}\\
+  % Line 3.
+  =& \theta_{0} e^{-\frac{\lambda}{2} 
+  \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}} 
+  \frac{\partial}{\partial \bm{x}_{i, n}} \sum_{n = 0}^{D} -\frac{\lambda}{2} 
+  {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}\\
+  % Line 4.
+  =& \lambda \theta_{0} e^{-\frac{\lambda}{2} 
+  \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}} 
+  {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}
+\end{align}
+
+Following the derivation of Equation~\ref{eqn:exp_quad_grad_x}, the remaining 
+gradients of \( \kappa(.) \) may be trivially derived, as in Equation
+~\ref{eqn:exp_quad_grad_rest}.
+\begin{align}
+  \label{eqn:exp_quad_grad_rest}
+  % Line 1.
+  \frac{\partial \bm{\kappa}}{\partial \bm{x}_{j, n}} ={}& 
+  -\frac{\partial \bm{\kappa}}{\partial \bm{x}_{i, n}}\\
+  % Line 2.
+  \frac{\partial \bm{\kappa}}{\partial \theta_{0}} =&
+  e^{-\frac{\lambda}{2} 
+  \sum_{n = 0}^{D} -\frac{\lambda}{2} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}\\
+  % Line 3.
+  \frac{\partial \bm{\kappa}}{\partial \theta_{1}} =& 1\\
+  % Line 4.
+  \frac{\partial \bm{\kappa}}{\partial \theta_{2}} =& 0\\
+  % Line 5.
+  \frac{\partial \bm{\kappa}}{\partial \lambda} =& \text{TODO}
+\end{align}
+
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
 
