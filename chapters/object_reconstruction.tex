@@ -275,15 +275,15 @@ the appearance model \(u\) may be marginalised as follows.
   \label{eqn:probobj_appearance_marginal}
   % Line 1.
   P(\Phi, \Omega, p, L) ={}&
-  \int \Bigg[ 
+  \int
   \prod_{\psi \in \bm{\Psi}} P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
-  P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
+  P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \intd{u} \\
   % Line 2.
   =& \prod_{\psi \in \bm{\Psi}} 
-  \int \Bigg[ P(\Phi \given u_{\psi})
+  \int P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
-  P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \Bigg] \intd{u} \\
+  P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \intd{u} \\
   =& \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
   P(L_{s, s'})P(p)P(\Omega)P(\bm{\Phi})
 \end{align}
@@ -482,25 +482,35 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
   \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'}) +
   \sum_{s, s' \in \mathcal{S}} \ln \bar{P}(\Phi)\\
   % Line 3.
-  \propto& \sum_{s, s' \in \mathcal{S}} \Bigg[\ln \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}
-  \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big){\Big]}^{2}}
-  {2\sigma^{2}}}
-  + \ln \frac{-\frac{1}{2} e^{\bm{p}^{T}\bm{\Sigma}^{-1}\bm{p}}}
-  {\sqrt{{(2\pi)}^{k}\left|\bm{\Sigma}\right|}} +
-  \ln \frac{1}{1 + e^{-\Phi}}\Bigg]\\
+  \propto& 
+  \begin{aligned}[t]
+    \sum_{s, s' \in \mathcal{S}} \Bigg[ {}& \ln \frac{1}{\sqrt{2 \pi \sigma}}
+    \exp{\frac{-\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}
+    \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big){\Big]}^{2}}
+    {2\sigma^{2}}}\\
+    &+ \ln \frac{-\frac{1}{2} e^{\bm{p}^{T}\bm{\Sigma}^{-1}\bm{p}}}
+    {\sqrt{{(2\pi)}^{k}\left|\bm{\Sigma}\right|}} +
+    \ln \frac{1}{1 + e^{-\Phi}}\Bigg]
+  \end{aligned}\\
   % Line 4.
-  \propto& \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
-  \frac{{\Big[\Phi_{s}\big(\bm{x}\big) -
-  \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
-  \frac{1}{2} \ln \left|\bm{\Sigma}\right| 
-  - \frac{1}{2} \bm{p}^{T}\bm{\Sigma}^{-1}\bm{p} -
-  \ln(1 + e^{-\Phi}) \Bigg]\\
+  \propto& 
+  \begin{aligned}[t]
+    \sum_{s, s' \in \mathcal{S}} \Bigg[ {}& -\ln(2\pi\sigma) -
+    \frac{{\Big[\Phi_{s}\big(\bm{x}\big) -
+    \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
+    \frac{1}{2} \ln \left|\bm{\Sigma}\right| \\
+    & - \frac{1}{2} \bm{p}^{T}\bm{\Sigma}^{-1}\bm{p} -
+    \ln(1 + e^{-\Phi}) \Bigg]
+  \end{aligned}\\
   % Line 5.
-  \propto& \sum_{s, s' \in \mathcal{S}} \Bigg[ -\ln(2\pi\sigma) -
-  \frac{{\Big[\Phi_{s}(\bm{x}) -
-  \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
-  \frac{1}{2} \bm{p}^{T}\bm{p} - \ln(1 + e^{-\Phi}) \Bigg]
+  \propto& 
+  \begin{aligned}[t]
+    \sum_{s, s' \in \mathcal{S}} \Bigg[ {}& -\ln(2\pi\sigma) -
+    \frac{{\Big[\Phi_{s}(\bm{x}) -
+    \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
+    \frac{1}{2} \bm{p}^{T}\bm{p} \\
+    & - \ln(1 + e^{-\Phi}) \Bigg]
+\end{aligned}
 \end{align}
 
 As with the gradients derived in Section~\ref{subsec:moseg_static_camera_tracking}, the 
@@ -922,7 +932,7 @@ evaluation presented in Section~\ref{sec:moseg_quantitative}, the
     \textsf{freiburg2\_coke}   & DNR & DNR \\
     \textsf{freiburg2\_dishes}   & DNR & DNR \\
     \textsf{freiburg2\_flowerbouquet}   & DNR & DNR \\
-    \textsf{freiburg2\_flowerbouquet\_brownbackground}   & DNR & DNR \\
+    \textsf{freiburg2\_flowerbouquet\_brownbg}   & DNR & DNR \\
     \textsf{freiburg2\_metallic\_sphere}   & DNR & DNR \\
     \textsf{freiburg2\_metallic\_sphere2}   & DNR & DNR \\
     \textsf{freiburg3\_large\_cabinet}   & DNR & DNR
@@ -946,8 +956,8 @@ in Figure~\ref{fig:probobj_traj}
 ~\label{fig:probobj_traj}
   \centering
   \begin{tabular}{cc}
-  \includegraphics[width=.5\linewidth]{figures/object_recon/plots/traj/cab_traj.eps} & 
-  \includegraphics[width=.5\linewidth]{figures/object_recon/plots/traj/ted_traj.eps} \\
+  \includegraphics[width=.45\linewidth]{figures/object_recon/plots/traj/cab_traj.eps} & 
+  \includegraphics[width=.45\linewidth]{figures/object_recon/plots/traj/ted_traj.eps} \\
   (a) & (b)
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Trajectory Plots]
