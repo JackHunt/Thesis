@@ -336,6 +336,21 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
   \frac{\partial \bm{\kappa}}{\partial \lambda} =& \text{TODO}
 \end{align}
 
+With the optimised latent variables \( \bm{X} \), the formulation outlined in 
+Equation~\ref{eqn:spp_gp_marginal_simp} defines a Gaussian Process prior 
+over functions of \( \bm{X} \), as follows.
+\begin{equation}
+  \label{eqn:gp_prior}
+  f(\bm{x}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{XX}})
+\end{equation}
+
+A Gaussian Process prior may similarly be constructed for observed latent 
+space points \( \bm{L} \), as follows.
+\begin{equation}
+  \label{eqn:gp_prior}
+  f_{\star}(\bm{l}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{LL}})
+\end{equation}
+
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
 
