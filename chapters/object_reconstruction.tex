@@ -280,11 +280,11 @@ the appearance model \(u\) may be marginalised as follows.
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \intd{u} \\
   % Line 2.
-  =& \prod_{\psi \in \bm{\Psi}} 
+  ={}& \prod_{\psi \in \bm{\Psi}} 
   \int P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \intd{u} \\
-  =& \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
+  ={}& \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
   P(L_{s, s'})P(p)P(\Omega)P(\bm{\Phi})
 \end{align}
 Note that the Appearance Posterior Volume outlined in Section 
@@ -384,7 +384,7 @@ applies the resultant \(\mathbb{SE}(3)\) transform to a given voxel position
   \label{eqn:probobj_lambda_fn}
   \Lambda(\bm{x}, \bm{p}, \bm{t}) ={}&
   \bm{R}_{\bm{p}} \bm{x} + \bm{t}\\
-  =& 
+  ={}& 
   \begin{bmatrix}
     \bm{R}_{\bm{p}} & \bm{t} \\
     \bm{0} & 1
@@ -443,7 +443,7 @@ CDF of \(P(\Phi)\) is derived as follows.
   % Line 8.
   \propto& \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 + e^{p}} + C \Bigg]}_{y}^{b}\\
   % Line 9.
-  =& \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C
+  ={}& \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 +e^{\frac{u}{\sigma}}} + C
   \Bigg]}_{y}^{b}\\
   % Line 10.
   \propto& \lim_{y\to -\infty} {\Bigg[ \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}} +
@@ -547,14 +547,14 @@ to the Rodrigues rotational parameters is as follows for some parameter
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 2.
-  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
+  ={}& \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial}{\partial \tau}
   {\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}\big(\Lambda(\bm{x})\big)\Big]}^{2} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
   \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 3.
-  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
+  ={}& \sum_{s, s' \in \mathcal{S}} \Bigg[ \frac{1}{2\sigma^{2}}
   \frac{\partial \phi}{\partial \Phi} \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
@@ -563,20 +563,20 @@ to the Rodrigues rotational parameters is as follows for some parameter
   \shortintertext{Where \(\phi(.) =
   {\big(\Phi_{s}(\bm{x}) - \Phi_{s'}(\Lambda(\bm{x}))\big)}^{2}\)}
   % Line 4.
-  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  ={}& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} -
   \frac{1}{2} \frac{\partial}{\partial \tau}
   \bm{p}^{T}\bm{p} - \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
   % Line 5.
-  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  ={}& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} - \bm{p}^{T} -
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
     \Bigg]\\
   % Line 6.
-  =& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
+  ={}& \sum_{s, s' \in \mathcal{S}} \Bigg[ \sigma^{2} \phi(.)
   \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} - \bm{p}^{T} +
   \frac{1}{1 + e^{\Phi}} \frac{\partial \Phi}{\partial \Lambda}

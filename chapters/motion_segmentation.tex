@@ -365,23 +365,23 @@ With this substitution in place, the derivation proceeds as follows
   \sum_{p \in \bm{\Omega}}
   \norm{\phi(.)}\\
   % Line 2.
-  =& \sum_{p \in \bm{\Omega}}
+  ={}& \sum_{p \in \bm{\Omega}}
   \frac{\partial}{\partial \lambda}
   \norm{\phi(.)}\\
   % Line 3.
-  =& \sum_{p \in \bm{\Omega}}
+  ={}& \sum_{p \in \bm{\Omega}}
   \frac{\partial}{\partial \phi(.)} \norm{\phi(.)}
   \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 4.
-  =& \sum_{p \in \bm{\Omega}}
+  ={}& \sum_{p \in \bm{\Omega}}
   \frac{1}{2}{\frac{2 \phi(.)}{\sqrt{\phi(.)}^{T}\phi(.)}}
   \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 5.
-  =& \sum_{p \in \bm{\Omega}}
+  ={}& \sum_{p \in \bm{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
   \frac{\partial \phi(.)}{\partial \lambda}\\
   % Line 6
-  =& \sum_{p \in \bm{\Omega}}
+  ={}& \sum_{p \in \bm{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
   \Bigg[ \frac{\partial}{\partial \lambda}
   {\bigg[ \bm{Rx} + \bm{t} - \mathcal{V}(\bar{\bm{x}}) \bigg]}^{T}
@@ -390,7 +390,7 @@ With this substitution in place, the derivation proceeds as follows
   \frac{\partial}{\partial \lambda}
   \mathcal{N}(\bar{\bm{x}})\Bigg]\\
   % Line 6
-  =& \sum_{p \in \bm{\Omega}}
+  ={}& \sum_{p \in \bm{\Omega}}
   \frac{\phi(.)}{\norm{\phi(.)}}
   {\bigg[ \frac{\partial \bm{R}}{\partial \lambda}
   \bm{x}\bigg]}^{T}
@@ -411,7 +411,7 @@ may be multiplied with \(\bm{x}\) and combined in to the following Rotation Jaco
   \bm{J}_{R} ={}& \left. {\bigg[
     \frac{\partial \bm{R}}{\partial \lambda} \bm{x}
     \bigg]}^{T} \right\vert_{\lambda = 0} \\
-  =&
+  ={}&
   \begin{bmatrix}
     0 & -z & y \\
     z & 0 & -x \\

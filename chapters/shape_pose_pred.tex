@@ -38,13 +38,13 @@ be simplified as follows in Equation~\ref{}.
   P(\bm{Y} \given \bm{X}, \beta) ={}& \int \mathcal{N}(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
   \mathcal{N}(\bm{W} \given \bm{0}, \bm{I}) \intd{\bm{W}} \\
   % Line 2.
-  =& \int \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} e^{ 
+  ={}& \int \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} e^{ 
     -\frac{\beta}{2} {\big( \bm{Y} - \bm{WX} \big)}^{T} \big( \bm{Y} - \bm{WX} \big) 
   }
   \frac{1}{\sqrt{\left|2\pi\bm{I}\right|}} e^{ 
     -\frac{1}{2} \bm{W}^{T}\bm{W}} \intd{\bm{W}} \\
   % Line 3.
-  =& \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \frac{1}{\sqrt{\left|2\pi\bm{I}\right|}} 
+  ={}& \frac{1}{\sqrt{\left|2\pi\beta^{-1}\bm{I}\right|}} \frac{1}{\sqrt{\left|2\pi\bm{I}\right|}} 
   \int e^{
     -\frac{\beta}{2} {\big( \bm{Y} - \bm{WX} \big)}^{T} \big( \bm{Y} - \bm{WX} \big) 
     -\frac{1}{2} \bm{W}^{T}\bm{W}} \intd{\bm{W}} \\
@@ -92,7 +92,7 @@ in such a form. First, making the change of variables as in Equation
 \begin{align}
   \label{eqn:spp_gp_marginal_change}
   \bm{A} ={}& \beta \bm{XX}^{T} + \bm{I}\\
-  \bm{b} =& \beta \bm{Y}^{T} \bm{X}^{T}
+  \bm{b} ={}& \beta \bm{Y}^{T} \bm{X}^{T}
 \end{align}
 a
 \begin{align}
@@ -151,7 +151,7 @@ corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation
   % Line 1.
   \bm{\Sigma}^{-1} ={}& \beta \bm{I} - \beta^{2} \bm{X}^{T} \bm{A}^{-1} \bm{X}\\
   % Line 2.
-  =& \beta \bm{I} - \beta^{2} \bm{X}^{T} {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}
+  ={}& \beta \bm{I} - \beta^{2} \bm{X}^{T} {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}
 \end{align}
 
 To obtain the covariance matrix of the distribution \(P(\bm{Y} \given \bm{X}, \beta)\), the 
@@ -162,12 +162,12 @@ as in Equation~\ref{eqn:spp_woodbury}.
   % Variable change.
   \label{eqn:spp_sig_inv_simp}
     \bm{A} ={}& \beta^{-1}\bm{I}\\
-    \bm{C} =& \bm{I}\\
-    \bm{U} =& \bm{X}^{T}\\
-    \bm{V} =& \bm{X}
+    \bm{C} ={}& \bm{I}\\
+    \bm{U} ={}& \bm{X}^{T}\\
+    \bm{V} ={}& \bm{X}
   \shortintertext{in}
   % Woodbury.
-  (\bm{A} + \bm{UCV}) =&
+  (\bm{A} + \bm{UCV}) ={}&
   \bm{A}^{-1} - \bm{A}^{-1}\bm{U} 
   {(\bm{C}^{-1} + \bm{VA}^{-1}\bm{U})}^{-1}
   \bm{VA}^{-1}
@@ -181,7 +181,7 @@ Equation~\ref{eqn:spp_sig_inv_simp}.
   \bm{\Sigma}^{-1} ={}& \beta \bm{I} - \beta^{2} \bm{X}^{T} 
   {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}\\
   % Line 2.
-  =& \beta^{-1} \bm{I} + \bm{X}^{T}\bm{X}
+  ={}& \beta^{-1} \bm{I} + \bm{X}^{T}\bm{X}
 \end{align}
 
 It follows from Equation~\ref{eqn:spp_sig_inv_simp}, that the covariance matrix \( \bm{\Sigma} \)
@@ -191,7 +191,7 @@ takes the following form.
   % Line 1.
   \bm{\Sigma} ={}& {(\bm{\Sigma}^{-1})}^{-1}\\
   % Line 2.
-  =& \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I}
+  ={}& \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I}
 \end{align}
 
 So the form of the marginal likelihood \(P(\bm{Y} \given \bm{X}, \beta)\) is given in 
@@ -202,7 +202,7 @@ Equation~\ref{eqn:spp_gp_marginal_simp}
   P(\bf{Y \given \bm{X}, \beta}) ={}& \mathcal{N}(\bm{Y} \given \bm{0}, 
   \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})\\
   % Line 2.
-  =& TODO
+  ={}& TODO
 \end{align}
 
 \subsection{Gaussian Process Fitting}
@@ -218,7 +218,7 @@ is given in Equation~\ref{eqn:eqn:spp_gp_marginal_log}.
   -\frac{D}{2} \ln(\left| \bm{\Sigma} \right|)
   -\frac{1}{2} \text{tr}(\bm{\Sigma}^{-1} \bm{YY}^{T})\\
   % Line 2.
-  =& -\frac{DN}{2} \ln(2\pi)
+  ={}& -\frac{DN}{2} \ln(2\pi)
   -\frac{D}{2} \ln(\left| \bm{\Sigma} \right|)
   -\frac{1}{2} \bm{Y}^{T}\bm{\Sigma}\bm{Y}
 \end{align}
@@ -238,18 +238,18 @@ is derived as follows in Equation~\ref{eqn:spp_gp_log_marginal_grad}.
     \frac{\partial \bm{\Sigma}}{\partial \bm{X}}
   \Bigg]\\
   % Line 2.
-  =& -\frac{1}{2} \Bigg[
+  ={}& -\frac{1}{2} \Bigg[
     D \bm{\Sigma}^{-1} \frac{\partial \bm{\Sigma}}{\partial \bm{X}}
     - \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} 
     \frac{\partial \bm{\Sigma}}{\partial \bm{X}}
   \Bigg]\\
   % Line 3.
-  =& -\frac{1}{2} \Bigg[
+  ={}& -\frac{1}{2} \Bigg[
     D \bm{\Sigma}^{-1} 2 \bm{X}
     - \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} 2 \bm{X}
   \Bigg]\\
   % Line 4.
-  =& -D \bm{\Sigma}^{-1} \bm{X}
+  ={}& -D \bm{\Sigma}^{-1} \bm{X}
   + \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} \bm{X}
 \end{align}
 
@@ -288,7 +288,7 @@ Equation~\ref{eqn:spp_exp_quad}.
   + \theta_{1} + \theta_{2} \delta \big( -\frac{\lambda}{2} 
   \left\lVert \bm{x}_{i} - \bm{x}_{j} \right\rVert^{2} \big)\\
   % Line 2.
-  =& \theta_{0} e^{-\frac{\lambda}{2} 
+  ={}& \theta_{0} e^{-\frac{\lambda}{2} 
   \sum_{n}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}
   + \theta_{1} + \theta_{2} \delta \big( -\frac{\lambda}{2} 
   \sum_{n}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2} \big)
@@ -304,17 +304,17 @@ of \( \bm{x}_{i} \) can be derived as follows in Equation~\ref{eqn:exp_quad_grad
   \frac{\partial}{\partial \bm{x}_{i, n}} \theta_{0} e^{-\frac{\lambda}{2} 
   \sum_{n = 0}^{D} -\frac{\lambda}{2} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}\\
   % Line 2.
-  =& \frac{\partial}{\partial \bm{x}_{i, n}} \theta_{0} e^{-\frac{\lambda}{2} 
+  ={}& \frac{\partial}{\partial \bm{x}_{i, n}} \theta_{0} e^{-\frac{\lambda}{2} 
   \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}} 
   \frac{\partial}{\partial \bm{x}_{i, n}} \sum_{n = 0}^{D} -\frac{\lambda}{2} 
   {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}\\
   % Line 3.
-  =& \theta_{0} e^{-\frac{\lambda}{2} 
+  ={}& \theta_{0} e^{-\frac{\lambda}{2} 
   \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}} 
   \frac{\partial}{\partial \bm{x}_{i, n}} \sum_{n = 0}^{D} -\frac{\lambda}{2} 
   {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}\\
   % Line 4.
-  =& \lambda \theta_{0} e^{-\frac{\lambda}{2} 
+  ={}& \lambda \theta_{0} e^{-\frac{\lambda}{2} 
   \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}} 
   {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}
 \end{align}
@@ -328,15 +328,15 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
   \frac{\partial \bm{\kappa}}{\partial \bm{x}_{j, n}} ={}& 
   -\frac{\partial \bm{\kappa}}{\partial \bm{x}_{i, n}}\\
   % Line 2.
-  \frac{\partial \bm{\kappa}}{\partial \theta_{0}} =&
+  \frac{\partial \bm{\kappa}}{\partial \theta_{0}} ={}&
   e^{-\frac{\lambda}{2} 
   \sum_{n = 0}^{D} -\frac{\lambda}{2} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}\\
   % Line 3.
-  \frac{\partial \bm{\kappa}}{\partial \theta_{1}} =& 1\\
+  \frac{\partial \bm{\kappa}}{\partial \theta_{1}} ={}& 1\\
   % Line 4.
-  \frac{\partial \bm{\kappa}}{\partial \theta_{2}} =& 0\\
+  \frac{\partial \bm{\kappa}}{\partial \theta_{2}} ={}& 0\\
   % Line 5.
-  \frac{\partial \bm{\kappa}}{\partial \lambda} =& \text{TODO}
+  \frac{\partial \bm{\kappa}}{\partial \lambda} ={}& \text{TODO}
 \end{align}
 
 \subsection{Gaussian Process Regression}
