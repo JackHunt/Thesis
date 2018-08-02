@@ -219,8 +219,36 @@ As such, the narural logarithm
   -\frac{D}{2} \ln(\left| \bm{\Sigma} \right|)
   -\frac{1}{2} \bm{Y}^{T}\bm{\Sigma}\bm{Y}
 \end{align}
+
 The gradient of the log marginal of Equation~\ref{eqn:spp_gp_marginal_log} 
 is derived as follows in Equation~\ref{eqn:spp_gp_log_marginal_grad}.
+\begin{align}
+  \label{eqn:spp_gp_log_marginal_grad}
+  % Line 1.
+  \frac{\partial \mathcal{L}}{\partial \bm{X}} ={}&
+  -\frac{1}{2} \Bigg[
+    \Big( D \frac{\partial}{\partial \bm{\Sigma}} 
+    \ln \big( \left| \bm{\Sigma} \right| \big) \Big) 
+    \frac{\partial \bm{\Sigma}}{\partial \bm{X}}
+    + \Big( \frac{\partial}{\partial \bm{\Sigma}}
+    \bm{Y}^{T} \bm{\Sigma}^{-1} \bm{Y} \Big)
+    \frac{\partial \bm{\Sigma}}{\partial \bm{X}}
+  \Bigg]\\
+  % Line 2.
+  =& -\frac{1}{2} \Bigg[
+    D \bm{\Sigma}^{-1} \frac{\partial \bm{\Sigma}}{\partial \bm{X}}
+    - \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} 
+    \frac{\partial \bm{\Sigma}}{\partial \bm{X}}
+  \Bigg]\\
+  % Line 3.
+  =& -\frac{1}{2} \Bigg[
+    D \bm{\Sigma}^{-1} 2 \bm{X}
+    - \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} 2 \bm{X}
+  \Bigg]\\
+  % Line 4.
+  =& -D \bm{\Sigma}^{-1} \bm{X}
+  + \bm{\Sigma}^{-1} \bm{YY}^{T} \bm{\Sigma}^{-1} \bm{X}
+\end{align}
 
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
