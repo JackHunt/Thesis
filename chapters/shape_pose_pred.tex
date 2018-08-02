@@ -146,12 +146,81 @@ an exponentiated quadratic form as in Equation~\ref{eqn:spp_gp_complete}, it is
 clear that the inverse covariance matrix \(\bm{\Sigma}^{-1}\) of the Gaussian distribution 
 corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation 
 ~\ref{eqn:spp_sig_inv}.
-
 \begin{align}
   \label{eqn:spp_sig_inv}
+  % Line 1.
   \bm{\Sigma}^{-1} ={}& \beta \bm{I} - \beta^{2} \bm{X}^{T} \bm{A}^{-1} \bm{X}\\
+  % Line 2.
   =& \beta \bm{I} - \beta^{2} \bm{X}^{T} {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}
 \end{align}
+
+To obtain the covariance matrix of the distribution \(P(\bm{Y} \given \bm{X}, \beta)\), the 
+form if it's inverse may be simplified by the use of the Matrix Inversion Lemma (also known 
+as the Woodbury Identity)~\cite{}. First making the change of variables in the Woodbury Identity 
+as in Equation~\ref{eqn:spp_woodbury}.
+\begin{align}
+  % Variable change.
+  \label{eqn:spp_sig_inv_simp}
+    \bm{A} ={}& \beta^{-1}\bm{I}\\
+    \bm{C} =& \bm{I}\\
+    \bm{U} =& \bm{X}^{T}\\
+    \bm{V} =& \bm{X}
+  \shortintertext{in}
+  % Woodbury.
+  (\bm{A} + \bm{UCV}) =&
+  \bm{A}^{-1} - \bm{A}^{-1}\bm{U} 
+  {(\bm{C}^{-1} + \bm{VA}^{-1}\bm{U})}^{-1}
+  \bm{VA}^{-1}
+\end{align}
+The simplified form of \( \bm{\Sigma}^{-1} \) is derived as follows in 
+Equation~\ref{eqn:spp_sig_inv_simp}.
+
+\begin{align}
+  \label{eqn:spp_sig_inv_simp}
+  % Line 1.
+  \bm{\Sigma}^{-1} ={}& \beta \bm{I} - \beta^{2} \bm{X}^{T} 
+  {\big(\beta \bm{XX}^{T} + \bm{I} \big)}^{-1}\\
+  % Line 2.
+  =& \beta^{-1} \bm{I} + \bm{X}^{T}\bm{X}
+\end{align}
+
+It follows from Equation~\ref{eqn:spp_sig_inv_simp}, that the covariance matrix \( \bm{\Sigma} \)
+takes the following form.
+\begin{align}
+  \label{eqn:spp_sig}
+  % Line 1.
+  \bm{\Sigma} ={}& {(\bm{\Sigma}^{-1})}^{-1}\\
+  % Line 2.
+  =& \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I}
+\end{align}
+
+So the form of the marginal likelihood \(P(\bm{Y} \given \bm{X}, \beta)\) is given in 
+Equation~\ref{eqn:spp_gp_marginal_simp}
+\begin{align}
+  \label{eqn:spp_gp_marginal_simp}
+  % Line 1.
+  P(\bf{Y \given \bm{X}, \beta}) ={}& \mathcal{N}(\bm{Y} \given \bm{0}, 
+  \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})\\
+  % Line 2.
+  =& TODO
+\end{align}
+
+To find the most probable latent space embedding, the latent variables \( \bm{X} \) may be 
+found by directly optimising the marginal likelihood of Equation~\ref{eqn:spp_gp_marginal_simp}. 
+As such, the narural logarithm
+\begin{align}
+  \label{eqn:spp_gp_marginal_log}
+  % Line 1.
+  \mathcal{L} ={}& -\frac{DN}{2} \ln(2\pi)
+  -\frac{D}{2} \ln(\left| \bm{\Sigma} \right|)
+  -\frac{1}{2} \text{tr}(\bm{\Sigma}^{-1} \bm{YY}^{T})\\
+  % Line 2.
+  =& -\frac{DN}{2} \ln(2\pi)
+  -\frac{D}{2} \ln(\left| \bm{\Sigma} \right|)
+  -\frac{1}{2} \bm{Y}^{T}\bm{\Sigma}\bm{Y}
+\end{align}
+The gradient of the log marginal of Equation~\ref{eqn:spp_gp_marginal_log} 
+is derived as follows in Equation~\ref{eqn:spp_gp_log_marginal_grad}.
 
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
