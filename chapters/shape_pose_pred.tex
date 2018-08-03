@@ -1,9 +1,38 @@
 \section{Introduction}
 ~\label{sec:spp_introduction}
-% Much work on object reconstruction... last chapter etc
-% Object reconstruction requires full view of object
-% Recon not suitable always, learning based approach better suited
+In the Computer Vision literature, there has been work on the reconstruction of objects
+from observed points in a range image, such as those obtained with an RGBD sensor such 
+as the Microsoft Kinect. As outlined in Chapter~\ref{}, progress has been made on the 
+techniques used, such that globally consistent models of an object of interest can be 
+easily obtained.
+
+Though the traditional reconstruction paradigm is suitable for tasks such as 3D data 
+collection, it is less applicable in scenarios where full sensor coverage of the object 
+of interest is not possible. When a full view of an object is not available, only a 
+partial reconstruction may be built. Data driven, learning based approaches that yield 
+reconstructions as predictions from a generative model however do not have such a 
+limitation. However, for application as a direct replacement for manual reconstruction, 
+pose estimation must also be performed.
+
 % Relevant background - pose regression, shape regression
+There has been much progress on learning based methods for both pose estimation and 
+shape prediction, as outlined in Section~\ref{}. However, much of this progress has 
+been on the two problems when decoupled. In this work, an approach is proposed to the 
+problem of simultaneous shape and pose \textit{prediction}. The first difference in 
+this work to those outlined in Chapters~\ref{} and~\ref{} is the use of stereo RGB 
+frames versus RGBD. The reason for the change in input data format is twofold. Firstly, 
+the use of RGBD is prohibitive when considering outdoor environments where lighting 
+conditions may prevent RGBD sensors such as the Microsoft Kinect from producing a 
+meaningful depth map. Second, is the intuition that utilising multiple views of an 
+object (from each sensor in the stereo pair) will make the pose estimation more 
+amenable to learning based methods.
+
+The second major deviation from the contributions of Chapters~\ref{} and~\ref{} 
+is the removal of the dependence on input \textit{sequences}. Rather, in this work 
+the proposed system performs shape and pose prediction from an \textit{instantaneous}
+stereo pair, requiring no temporal consistency in both the training and prediction 
+phases. 
+
 % In the wild, RGBD won't work, hence stereo.
 % In this chapter...
 
