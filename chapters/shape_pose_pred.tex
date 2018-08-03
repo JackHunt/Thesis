@@ -1,17 +1,25 @@
 \section{Introduction}
 ~\label{sec:spp_introduction}
+% Much work on object reconstruction... last chapter etc
 % Object reconstruction requires full view of object
+% Recon not suitable always, learning based approach better suited
 % Relevant background - pose regression, shape regression
 % In the wild, RGBD won't work, hence stereo.
-% 
+% In this chapter...
 
 \section{Related Work}
 ~\label{sec:spp_related}
 
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
-\subsection{Gaussian Process Marginal Likelihood}
-~\label{subsec:spp_gp_marginal_likelihood}
+
+\subsection{Network Architecture}
+~\label{subsec:spp_network_architecture}
+
+\subsection{Gaussian Process Latent Variable Model}
+~\label{subsec:spp_gplvm}
+\subsubsection{Gaussian Process Marginal Likelihood}
+~\label{subsubsec:spp_gp_marginal_likelihood}
 Given a Latent Variable Model of the following form
 \begin{equation}
   \label{eqn:spp_gp_lvm}
@@ -205,8 +213,8 @@ Equation~\ref{eqn:spp_gp_marginal_simp}
   ={}& TODO
 \end{align}
 
-\subsection{Gaussian Process Fitting}
-~\label{subsec:spp_gp_fitting}
+\subsubsection{Gaussian Process Fitting}
+~\label{subsubsec:spp_gp_fitting}
 To find the most probable latent space embedding, the latent variables \( \bm{X} \) may be 
 found by directly optimising the marginal likelihood of Equation~\ref{eqn:spp_gp_marginal_simp}. 
 As such, the natural logarithm may also be optimised for the latent variables \( \bm{X} \) and 
@@ -339,8 +347,10 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
   \frac{\partial \bm{\kappa}}{\partial \lambda} ={}& \text{TODO}
 \end{align}
 
-\subsection{Gaussian Process Regression}
-~\label{subsec:spp_gp_prediction}
+\subsection{Latent Space Shape Estimation}
+~\label{sub:spp_latent_shape_est}
+\subsubsection{Shape Posterior Mean Estimation}
+~\label{subsubsec:spp_pos_mean_est}
 With the optimised latent variables \( \bm{X} \), the formulation outlined in 
 Equation~\ref{eqn:spp_gp_marginal_simp} defines a Gaussian Process prior 
 over functions of \( \bm{X} \), as follows.
@@ -396,8 +406,23 @@ taken as follows.
   \bm{f}_{\star} \sim P(\bm{f}_{\star} \given \bm{X}, \bm{L}, \bm{f})
 \end{equation}
 
+\subsubsection{Signed Distance Function Extraction}
+~\label{subsubsec:sdf_extraction}
+
+\subsection{Pose Estimation}
+~\label{subsec:spp_pose_estim}
+
+\subsection{Rendering}
+~\label{subsec:rendering}
+
+\subsection{Loss Function}
+~\label{subsec:spp_loss}
+
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
 
 \section{Quantitative Results}
 ~\label{sec:spp_quantitative}
+
+\section{Discussion}
+~\label{sec:spp_discussion}
