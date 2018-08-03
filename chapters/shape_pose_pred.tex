@@ -14,7 +14,6 @@ reconstructions as predictions from a generative model however do not have such 
 limitation. However, for application as a direct replacement for manual reconstruction, 
 pose estimation must also be performed.
 
-% Relevant background - pose regression, shape regression
 There has been much progress on learning based methods for both pose estimation and 
 shape prediction, as outlined in Section~\ref{}. However, much of this progress has 
 been on the two problems when decoupled. In this work, an approach is proposed to the 
@@ -31,10 +30,23 @@ The second major deviation from the contributions of Chapters~\ref{} and~\ref{}
 is the removal of the dependence on input \textit{sequences}. Rather, in this work 
 the proposed system performs shape and pose prediction from an \textit{instantaneous}
 stereo pair, requiring no temporal consistency in both the training and prediction 
-phases. 
+phases. As such, there is no iterative solving for shape and pose, rather the process 
+is framed as an instananeous regression task. However, this work makes use of volumetric
+shape representations, as with the other works outlined in this thesis.
 
-% In the wild, RGBD won't work, hence stereo.
-% In this chapter...
+The approach outlined in this chapter makes use of Siamese Convolutional Neural 
+Networks and Gaussian Process Latent Variable Models for to jointly regress shape 
+and pose given a stereo pair. The training of the model is unsupervised and requires 
+only a detection or segmentation of the object of interest in the input frames to train. 
+The proposed system regresses rotational and translational parameters directly 
+from the neural network, whilst the object shape is a draw from a Gaussian Process 
+Latent Variable Model. The use of a GPLVM for latent space embeddings of 3D shape 
+allows for a simple way to learn complex 3D geometrical features, thus simplifying 
+the learning tasks of the neural network.
+
+The system is trained on an information theoretic loss over a rendering of a predicted 
+shape under it's associated predicted pose, with respect to a given detection bounding box 
+or semantic segmentation. 
 
 \section{Related Work}
 ~\label{sec:spp_related}
@@ -44,6 +56,28 @@ phases.
 
 \subsection{Network Architecture}
 ~\label{subsec:spp_network_architecture}
+The model of the proposed approach is of a siamese topology, where for a given stereo 
+pair each of the left and right frames are passed to a separate network. From end to 
+end, the model contains for each of the siamese networks a ResNet-50~\cite{RESNET}, 
+Linear Layers, Nonlinear Activations, a mapping from Lie Algebra to Lie Group (for pose),
+a GPLVM followed by an Inverse Discrete Cosine Transform, a Raycaster and an information 
+theoretic loss. 
+
+The purpose of the ResNet-50 components is to extract pertinent features from the stereo 
+pair that are descriptive of the the object of interest in relation to the scene. For each 
+of the networks, the output of the ResNet-50 network is fed into two subnetworks consisting 
+of linear transforms and nonlinear activations. The purpose of these subnetworks is to regress 
+a latent space point for object shape, and a 6DoF pose parameter vector for the object pose. 
+Following these two subnetworks is the aforementioned GPLVM and Lie Algebra mapping. The 
+GPLVM generates a posterior mean over shape for a given latent space point, whilst the 
+Lie Algebra mapping generates an \( \mathbb{SE}(3) \) transform. The IDCT decompresses 
+the posterior mean output of the GPLVM to generate a valid SDF. Both the resultant SDF and 
+\( \mathbb{SE}(3) \) transform are passed to the Raycasting module, which generates a rendering 
+for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
+to the loss layer which computes appearance statistics for the detection region and the rendering 
+which are used to quantify loss. The topology of the proposed model is outlined in Figure
+~\ref{}
+FIGURE HERE
 
 \subsection{Gaussian Process Latent Variable Model}
 ~\label{subsec:spp_gplvm}

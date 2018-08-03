@@ -1,1 +1,22 @@
-~\label{subsec:spp_gp_marginal_likelihood}
+The model of the proposed approach is of a siamese topology, where for a given stereo 
+pair each of the left and right frames are passed to a separate network. From end to 
+end, the model contains for each of the siamese networks a ResNet-50~\cite{RESNET}, 
+Linear Layers, Nonlinear Activations, a mapping from Lie Algebra to Lie Group (for pose),
+a GPLVM followed by an Inverse Discrete Cosine Transform, a Raycaster and an information 
+theoretic loss. 
+
+The purpose of the ResNet-50 components is to extract pertinent features from the stereo 
+pair that are descriptive of the the object of interest in relation to the scene. For each 
+of the networks, the output of the ResNet-50 network is fed into two subnetworks consisting 
+of linear transforms and nonlinear activations. The purpose of these subnetworks is to regress 
+a latent space point for object shape, and a 6DoF pose parameter vector for the object pose. 
+Following these two subnetworks is the aforementioned GPLVM and Lie Algebra mapping. The 
+GPLVM generates a posterior mean over shape for a given latent space point, whilst the 
+Lie Algebra mapping generates an \( \mathbb{SE}(3) \) transform. The IDCT decompresses 
+the posterior mean output of the GPLVM to generate a valid SDF. Both the resultant SDF and 
+\( \mathbb{SE}(3) \) transform are passed to the Raycasting module, which generates a rendering 
+for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
+to the loss layer which computes appearance statistics for the detection region and the rendering 
+which are used to quantify loss. The topology of the proposed model is outlined in Figure
+~\ref{}
+FIGURE HERE
