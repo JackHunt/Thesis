@@ -53,6 +53,12 @@ or semantic segmentation.
 
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
+% takes a stereo pair and extracts features
+% features regress latent space shape point and pose
+% shape generated from gp prior conditioned on latent space point
+% evaluated by rendering and quantifying fitness with KL div
+% fully differentiable - diff raycast
+% unsupervised
 
 \subsection{Network Architecture}
 ~\label{subsec:spp_network_architecture}
@@ -81,8 +87,19 @@ FIGURE HERE
 
 \subsection{Gaussian Process Latent Variable Model}
 ~\label{subsec:spp_gplvm}
+% modelling shape by assuming geomeetry is derived from LV's
+% finds linear mapping from observed data space to hidden latent space
+% equivelant to probabilistic pca in the linear case
+% bayesian formulation allows for marginalisation of latent variables
+% gplvm framework allows for complex, nonlinear modelling with kernels after marginalisation
+% places a gaussian process prior over function space
+% optimisation is non convex
+
 \subsubsection{Gaussian Process Marginal Likelihood}
 ~\label{subsubsec:spp_gp_marginal_likelihood}
+% linear mapping is not observable, thus latent
+% tractable by deriving marginal likelihood, integrate over mapping
+
 Given a Latent Variable Model of the following form
 \begin{equation}
   \label{eqn:spp_gp_lvm}
@@ -278,6 +295,10 @@ Equation~\ref{eqn:spp_gp_marginal_simp}
 
 \subsubsection{Gaussian Process Fitting}
 ~\label{subsubsec:spp_gp_fitting}
+% latent variables directly optimised
+% initialised with PCA
+% hyperparameters can be optimised
+
 To find the most probable latent space embedding, the latent variables \( \bm{X} \) may be 
 found by directly optimising the marginal likelihood of Equation~\ref{eqn:spp_gp_marginal_simp}. 
 As such, the natural logarithm may also be optimised for the latent variables \( \bm{X} \) and 
