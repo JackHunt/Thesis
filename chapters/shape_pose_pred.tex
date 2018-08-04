@@ -57,7 +57,7 @@ or semantic segmentation.
 % features regress latent space shape point and pose
 % shape generated from gp prior conditioned on latent space point
 % evaluated by rendering and quantifying fitness with KL div
-% fully differentiable - diff raycast
+% fully differentiable - diff raycast - standard backpropagation and others e.g. adam
 % unsupervised
 
 \subsection{Network Architecture}
@@ -99,6 +99,7 @@ FIGURE HERE
 ~\label{subsubsec:spp_gp_marginal_likelihood}
 % linear mapping is not observable, thus latent
 % tractable by deriving marginal likelihood, integrate over mapping
+% likelihood and prior gaussian; conjugate prior
 
 Given a Latent Variable Model of the following form
 \begin{equation}
@@ -174,15 +175,14 @@ be simplified as follows in Equation~\ref{}.
 To make the integral over \(\bm{W}\) tractable in Equation~\ref{eqn:spp_gp_marginal_simplify}, 
 the distribution \(P(\bm{Y} \given \bm{X}, \beta)\) must be of a Gaussian form; an exponential 
 of a quadratic form. Completing the square in \(\bm{W}\) allows the marginal to be expressed 
-in such a form. First, making the change of variables as in Equation 
-~\ref{eqn:spp_gp_marginal_change}, the procedure is as follows in Equation~\ref{eqn:spp_gp_complete}.
-
+in such a form. First, a change of variables is made, as in Equation~\ref{eqn:spp_gp_marginal_change}.
 \begin{align}
   \label{eqn:spp_gp_marginal_change}
   \bm{A} ={}& \beta \bm{XX}^{T} + \bm{I}\\
   \bm{b} ={}& \beta \bm{Y}^{T} \bm{X}^{T}
 \end{align}
-a
+
+The procedure is as follows in Equation~\ref{eqn:spp_gp_complete}.
 \begin{align}
   \label{eqn:spp_gp_complete}
   % Line 1.
@@ -433,6 +433,12 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
 
 \subsection{Latent Space Shape Estimation}
 ~\label{sub:spp_latent_shape_est}
+% form of above outlines...
+% posterior mean corresponds 20 N^3 voxel grid
+% obtained via gaussian process regression
+% observed latent point conditioned on GP prior
+% granularity of training controlled by DCT, thus needs IDCT on regression, N harmonics - carl paper
+
 \subsubsection{Shape Posterior Mean Estimation}
 ~\label{subsubsec:spp_pos_mean_est}
 With the optimised latent variables \( \bm{X} \), the formulation outlined in 
@@ -492,14 +498,29 @@ taken as follows.
 
 \subsubsection{Signed Distance Function Extraction}
 ~\label{subsubsec:sdf_extraction}
+% model trained on sdf's compressed by DCT
+% efficacy in shape regression yada yada (carl)
+% GIVE DCT
+% on prediction, IDCT used (same harmonics) - maybe show some figures??
+% give IDCT and gradient (for backpropagation).
+% show grad of idct is idct(grad)
 
 \subsection{Pose Estimation}
 ~\label{subsec:spp_pose_estim}
+% same rodriguez paramaterisation as before - refer back
+% rotation on interval (0, 2pi]
+% same trans and grad
+% aggregate/mean raycast points
 
 \subsection{Rendering}
 ~\label{subsec:rendering}
+% refer to prev(still to write) raycast
+% differentiable by...
+% refer back to log sigmoid and derivative
+% give pseudocode
+% example probability map
 
-\subsection{Loss Function}
+\subsection{Loss Function and Backpropagation}
 ~\label{subsec:spp_loss}
 
 \section{Qualitative Results}
