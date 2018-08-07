@@ -93,13 +93,15 @@ FIGURE HERE
 
 \subsection{Gaussian Process Latent Variable Model}
 ~\label{subsec:spp_gplvm}
-% modelling shape by assuming geomeetry is derived from LV's
-% finds linear mapping from observed data space to hidden latent space
-% equivelant to probabilistic pca in the linear case
-% bayesian formulation allows for marginalisation of latent variables
-% gplvm framework allows for complex, nonlinear modelling with kernels after marginalisation
-% places a gaussian process prior over function space
-% optimisation is non convex
+The use of a GPLVM for the embedding of 3D shape is motivated by the assumption that for a 
+given category of object, cars for example, there is enough shared geometric structure that 
+a comprehensive generative model may be formed. In the linear case, the GPLVM is equivelant 
+to a probabilistic formulation of Principal Component Analysis (PCA), where a linear mapping 
+from observed to hdden, latent space is derived. Under a bayesian formulation, the often 
+intractable latent variables pertaining to the linear mapping may be marginalised such that 
+the latent embedding itself may be optimised directly. The given framework allows for complex, 
+nonlinear embeddings to be learnt via the use kernel functions, though the optmisation in this 
+case is often non-convex and highly nonlinear.
 
 \subsubsection{Gaussian Process Marginal Likelihood}
 ~\label{subsubsec:spp_gp_marginal_likelihood}
