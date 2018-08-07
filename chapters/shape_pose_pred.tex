@@ -105,10 +105,6 @@ case is often non-convex and highly nonlinear.
 
 \subsubsection{Gaussian Process Marginal Likelihood}
 ~\label{subsubsec:spp_gp_marginal_likelihood}
-% linear mapping is not observable, thus latent
-% tractable by deriving marginal likelihood, integrate over mapping
-% likelihood and prior gaussian; conjugate prior
-
 Given a Latent Variable Model of the following form
 \begin{equation}
   \label{eqn:spp_gp_lvm}
@@ -116,18 +112,22 @@ Given a Latent Variable Model of the following form
 \end{equation}
 Where in Equation~\ref{eqn:spp_gp_lvm} the observed data \(\bm{Y} \in \mathbb{R}^{N \times D}\) 
 is mapped to a lower dimensionality manifold \(\bm{X} \in \mathbb{R}^{N \times P}\), by parameters 
-\(\bm{W} \in \mathbb{R}^{P \times D}\) and variance \( \beta \).
+\(\bm{W} \in \mathbb{R}^{P \times D}\) and variance \( \beta \). In Equation~\ref{eqn:spp_gp_lvm}, 
+the latent variable model \( P(\bm{Y} \given \bm{X}, \bm{W}, \beta) \) provides a linear mapping 
+defined by the aforementioned latent variables \( \bm{W} \). As \( \bm{W} \) is unobservable and 
+thus not directly tractable, it may be integrated over, given a suitable likelihood and prior.
 
 The marginal likelihood of \(\bm{X}\) is of the form outlined in Equation~\ref{eqn:spp_gp_marginal}.
 \begin{equation}
   \label{eqn:spp_gp_marginal}
   P(\bm{Y} \given \bm{X}, \beta) = \int P(\bm{Y} \given \bm{X}, \bm{W}, \beta) P(\bm{W}) \intd{\bm{W}}
 \end{equation}
-Where in Equation~\ref{eqn:spp_gp_marginal}, \(P(\bm{W})\) is a Gaussian conjugate prior of the 
+Where in Equation~\ref{eqn:spp_gp_marginal}, \( P(\bm{Y} \given \bm{X}, \bm{W}, \beta) \) is of 
+a multivariate Guassian form and \(P(\bm{W})\) is a multivariate Gaussian conjugate prior of the 
 form \(\mathcal{N}(\bm{W} \given \bm{0}, \bm{I})\).
 
 To find the marginal distribution outlined in Equation~\ref{eqn:spp_gp_marginal}, it's form may 
-be simplified as follows in Equation~\ref{}.
+first be simplified as follows in Equation~\ref{eqn:spp_gp_marginal_simplify}.
 
 \begin{align}
   \label{eqn:spp_gp_marginal_simplify}
@@ -190,7 +190,8 @@ in such a form. First, a change of variables is made, as in Equation~\ref{eqn:sp
   \bm{b} ={}& \beta \bm{Y}^{T} \bm{X}^{T}
 \end{align}
 
-The procedure is as follows in Equation~\ref{eqn:spp_gp_complete}.
+The procedure to integrate over \( \bm{W} \) and transform \( P(\bm{Y} \given \bm{X}, \beta) \) 
+into a valid multivariate Gaussian form is as follows in Equation~\ref{eqn:spp_gp_complete}.
 \begin{align}
   \label{eqn:spp_gp_complete}
   % Line 1.
@@ -252,7 +253,7 @@ corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation
 
 To obtain the covariance matrix of the distribution \(P(\bm{Y} \given \bm{X}, \beta)\), the 
 form if it's inverse may be simplified by the use of the Matrix Inversion Lemma (also known 
-as the Woodbury Identity)~\cite{}. First making the change of variables in the Woodbury Identity 
+as the Woodbury Identity)~\cite{}. First making a change of variables in the Woodbury Identity 
 as in Equation~\ref{eqn:spp_woodbury}.
 \begin{align}
   % Variable change.
@@ -268,9 +269,9 @@ as in Equation~\ref{eqn:spp_woodbury}.
   {(\bm{C}^{-1} + \bm{VA}^{-1}\bm{U})}^{-1}
   \bm{VA}^{-1}
 \end{align}
-The simplified form of \( \bm{\Sigma}^{-1} \) is derived as follows in 
-Equation~\ref{eqn:spp_sig_inv_simp}.
 
+The simplified form of \( \bm{\Sigma}^{-1} \) is thus given as follows in 
+Equation~\ref{eqn:spp_sig_inv_simp}.
 \begin{align}
   \label{eqn:spp_sig_inv_simp}
   % Line 1.
@@ -290,8 +291,8 @@ takes the following form.
   ={}& \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I}
 \end{align}
 
-So the form of the marginal likelihood \(P(\bm{Y} \given \bm{X}, \beta)\) is given in 
-Equation~\ref{eqn:spp_gp_marginal_simp}
+As such, the form of the normalized marginal likelihood \(P(\bm{Y} \given \bm{X}, \beta)\) of 
+\( \bm{W} \) is given in Equation~\ref{eqn:spp_gp_marginal_simp}.
 \begin{align}
   \label{eqn:spp_gp_marginal_simp}
   % Line 1.
