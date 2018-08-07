@@ -53,12 +53,18 @@ or semantic segmentation.
 
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
-% takes a stereo pair and extracts features
-% features regress latent space shape point and pose
-% shape generated from gp prior conditioned on latent space point
-% evaluated by rendering and quantifying fitness with KL div
-% fully differentiable - diff raycast - standard backpropagation and others e.g. adam
-% unsupervised
+The proposed model takes as input an RGB stereo pair with the object of interest within the 
+view frustrum of both frames. From this stereo pair, a Convolutional Neural Network extracts 
+feature descriptors which are used to regress a latent space point for shape, and six 
+\( \mathbb{SE}(3) \) pose parameters, forming a Lie Algebra. The genrated shape for the proposal 
+latent space point is drawn from the distribution of the GP prior conditioned on the latent space 
+point. The form of the pose is the Lie Group mapping of the parameters, as in Sections~\ref{} 
+and~\ref{}. The goodness of fit of the regressed shape and pose is quantified by by rendering the 
+generated shape under the generated pose and computing an information theoretic loss between the 
+image statistics of the rendered region vs the initial detection region. To maintain continuity, 
+the rendering operation is formulated in a differentiable manner. As there is often no ground truth 
+pose and shape for ``real world'' data, training is performed in an unsupervised manner against a 
+detection of the object os interest.
 
 \subsection{Network Architecture}
 ~\label{subsec:spp_network_architecture}
