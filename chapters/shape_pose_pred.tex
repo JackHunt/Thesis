@@ -450,11 +450,20 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
 
 \subsection{Latent Space Shape Estimation}
 ~\label{sub:spp_latent_shape_est}
-% form of above outlines...
-% posterior mean corresponds 20 N^3 voxel grid
-% obtained via gaussian process regression
-% observed latent point conditioned on GP prior
-% granularity of training controlled by DCT, thus needs IDCT on regression, N harmonics - carl paper
+The form of the model outlined in Section~\ref{subsubsec:spp_gp_marginal_likelihood}
+when trained as outlined in Section~\ref{subsubsec:spp_gp_fitting} defines a Gaussian 
+Process prior over the latent space embedding \( \bm{X} \). When regressing shape, it 
+is desirable to predict the 3D shape of a given latent space point, conditioned on this 
+prior. This conditioning yields a posterior mean estimation over 3D shape for a given 
+latent space point.
+
+The estimated posterior mean provides a DCT compressed representation of an SDF shape 
+volume \( \bm{\Phi} \in \mathbb{R}^{N \times N \times N} \). The DCT compressed form 
+of \( \bm{\Phi} \) given by the aforementioned posterior mean is obtained by Gaussian 
+Process Regression~\cite{}. Finally, the true, uncompressed form of \( \bm{\Phi} \) is 
+obtained by taking the IDCT of the posterior mean. The granularity of the geometric 
+properties captured by the GP shape prior is governed by the number of DCT harmonics 
+used in the compression and decompression processes at training and prediction.
 
 \subsubsection{Shape Posterior Mean Estimation}
 ~\label{subsubsec:spp_pos_mean_est}
