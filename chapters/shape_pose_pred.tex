@@ -479,7 +479,7 @@ A Gaussian Process prior may similarly be constructed for observed latent
 space points \( \bm{L} \), as follows.
 \begin{equation}
   \label{eqn:gp_prior_latent}
-  \bm{f}_{\star}(\bm{l}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{LL}})
+  \bm{f}^{\star}(\bm{l}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{LL}})
 \end{equation}
 
 It follows from Equations~\ref{eqn:gp_prior} and~\ref{eqn:gp_prior_latent} that 
@@ -489,7 +489,7 @@ follows in Equation~\ref{eqn:spp_gp_joint}.
   \label{eqn:spp_gp_joint}
   \begin{bmatrix}
     \bm{f}\\
-    \bm{f}_{\star}
+    \bm{f}^{\star}
   \end{bmatrix}
   \sim \mathcal{N} \Bigg(
     \begin{bmatrix}
@@ -503,11 +503,11 @@ follows in Equation~\ref{eqn:spp_gp_joint}.
   \Bigg)
 \end{equation}
 
-The posterior of \( \bm{f}_{\star} \) conditioned on \( \bm{f} \) is given by
+The posterior of \( \bm{f}^{\star} \) conditioned on \( \bm{f} \) is given by
 the distribution in Equation~\ref{eqn:spp_gp_conditional}.
 \begin{equation}
   \label{eqn:spp_gp_conditional}
-  P(\bm{f}_{\star} \given \bm{X}, \bm{L}, \bm{f}) = 
+  P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f}) = 
   \mathcal{N} \Big(
     \bm{\Sigma}_{LX} \bm{\Sigma}_{XX}^{-1} \bm{f}, 
     \bm{\Sigma}_{LL} - \bm{\Sigma}_{LX} \bm{\Sigma}_{XX}^{-1} \bm{\Sigma}_{XL}
@@ -519,7 +519,7 @@ a draw from the distribution outlined in Equation~\ref{eqn:spp_gp_conditional} i
 taken as follows.
 \begin{equation}
   \label{eqn:spp_gp_posterior_draw}
-  \bm{f}_{\star} \sim P(\bm{f}_{\star} \given \bm{X}, \bm{L}, \bm{f})
+  \bm{f}^{\star} \sim P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f})
 \end{equation}
 
 \subsubsection{Signed Distance Function Extraction}
@@ -536,11 +536,26 @@ granularity of the resultant 3D shape geometry. It has been shown~\cite{REN} tha
 lower frequency harmonics of the DCT capture general structure and shape, whilst higher 
 frequency harmonics capture finer detailed geometric features. 
 
-The DCT for 3D volume data is given in Equation~\ref{eqn:spp_dct}.
-\begin{equation}
+The voxels of the 3D SDF volume \( \bm{\Phi} \) are thus given by applying the DCT to 
+\( \bm{f}^{\star} \) as in Equation~\ref{eqn:spp_dct}.
+\begin{align}
   \label{eqn:spp_dct}
-  a
-\end{equation}
+  % Line 1.
+  \bm{\Phi}_{x, y, z} ={}& \bm{f}^{\star}_{x, y, z} \Bigg[
+  \sum_{x=0}^{N-1} \cos \Big[ \frac{\pi}{N} \big[ x + \frac{1}{2} \big] x \Big]
+  \sum_{y=0}^{N-1} \cos \Big[ \frac{\pi}{N} \big[ y + \frac{1}{2} \big] y \Big]
+  \sum_{z=0}^{N-1} \cos \Big[ \frac{\pi}{N} \big[ z + \frac{1}{2} \big] z \Big] \Bigg]\\
+  % Line 2.
+  ={}& \bm{f}^{\star}_{x, y, z} \Bigg[
+  \sum_{x=0}^{N-1} \cos \Big[ \frac{\pi \big( x^{2} + \frac{x}{2} \big)}{N} \Big]
+  \sum_{y=0}^{N-1} \cos \Big[ \frac{\pi \big( y^{2} + \frac{y}{2} \big)}{N} \Big]
+  \sum_{z=0}^{N-1} \cos \Big[ \frac{\pi \big( z^{2} + \frac{z}{2} \big)}{N} \Big] \Bigg]\\
+  % Line 3.
+  ={}& \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} \sum_{z=0}^{N-1} \bm{f}^{\star}_{x, y, z}
+  \cos \Big[ \frac{\pi \big( x^{2} + \frac{x}{2} \big)}{N} \Big]
+  \cos \Big[ \frac{\pi \big( y^{2} + \frac{y}{2} \big)}{N} \Big]
+  \cos \Big[ \frac{\pi \big( z^{2} + \frac{z}{2} \big)}{N} \Big]
+\end{align}
 % on prediction, IDCT used (same harmonics) - maybe show some figures??
 % give IDCT and gradient (for backpropagation).
 % show grad of idct is idct(grad)
