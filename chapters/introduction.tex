@@ -1,4 +1,75 @@
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "../thesis"
-%%% End: 
+% Topic overview.
+% -- 3D machine perception
+% ---- optical flow
+% ---- laser range sensing
+% ---- navigation and mapping with sparse point clouds
+% ---- stereo and rgbd
+% ---- multiple view geometry
+% ---- SfM, SLAM, scene flow
+% -- Semantics
+% ---- object recognition and segmentation
+% ---- user interaction
+% -- Amalgamation
+% ---- applications in VR/AR
+% ---- ad-hoc ML (3d data procurement etc)
+% -- Current challenges
+% ---- fragility in complex, real environments (dynamics etc)
+% ---- lack of real world data for learning of 3d
+% ---- SLAM limited to observations only; may not see whole thing; may not be practical etc
+
+% Elaborate on current challenges.
+% -- Dynamics in SLAM
+% ---- for SLAM in real environments (working environments such as warehouses), no consistent model
+% ---- fragility leads to problems; complete failure to inaccuracies
+% ---- reliance on point correspondences; efficacious for static, fails for dynamic
+% ---- no dynamics = limited perception capability; needed for "real" environments
+% ---- dynamics provide semantic information
+% -- Object centric SLAM/SfM
+% ---- preliminary work limited on simultaneous TaM; offline or known pose
+% ---- fundamentally a difficult problem; less to work with
+% ---- geometric inconsistencies more pronounced effect; bad training data etc
+% -- Data driven pose/shape regression
+% ---- complex environments may not allow long enough to fuse model
+% ---- larger scale makes dense reconstruction infeasable
+% ---- limited observability; not able to fully cover object
+% ---- eliminate many lower level "tricks" to make reconstruction work
+
+% Research questions.
+% -- Can we reconstruct densely in dynamic scenes?
+% ---- real time?
+% ---- comparable reconstruction quality to state of art?
+% ---- can we improve tracking in these scenarios?
+% -- Can we determine what is dynamic in a scene?
+% ---- Can we leverage this information in some semantic way (link back to AR applications/data collection)?
+% -- Can we obtain consistent reconstructions of arbitrary objects?
+% ---- comparable reconstruction quality to state of the art scene based?
+% ---- with commodity hardware?; wider applicability
+% ---- without known pose?
+% ---- 
+% -- Can we infer scene properties where traditional reconstruction not possible?
+% ---- shape and pose?
+% ---- without requiring temporal consistency?; avert tracking errors
+% ---- 
+
+% Thesis roadmap.
+% -- Literature review.
+% ---- TaM/SLAM
+% ---- Semantics/Semantic SLAM
+% ---- Dynamics, moseg and optical flow
+% ---- Object reconstruction
+% ---- Shape and pose regression
+% -- "Real Time Motion Segmentation for Dense Volumetric Fusion"
+% ---- Outline preliminaries; standard dense SLAM etc
+% ---- Approach to dynamic dense SLAM
+% ---- Segmentation of dynamics; which questions adressed?
+% ---- Rudimentary example of semantics; which questions adressed?
+% ---- Outline experiments
+% ---- Results showing...
+% -- "Probabilistic Object Reconstruction with Online Drift Correction"
+% ---- Outline approach; which questions adressed?
+% ---- Outline experiments
+% ---- Outline results
+% -- "Stereo Shape and Pose Regression"
+% ---- Outline approach; which questions adressed?
+% ---- Outline experiments
+% ---- Outline results
