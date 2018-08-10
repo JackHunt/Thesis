@@ -529,13 +529,33 @@ Given the form of \( P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f}) \) in Equat
   \label{eqn:spp_mean_var}
   % Line 1.
   \bm{f}^{\star} ={}& 
-  \bm{\Sigma}_{\bm{XL}}^{T} \bm{\Sigma}_{\bm{XX}}^{-1} \bm{y}\\
+  \bm{\Sigma}_{\bm{XL}}^{T} \bm{\Sigma}_{\bm{XX}}^{-1} \bm{Y}\\
   % Line 2.
   \mathbb{\bm{f}^{\star}} ={}&
   \bm{\Sigma}_{\bm{LL}} - \bm{\Sigma}_{\bm{LL}}^{T} \bm{\Sigma}_{XL}^{-1} \bm{\Sigma}_{LL}
 \end{align}
 
-When regressing 
+Due to the gradient based optimisation of the approach outlined in this chapter, each 
+component outlined in Figure~\ref{} must be differentiable. The formulation of the 
+posterior mean of Equation~\ref{eqn:eqn:spp_mean_var} is differentiable an it's gradient 
+is derived as follows in Equation~\ref{eqn:spp_pos_mean_grad}.
+\begin{align}
+  \label{eqn:spp_pos_mean_grad}
+  % Line 1.
+  \frac{\partial \bm{f}^{\star}}{\partial \bm{L}} ={}&
+  \frac{\partial}{\partial \bm{L}}
+  \bm{\Sigma}_{\bm{XL}}^{T} \bm{\Sigma}_{\bm{XX}}^{-1} \bm{Y}\\
+  % Line 2.
+  ={}& \frac{\partial \bm{\Sigma}_{\bm{XL}}^{T}}{\partial \bm{L}}
+  \bm{\Sigma}_{\bm{XX}}^{-1} \bm{Y}
+  + \bm{\Sigma}_{\bm{XL}}^{T} 
+  \frac{\partial\bm{\Sigma}_{\bm{XX}}^{-1}}{\partial \bm{L}} \bm{Y}
+  + \bm{\Sigma}_{\bm{XL}}^{T} \bm{\Sigma}_{\bm{XX}}^{-1} 
+  \frac{\partial \bm{Y}}{\partial \bm{L}}\\
+  % Line 3.
+  ={}& \frac{\partial \bm{\Sigma}_{\bm{XL}}^{T}}{\partial \bm{L}}
+  \bm{\Sigma}_{\bm{XX}}^{-1} \bm{Y}
+\end{align}
 
 \subsubsection{Signed Distance Function Extraction}
 ~\label{subsubsec:sdf_extraction}
