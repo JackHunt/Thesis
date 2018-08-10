@@ -522,6 +522,21 @@ taken as follows.
   \bm{f}^{\star} \sim P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f})
 \end{equation}
 
+Given the form of \( P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f}) \) in Equation
+~\ref{eqn:spp_gp_posterior_draw}, the posterior mean \( \bm{f}^{\star} \) and variance
+\( \mathbb{V}^{\star} \) are given as follows in Equation~\ref{eqn:spp_mean_var}.
+\begin{align}
+  \label{eqn:spp_mean_var}
+  % Line 1.
+  \bm{f}^{\star} ={}& 
+  \bm{\Sigma}_{\bm{XL}}^{T} \bm{\Sigma}_{\bm{XX}}^{-1} \bm{y}\\
+  % Line 2.
+  \mathbb{\bm{f}^{\star}} ={}&
+  \bm{\Sigma}_{\bm{LL}} - \bm{\Sigma}_{\bm{LL}}^{T} \bm{\Sigma}_{XL}^{-1} \bm{\Sigma}_{LL}
+\end{align}
+
+When regressing 
+
 \subsubsection{Signed Distance Function Extraction}
 ~\label{subsubsec:sdf_extraction}
 As outlined in Section~\ref{sub:spp_latent_shape_est}, the SDF volume \( \bm{\Phi} \) 
