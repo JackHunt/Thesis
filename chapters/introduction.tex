@@ -40,12 +40,6 @@ be transformed and integrated into the appropriate model location. The amalgamat
 known as SLAM (Simultaneous Localisation and Mapping). A typical reconstructrion using such a system is 
 given in Figure~\ref{}.
 
-% -- Semantics
-% ---- object recognition and segmentation
-% ---- user interaction
-% -- Amalgamation
-% ---- applications in VR/AR
-% ---- ad-hoc ML (3d data procurement etc)
 The aforementioned advances in semantic segmentation have been utilised within the context of 3D vision to 
 introduce a semantic component to dense SLAM systems. Such a combination of techniques provides an adaptable 
 component to AR and robotics applications. Early work on amalgamating the two areas of research have allowed 
@@ -113,11 +107,18 @@ in a similar manner to outlined case of dynamic dense SLAM.
 % ---- comparable reconstruction quality to state of the art scene based?
 % ---- with commodity hardware?; wider applicability
 % ---- without known pose?
-% ---- 
 % -- Can we infer scene properties where traditional reconstruction not possible?
 % ---- shape and pose?
 % ---- without requiring temporal consistency?; avert tracking errors
-% ---- 
+The aforementioned technical challenges pertain to the dense reconstruction of dynamic scenes, the 
+reconstruction of objects and the reconstruction of objects for which no full view is available. As 
+such, the following main research challenges are addressed in this work.
+\begin{itemize}
+\item The dense reconstruction of dynamic environments.
+\item The reconstruction of arbitrary objects in a consistent manner.
+\item The inference of object centric scene properties where traditional reconstruction 
+may not be possible.
+\end{itemize}
 
 % Thesis roadmap.
 % -- Literature review.
@@ -126,6 +127,7 @@ in a similar manner to outlined case of dynamic dense SLAM.
 % ---- Dynamics, moseg and optical flow
 % ---- Object reconstruction
 % ---- Shape and pose regression
+
 % -- "Real Time Motion Segmentation for Dense Volumetric Fusion"
 % ---- Outline preliminaries; standard dense SLAM etc
 % ---- Approach to dynamic dense SLAM
@@ -133,10 +135,12 @@ in a similar manner to outlined case of dynamic dense SLAM.
 % ---- Rudimentary example of semantics; which questions adressed?
 % ---- Outline experiments
 % ---- Results showing...
+
 % -- "Probabilistic Object Reconstruction with Online Drift Correction"
 % ---- Outline approach; which questions adressed?
 % ---- Outline experiments
 % ---- Outline results
+
 % -- "Stereo Shape and Pose Regression"
 % ---- Outline approach; which questions adressed?
 % ---- Outline experiments
