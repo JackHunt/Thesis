@@ -83,17 +83,24 @@ reconstruction system would be required to identify such components and account 
 reconstruction process. Additionally, a system that is capable of detecting and segmenting such motion 
 would be capable of extracting pertinent semantic information from such events.
 
-% -- Object centric SLAM/SfM
-% ---- preliminary work limited on simultaneous TaM; offline or known pose
-% ---- fundamentally a difficult problem; less to work with
-% ---- geometric inconsistencies more pronounced effect; bad training data etc
+A related problem to that of sensor pose estimation in dense SLAM, is pose estimation when performing 
+reconstruction of individual objects. As with the larger scale case, point correspondences are problematic.
+One prominent reason is that for a smaller object versus a full scale scene (such as a room), there is less 
+geometric data available in the former case than in the latter. As with the larger scale reconstruction, 
+inconsistencies in the pose estimation phase can have varying effects on the resultant reconstruction.
+Such inconsistencies in the reconstruction can have a detrimental effect on learning based systems for 3D 
+tasks if such inconsistent reconstructions are used to train them. This is particularly troublesome as 
+inconsistencies in object scale models in some cases have a more pronounced effect than in the case where 
+an entire room is being constructed.
 
-
-% -- Data driven pose/shape regression
-% ---- complex environments may not allow long enough to fuse model
-% ---- larger scale makes dense reconstruction infeasable
-% ---- limited observability; not able to fully cover object
-% ---- eliminate many lower level "tricks" to make reconstruction work
+As outlined previously, for some use cases of object reconstruction it may not be possible to obtain a 
+full view of an object of interest in the world, such that some parts of the objects surface are not 
+physically observable with the sensor used. An example of such a scenario is the reconstruction of 
+objects in an environment from a vehicle, such as other cars. Furthermore, as the traditional reconstruction 
+pipeline relies on the aforementioned ``integration'' of surface data into a model over time, in such a 
+scenario, an object may not be visible to the sensor for a length of time sufficient to build a smoothly 
+reconstructed model. Additionally, the highly dynamic nature of such a scenario is likely to be problematic 
+in a similar manner to outlined case of dynamic dense SLAM.
 
 % Research questions.
 % -- Can we reconstruct densely in dynamic scenes?
