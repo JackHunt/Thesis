@@ -53,10 +53,6 @@ one to view a reconstruction of their environment in VR and interactively label 
 it, with the system inferring the remaining labellings. An example of the output of such a system is given 
 in Figure~\ref{}.
 
-% -- Current challenges
-% ---- fragility in complex, real environments (dynamics etc)
-% ---- lack of real world data for learning of 3d
-% ---- SLAM limited to observations only; may not see whole thing; may not be practical etc
 Though the results of the systems shown in Figures~\ref{} and~\ref{} represent impressive advancements in 
 computer vision, there are however open technical challenges. One such challenge is the successful modelling 
 of real environments in which there are dynamic components (such as people walking in the camera's view). 
@@ -67,19 +63,32 @@ features utilising 2D image information. As such, there is no ``true'' semantic 
 recognition. As previously outlined, this is a difficult issue to overcome due to the lower volume of real 
 world 3D data from which such a system can learn. As such, it becomes neccessary to perform reconstruction 
 of objects in isolation to procure such data. Furthermore, within the context of modelling objects in an 
-environment, it is not always possible to gain full coverage with a sensor of certain objects.
+environment, it is not always possible (or practical) to gain full coverage with a sensor of certain objects.
 
-% Elaborate on current challenges.
-% -- Dynamics in SLAM
-% ---- for SLAM in real environments (working environments such as warehouses), no consistent model
-% ---- fragility leads to problems; complete failure to inaccuracies
-% ---- reliance on point correspondences; efficacious for static, fails for dynamic
-% ---- no dynamics = limited perception capability; needed for "real" environments
-% ---- dynamics provide semantic information
+As outlined, traditional dense SLAM systems have difficulty when attempting to perform dense reconstruction 
+in an environment where there is motion. The aforementioned senor pose estimation phase in many such systems
+is prone to error or failure in such a scenario. The reason for this is due to the reliance on point based 
+correspondences between frames. If a static environment is being modelled, then a high number of valid point 
+correspondences will be found. However, when motion (independent of the sensors motion) is introduced into 
+the scene, invalid correspondences may be found. For example, points that belong to a non moving object 
+such as a chair may erroneously be matched to those on a moving scene component, such as a walking person.
+Such erroneous correspondences can incur failure cases ranging from moderate model inconsistencies to total 
+loss of sensor tracking.
+
+Though there are many use cases for static scene reconstruction, the lack of robustness to dynamics is 
+prohibitive in scenarios where a high level of machine perception is required. For example, if 
+reconstructing a busy working environment in which there is a high level of dynamics (people walking, 
+doors opening etc), an ideal reconstruction would not include artifacts of such motion. As such, the 
+reconstruction system would be required to identify such components and account for them in the 
+reconstruction process. Additionally, a system that is capable of detecting and segmenting such motion 
+would be capable of extracting pertinent semantic information from such events.
+
 % -- Object centric SLAM/SfM
 % ---- preliminary work limited on simultaneous TaM; offline or known pose
 % ---- fundamentally a difficult problem; less to work with
 % ---- geometric inconsistencies more pronounced effect; bad training data etc
+
+
 % -- Data driven pose/shape regression
 % ---- complex environments may not allow long enough to fuse model
 % ---- larger scale makes dense reconstruction infeasable
