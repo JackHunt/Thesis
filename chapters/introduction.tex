@@ -28,30 +28,46 @@ standard 2D images, due to the abundance of available data. However, for the 3D 
 is not a comparable volume of 3D data with real world geometric information from which a system 
 can learn to perform complex tasks in the real world.
 
-% -- 3D sensing equipment allows for geometric modelling of real world
-% ---- Reconstructions, 3D motion estimation, pose tracking
-% ---- 3D sensing combined with ML allows for rich scene understanding; link back to VR/AR
 However, there is an established field of computer vision concerned with the geometric processing 
-of 3D world observations. Driven by the availibility...
+of 3D world observations. Driven by the availibility of consumer grade depth sensing equipment such 
+as the Microsoft Kinect RGBD camera (introduced for the Microsoft XBox 360), there has been a renewed 
+interest in dense scene reconstruction. Advances in recent years have allowed for the creation of digital 
+reconstructions of the tangible world with consumer grade computer equipment. Such systems iteratively 
+integrate observed world points into a ``global'' model, such that over time, a smooth representation 
+of the observed world surfaces is built. In addition to the integration of such information into a model, 
+there is the task of inferring how the sensor has moved in world space, such that the observed points may 
+be transformed and integrated into the appropriate model location. The amalgamation of these two tasks is 
+known as SLAM (Simultaneous Localisation and Mapping). A typical reconstructrion using such a system is 
+given in Figure~\ref{}.
 
-% Topic overview.
-% -- 3D machine perception
-% ---- optical flow
-% ---- laser range sensing
-% ---- navigation and mapping with sparse point clouds
-% ---- stereo and rgbd
-% ---- multiple view geometry
-% ---- SfM, SLAM, scene flow
 % -- Semantics
 % ---- object recognition and segmentation
 % ---- user interaction
 % -- Amalgamation
 % ---- applications in VR/AR
 % ---- ad-hoc ML (3d data procurement etc)
+The aforementioned advances in semantic segmentation have been utilised within the context of 3D vision to 
+introduce a semantic component to dense SLAM systems. Such a combination of techniques provides an adaptable 
+component to AR and robotics applications. Early work on amalgamating the two areas of research have allowed 
+one to view a reconstruction of their environment in VR and interactively label some of the objects within 
+it, with the system inferring the remaining labellings. An example of the output of such a system is given 
+in Figure~\ref{}.
+
 % -- Current challenges
 % ---- fragility in complex, real environments (dynamics etc)
 % ---- lack of real world data for learning of 3d
 % ---- SLAM limited to observations only; may not see whole thing; may not be practical etc
+Though the results of the systems shown in Figures~\ref{} and~\ref{} represent impressive advancements in 
+computer vision, there are however open technical challenges. One such challenge is the successful modelling 
+of real environments in which there are dynamic components (such as people walking in the camera's view). 
+The traditional dense SLAM pipeline is unable to accurately build a globally consistent model in such 
+environments. In addition, when using a combined reconstruction and semantics system such as that shown 
+in Figure~\ref{}, many of the descriptive cues that enable the segmentation to be performed rely on 
+features utilising 2D image information. As such, there is no ``true'' semantic 3D object learning and 
+recognition. As previously outlined, this is a difficult issue to overcome due to the lower volume of real 
+world 3D data from which such a system can learn. As such, it becomes neccessary to perform reconstruction 
+of objects in isolation to procure such data. Furthermore, within the context of modelling objects in an 
+environment, it is not always possible to gain full coverage with a sensor of certain objects.
 
 % Elaborate on current challenges.
 % -- Dynamics in SLAM
