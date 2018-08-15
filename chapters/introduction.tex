@@ -1,3 +1,4 @@
+\label{chap:intro}
 Much has changed since the introduction of the IBM PC platform in 1981, with regards to the 
 uses of the Personal Computer and the way in which humans interact with them. Vast increases 
 in computational power have seen the microcomputer evolve beyond a tool with which one predominantly 
@@ -96,38 +97,48 @@ scenario, an object may not be visible to the sensor for a length of time suffic
 reconstructed model. Additionally, the highly dynamic nature of such a scenario is likely to be problematic 
 in a similar manner to outlined case of dynamic dense SLAM.
 
-% Research questions.
-% -- Can we reconstruct densely in dynamic scenes?
-% ---- real time?
-% ---- comparable reconstruction quality to state of art?
-% ---- can we improve tracking in these scenarios?
-% -- Can we determine what is dynamic in a scene?
-% ---- Can we leverage this information in some semantic way (link back to AR applications/data collection)?
-% -- Can we obtain consistent reconstructions of arbitrary objects?
-% ---- comparable reconstruction quality to state of the art scene based?
-% ---- with commodity hardware?; wider applicability
-% ---- without known pose?
-% -- Can we infer scene properties where traditional reconstruction not possible?
-% ---- shape and pose?
-% ---- without requiring temporal consistency?; avert tracking errors
 The aforementioned technical challenges pertain to the dense reconstruction of dynamic scenes, the 
 reconstruction of objects and the reconstruction of objects for which no full view is available. As 
 such, the following main research challenges are addressed in this work.
 \begin{itemize}
-\item The dense reconstruction of dynamic environments.
-\item The reconstruction of arbitrary objects in a consistent manner.
-\item The inference of object centric scene properties where traditional reconstruction 
+  \item The dense reconstruction of dynamic environments.
+  \begin{itemize}
+    \item With real time performance.
+    \item With comparable reconstruction quality to static counterpart.
+    \item With an improvement in pose estimation over static counterpart.
+  \end{itemize}
+  \item Identifying the dynamic components of a scene.
+  \begin{itemize}
+    \item Utilising for semantics.
+  \end{itemize}
+  \item The reconstruction of arbitrary objects in a consistent manner.
+  \begin{itemize}
+    \item With comparable reconstruction quality to scene based alternative.
+    \item With commodity hardware for wider applicability.
+    \item Without known pose.
+  \end{itemize}
+  \item The inference of object centric scene properties where traditional reconstruction 
 may not be possible.
+  \begin{itemize}
+    \item Inferring both shape and pose.
+    \item Without requiring temporally consistent frames, averting tracking errors.
+  \end{itemize}
 \end{itemize}
 
-% Thesis roadmap.
-% -- Literature review.
-% ---- TaM/SLAM
-% ---- Semantics/Semantic SLAM
-% ---- Dynamics, moseg and optical flow
-% ---- Object reconstruction
-% ---- Shape and pose regression
+With the central technical challenges of this work outlined, the remainder of this work is structured 
+as follows. Firstly, Chapter~\ref{chap:lit_review} provides a comprehensive survey of the literature 
+pertinent to this work. Initially, a survey of the dense SLAM (as introduced earlier in this chapter) 
+literature is provided. The research outlined in this section is fundamental to much of the content of 
+this work. Additionally, relevant works on semantics (such as semantic SLAM) are reviewed. 
+Next in Chapter~\ref{chap:lit_review} is an assessment of relevant research on the topic of dynamics in 
+3D vision; topics include motion segmentation, optical and scene flow. Much of the material reviewed in 
+this section is pertinent to the subject matter of Chapter~\ref{chap:moseg}. The next major area of 
+research to be reviewed is on the topic of object reconstruction; relevant background to the topic of 
+Chapter~\ref{chap:probobj}. Finally, Chapter~\ref{chap:lit_review} concludes with an assessment of the 
+literature on the topics of pose prediction and shape prediction.
 
+Chapter~\ref{chap:moseg} introduces the approach taken in this work to the problem of dense reconstruction 
+in dynamic environments (environments with moving components).
 % -- "Real Time Motion Segmentation for Dense Volumetric Fusion"
 % ---- Outline preliminaries; standard dense SLAM etc
 % ---- Approach to dynamic dense SLAM
