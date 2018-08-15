@@ -138,21 +138,33 @@ Chapter~\ref{chap:probobj}. Finally, Chapter~\ref{chap:lit_review} concludes wit
 literature on the topics of pose prediction and shape prediction.
 
 Chapter~\ref{chap:moseg} introduces the approach taken in this work to the problem of dense reconstruction 
-in dynamic environments (environments with moving components).
-% -- "Real Time Motion Segmentation for Dense Volumetric Fusion"
-% ---- Outline preliminaries; standard dense SLAM etc
-% ---- Approach to dynamic dense SLAM
-% ---- Segmentation of dynamics; which questions adressed?
-% ---- Rudimentary example of semantics; which questions adressed?
-% ---- Outline experiments
-% ---- Results showing...
+in dynamic environments (environments with moving components). The chapter begins by outlining fundamental 
+concepts in the static dense SLAM pipeline that shall be fundamental to much of the content in this work. 
+Following this fundamental material, an approach to peforming dense reconstruction and motion segmentation 
+in dynamic scenes is presented. The method outlined in this chapter is evaluated against a state of the art 
+dense SLAM system for static scenes, to which the presented approach demonstrates an overall improvement 
+versus the static dense SLAM system. Additionally, the qualitative results of the presented approach 
+demonstrate high quality resultant reconstructions on the test scenes. Furthermore, Chapter~\ref{chap:moseg} 
+provides a demonstration of utilising motion segmentation to perform rudementary object recognition using 
+3D geometric features.
 
-% -- "Probabilistic Object Reconstruction with Online Drift Correction"
-% ---- Outline approach; which questions adressed?
-% ---- Outline experiments
-% ---- Outline results
+Chapter~\ref{chap:probobj} introduces a novel approach to the segmentation and reconstruction of individual 
+objects. The chapter outlines a novel Probabilistic approach to object reconstruction that reduces 
+inconsistencies in pose estimation, which positively impacts the overall reconstruction quality. The 
+approach presented in this chapter works with commodity computer and depth sensing equipment (though in 
+principle it is trivially extendable, by design) and yields high quality reconstructions. Reconstruction 
+quality is evaluated quantitatively and qualitatively against multiple alternative approaches. A 
+quantitative evaluation of pose estimation quality is also provided, demonstrating an improvement over 
+alternative approaches. The work in this chapter has been peer reviewed and published in the 
+\textit{International Conference on 3D Vision (3DV)}.
 
 % -- "Stereo Shape and Pose Regression"
 % ---- Outline approach; which questions adressed?
 % ---- Outline experiments
 % ---- Outline results
+Chapter~\ref{chap:spp} approaches the problem of performing inference of shape and pose simultaneously. 
+The work in this chapter is notably different in nature relative to the approaches taken in Chapters
+~\ref{chap:moseg} and~\ref{chap:probobj}; Chapter~\ref{chap:spp} utilises a data driven, non SLAM based 
+approach to learn predictive models for shape and pose in a semi-supervised manner. A full view of the 
+object of interest is not required, nor is temporal consistency between frames; ad-hoc prediction can be 
+performed for arbitrarily sequenced frames.
