@@ -39,26 +39,43 @@ of the observed world surfaces is built. In addition to the integration of such 
 there is the task of inferring how the sensor has moved in world space, such that the observed points may 
 be transformed and integrated into the appropriate model location. The amalgamation of these two tasks is 
 known as SLAM (Simultaneous Localisation and Mapping). A typical reconstructrion using such a system is 
-given in Figure~\ref{}.
+given in Figure~\ref{fig:room_recon_example}.
+\begin{figure}[!htbp]
+~\label{fig:room_recon_example}
+  \centering
+  \includegraphics[width=.9\linewidth]{figures/intro/room_scene.png}
+  \caption[Room Scale Dense Reconstruction]{An example of room-scale dense reconstruction.}
+\end{figure}
 
 The aforementioned advances in semantic segmentation have been utilised within the context of 3D vision to 
 introduce a semantic component to dense SLAM systems. Such a combination of techniques provides an adaptable 
 component to AR and robotics applications. Early work on amalgamating the two areas of research have allowed 
 one to view a reconstruction of their environment in VR and interactively label some of the objects within 
 it, with the system inferring the remaining labellings. An example of the output of such a system is given 
-in Figure~\ref{}.
+in Figure~\ref{fig:spaint_teaser}.
+\afterpage{
+  \begin{figure}[!htbp]
+~\label{fig:spaint_teaser}
+    \centering
+    \includegraphics[width=.7\linewidth]{figures/intro/spaint-teaser.png}
+    \caption[Room Scale Dense Reconstruction]{An example of semantic SLAM.\footnotemark}
+  \end{figure}
+~\footnotetext{Copyright \textit{Golodetz et al}, 2015.\\
+\url{http://www.robots.ox.ac.uk/~tvg/projects/SemanticPaint/index.php}}
+}
 
-Though the results of the systems shown in Figures~\ref{} and~\ref{} represent impressive advancements in 
-computer vision, there are however open technical challenges. One such challenge is the successful modelling 
-of real environments in which there are dynamic components (such as people walking in the camera's view). 
-The traditional dense SLAM pipeline is unable to accurately build a globally consistent model in such 
-environments. In addition, when using a combined reconstruction and semantics system such as that shown 
-in Figure~\ref{}, many of the descriptive cues that enable the segmentation to be performed rely on 
-features utilising 2D image information. As such, there is no ``true'' semantic 3D object learning and 
-recognition. As previously outlined, this is a difficult issue to overcome due to the lower volume of real 
-world 3D data from which such a system can learn. As such, it becomes neccessary to perform reconstruction 
-of objects in isolation to procure such data. Furthermore, within the context of modelling objects in an 
-environment, it is not always possible (or practical) to gain full coverage with a sensor of certain objects.
+Though the results of the systems shown in Figures~\ref{fig:room_recon_example} and~\ref{fig:spaint_teaser} 
+represent impressive advancements in computer vision, there are however open technical challenges. One such 
+challenge is the successful modelling of real environments in which there are dynamic components (such as 
+people walking in the camera's view). The traditional dense SLAM pipeline is unable to accurately build a 
+globally consistent model in such environments. In addition, when using a combined reconstruction and 
+semantics system such as that shown in Figure~\ref{}, many of the descriptive cues that enable the 
+segmentation to be performed rely on features utilising 2D image information. As such, there is no ``true'' 
+semantic 3D object learning and recognition. As previously outlined, this is a difficult issue to overcome 
+due to the lower volume of real world 3D data from which such a system can learn. As such, it becomes 
+neccessary to perform reconstruction of objects in isolation to procure such data. Furthermore, within the 
+context of modelling objects in an environment, it is not always possible (or practical) to gain full 
+coverage with a sensor of certain objects.
 
 As outlined, traditional dense SLAM systems have difficulty when attempting to perform dense reconstruction 
 in an environment where there is motion. The aforementioned senor pose estimation phase in many such systems
