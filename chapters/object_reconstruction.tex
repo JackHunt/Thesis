@@ -1,4 +1,4 @@
-\label{chap:probobj}
+~\label{chap:probobj}
 \section{Introduction}
 ~\label{sec:probobj_introduction}
 Dense SLAM has proven to be an effective paradigm for the reconstruction of 
@@ -88,14 +88,14 @@ performed to refine the resulting object segmentation over all subvolumes.
 The proposed approach is not tied to the use of any one probabilistic model,
 though in the presented experiments Pixel Wise Posteriors (PwP) of \textit{Bibby et al} 
 ~\cite{Bibby2008} are used. An overview of the object reconstruction pipeline is shown in
-Figure~\ref{fig:probobj_pipeline_diagram}.
+Figure~\ref{figure:probobj_pipeline_diagram}.
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_pipeline_diagram}
   \centering
   \includegraphics[width=0.9\linewidth]{figures/object_recon/pipeline.pdf}
   \caption[Probabilistic Object Reconstruction Pipeline]
   {The pipeline of the proposed Object Reconstruction approach.}
+~\label{figure:probobj_pipeline_diagram}
 \end{figure}
 
 \section{Probabilistic Formulation of Object Reconstruction}
@@ -148,9 +148,8 @@ Central to the proposed system is the aforementioned volume of appearance based
 posterior probabilities pertaining to a voxel wise membership of either the
 object voxel set or the non object (background) voxel set. This allows
 formulation of the full joint distribution over the object as the Probabilistic
-Graphical Model (PGM) of Figure~\ref{fig:probobj_pgm1}.
+Graphical Model (PGM) of Figure~\ref{figure:probobj_pgm1}.
 \begin{figure}[!htbp]
-~\label{fig:probobj_pgm1}
   \centering
   \resizebox{0.4\linewidth}{!}{
     \begin{tikzpicture}
@@ -175,6 +174,7 @@ Graphical Model (PGM) of Figure~\ref{fig:probobj_pgm1}.
   \caption[Probabilistic Object Reconstruction Formulation I]
   {Probabilistic Graphical Model representing the full Joint
     Distribution over the shape \(\bm{\Phi}\) of the object of interest.}
+~\label{figure:probobj_pgm1}
 \end{figure}
 
 Where \( \Phi \) is the shape of the object to be reconstructed (represented as a
@@ -185,7 +185,7 @@ constraints for each adjacent sub volume pair in the form of rigid body
 transformations, \( \Omega \) is the set of RGBD image pixels and \(p\) the set of 
 poses over time.
 
-The PGM given in Figure~\ref{fig:probobj_pgm1} leads to the following
+The PGM given in Figure~\ref{figure:probobj_pgm1} leads to the following
 factorisation over the full Joint Distribution.
 \begin{equation}
   \label{eqn:probobj_full_joint}
@@ -207,9 +207,8 @@ subvolumes.
 
 If pixel-wise independence is assumed in the RGBD observations and temporal
 independence is assumed in the poses, the plate containing \( \Omega \) and \(p\) can
-be removed as shown in Figure~\ref{fig:probobj_pgm2}.
+be removed as shown in Figure~\ref{figure:probobj_pgm2}.
 \begin{figure}[!htbp]
-~\label{fig:probobj_pgm2}
   \centering
   \resizebox{0.4\linewidth}{!}{
     \begin{tikzpicture}
@@ -233,10 +232,11 @@ be removed as shown in Figure~\ref{fig:probobj_pgm2}.
   \caption[Probabilistic Object Reconstruction Formulation II]
   {Probabilistic Graphical Model representing the simplified Joint
     Distribution over the shape \(\bm{\Phi}\) of the object of interest.}
+~\label{figure:probobj_pgm2}
 \end{figure}
 
-The simplifications transforming the PGM of Figure~\ref{fig:probobj_pgm1} in to
-that of Figure~\ref{fig:probobj_pgm2} lead to the following factorisation of the
+The simplifications transforming the PGM of Figure~\ref{figure:probobj_pgm1} in to
+that of Figure~\ref{figure:probobj_pgm2} lead to the following factorisation of the
 Joint Distribution over \(\bm{\Phi}\).
 \begin{equation}
   \label{eqn:probobj_simplified_joint}
@@ -246,8 +246,8 @@ Joint Distribution over \(\bm{\Phi}\).
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega)
 \end{equation}
 
-The formalisms defined in Figures~\ref{fig:probobj_pgm1} and
-~\ref{fig:probobj_pgm2} and Equations~\ref{eqn:probobj_full_joint} and
+The formalisms defined in Figures~\ref{figure:probobj_pgm1} and
+~\ref{figure:probobj_pgm2} and Equations~\ref{eqn:probobj_full_joint} and
 ~\ref{eqn:probobj_simplified_joint} describe a probabilistic framework in which
 online corrections can be made to the reconstructed model (piecewise over
 subvolumes) to counter errors caused by pose tracking inconsistencies. As with
@@ -302,10 +302,10 @@ deformations is provided in Section~\ref{sec:probobj_model_correction}.
 The tracking consistency constraints denoted by the variables \(L_{s, s'}\) such
 that \(s, s' \in \mathcal{S}\) with \(\mathcal{S}\) being the set of overlapping
 subvolume pairs \(s, s'\) in the Probabilistic Graphical Models given by Figures
-~\ref{fig:probobj_pgm1} and~\ref{fig:probobj_pgm2} can be enforced in terms of
+~\ref{figure:probobj_pgm1} and~\ref{figure:probobj_pgm2} can be enforced in terms of
 minimising the disparity between each pair of adjacent subvolumes. The effect of
 this minimsation being that consistency in the pose estimation phase of the
-pipeline outlined in Figure~\ref{fig:probobj_pipeline_diagram} is enforced. The
+pipeline outlined in Figure~\ref{figure:probobj_pipeline_diagram} is enforced. The
 objective of this procedure is to infer a robust and consistent deformation
 transformation for the subvolume pair.
 
@@ -487,7 +487,7 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
   \begin{aligned}[t]
     \sum_{s, s' \in \mathcal{S}} \Bigg[ {}& \ln \frac{1}{\sqrt{2 \pi \sigma}}
     \exp{\frac{-\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}
-    \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big){\Big]}^{2}}
+    \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big){ \Big ] }^{2}}
     {2\sigma^{2}}}\\
     &+ \ln \frac{-\frac{1}{2} e^{\bm{p}^{T}\bm{\Sigma}^{-1}\bm{p}}}
     {\sqrt{{(2\pi)}^{k}\left|\bm{\Sigma}\right|}} +
@@ -599,10 +599,9 @@ voxel space between observations pertaining to the object of interest and those,
 of irrelevant observations, such that a segmentation in 3D is obtained. The
 central purpose of this segmentation is to refine the resultant output model of
 the proposed object reconstruction system. The described CRF model is depicted
-in Figure~\ref{fig:probobj_crf}
+in Figure~\ref{figure:probobj_crf}
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_crf}
   \centering
   \resizebox{0.5\linewidth}{!}{
     \begin{tikzpicture}[every node/.style={minimum size=1cm},on grid]
@@ -741,6 +740,7 @@ in Figure~\ref{fig:probobj_crf}
   }
   \caption[3D CRF over Voxels]
   {The 3D CRF model over Voxel space.}
+~\label{figure:probobj_crf}
 \end{figure}
 
 The following energy function consists of the appearance posterior probabilities
@@ -764,9 +764,9 @@ from Equation~\ref{eqn:probobj_voxel_posterior} of Section
 
 In the implementation used in this work, the aforementioned cut in voxel space
 is obtained by optimising the energy function of Equation~\ref{eqn:probobj_crf_energy} 
-within a Max-Flow framework~\cite{BOYKOV} due to GPU parallelisation potential. However 
+within a Max-Flow framework~\cite{Boykov2001} due to GPU parallelisation potential. However 
 it should be noted that alternatives such as Variational Bayesian Mean Field approximations 
-may also be of use~\cite{KRAHENBUHL}.
+may also be of use~\cite{Krahenbuhl2011}.
 
 \section{Qualitative Results}
 ~\label{sec:probobj_qualitative}
@@ -780,7 +780,6 @@ quarterly intervals for each sequence. In Section~\ref{sec:probobj_quantitative}
 a Quantitative evaluation of Reconstruction quality is given.
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_rock_s3d}
   \centering
   \begin{tabular}{@{}c@{}}
     \includegraphics[width=.6\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
@@ -792,16 +791,16 @@ a Quantitative evaluation of Reconstruction quality is given.
   {(a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
   from RGBD observations on the Museum Rock sequence. (b) The proposed system reconstructing 
   the same object from observations of the Museum Rock sequence.}
+~\label{figure:probobj_rock_s3d}
 \end{figure}
 
-As can be observed in Figure~\ref{fig:probobj_rock_s3d}, the proposed system of 
+As can be observed in Figure~\ref{figure:probobj_rock_s3d}, the proposed system of 
 \textit{Ren et al} begins with a discretised SDF shape prior of a sphere that is 
 evolved over time whilst simultaneously optimising for pose. However, it is evident 
 that through the course of the sequence it is unable to evolve sufficiently to model 
 the object of interest, contary to the approach outlined in this chapter.
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_dino_s3d}
   \centering
   \begin{tabular}{@{}c@{}}
     \includegraphics[width=.6\linewidth]{figures/object_recon/strips/dino_s3d.png} \\
@@ -813,10 +812,11 @@ the object of interest, contary to the approach outlined in this chapter.
   {(a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
   from RGBD observations on the Museum Dinosaur Head sequence. (b) The proposed system 
   reconstructing same the object from observations of the Museum Dinosaur Head sequence.}
+~\label{figure:probobj_dino_s3d}
 \end{figure}
 
-As with the example given in Figure~\ref{fig:probobj_rock_s3d}, it can be seen in 
-Figure~\ref{fig:probobj_dino_s3d} that the system of \textit{Ren et al} is again 
+As with the example given in Figure~\ref{figure:probobj_rock_s3d}, it can be seen in 
+Figure~\ref{figure:probobj_dino_s3d} that the system of \textit{Ren et al} is again 
 unable to evolve the SDF shape prior suffiently to model the object of interest. As 
 can be observed, again the proposed system of this work is capable of yielding a suitable 
 reconstruction.
@@ -835,7 +835,6 @@ pose estimation that would be expected from utilising all available geometric da
 for tracking, versus utilising only that of a single, potentially small object.
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_comp_itm}
   \centering
   \begin{tabular}{cccc}
     \includegraphics[width=.2\linewidth]{figures/object_recon/comp/itm/bear00.png}&
@@ -853,16 +852,16 @@ for tracking, versus utilising only that of a single, potentially small object.
   {(a, b, c, d) Base reconstructions extracted from the output of the 
   standard KinectFusion pipeline. (e, f, g, h) Reconstructions yielded by 
   the proposed approach.}
+~\label{figure:probobj_comp_itm}
 \end{figure}
 
-As can be seen in Figure~\ref{fig:probobj_comp_itm} the proposed system is 
+As can be seen in Figure~\ref{figure:probobj_comp_itm} the proposed system is 
 capable of providing reconstructions of a wide variety of objects in an 
 aesthetically similar manner to a well established baseline. The proposed 
 system provides globally consistent, closed reconstructions as is evident from 
-the top-down views presented in Figure~\ref{fig:probobj_comp_itm}.
+the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_comp_itm}
 	\centering
 	\begin{tabular}{cccc}
 		\includegraphics[width=.2\linewidth]{figures/object_recon/top/teddy_top00.png}&
@@ -875,18 +874,18 @@ the top-down views presented in Figure~\ref{fig:probobj_comp_itm}.
   {
     Closed reconstructions of the (a) Teddy, (b) Dinosaur Head, 
     (c) Chair and (d) Rock sequences.
-	}
+  }
+~\label{figure:probobj_comp_itm}
 \end{figure}
 
 The efficacy of the approach described in this work is further demonstrated when comparing
-the pipeline as outlined in Figure~\ref{fig:probobj_pipeline_diagram} to a version that 
+the pipeline as outlined in Figure~\ref{figure:probobj_pipeline_diagram} to a version that 
 utilises only a single representation of the object of interest. Figure 
-~\ref{fig:probobj_gappy_teddy} demonstrates the difference in reconstruction output when 
+~\ref{figure:probobj_gappy_teddy} demonstrates the difference in reconstruction output when 
 not utilising the multiple subvolume representation and it's accompanying enforcement 
 of consistency constraints. 
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_gappy_teddy}
 	\centering
 	\begin{tabular}{cc}
 		\includegraphics[width=.2\linewidth]{figures/object_recon/gappy/one_scene00.png}&
@@ -900,13 +899,14 @@ of consistency constraints.
   {
     Teddy reconstruction with InfiniTAM (a, b) versus the system proposed in this 
     work (c, d).
-	}
+  }
+~\label{figure:probobj_gappy_teddy}
 \end{figure}
 
-The gaps in the isosurface depicted in Figure~\ref{fig:probobj_gappy_teddy} (a, b) 
+The gaps in the isosurface depicted in Figure~\ref{figure:probobj_gappy_teddy} (a, b) 
 demonstrate the impact that drift in the pose estimation stage can have on the resultant 
 reconstruction; drift can incur irregularities in the extraction and rendering of the objects 
-isosurface. Note that the reconstructions given in Figure~\ref{fig:probobj_gappy_teddy} 
+isosurface. Note that the reconstructions given in Figure~\ref{figure:probobj_gappy_teddy} 
 (c, d) do not suffer such irregularities when utilising the object reconstruction pipeline 
 presented in this chapter.
 
@@ -922,7 +922,6 @@ evaluation presented in Section~\ref{sec:moseg_quantitative}, the
 \textit{Absolute Trajectory Error} is the primary metric of interest.
 
 \begin{table}[!htbp]
-~\label{tbl:probobj_ate}
   \centering
   \begin{tabular}{l c c}
     \emph{Sequence Name} & \emph{Proposed Approach ATE (m)} & \emph{InfiniTAM (m)}\\
@@ -940,9 +939,10 @@ evaluation presented in Section~\ref{sec:moseg_quantitative}, the
   \end{tabular}
   \caption[Probabilistic Object Reconstruction ATE]
   {ATE results achieved by the proposed approach versus InfiniTAM with object segmentation.}
+~\label{table:probobj_ate}
 \end{table}
 
-It can be seen from Table~\ref{tbl:probobj_ate} that on the \textit{freiburg3\_cabinet} 
+It can be seen from Table~\ref{table:probobj_ate} that on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this work 
 yields a marked improvement in Absolute Trajectory Error over that of the standard KinectFusion 
 pipeline with object segmentation. The remaining sequences that have the ATE marked as DNR did 
@@ -951,10 +951,9 @@ reconstruct. In the case of the \textit{freiburg2\_metallic\_sphere (2)} sequenc
 
 The trajectories of the two approaches evaluated on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences are plotted versus the ground truth trajectories 
-in Figure~\ref{fig:probobj_traj}
+in Figure~\ref{figure:probobj_traj}
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_traj}
   \centering
   \begin{tabular}{cc}
   \includegraphics[width=.45\linewidth]{figures/object_recon/plots/traj/cab_traj.eps} & 
@@ -964,13 +963,14 @@ in Figure~\ref{fig:probobj_traj}
   \caption[Probabilistic Object Reconstruction Trajectory Plots]
   {Trajectory plots for the \textit{freiburg3\_cabinet} (a) 
   and \textit{\textsf{freiburg3\_teddy}} (b) sequences.}
+~\label{figure:probobj_traj}
 \end{figure}
 
 The proposed system is additionally evaluated quantitatively with respect to reconstruction 
 quality. Reference models are obtained by reconstructing both the object of interest and it's 
 surrounding scene (for maximal Pose Estimation accuracy), followed by a manual segmentation of 
 the object of interest in 3-space. To quantify the reconstruction quality the Hausdorff 
-Distance~\cite{Hausdorff} for subsets of metric spaces is used, where in this case the metric 
+Distance~\cite{Rote1991} for subsets of metric spaces is used, where in this case the metric 
 space is Euclidean. The Hausdorff Distance is defined as follows in Equation~\ref{eqn:probobj_hauss}
 \begin{equation}
   \label{eqn:probobj_hauss}
@@ -982,9 +982,8 @@ In Equation~\ref{eqn:probobj_hauss}, \(X\) is the ground truth dense SLAM recons
 \(Y\) is the reconstruction outputted by the proposed system and \(d(.)\) is the Euclidean 
 distance.
 
-The resultant quantitative comparisons may be found in Table~\ref{tbl:probobj_hauss}.
+The resultant quantitative comparisons may be found in Table~\ref{table:probobj_hauss}.
 \begin{table}[!htbp]
-~\label{tbl:probobj_hauss}
   \centering
   \begin{tabular}{lcccc}
     \emph{Sequence} & \emph{Min Dist} & \emph{Max Dist} & \emph{Mean Dist} & \emph{RMS}\\
@@ -997,6 +996,7 @@ The resultant quantitative comparisons may be found in Table~\ref{tbl:probobj_ha
   \caption[Probabilistic Object Reconstruction Hausdorff Distance]
   {Minimum, maximum, mean and RMSE distances between the reconstructions yielded by 
   the proposed system and the baseline.}
+~\label{table:probobj_hauss}
 \end{table}
 
 As can be seen by the similarity measures presented, the proposed system is capable of 
@@ -1007,13 +1007,12 @@ reconstructed with a dense SLAM system~\cite{Prisacariu2014} following the Kinec
 ~\cite{Newcombe2011} pipeline that is modelling and tracking the entire scene and thus has 
 much more geometrical data with which to estimate pose.
 
-Figure~\ref{fig:probobj_hauss} presents renderings of the \textit{Teddy}, 
+Figure~\ref{figure:probobj_hauss} presents renderings of the \textit{Teddy}, 
 \textit{Brain}, \textit{Chair} and \textit{Dinosaur Head} sequences textured 
 on the Haussdorf Distance between the output reconstructions of the presented 
 system and the base reconstructions extracted from the KinectFusion like pipeline.
 
 \begin{figure}[!htbp]
-~\label{fig:probobj_hauss}
   \centering
   \begin{tabular}{@{}c@{}}
     \begin{tabular}{cccc}
@@ -1031,9 +1030,10 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
     \end{tabular}
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Hausdorff Distance]
-  {Renderings of the sequences evaluated in Table~\ref{tbl:probobj_hauss} textured 
+  {Renderings of the sequences evaluated in Table~\ref{table:probobj_hauss} textured 
   on Hausdorff Distance (a, b, c, d). The minimum and maximum values given in Table 
-~\ref{tbl:probobj_hauss} are mapped to the colour range of (e).}
+~\ref{table:probobj_hauss} are mapped to the colour range of (e).}
+~\label{figure:probobj_hauss}
 \end{figure}
 
 \section{Discussion}

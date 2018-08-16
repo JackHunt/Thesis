@@ -3,8 +3,8 @@
 ~\label{sec:spp_introduction}
 In the Computer Vision literature, there has been work on the reconstruction of objects
 from observed points in a range image, such as those obtained with an RGBD sensor such 
-as the Microsoft Kinect. As outlined in Chapter~\ref{}, progress has been made on the 
-techniques used, such that globally consistent models of an object of interest can be 
+as the Microsoft Kinect. As outlined in Chapter~\ref{chap:probobj}, progress has been made 
+on the techniques used, such that globally consistent models of an object of interest can be 
 easily obtained.
 
 Though the traditional reconstruction paradigm is suitable for tasks such as 3D data 
@@ -16,18 +16,17 @@ limitation. However, for application as a direct replacement for manual reconstr
 pose estimation must also be performed.
 
 There has been much progress on learning based methods for both pose estimation and 
-shape prediction, as outlined in Section~\ref{}. However, much of this progress has 
-been on the two problems when decoupled. In this work, an approach is proposed to the 
-problem of simultaneous shape and pose \textit{prediction}. The first difference in 
-this work to those outlined in Chapters~\ref{} and~\ref{} is the use of stereo RGB 
-frames versus RGBD. The reason for the change in input data format is twofold. Firstly, 
-the use of RGBD is prohibitive when considering outdoor environments where lighting 
-conditions may prevent RGBD sensors such as the Microsoft Kinect from producing a 
-meaningful depth map. Second, is the intuition that utilising multiple views of an 
-object (from each sensor in the stereo pair) will make the pose estimation more 
-amenable to learning based methods.
+shape prediction, as outlined in Section~\ref{sec:lit_review_prediction}. However, much of 
+this progress has been on the two problems when decoupled. In this work, an approach is 
+proposed to the problem of simultaneous shape and pose \textit{prediction}. The first 
+difference in this work to those outlined in Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
+is the use of stereo RGB frames versus RGBD\@. The reason for the change in input data format 
+is twofold. Firstly, the use of RGBD is prohibitive when considering outdoor environments where 
+lighting conditions may prevent RGBD sensors such as the Microsoft Kinect from producing a meaningful 
+depth map. Second, is the intuition that utilising multiple views of an object (from each sensor in 
+the stereo pair) will make the pose estimation more amenable to learning based methods.
 
-The second major deviation from the contributions of Chapters~\ref{} and~\ref{} 
+The second major deviation from the contributions of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
 is the removal of the dependence on input \textit{sequences}. Rather, in this work 
 the proposed system performs shape and pose prediction from an \textit{instantaneous}
 stereo pair, requiring no temporal consistency in both the training and prediction 
@@ -59,19 +58,19 @@ view frustrum of both frames. From this stereo pair, a Convolutional Neural Netw
 feature descriptors which are used to regress a latent space point for shape, and six 
 \( \mathbb{SE}(3) \) pose parameters, forming a Lie Algebra. The genrated shape for the proposal 
 latent space point is drawn from the distribution of the GP prior conditioned on the latent space 
-point. The form of the pose is the Lie Group mapping of the parameters, as in Sections~\ref{} 
-and~\ref{}. The goodness of fit of the regressed shape and pose is quantified by by rendering the 
-generated shape under the generated pose and computing an information theoretic loss between the 
-image statistics of the rendered region vs the initial detection region. To maintain continuity, 
-the rendering operation is formulated in a differentiable manner. As there is often no ground truth 
-pose and shape for ``real world'' data, training is performed in an unsupervised manner against a 
-detection of the object os interest.
+point. The form of the pose is the Lie Group mapping of the parameters, as in Sections
+~\ref{subsub:moseg_static_camera_attitude} and~\ref{subsec:probobj_analytic_alignment_map}. 
+The goodness of fit of the regressed shape and pose is quantified by by rendering the generated shape 
+under the generated pose and computing an information theoretic loss between the image statistics of 
+the rendered region vs the initial detection region. To maintain continuity, the rendering operation is 
+formulated in a differentiable manner. As there is often no ground truth pose and shape for ``real world'' 
+data, training is performed in an unsupervised manner against a detection of the object os interest.
 
 \subsection{Network Architecture}
 ~\label{subsec:spp_network_architecture}
 The model of the proposed approach is of a siamese topology, where for a given stereo 
 pair each of the left and right frames are passed to a separate network. From end to 
-end, the model contains for each of the siamese networks a ResNet-50~\cite{RESNET}, 
+end, the model contains for each of the siamese networks a ResNet-50~\cite{He2015}, 
 Linear Layers, Nonlinear Activations, a mapping from Lie Algebra to Lie Group (for pose),
 a GPLVM followed by an Inverse Discrete Cosine Transform, a Raycaster and an information 
 theoretic loss. 
@@ -84,12 +83,12 @@ a latent space point for object shape, and a 6DoF pose parameter vector for the 
 Following these two subnetworks is the aforementioned GPLVM and Lie Algebra mapping. The 
 GPLVM generates a posterior mean over shape for a given latent space point, whilst the 
 Lie Algebra mapping generates an \( \mathbb{SE}(3) \) transform. The IDCT decompresses 
-the posterior mean output of the GPLVM to generate a valid SDF. Both the resultant SDF and 
+the posterior mean output of the GPLVM to generate a valid SDF\@. Both the resultant SDF and 
 \( \mathbb{SE}(3) \) transform are passed to the Raycasting module, which generates a rendering 
 for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
 to the loss layer which computes appearance statistics for the detection region and the rendering 
 which are used to quantify loss. The topology of the proposed model is outlined in Figure
-~\ref{}
+~\ref{A}
 FIGURE HERE
 
 \subsection{Gaussian Process Latent Variable Model}
@@ -254,8 +253,8 @@ corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation
 
 To obtain the covariance matrix of the distribution \(P(\bm{Y} \given \bm{X}, \beta)\), the 
 form if it's inverse may be simplified by the use of the Matrix Inversion Lemma (also known 
-as the Woodbury Identity)~\cite{}. First making a change of variables in the Woodbury Identity 
-as in Equation~\ref{eqn:spp_woodbury}.
+as the Woodbury Identity)~\cite{GPML}. First making a change of variables in the Woodbury Identity 
+as in Equation~\ref{eqn:spp_sig_inv_simp}.
 \begin{align}
   % Variable change.
   \label{eqn:spp_sig_inv_simp}
@@ -320,7 +319,7 @@ optimised.
 To find the most probable latent space embedding, the latent variables \( \bm{X} \) may be 
 found by directly optimising the marginal likelihood of Equation~\ref{eqn:spp_gp_marginal_simp}. 
 As such, the natural logarithm may also be optimised for the latent variables \( \bm{X} \) and 
-is given in Equation~\ref{eqn:eqn:spp_gp_marginal_log}.
+is given in Equation~\ref{eqn:spp_gp_marginal_log}.
 \begin{align}
   \label{eqn:spp_gp_marginal_log}
   % Line 1.
@@ -386,7 +385,7 @@ may also be substitued for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), f
 some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \).
 
 A common nonlinear covariance kernel function in the Gaussian Process literature 
-is the Exponentiated Quadratic \cite{EXPQUAD}, which takes the form given in 
+is the Exponentiated Quadratic~\cite{Lawrence2005}, which takes the form given in 
 Equation~\ref{eqn:spp_exp_quad}.
 \begin{align}
   \label{eqn:spp_exp_quad}
@@ -461,7 +460,7 @@ latent space point.
 The estimated posterior mean provides a DCT compressed representation of an SDF shape 
 volume \( \bm{\Phi} \in \mathbb{R}^{N \times N \times N} \). The DCT compressed form 
 of \( \bm{\Phi} \) given by the aforementioned posterior mean is obtained by Gaussian 
-Process Regression~\cite{}. Finally, the true, uncompressed form of \( \bm{\Phi} \) is 
+Process Regression~\cite{GPML}. Finally, the true, uncompressed form of \( \bm{\Phi} \) is 
 obtained by taking the IDCT of the posterior mean. The granularity of the geometric 
 properties captured by the GP shape prior is governed by the number of DCT harmonics 
 used in the compression and decompression processes at training and prediction.
@@ -537,8 +536,8 @@ Given the form of \( P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f}) \) in Equat
 \end{align}
 
 Due to the gradient based optimisation of the approach outlined in this chapter, each 
-component outlined in Figure~\ref{} must be differentiable. The formulation of the 
-posterior mean of Equation~\ref{eqn:eqn:spp_mean_var} is differentiable an it's gradient 
+component outlined in Figure~\ref{A} must be differentiable. The formulation of the 
+posterior mean of Equation~\ref{eqn:spp_mean_var} is differentiable and it's gradient 
 is derived as follows in Equation~\ref{eqn:spp_pos_mean_grad}.
 \begin{align}
   \label{eqn:spp_pos_mean_grad}
@@ -564,14 +563,14 @@ As outlined in Section~\ref{sub:spp_latent_shape_est}, the SDF volume \( \bm{\Ph
 is generated by taking the IDCT of the posterior mean of the GP prior consitioned on 
 a given latent space point, as given by Equation~\ref{eqn:spp_gp_conditional}. In the 
 formulation presented in this work, the 2D latent point is generated by the pose 
-network component following the Resnet-50 CNN of Figure~\ref{}. The output of the network 
+network component following the Resnet-50 CNN of Figure~\ref{A}. The output of the network 
 is constrained to the interval \( [0, 1] \) by the use of a Sigmoid activation function.
 
 The latent variable model outlined in Section~\ref{subsec:spp_gplvm} is a distribution 
 over a latent space embedding of 3D shape. However, the 3D shape data on which the GP 
-prior was modelled is compressed with the DCT. The intuition behind the use of the DCT 
+prior was modelled is compressed with the DCT\@. The intuition behind the use of the DCT 
 is the property that the number of harmonics used in the transform impacts on the 
-granularity of the resultant 3D shape geometry. It has been shown~\cite{REN} that the 
+granularity of the resultant 3D shape geometry. It has been shown~\cite{Ren2014} that the 
 lower frequency harmonics of the DCT capture general structure and shape, whilst higher 
 frequency harmonics capture finer detailed geometric features.
 
@@ -660,12 +659,12 @@ in Equation~\ref{eqn:spp_pos_mean_grad}.
 ~\label{subsec:spp_pose_estim}
 The parameters of the \( \mathbb{SE}(3) \) pose applied to the predicted shape (obtained 
 as outlined in Section~\ref{subsubsec:sdf_extraction}) are obtained from a fully connected 
-component of the model outlined in Figure~\ref{}, as with the latent pose point of Section
+component of the model outlined in Figure~\ref{A}, as with the latent pose point of Section
 ~\ref{subsubsec:sdf_extraction}. The form of the \( \mathbb{SE}(3) \) pose is analogous to 
 the Rodrigues paramaterisation outlined in Section~\ref{subsub:moseg_static_camera_poserec}.
 
 The three rotational parameters \( \alpha \), \( \beta \) and \( \gamma \) are predicted by 
-the pose network component of the model on the interval \([0, 2\pi)\). The translation parameters 
+the pose network component of the model on the interval \( [0, 2\pi) \). The translation parameters 
 however do not have their output restricted. It should be noted that the pose Jacobians are of the 
 same form of those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_jac}.
 

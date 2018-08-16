@@ -1,4 +1,4 @@
-\label{chap:moseg}
+~\label{chap:moseg}
 \section{Introduction}
 ~\label{sec:moseg_introduction}
 Progress in dense volumetric fusion has been accelerated in recent years with
@@ -45,11 +45,10 @@ this approach is the first to utilise such a dual representation for the motion
 segmentation problem.
 
 A graphical representation of the voxel block based structure of a given Scene
-is presented in Figure~\ref{fig:voxel_blocks}.
+is presented in Figure~\ref{figure:voxel_blocks}.
 % Based on http://www.texample.net/tikz/examples/sudoku-3d-cube/.
 \begin{figure}[!htbp]
   \centering
-~\label{fig:voxel_blocks}
   \resizebox{0.5\linewidth}{!}{
     \begin{tikzpicture}[every node/.style={minimum size=1cm},on grid]
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -144,6 +143,7 @@ is presented in Figure~\ref{fig:voxel_blocks}.
   \caption[TSDF split in to voxel blocks]{A graphical representation of an 
   SDF/TSDF with it's voxels subdivided into voxel blocks. In the above, \(v\) 
   represents voxel blocks and \(v\) voxels.}
+~\label{figure:voxel_blocks}
 \end{figure}
 
 The remainder of this chapter is structured as follows.
@@ -186,11 +186,11 @@ image, the vertices pertain to the zero crossing point with voxels either side
 representing distances to the zero crossing point; positive in front of the
 surface, negative behind. Surface points are known as the Zero Level Set.
 \begin{figure}[!htbp]
-~\label{fig:sdf_example}
   \centering
   \includegraphics[width=.5\linewidth]{figures/moseg/3d_sdf.eps}
   \caption[Signed Distance Function]{An example of a sphere embedded within a 
   three dimensional SDF.}
+~\label{figure:sdf_example}
 \end{figure}
 
 For a given TSDF \(\bm{\Phi}\), the Zero Level Set is defined as follows
@@ -200,7 +200,7 @@ For a given TSDF \(\bm{\Phi}\), the Zero Level Set is defined as follows
   \mkern2mu \forall \mkern2mu v \in \bm{\Phi}
 \end{equation}
 where \(v\) denotes a TSDF voxel. An example of such an embedding is given in
-Figure~\ref{fig:sdf_example}.
+Figure~\ref{figure:sdf_example}.
 
 To facilitate real time fusion, the InfiniTAM framework employs a voxel block
 hashing mechanism for fast access to scene voxels~\cite{NieBner2013}. Within
@@ -523,8 +523,8 @@ that follows.
 
 Note that for numerical stability, the matrix inverse in Equation~\ref{eqn:lm_update} 
 may be avoided by utilising the \texttt{chol} and \texttt{backsub} routines to 
-compute the Cholesky Decomposition~\cite{CHOL} and solve a linear system with 
-Backsubstitution~\cite{BACKSUB}, respectively.
+compute the Cholesky Decomposition~\cite{NumericalRecipes} and solve a linear system with 
+Backsubstitution~\cite{ElemLinAlg}, respectively.
 
 \subsection{Volumetric Integration}
 ~\label{subsec:moseg_static_integration}
@@ -537,13 +537,12 @@ for camera tracking at the next time step.
 As previously outlined, the TSDF may be defined as a volume of distances to an
 isosurface, with the isosurface itself being given by the Zero Level Set, as
 defined in Equation~\ref{eqn:zero_level_definition}. A graphical representation
-is given in Figure~\ref{fig:sdf_example}.
+is given in Figure~\ref{figure:sdf_example}.
 
 As with KinectFusion~\cite{Newcombe2011} the global (scene) location
 \(\bm{x}_{v}\) of each voxel \(v \in \bm{\Phi}\) that is visible in the
 current view frustum is transformed into the camera's coordinate frame via the
-following transformation (noting that \(\bm{x}_{v}\) is in homogeneous 
-~\cite{HOMOGENEOUS} form)
+following transformation (noting that \(\bm{x}_{v}\) is in homogeneous form)
 \begin{equation}
 \label{eqn:project_tsdf_to_image}
 \bm{x}_{\Omega} = \bm{K}\bm{T}_i^{-1}\bm{x}_{v}
@@ -591,8 +590,8 @@ proceeds as follows for a voxel \(\bm{x}_{v} \in \bm{\Phi}\).
 \end{equation}
 
 \begin{figure}[!htbp]
-~\label{fig:truncation_band}
   \caption{TODO}
+~\label{figure:truncation_band}
 \end{figure}
 
 In addition, the weight \(\phi(\bm{x}_{v})\) is updated as follows.
@@ -609,7 +608,7 @@ of the scene image is generated to provide an updated view for the tracking
 stage outlined in Section~\ref{subsec:moseg_static_camera_tracking}, at the next
 time step.
 
-Rendering in the pipeline is achieved by Raycasting~\cite{RAYCAST}, the process of 
+Rendering in the pipeline is achieved by Raycasting~\cite{Roth1982}, the process of 
 ``casting'' a ray from the camera frame into the scene, to find intersections with 
 the scene isosurface. 
 % A complete treatment of the Raycasting procedure may be found in the computer
@@ -630,14 +629,14 @@ Camera tracking is performed against the static model as soon as it contains
 valid isosurface data to track against, preventing moving objects in the scene
 from contributing to tracking drift.
 
-An overview of the proposed pipeline is given in Figure~\ref{fig:moseg_pipeline}
+An overview of the proposed pipeline is given in Figure~\ref{figure:moseg_pipeline}
 \begin{figure}[!htbp]
-~\label{fig:moseg_pipeline}
   \centering
   \includegraphics[width=0.95\linewidth]{figures/moseg/pipeline.pdf}
   \caption[Motion Segmentation Pipeline]{The motion segmentation pipeline. 
   Note the additional voxel block labelling stage with a feedback to the model 
   integration stage.}
+~\label{figure:moseg_pipeline}
 \end{figure}
 
 \subsection{Stability Labelling}
@@ -727,10 +726,9 @@ various scenes, both in terms of tracking and noise artefacts in the static
 model. In addition, the system is robust to the addition and removal of scene
 components and is robust to short term occlusions, such as a person walking in
 front of the camera. An example of a person moving in to the the view frustrum
-and sitting on a Setee is given in Figure~\ref{fig:moseg_qualitative_setee}.
+and sitting on a Setee is given in Figure~\ref{figure:moseg_qualitative_setee}.
 
 \begin{figure}[!htbp]
-~\label{fig:moseg_qualitative_setee}
   \centering
   \begin{tabular}{ccc}
     \includegraphics[height=.2\linewidth]{figures/moseg/original_sitting.png} &
@@ -745,17 +743,17 @@ and sitting on a Setee is given in Figure~\ref{fig:moseg_qualitative_setee}.
     fails, leading to a corrupted scene model.
     (c) Using the proposed system, tracking is maintained and the person is
     integrated successfully into the scene.}
+~\label{figure:moseg_qualitative_setee}
 \end{figure}
 
 In addition to the ability to reconstruct a moving object that becomes static in
-the scene as shown in Figure~\ref{fig:moseg_qualitative_setee}, the proposed
+the scene as shown in Figure~\ref{figure:moseg_qualitative_setee}, the proposed
 system is also capable of segmenting dynamic objects in a scene that are
 undergoing nonrigid motion. Whilst these objects are segmented and labelled as
 ``dynamic'' they are not used for camera pose estimation. An example of this
-behaviour may be observed in Figure~\ref{fig:moseg_qualitative_chair}.
+behaviour may be observed in Figure~\ref{figure:moseg_qualitative_chair}.
 
 \begin{figure}[!htbp]
-~\label{fig:moseg_qualitative_chair}
   \centering
   \begin{tabular}{cc}
     \includegraphics[height=.25\linewidth]{figures/moseg/chair0.png} &
@@ -774,6 +772,7 @@ behaviour may be observed in Figure~\ref{fig:moseg_qualitative_chair}.
     ``static'' and is integrated in to the static model.
     (d) The person gets up from the Chair and leaves the scene. The original
     reconstruction of the Chair from (a) is in tact.}
+~\label{figure:moseg_qualitative_chair}
 \end{figure}
 
 \section{Quantitative Results}
@@ -790,7 +789,6 @@ on which the proposed system is based, using standard, static InfiniTAM as a
 baseline.
 
 \begin{table}[!htbp]
-~\label{tbl:moseg_ate}
 \begin{center}
   \begin{tabular}{l c c}
     \emph{TUM Standard Sequence Name} & \emph{MoSeg} ATE & \emph{Baseline} ATE \\
@@ -813,34 +811,34 @@ achieved by the proposed approach in comparison to the baseline InfiniTAM
   the TUM RGBD dataset~\cite{Sturm2012}. Results are in the format mean
   \( \pm \) standard deviation. The better result (by mean) on each sequence is
   highlighted in bold.}
+~\label{table:moseg_ate}
 \end{table}
 
-Given in Table~\ref{tbl:moseg_ate} is the Absolute Trajectory Error measures
+Given in Table~\ref{table:moseg_ate} is the Absolute Trajectory Error measures
 for each of the TUM Dynamic Scenes. The Absolute Trajectory Error utilises the
 method of Horn~\cite{Horn1987} to solve for the error incurred by mapping the
 trajectory of the proposed system on to the ground truth trajectory of the TUM
 sequence, for a given TUM Dynamic Objects sequence.
 
-The results of Table~\ref{tbl:moseg_ate} are visualised in Figure
-~\ref{fig:moseg_ate}.
+The results of Table~\ref{table:moseg_ate} are visualised in Figure
+~\ref{figure:moseg_ate}.
 
 \begin{figure}[!htbp]
-~\label{fig:moseg_ate}
   \centering
   \includegraphics[width=0.95\linewidth]{figures/moseg/ate.eps}
   \caption[Motion Segmentation ATE]
   {Absolute Trajectory Error for the TUM Dynamic Scenes dataset.}
+~\label{figure:moseg_ate}
 \end{figure}
 
 In addition to evaluating quantitatively in terms of Absolute Trajectory Error,
 additional results are provided in terms of Relative Trajectory Error
 ~\cite{Sturm2012}. RTE measures the relative pose error over a fixed time
 interval, with the final score being the Root Mean Squared Error (RMSE) over all 
-time windows. RTE results are provided in Table~\ref{tbl:moseg_rte} and visualised 
-in Figure~\ref{fig:moseg_rte}.
+time windows. RTE results are provided in Table~\ref{table:moseg_rte} and visualised 
+in Figure~\ref{figure:moseg_rte}.
 
 \begin{table}[!htbp]
-~\label{tbl:moseg_rte}
 \begin{center}
   \begin{tabular}{l c c}
     \emph{TUM Standard Sequence Name} & \emph{MoSeg} RTE & \emph{Baseline} RTE \\
@@ -863,14 +861,15 @@ achieved by the proposed approach in comparison to the baseline InfiniTAM
 the TUM RGBD dataset~\cite{Sturm2012}. Results are in the format mean
 \( \pm \) standard deviation. The better result (by mean) on each sequence is
 highlighted in bold.}
+~\label{table:moseg_rte}
 \end{table}
 
 \begin{figure}[!htbp]
-~\label{fig:moseg_rte}
   \centering
   \includegraphics[width=0.95\linewidth]{figures/moseg/rte.eps}
   \caption[Motion Segmentation RTE]
   {Relative Trajectory Error for the TUM Dynamic Scenes dataset.}
+~\label{figure:moseg_rte}
 \end{figure}
 
 \section{Application to Semantic Scene Understanding}
@@ -889,7 +888,7 @@ The voxel blocks in the dynamic model that were identified as ``unstable''
 provide a natural representation of the dynamic parts of the scene. Where
 multiple dynamic objects are present, they can be separated by finding the
 connected components of these voxel blocks. For each object, a one-class Support
-Vector Machine (SVM)~\cite{PEGASOS} with a polynomial kernel is trained and used 
+Vector Machine (SVM)~\cite{Singer07} with a polynomial kernel is trained and used 
 to recognise new instances of the object class.
 
 Upon seeing a new object, the system first tries to classify the object as one
@@ -902,11 +901,10 @@ at those points. FPFH descriptors are geometric features that provide a
 per-point statistic of the curvature within some neighbourhood of the point
 (empirically, a \(2.5cm\) radius around the point was used).
 
-Figure~\ref{fig:moseg_recognition} shows an example of this training and
+Figure~\ref{figure:moseg_recognition} shows an example of this training and
 prediction process for dynamic objects.
 
 \begin{figure}[!htbp]
-~\label{fig:moseg_recognition}
   \centering
   \begin{tabular}{ccc}
     \includegraphics[width=.28\linewidth]{figures/moseg/objects1.png} &
@@ -927,6 +925,7 @@ prediction process for dynamic objects.
     distinct from the teapot, and a separate SVM is trained for it;
     (e) Another teapot is placed in the scene; (f) the new teapot is recognised
     as being a teapot rather than a box, and is labelled accordingly.}
+~\label{figure:moseg_recognition}
 \end{figure}
 
 \section{Discussion}

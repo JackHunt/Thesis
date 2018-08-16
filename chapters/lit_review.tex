@@ -1,4 +1,4 @@
-\label{chap:lit_review}
+~\label{chap:lit_review}
 %% Tracking and Mapping.
 \section{Tracking and Mapping}
 ~\label{sec:lit_review_tam}
@@ -225,9 +225,9 @@ dynamic scenes.
 \textit{Tsap et al}~\cite{Tsap2000} in 2000 presented an algorithm for nonrigid motion 
 tracking of objects. The presented approach solves for dense motion vector fields between 
 3D objects by modelling motion with finite elements. The proposed system analyses differences 
-between actual and predicted behaviour, using iterative descent optimisation~\cite{IDO} to find 
-a set of optimal parameters for the nonlinear Finite Element Model (FEM). Additionally, pose 
-estimation is improved by using point correspondences.
+between actual and predicted behaviour, using gradient descent to find a set of optimal parameters 
+for the nonlinear Finite Element Model (FEM). Additionally, pose estimation is improved by using point 
+correspondences.
 
 \textit{Chen et al}~\cite{Chen2011} in 2011 introduced a system to perform nonrigid motion 
 tracking of the human body. The proposed system extracts and skins a surface mesh from 
@@ -346,7 +346,7 @@ suitable for real time use.
 
 In the following year, \textit{Gupta et al}~\cite{Gupta2016} proposed a system for the reconstruction and 
 segmentation of 3D objects from data obtained with an RGBD sensor. The reconstructed object is represented 
-implicitly within an SDF volume, but notably observations are integrated using the Softmax~\cite{SOFTMAX} 
+implicitly within an SDF volume, but notably observations are integrated using the Softmax~\cite{Murphy2012ML} 
 function rather than weighted means as with \textit{KinectFusion}~\cite{Newcombe2011}. Each Voxel in the 
 volume is assigned a label pertaining to it's membership of the object set, with objects refined utilising 
 Graph Cuts and Alpha Expansions~\cite{CLRS}. The proposed approach utilises a photometric loss to optimise 
@@ -401,7 +401,7 @@ database of a priori known objects by the use of a Random Forest~\cite{Ho1995}. 
 coarsely matched to the input depth map, then later deformed at a higher granularity by a separate 
 optimisation process.
 
-In 2017, \textit{Zhou et al}~\cite{Zhou2017_2} introduced an approach to object detection from 3D point 
+In 2017, \textit{Zhou et al}~\cite{Zhou2017} introduced an approach to object detection from 3D point 
 clouds. Central to the proposed approach is an end-to-end trainable convolutional Region Proposal 
 Network (RPN)~\cite{Girshick2015_2}. The authors evaluate the proposed approach on the KITTI LIDAR 
 ~\cite{Geiger2013} dataset, with input point clouds quantized into a voxel volume prior to training 
