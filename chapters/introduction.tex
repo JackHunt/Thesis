@@ -1,45 +1,31 @@
 ~\label{chap:intro}
-% Much has changed since the introduction of the IBM PC platform in 1981, with regards to the 
-% uses of the Personal Computer and the way in which humans interact with them. Vast increases 
-% in computational power have seen the microcomputer evolve beyond a tool with which one predominantly 
-% collated data with spreadsheets (``VisiCalc'' is widely accepted to be the first \textit{killer app}
-% for the PC). At present, personal computing is ubiquitous, providing the means for activities ranging 
-% from playing visually realistic 3D games, to sharing life events online with friends and family via 
-% so called ``Social Media'' platforms. Advances in graphics processing power have lead to the introduction 
-% of many technologies that both the public sector and private enterprises have come to depend on, from 
-% sophisticated medical image analysis, to robotic production lines.
-%
-% The aforementioned vast power of the modern GPU (Graphical Processing Unit) has lead to the development 
-% of new ways for humans to interact with computers, and for computers to interact with the world. Advances 
-% in VR (Virtual Reality) allow humans to experience digital worlds in a fully immersive manner, with 
-% applications ranging from gaming, to experimental therapeutic treatment of Paranoid Schizophrenia. 
-% Whereas AR (Augmented Reality) allows a person to supplement their perception of the tangible world with 
-% elements of the digital, by viewing the world through a computer system that percieves and adds synthetic 
-% components. Common applications of AR include digital interior design and smartphone games.
+\begin{chapabs}
+This introductory chapter outlines the motivation and background of this thesis, as well as it's objectives 
+and structure.
+\end{chapabs}
 
-Many of the aforementioned advancements in the applications of and interactions with modern computer 
-systems are driven by Artificial Intelligence (AI). Modern AI provides much of the semantic and contextual 
-information required to make meaningful inferences over the state of the world, as observed by a sensor 
-(such as a camera) attached to such a computer system. Much advancement has been made in recent years on 
-the tasks of object detection and semantic understanding in standard, 2D images. However, there are many 
-technical challenges that must be overcome before such efficacy on these tasks is reached for the 3D 
-case. Many modern AI and machine learning algorithms require vast quantities of data to learn to 
-perform a given task successfully. This is not prohibitive for systems that operate on 
-standard 2D images, due to the abundance of available data. However, for the 3D case there 
-is not a comparable volume of 3D data with real world geometric information from which a system 
-can learn to perform complex tasks in the real world.
+In recent years there has been much research activity in the field of 3D computer vision, a field concerned 
+with the processing of three dimensional, geometric data, for machine vision. This work addresses a number of 
+open technical challenges within the field of active, 3D vision. Specifically, the 3D reconstruction of 
+dynamic environments, robust 3D reconstructin of arbitrary objects and the prediction of shape \& pose of 
+objects. These areas of research are of interest to the computer vision community due to the broad application 
+potential of such systems. Scene reconstruction, for example, has applications ranging from mobile robotics to 
+recreating the tangible world for Virtual Reality (VR) viewing. Object reconstruction has applications including 
+the reproduction of tangible objects via 3D printing and building 3D object models for the training of machine 
+learning systems. Finally, shape and pose prediction allows representations of a machines environment to be 
+inferred when traditional methods of reconstruction may not be feasible.
 
-However, there is an established field of computer vision concerned with the geometric processing 
-of 3D world observations. Driven by the availibility of consumer grade depth sensing equipment such 
-as the Microsoft Kinect RGBD camera (introduced for the Microsoft XBox 360), there has been a renewed 
-interest in dense scene reconstruction. Advances in recent years have allowed for the creation of digital 
-reconstructions of the tangible world with consumer grade computer equipment. Such systems iteratively 
-integrate observed world points into a ``global'' model, such that over time, a smooth representation 
-of the observed world surfaces is built. In addition to the integration of such information into a model, 
-there is the task of inferring how the sensor has moved in world space, such that the observed points may 
-be transformed and integrated into the appropriate model location. The amalgamation of these two tasks is 
-known as SLAM (Simultaneous Localisation and Mapping). A typical reconstructrion using such a system is 
-given in Figure~\ref{figure:room_recon_example}.
+\subsection{3D Scene Reconstruction}
+~\label{subsec:intro_scene_recon}
+Driven by the availability of consumer grade depth sensing equipment such as the Microsoft Kinect RGBD camera 
+(introduced by Microsoft for the XBox 360), there has been a renewed interest in dense scene reconstruction. 
+Advances in recent years have allowed for the creation of digital reconstructions of the tangible world with 
+consumer grade computer equipment. Such systems iteratively integrate observed world points into a ``global'' 
+model, such that over time, a smooth representation of the observed world surfaces is built. In addition to the 
+integration of such information into a model, there is the task of inferring how the sensor has moved in world 
+space, such that the observed points may be transformed and integrated into the appropriate model location. The 
+amalgamation of these two tasks is known as SLAM (Simultaneous Localisation and Mapping). A typical reconstruction 
+using such a system is given in Figure~\ref{figure:room_recon_example}.
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=.9\linewidth]{figures/intro/room_scene.png}
@@ -47,10 +33,12 @@ given in Figure~\ref{figure:room_recon_example}.
 ~\label{figure:room_recon_example}
 \end{figure}
 
-The aforementioned advances in semantic segmentation have been utilised within the context of 3D vision to 
-introduce a semantic component to dense SLAM systems. Such a combination of techniques provides an adaptable 
-component to AR and robotics applications. Early work on amalgamating the two areas of research have allowed 
-one to view a reconstruction of their environment in VR and interactively label some of the objects within 
+% TODO: SLAM pipeline figure
+
+There has been much advancement in the 2D semantic scene understanding literature, which can be utilised within 
+the context of 3D vision to introduce a semantic component to dense SLAM systems. Such a combination of techniques 
+provides an adaptable component to AR and robotics applications. Early work on amalgamating the two areas of research 
+have allowed one to view a reconstruction of their environment in VR and interactively label some of the objects within 
 it, with the system inferring the remaining labellings. An example of the output of such a system is given 
 in Figure~\ref{figure:spaint_teaser}.
 \afterpage{
@@ -71,14 +59,16 @@ people walking in the camera's view). The traditional dense SLAM pipeline is una
 globally consistent model in such environments. In addition, when using a combined reconstruction and 
 semantics system such as that shown in Figure~\ref{figure:spaint_teaser}, many of the descriptive cues that 
 enable the segmentation to be performed rely on features utilising 2D image information. As such, there is 
-no ``true'' semantic 3D object learning and recognition. As previously outlined, this is a difficult issue 
-to overcome due to the lower volume of real world 3D data from which such a system can learn. As such, it 
-becomes neccessary to perform reconstruction of objects in isolation to procure such data. Furthermore, 
-within the context of modelling objects in an environment, it is not always possible (or practical) to gain 
-full coverage with a sensor of certain objects.
+no ``true'' semantic 3D object learning and recognition. 
+
+%As previously outlined, this is a difficult issue 
+%to overcome due to the lower volume of real world 3D data from which such a system can learn. As such, it 
+%becomes neccessary to perform reconstruction of objects in isolation to procure such data. Furthermore, 
+%within the context of modelling objects in an environment, it is not always possible (or practical) to gain 
+%full coverage with a sensor of certain objects.
 
 As outlined, traditional dense SLAM systems have difficulty when attempting to perform dense reconstruction 
-in an environment where there is motion. The aforementioned senor pose estimation phase in many such systems
+in an environment where there is motion. The aforementioned sensor pose estimation phase in many such systems
 is prone to error or failure in such a scenario. The reason for this is due to the reliance on point based 
 correspondences between frames. If a static environment is being modelled, then a high number of valid point 
 correspondences will be found. However, when motion (independent of the sensors motion) is introduced into 
@@ -95,16 +85,30 @@ reconstruction system would be required to identify such components and account 
 reconstruction process. Additionally, a system that is capable of detecting and segmenting such motion 
 would be capable of extracting pertinent semantic information from such events.
 
-A related problem to that of sensor pose estimation in dense SLAM, is pose estimation when performing 
-reconstruction of individual objects. As with the larger scale case, point correspondences are problematic.
-One prominent reason is that for a smaller object versus a full scale scene (such as a room), there is less 
-geometric data available in the former case than in the latter. As with the larger scale reconstruction, 
-inconsistencies in the pose estimation phase can have varying effects on the resultant reconstruction.
-Such inconsistencies in the reconstruction can have a detrimental effect on learning based systems for 3D 
-tasks if such inconsistent reconstructions are used to train them. This is particularly troublesome as 
+\subsection{Object Reconstruction}
+~\label{subsec:intro_object_recon}
+Modern machine learning provides much of the semantic and contextual information required to make meaningful 
+inferences over the state of the world, as observed by a sensor (such as a camera). Much advancement 
+has been made in recent years on the tasks of object detection and semantic understanding in standard, 
+2D images. However, there are many technical challenges that must be overcome before such efficacy on these 
+tasks is reached for the 3D case. Many modern AI and machine learning algorithms require vast quantities of 
+data to learn to perform a given task successfully. This is not prohibitive for systems that operate on standard 
+2D images, due to the abundance of available data. However, for the 3D case there is not a comparable volume of 
+3D data with real world geometric information from which a system can learn to perform complex tasks in the real 
+world. One method of obtaining such geometric data is the reconstruction of objects.
+
+A related problem to that of sensor pose estimation as outlined in Section~\ref{subsec:intro_scene_recon}, 
+is pose estimation when performing reconstruction of individual objects. As with the larger scale case, point 
+correspondences are problematic. One prominent reason is that for a smaller object versus a full scale scene 
+(such as a room), there is less geometric data available in the former case than in the latter. As with the larger 
+scale reconstruction, inconsistencies in the pose estimation phase can have varying effects on the resultant 
+reconstruction. Such inconsistencies in the reconstruction can have a detrimental effect on learning based systems 
+for 3D tasks if such inconsistent reconstructions are used to train them. This is particularly troublesome as 
 inconsistencies in object scale models in some cases have a more pronounced effect than in the case where 
 an entire room is being constructed.
 
+\subsection{Shape Prediction and Pose Prediction}
+~\label{subsec:intro_spp}
 As outlined previously, for some use cases of object reconstruction it may not be possible to obtain a 
 full view of an object of interest in the world, such that some parts of the objects surface are not 
 physically observable with the sensor used. An example of such a scenario is the reconstruction of 
@@ -114,6 +118,8 @@ scenario, an object may not be visible to the sensor for a length of time suffic
 reconstructed model. Additionally, the highly dynamic nature of such a scenario is likely to be problematic 
 in a similar manner to outlined case of dynamic dense SLAM\@.
 
+\subsection{Technical Aims and Thesis Structure}
+~\label{subsec:intro_aims_structure}
 The aforementioned technical challenges pertain to the dense reconstruction of dynamic scenes, the 
 reconstruction of objects and the reconstruction of objects for which no full view is available. As 
 such, the following main research challenges are addressed in this work.
