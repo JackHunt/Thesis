@@ -17,22 +17,29 @@ inferred when traditional methods of reconstruction may not be feasible.
 
 \section{3D Scene Reconstruction and Understanding}
 ~\label{sec:intro_scene_recon}
-Driven by the availability of consumer grade depth sensing equipment such as the Microsoft Kinect RGBD camera 
+Driven by the availability of consumer grade depth sensing equipment such as the Microsoft Kinect RGBD sensor 
 (introduced by Microsoft for the XBox 360), there has been a renewed interest in dense scene reconstruction. 
 Advances in recent years have allowed for the creation of digital reconstructions of the tangible world with 
 consumer grade computer equipment. Such systems iteratively integrate observed world points into a ``global'' 
 model, such that over time, a smooth representation of the observed world surfaces is built. In addition to the 
 integration of such information into a model, there is the task of inferring how the sensor has moved in world 
 space, such that the observed points may be transformed and integrated into the appropriate model location. The 
-amalgamation of these two tasks is known as SLAM (Simultaneous Localisation and Mapping). A typical 
-reconstruction using such a system is given in Figure~\ref{figure:room_recon_example}.
+amalgamation of these two tasks is known as SLAM (Simultaneous Localisation and Mapping). The basic SLAM pipeline 
+is given in Figure~\ref{figure:basic_slam}.
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=.7\linewidth]{figures/intro/room_scene.png}
+  \includegraphics[width=.7\linewidth]{figures/intro/basic_slam.pdf}
+  \caption[Basic SLAM Pipeline]{A high level overview of the basic SLAM pipeline..}
+~\label{figure:basic_slam}
+\end{figure}
+
+A typical reconstruction using such a system is given in Figure~\ref{figure:room_recon_example}.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.9\linewidth]{figures/intro/room_scene.png}
   \caption[Room Scale Dense Reconstruction]{An example of room-scale dense reconstruction.}
 ~\label{figure:room_recon_example}
 \end{figure}
-% TODO: SLAM pipeline figure
 
 There has been much advancement in the 2D semantic scene understanding literature, which can be utilised within 
 the context of 3D vision to introduce a semantic component to dense SLAM systems. Such a combination of techniques 
