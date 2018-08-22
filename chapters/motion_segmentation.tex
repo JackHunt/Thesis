@@ -342,12 +342,15 @@ as follows in Equation~\ref{eqn:sdf_central_diff}.
   \label{eqn:sdf_central_diff}
   \nabla \bm{\Phi} = 
     \begin{bmatrix}
-      \bm{\Phi} \big(\bm{v}_{x} + \frac{1}{2}\delta \bm{v}_{x}\big) -
-      \bm{\Phi} \big(\bm{v}_{x} - \frac{1}{2}\delta \bm{v}_{x}\big)\\
-      \bm{\Phi} \big(\bm{v}_{y} + \frac{1}{2}\delta \bm{v}_{y}\big) -
-      \bm{\Phi} \big(\bm{v}_{y} - \frac{1}{2}\delta \bm{v}_{y}\big)\\
-      \bm{\Phi} \big(\bm{v}_{z} + \frac{1}{2}\delta \bm{v}_{z}\big) -
-      \bm{\Phi} \big(\bm{v}_{z} - \frac{1}{2}\delta \bm{v}_{z}\big)
+      {\big( 2 \delta \bm{v}_{x} \big)}^{-1} \\
+      {\big( 2 \delta \bm{v}_{y} \big)}^{-1} \\
+      {\big( 2 \delta \bm{v}_{z} \big)}^{-1}
+    \end{bmatrix}
+    \odot
+    \begin{bmatrix}
+      \bm{\Phi} \big(\bm{v}_{x} + \delta \bm{v}_{x}\big) - \bm{\Phi} \big(\bm{v}_{x} - \delta \bm{v}_{x}\big) \\
+      \bm{\Phi} \big(\bm{v}_{y} + \delta \bm{v}_{y}\big) - \bm{\Phi} \big(\bm{v}_{y} - \delta \bm{v}_{y}\big) \\
+      \bm{\Phi} \big(\bm{v}_{z} + \delta \bm{v}_{z}\big) - \bm{\Phi} \big(\bm{v}_{z} - \delta \bm{v}_{z}\big) 
     \end{bmatrix}
 \end{equation}
 
@@ -571,11 +574,10 @@ Where in Equation~\ref{eqn:camera_matrix}, \(f_{x}\), \(f_{y}\), \(s\), \(x_{0}\
 and \(y_{0}\) are the focal lengths, scale and camera principal points respectively.
 
 The integration of new data points into the TSDF volume is achieved by computing 
-running averages; each voxel contains a running average of its SDF value over
-time.
+running means; each voxel contains a running average of its SDF value over time.
 
 Projecting to the depth image \(\bm{\Omega}\) coordinates as in Equation
-~\ref{eqn:project_tsdf_to_image} to perform a depth lookup in \(\bm{\Omega}\)
+~\ref{eqn:project_tsdf_to_image} to perform a depth pixel lookup in \(\bm{\Omega}\)
 and subtracting the \(z\) component of \(\bm{x}_{v}\) from the resulting value
 yields the depth offset from the surface, as follows
 \begin{equation}
@@ -608,23 +610,19 @@ In addition, the weight \(\phi(\bm{x}_{v})\) is updated as follows.
 
 \subsection{Rendering}
 ~\label{subsec:moseg_static_rendering}
-Following the integration process outlined in Section
-~\ref{subsec:moseg_static_integration} is the rendering stage in which an image
-of the scene image is generated to provide an updated view for the tracking
-stage outlined in Section~\ref{subsec:moseg_static_camera_tracking}, at the next
-time step.
+Following the integration process outlined in Section ~\ref{subsec:moseg_static_integration} 
+is the rendering stage in which an image of the scene under the current pose is generated, to 
+provide an updated rendering for the tracking stage outlined in Section~\ref{subsec:moseg_static_camera_tracking}, 
+at the next time step.
 
 Rendering in the pipeline is achieved by Raycasting~\cite{Roth1982}, the process of 
 ``casting'' a ray from the camera frame into the scene, to find intersections with 
 the scene isosurface. 
-% A complete treatment of the Raycasting procedure may be found in the computer
-% graphics literature~\cite{Parker:1998:IRT:288216.288266}.
 
 \section{Volumetric Fusion with Dynamic Scenes}
 ~\label{sec:moseg_dynamic_fusion}
-To adapt the conventional approach described in Section
-~\ref{sec:moseg_static_fusion} to handle dynamic environments, a dual-volume
-representation of the scene is introduced, consisting of a \emph{static model}
+The conventional approach described in Section~\ref{sec:moseg_static_fusion} is adapyted to handle dynamic 
+environments. A dual-volume representation of the scene is introduced, consisting of a \emph{static model}
 and a \emph{dynamic model} (both of which are TSDF's).
 
 There are two additional stages in the dynamic pipeline to handle integration in
@@ -639,7 +637,7 @@ An overview of the proposed pipeline is given in Figure~\ref{figure:moseg_pipeli
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{figures/moseg/pipeline.pdf}
-  \caption[Motion Segmentation Pipeline]{The motion segmentation pipeline. 
+  \caption[Motion Segmentation Pipeline]{The proposed motion segmentation pipeline. 
   Note the additional voxel block labelling stage with a feedback to the model 
   integration stage.}
 ~\label{figure:moseg_pipeline}
@@ -654,7 +652,7 @@ parts of the scene that are moving being excluded from the static model.
 For each voxel block in the dynamic model, a stability value is maintained, 
 representing the extent to which the instantaneous TSDF values for the voxels 
 in a given voxel block (visible in the current view frustrum under the current 
-pose) have remained similar to the existing TSDF values for those voxels
+pose) have remained sufficiently similar to the existing TSDF values for those voxels
 over time.
 
 The stability value for each voxel block in the scene is initialised to nought.
@@ -702,8 +700,8 @@ as follows in Section~\ref{sub:moseg_static_to_dynamic}.
 ~\label{sub:moseg_static_to_dynamic}
 For a time step \(t\), each voxel block in the dynamic model that has assigned to
 it a stable label has the entirety of it's voxel TSDF values integrated into the
-static model. In a similar formulation to that of Equation~\ref{eqn:sdf_update}
-in Section~\ref{subsec:moseg_static_integration}, the update comprises 
+static model. In a similar formulation to that given in Equation~\ref{eqn:sdf_update}
+of Section~\ref{subsec:moseg_static_integration}, the update comprises 
 integration of new data in to a running average.
 
 The weight update for a given voxel \(v\) in the stable model \(\bm{\Phi}^{s}\)
@@ -880,13 +878,13 @@ highlighted in bold.}
 
 \section{Application to Semantic Scene Understanding}
 ~\label{sec:moseg_semantic}
-The dynamic scene handling approach described in~\ref{sec:moseg_dynamic_fusion}
+The dynamic scene handling approach described in Section~\ref{sec:moseg_dynamic_fusion}
 can be used to prevent moving objects from being integrated into the static
-scene model, but for many applications, e.g.\ mobile robotics, there is an
+scene model. However, for many applications (e.g.\ mobile robotics), there is an
 additional need to understand what objects are present in the scene and where
-they are.
+they are, as outlined in Section~\ref{sec:intro_scene_recon}.
 
-In this section, it is therefore show that classifiers may be trained for the
+In this section, it is therefore shown that classifiers may be trained for the
 moving objects and used to recognise new instances of those objects as they
 enter the scene.
 
@@ -897,15 +895,16 @@ connected components of these voxel blocks. For each object, a one-class Support
 Vector Machine (SVM)~\cite{Singer07} with a polynomial kernel is trained and used 
 to recognise new instances of the object class.
 
-Upon seeing a new object, the system first tries to classify the object as one
-that has already been seen using all of the existing SVMs. If this fails, the
-system generates a label for the object and trains a new SVM for it. To make the
-training examples for the object, points are uniformly sampled from the object's
-surface (voxels in the object's component that belong to the Zero Level Set of the 
-TSDF) and compute Fast Point Feature Histogram (FPFH) descriptors~\cite{Rusu2009} 
+Upon seeing a new object, the system first tries to classify the object into a category
+that has already been seen, by predicting the objects class with all of the existing single class 
+SVMs. If this fails, the system generates a label for the object and trains a new SVM for it's 
+class. 
+
+To make the training examples for the detected object, points are uniformly sampled from the object's
+isosurface and Fast Point Feature Histogram (FPFH) descriptors~\cite{Rusu2009} are computed
 at those points. FPFH descriptors are geometric features that provide a
 per-point statistic of the curvature within some neighbourhood of the point
-(empirically, a \(2.5cm\) radius around the point was used).
+(empirically, a \(2.5cm\) radius around the point is used).
 
 Figure~\ref{figure:moseg_recognition} shows an example of this training and
 prediction process for dynamic objects.
@@ -937,16 +936,19 @@ prediction process for dynamic objects.
 \section{Discussion}
 ~\label{sec:moseg_discussion}
 As outlined in Sections~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, the 
-proposed approach provides an improvement to the quality of camera pose estimation when 
+proposed approach provides an improvement on the quality of camera pose estimation when 
 performing dense reconstruction in scenes that have dynamic components, versus the 
 standard \textit{KinectFusion}~\cite{Newcombe2011} like pipeline as implemented by 
-\textit{Prisacariu et al}~\cite{Prisacariu2014}. Additionally, it is evident that the 
-proposed approach is capable of segmenting dynamic components (such as people moving in 
-an articulated fashion) that are visible in the camera's view frustrum, from those that 
-are static (such as furniture in the scene). This segmentation also demonstrates a novel 
-way of obtaining 3D geometry information to perform rudimentary scene understanding. 
-Qualitatively, the resultant reconstructions of the proposed approach are of a comparable 
-quality to the comparison static dense SLAM system.
+\textit{Prisacariu et al}~\cite{Prisacariu2014}; a research objective that was outlined in 
+Section~\ref{sec:intro_aims_structure}.
+
+Additionally, it is evident that the proposed approach is capable of segmenting dynamic 
+components (such as people moving in an articulated fashion) that are visible in the camera's 
+view frustrum, from those that are static (such as furniture in the scene). This segmentation 
+also demonstrates a novel way of obtaining 3D geometry information to perform rudimentary scene 
+understanding. Additionally, the resultant reconstructions of the proposed approach are 
+qualitatively comparable to the comparison static dense SLAM system. Both of these results 
+relate again to the research objectives of Section~\ref{sec:intro_aims_structure}.
 
 The novel dual volumetric representation approach taken in this work of maintaining both a 
 \textit{static} and a \textit{dynamic} scene, utilising only the former for camera pose 
@@ -956,10 +958,11 @@ that would otherwise be troublesome. Contrary to existing approaches outlined in
 reconstruction scenarios, due to it's leverage of efficient, hashed volumetric data structures. 
 In addition, by utilising such data structures, the proposed system is performant to the 
 level of highly optimised~\cite{Prisacariu2014} \textit{KinectFusion}~\cite{Newcombe2011} 
-impolementations, demonstrating feasibility for application to problems that require 
+implementations, demonstrating feasibility for application to problems that require 
 real time performance.
 
 With the contributions outlined in this work, the proposed approach provides a platform 
 for further research into problems such as live semantic scene understanding and dense scene 
 flow. The proposed approach has the potential to be further developed in to a fully dynamic, 
-semantic scene understanding and reconstruction system.
+semantic scene understanding and reconstruction system for use in robotics, VR and AR applications 
+as outlined in Section~\ref{sec:intro_scene_recon}.
