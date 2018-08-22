@@ -2,14 +2,14 @@
 \section{Introduction}
 ~\label{sec:probobj_introduction}
 Dense SLAM has proven to be an effective paradigm for the reconstruction of 
-scenes of moderate size, with much research on the topic driven by the 
+scenes of moderate scale, with much research on the topic driven by the 
 availability of consumer grade depth sensing equipment. However, there is a 
 heavy reliance on descriptive geometry in the scene when there is a lack of 
 texture. Less descriptive geometry leads to an increase in camera tracking 
 error and causes model inconsistencies, especially when a loop closure event 
 occurs. This is due to the small but cumulative errors incurred in pose 
 estimation that prevent a reconstructed model from being closed when the 
-camera return to it's starting position.
+camera returns to it's starting position.
 
 As object reconstruction can be seen as a smaller scale equivalent of the scene
 based dense reconstruction problem, it too is prone to the tracking drift and
@@ -29,7 +29,7 @@ representing the object to be reconstructed as a collection of overlapping
 subsegments, such that deformations may be inferred to keep the subsegments
 aligned, resulting in a consistent overall model. The system utilises a
 volumetric representation for each of these object subsegments, as with many
-larger scale reconstruction systems. Each voxel in the subsegments has
+larger scale reconstruction systems. Each voxel in a given subsegment has
 additional appearance posterior information pertaining to the voxels membership
 of the object.
 
@@ -50,13 +50,32 @@ The probabilities that are ``fused'' into the volume are generated from an
 appearance model, initialised prior to reconstruction by a Maximum Likelihood 
 Estimation (MLE)~\cite{BishopPRML} procedure over the first frame of the RGB image. 
 There are two appearance models, one for the foreground object and one for the 
-background, with the foreground object indicated by a user inputted bounding box 
-on the first RGB frame. An appearance distribution is fitted over the colour features 
-of each class, foreground and background. During the fusion process, the PDF's of 
-these distributions are evaluated on the latest colour observation for a voxel and 
-posteriors are computed \& updated accordingly in the probability volume. Only 
-those voxels with a posterior higher for the foreground than the background 
-are rendered.
+background, with the foreground object indicated by a user indicated bounding box 
+on the first RGB frame. An appearance distribution is fitted over the appearance 
+features of each region, foreground and background. 
+
+At each timestep, an appearance based probability map is generated over the observed 
+RGB frame, with respect to the appearance distributions built prior to the reconstruction 
+process. An example of such instantaneous map is given in Figure~\ref{figure:probobj_prob_maps}.
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.3\linewidth]{figures/object_recon/prob/dino.png} &
+    \includegraphics[width=.3\linewidth]{figures/object_recon/prob/rock.png} \\ 
+    (a)  & (b) \\
+  \end{tabular}
+  \caption[Raw Foreground Probability Maps]
+  {(a) An instantaneous probability map in which much noise is present in the background. 
+  (b) A map that is very probabilistically polarized with respect to foreground and background 
+  beliefs.}
+~\label{figure:probobj_prob_maps}
+\end{figure}
+
+During the fusion process, the PDF's of these distributions are evaluated on the latest 
+colour observation for a given frame. The aforementioned voxel posteriors are computed \& updated accordingly 
+in the probability volume, with respect to the instantaneous image space probability maps shown in Figures
+~\ref{figure:probobj_prob_maps}. Only those voxels with a posterior higher for the foreground than the 
+background are rendered.
 
 \section{Algorithm Overview}
 In the proposed system, the object model is divided into \textit{subvolumes}, 
@@ -67,9 +86,10 @@ coordinate frame.
 
 At each time step, a segmentation model is applied to the RGB input image to
 generate an object \textit{Probability Map} defining the segmented region to be
-the object of interest and the remainder the background, to be discarded. Using
-these generated Probability Maps, the system accumulates the probabilities into
-the object \textit{Probability Volume} of the active subvolume.
+the object of interest (as shown in Figure~\ref{figure:probobj_prob_maps}) and the 
+remainder the background, to be discarded. Using these generated Probability Maps, 
+the system accumulates the probabilities into the object \textit{Probability Volume} 
+of the active subvolume.
 
 As with the dense SLAM system outlined earlier in this work, the proposed system
 also has \textit{Integration}, \textit{Tracking} and \textit{Rendering}
@@ -103,16 +123,17 @@ as the Zero Level Set of a TSDF discretised over voxels, with the isosurface
 embedding built by a weigted mean of new observations, as outlined in Equations
 ~\ref{eqn:sdf_update} and~\ref{eqn:sdf_weight_update}. Camera pose estimation is
 performed with ICP, as outlined in Section~\ref{subsec:moseg_static_camera_tracking} 
-and is run quasi-simultaneously against the evolving map. Here, inspired by 
-~\cite{Kolev2006}, this procedure is augmented by estimating the posterior probability, 
+and is run simultaneously against the evolving map. Here, inspired by 
+~\cite{Kolev2006}, this procedure is augmented by estimating the posterior probability 
 per map voxel, of belonging to the object of interest. This volume of posterior 
 probabilities is updated at each time step, in parallel to the fusion process in the 
-mapping and pose estimation components of the pipeline. The representation of the 
-reconstructed object comprises multiple ``subvolumes'', each pertaining to some 
-patch on the object surface. New subvolumes are created when sufficiently many new 
-voxels have been allocated and have had SDF data integrated. By ensuring overlap
-between the subvolumes, transformations between them can be found and pose
-inconsistencies addressed, online. Empirically, the threshold for starting a new
+mapping and pose estimation components of the pipeline. 
+
+The representation of the reconstructed object comprises multiple \textit{subvolumes}, 
+each pertaining to some patch on the object surface. Additional subvolumes are created 
+when sufficiently many new voxels have been allocated and have had SDF data integrated. 
+By ensuring overlap between the subvolumes, transformations between them can be found and 
+pose inconsistencies addressed, online. Empirically, the threshold for starting a new
 subvolume is defined as the event when \( 50\% \) of the voxels fused in to the
 current volume are newly observed points, such that there is sufficient overlap 
 between two subvolumes that shall later be registered.
@@ -121,21 +142,22 @@ between two subvolumes that shall later be registered.
 ~\label{subsec:probobj_vol_appearance_model}
 At each observed RGBD frame, the object posterior probabilities for the visible
 voxels in the active subvolume are updated via an appearance-derived probability
-map for that frame. Under the assumption of conditional independence between
-frames (for sake of tractability), the posterior probability of a given voxel
-\( \psi \in \Psi \) belonging to the object has the following form (noting that
-\( \Phi \subset \Psi \)):
+map for that frame, as described in Section~\ref{sec:intro_spp}. Under the assumption 
+of conditional independence between frames (for sake of tractability), the posterior 
+probability of a given voxel \( \psi \in \Psi \) belonging to the object has the following 
+form (noting that \( \Phi \subset \Psi \)):
 \begin{equation}
 \label{eqn:probobj_voxel_posterior}
 P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty}
 P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 \end{equation}
-where \( \Psi \) is the volume of voxels for which measurements are accumulated,
-\( \Phi \)  is the volume of voxels pertaining to the object \(\bm{\Phi}\) of 
-interest, \(\Omega_{t}\) is the current RGBD image observation at time \(t\) and 
-\(p_{t}\) is the currently tracked pose at time \(t\). Equation 
-~\ref{eqn:probobj_voxel_posterior} encodes the probability of a voxel belonging 
-to the object of interest as the product of instantaneous appearance-derived 
+
+In Equation~\ref{eqn:eqn:probobj_voxel_posterior} \( \Psi \) is the volume of 
+voxels for which measurements are accumulated, \( \Phi \)  is the volume of voxels 
+pertaining to the object \(\bm{\Phi}\) of interest, \(\Omega_{t}\) is the current 
+RGBD image observation at time \(t\) and \(p_{t}\) is the currently tracked pose at 
+time \(t\). Equation ~\ref{eqn:probobj_voxel_posterior} gives the probability of 
+a voxel belonging to the object of interest as the product of instantaneous appearance-derived 
 pixel-wise conditionals. Note that in the above, \( \Phi \) is a discretisation of 
 the continuous \( \Phi \) in the probabilistic formulation that follows.
 
@@ -143,12 +165,12 @@ the continuous \( \Phi \) in the probabilistic formulation that follows.
 ~\label{subsec:probobj_full_joint}
 Central to the proposed system is the aforementioned volume of appearance based
 posterior probabilities pertaining to a voxel wise membership of either the
-object voxel set or the non object (background) voxel set. This allows
+object voxel set or the non object (background) voxel set. This allows for
 formulation of the full joint distribution over the object as the Probabilistic
 Graphical Model (PGM) of Figure~\ref{figure:probobj_pgm1}.
 \begin{figure}[!htbp]
   \centering
-  \resizebox{0.4\linewidth}{!}{
+  \resizebox{0.3\linewidth}{!}{
     \begin{tikzpicture}
       % Declare nodes.
       \node[latent] (phi) {\(\Phi\)};
@@ -182,8 +204,9 @@ constraints for each adjacent sub volume pair in the form of rigid body
 transformations, \( \Omega \) is the set of RGBD image pixels and \(p\) the set of 
 poses over time.
 
-The PGM given in Figure~\ref{figure:probobj_pgm1} leads to the following
-factorisation over the full Joint Distribution.
+The PGM given in Figure~\ref{figure:probobj_pgm1} leads to the
+factorisation over the full Joint Distribution given in Equation
+~\ref{eqn:probobj_full_joint}.
 \begin{equation}
   \label{eqn:probobj_full_joint}
   \begin{split}
@@ -207,7 +230,7 @@ independence is assumed in the poses, the plate containing \( \Omega \) and \(p\
 be removed as shown in Figure~\ref{figure:probobj_pgm2}.
 \begin{figure}[!htbp]
   \centering
-  \resizebox{0.4\linewidth}{!}{
+  \resizebox{0.3\linewidth}{!}{
     \begin{tikzpicture}
       % Declare nodes.
       \node[latent] (phi) {\(\Phi\)};
@@ -233,8 +256,8 @@ be removed as shown in Figure~\ref{figure:probobj_pgm2}.
 \end{figure}
 
 The simplifications transforming the PGM of Figure~\ref{figure:probobj_pgm1} in to
-that of Figure~\ref{figure:probobj_pgm2} lead to the following factorisation of the
-Joint Distribution over \(\bm{\Phi}\).
+that of Figure~\ref{figure:probobj_pgm2} lead to the factorisation of the
+Joint Distribution over \(\bm{\Phi}\) given in Equation~\ref{eqn:probobj_simplified_joint}.
 \begin{equation}
   \label{eqn:probobj_simplified_joint}
   P(\Phi, \Omega, p, u, L) = 
@@ -257,7 +280,7 @@ additional, novel estimation module that relies on the use of a subvolume
 representation to correct tracking errors by applying rigid body transformations
 to the subsegments of the reconstructed shape (the subvolumes) to correct their
 alignment when there are intra subsegment tracking inconsistencies. As inference
-on the Joint Distribution of the presented probabilistic model is intractable, 
+on the full joint distribution of the presented probabilistic model is intractable, 
 conditional independence assumptions are made that empirically do not appear to 
 cause any functional issues. 
 
@@ -287,9 +310,9 @@ the appearance model \(u\) may be marginalised as follows.
 \end{align}
 Note that the Appearance Posterior Volume outlined in Section 
 ~\ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
-Section~\ref{} for the purposes of subvolume alignment and determining the
-subset of voxels \(\bm{\Phi} \subset \bm{\Psi}\) that determine the target
-object shape.
+Section~\ref{sec:probobj_model_correction} for the purposes of subvolume alignment 
+and determining the subset of voxels \(\bm{\Phi} \subset \bm{\Psi}\) that yield the 
+target object shape.
 
 Further details pertaining to the inference procedure for the per-subvolume
 deformations is provided in Section~\ref{sec:probobj_model_correction}.
@@ -334,8 +357,10 @@ be omitted whilst retaining proportionality. The prior distribution \(P(L_{s, s'
 conjugate to \(P(L_{s, s'} | \Omega, p)\) and is of the form of a Multivariate
 Gaussian Distribution \(\mathcal{N}(\bm{0} \given \bm{I})\) over the
 \(\mathbb{SE}(3)\) deformation parameters described in Section 
-~\ref{subsub:moseg_static_camera_attitude}. The choice of such a prior distribution
-is motivated by the assumption that motion between consecutive frames is minor,
+~\ref{subsub:moseg_static_camera_attitude}. 
+
+The choice of such a prior distribution is motivated by the assumption that motion between 
+consecutive frames is minor (for a real-time sensor running at at least \( 30Hz \),
 thus the given prior will have the effect of constraining the \(\mathbb{SE}(3)\)
 transformation as such. The prior distribution \(P(\Phi)\) serves as a
 \textit{Surface Prior} to mitigate the effect of noise introduced in to the TSDF
@@ -370,9 +395,10 @@ given as follows.
   \label{eqn:probobj_likelihood_analytic}
   P(L_{s, s'} | \Omega, p) = \prod_{(s, s') \in \mathcal{S}}
   \frac{1}{\sqrt{2 \pi \sigma}}
-  \exp{\frac{-{\Big[\Phi_{s}\Big(\bm{x}\Big) -
-  \Phi_{s'}\Big(\Lambda(\bm{x}, \bm{p}, \bm{t})\Big)\Big]}^{2}}
-  {2\sigma^{2}}}
+  e^{-\frac{1}{2\sigma^{2}} {\Big[
+      \Phi_{s}\big(\bm{x}\big) - \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)
+    \Big]}^{2}
+  }
 \end{equation}
 
 In Equation~\ref{eqn:probobj_likelihood_analytic}, the function \(\Lambda(.)\)
@@ -474,7 +500,7 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
 \label{eqn:probobj_log_posterior}
   % Line 1.
   \ln P(\Omega, p | L_{s, s'}) \propto{}& \ln
-  \prod_{s, s' \in \mathcal{s}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})\bar{P}(\Phi)\\
+  \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} | \Omega, p)P(L_{s, s'})\bar{P}(\Phi)\\
   % Line 2.
   \propto& \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'} | \Omega, p) +
   \sum_{s, s' \in \mathcal{S}} \ln P(L_{s, s'}) +
@@ -483,9 +509,10 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
   \propto& 
   \begin{aligned}[t]
     \sum_{s, s' \in \mathcal{S}} \Bigg[ {}& \ln \frac{1}{\sqrt{2 \pi \sigma}}
-    \exp{\frac{-\Big[\Phi_{s}\big(\bm{x}\big) - \Phi_{s'}
-    \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big){ \Big ] }^{2}}
-    {2\sigma^{2}}}\\
+    e^{-\frac{1}{2\sigma^{2}}\Big[
+        \Phi_{s}\big(\bm{x}\big) - \Phi_{s'} \big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big){ 
+      \Big ] }^{2}
+    }\\
     &+ \ln \frac{-\frac{1}{2} e^{\bm{p}^{T}\bm{\Sigma}^{-1}\bm{p}}}
     {\sqrt{{(2\pi)}^{k}\left|\bm{\Sigma}\right|}} +
     \ln \frac{1}{1 + e^{-\Phi}}\Bigg]
@@ -494,8 +521,9 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
   \propto& 
   \begin{aligned}[t]
     \sum_{s, s' \in \mathcal{S}} \Bigg[ {}& -\ln(2\pi\sigma) -
-    \frac{{\Big[\Phi_{s}\big(\bm{x}\big) -
-    \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
+    \frac{1}{2\sigma^{2}}{\Big[
+      \Phi_{s}\big(\bm{x}\big) - \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)
+    \Big]}^{2} -
     \frac{1}{2} \ln \left|\bm{\Sigma}\right| \\
     & - \frac{1}{2} \bm{p}^{T}\bm{\Sigma}^{-1}\bm{p} -
     \ln(1 + e^{-\Phi}) \Bigg]
@@ -504,8 +532,9 @@ for the Rodrigues parameters \(p\) and translation vector \(t\) of the constrain
   \propto& 
   \begin{aligned}[t]
     \sum_{s, s' \in \mathcal{S}} \Bigg[ {}& -\ln(2\pi\sigma) -
-    \frac{{\Big[\Phi_{s}(\bm{x}) -
-    \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)\Big]}^{2}}{2\sigma^{2}} -
+    \frac{1}{2\sigma^{2}}{\Big[
+      \Phi_{s}(\bm{x}) - \Phi_{s'}\big(\Lambda(\bm{x}, \bm{p}, \bm{t})\big)
+    \Big]}^{2} -
     \frac{1}{2} \bm{p}^{T}\bm{p} \\
     & - \ln(1 + e^{-\Phi}) \Bigg]
 \end{aligned}
@@ -519,8 +548,9 @@ Levenberg-Marquardt update form, akin to that of Equation~\ref{eqn:lm_update}.
 ~\label{subsec:probobj_map_optimisation}
 To infer the optimal consistency constraints between adjacent subvolumes, the
 log-posterior given in Equation~\ref{eqn:probobj_log_posterior} may be optimised
-using second order gradient based methods such as Levenberg-Marquardt. As with
-the ICP procedure outlined in Section~\ref{subsub:moseg_static_camera_poserec},
+using second order gradient based methods such as Levenberg-Marquardt in a similar 
+fashion to the procedure outlined in Section~\ref{subsec:moseg_static_camera_tracking. 
+As with the ICP procedure outlined in Section~\ref{subsub:moseg_static_camera_poserec},
 the optimisation is performed with respect to the three Rodrigues rotation
 parameters \( \alpha \), \( \beta \), \( \gamma \) and translation parameters \(t_{x}\),
 \(t_{y}\) and \(t_{z}\) of the target \(\mathbb{SE}(3)\) transformation.
@@ -539,8 +569,8 @@ to the Rodrigues rotational parameters is as follows for some parameter
   \frac{\partial E}{\partial \tau} ={}&
   \sum_{s, s' \in \mathcal{S}} \Bigg[ - \frac{\partial}{\partial \tau}
   \ln(2\pi\sigma) - \frac{\partial}{\partial \tau}
-  \frac{{\Big[\Phi_{s}\big(\bm{x}\big) -
-  \Phi_{s'}\big(\Lambda(\bm{x})\big)\Big]}^{2}}{2\sigma^{2}} -
+  \frac{1}{2\sigma^{2}}{\Big[\Phi_{s}\big(\bm{x}\big) -
+  \Phi_{s'}\big(\Lambda(\bm{x})\big)\Big]}^{2} -
   \frac{\partial}{\partial \tau} \frac{1}{2} \bm{p}^{T}\bm{p} -
   \frac{\partial}{\partial \tau} \ln(1 + e^{-\Phi})
   \Bigg]\\
@@ -589,10 +619,10 @@ those that have irrelevant measurements integrated, i.e.\ background measurement
 that have not been used to perform pose estimation and as such have not been rendered.
 
 This segmentation is formulated within a CRF framework, with each node in the
-CRF graph representing a set of neighbouring voxels in space, where connections
+CRF graph representing a set of neighbouring voxels in volumetric space, where connections
 are made between adjacent voxel neighbourhoods. This segmentation process is
 posed as an energy minimisation problem to optimise for a cut in downsampled
-voxel space between observations pertaining to the object of interest and those,
+voxel space between observations pertaining to the object of interest and those
 of irrelevant observations, such that a segmentation in 3D is obtained. The
 central purpose of this segmentation is to refine the resultant output model of
 the proposed object reconstruction system. The described CRF model is depicted
@@ -744,7 +774,7 @@ The following energy function consists of the appearance posterior probabilities
 accumulated during the on-line fusion process for a region in space as the
 CRF unary potentials. The pairwise smoothing term represents the physical
 appearance similarity of the observation regions represented by the
-voxel neighbourhoods \( \gamma \) and \( \gamma^{'} \):
+texture fused in to the voxels of neighbourhoods \( \gamma \) and \( \gamma^{'} \):
 \begin{equation}
   \label{eqn:probobj_crf_energy}
   E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \Psi_{n}}
@@ -757,7 +787,9 @@ In Equation~\ref{eqn:probobj_crf_energy} the terms \(\mathbb{E}{[c]}_{\gamma}\) 
 the expected values over appearance for the 3D regions \( \gamma \) and \( \gamma' \)
 respectively. Recall the unary term \(P(\psi \in \Phi \given \Omega_{t}, p_{t})\)
 from Equation~\ref{eqn:probobj_voxel_posterior} of Section
-~\ref{subsec:probobj_vol_appearance_model}.
+~\ref{subsec:probobj_vol_appearance_model}. In the implementation of this work, the 
+voxel neighbourhood of a given voxel is defined to be it's first degree connected 
+components for which valid SDF data has been integrated.
 
 In the implementation used in this work, the aforementioned cut in voxel space
 is obtained by optimising the energy function of Equation~\ref{eqn:probobj_crf_energy} 
@@ -772,16 +804,16 @@ characterised by a range of different sizes and geometries. The experiments in
 this section demonstrate efficacy over the approach of \textit{Ren et al} 
 ~\cite{Ren2013} for the task of obtaining closed, small object reconstructions 
 from RGBD data. Each evaluation sequence is run on the system proposed in this 
-chapter and through that of \textit{Ren et al}, with output snapshots taken at 
+chapter versus that of \textit{Ren et al}, with output snapshots taken at 
 quarterly intervals for each sequence. In Section~\ref{sec:probobj_quantitative}, 
 a Quantitative evaluation of Reconstruction quality is given.
 
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{@{}c@{}}
-    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
+    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
     (a) \\
-    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/rock.png} \\ 
+    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/rock.png} \\ 
     (b)\\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results I]
@@ -800,9 +832,9 @@ the object of interest, contary to the approach outlined in this chapter.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{@{}c@{}}
-    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/dino_s3d.png} \\
+    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/dino_s3d.png} \\
     (a) \\
-    \includegraphics[width=.6\linewidth]{figures/object_recon/strips/dino.png} \\ 
+    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/dino.png} \\ 
     (b) \\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results II]
@@ -823,10 +855,11 @@ a range of objects versus that of an implementation of the standard KinectFusion
 pipeline as outlined in Section~\ref{sec:moseg_introduction}. The central difference in 
 the use of the two approaches for the purposes of this comparison is that in the proposed 
 system, only the observed points of the live frame and of the reconstruction that belong to 
-the object of interest are used for pose estimation. In the KinectFusion pipeline used 
-as a base of comparison however, the entire scene is modelled as the camera is moved, 
-with the reconstruction of the object of interest being segmented as a post processing 
-step. As such, the results extracted from the KinectFusion pipeline are taken to be the 
+the object of interest are used for pose estimation. 
+
+In the KinectFusion pipeline used as a base of comparison however, the entire scene is modelled 
+as the camera moves, with the reconstruction of the object of interest being segmented as a post 
+processing step. As such, the results extracted from the KinectFusion pipeline are taken to be the 
 ground truth reconstructions of the object of interest. This is due to the more robust 
 pose estimation that would be expected from utilising all available geometric data 
 for tracking, versus utilising only that of a single, potentially small object.
@@ -860,12 +893,13 @@ the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
 
 \begin{figure}[!htbp]
 	\centering
-	\begin{tabular}{cccc}
-		\includegraphics[width=.2\linewidth]{figures/object_recon/top/teddy_top00.png}&
-    \includegraphics[width=.2\linewidth]{figures/object_recon/top/dino_top00.png} &
-		\includegraphics[width=.2\linewidth]{figures/object_recon/top/chair_top00.png}&
-    \includegraphics[width=.2\linewidth]{figures/object_recon/top/rock_top00.png} \\
-    (a) & (b) & (c) & (d) \\
+	\begin{tabular}{cc}
+		\includegraphics[width=.3\linewidth]{figures/object_recon/top/teddy_top00.png}&
+    \includegraphics[width=.3\linewidth]{figures/object_recon/top/dino_top00.png} \\
+    (a) & (b) \\
+		\includegraphics[width=.3\linewidth]{figures/object_recon/top/chair_top00.png}&
+    \includegraphics[width=.3\linewidth]{figures/object_recon/top/rock_top00.png} \\
+    (c) & (d) \\
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results IV]
   {
@@ -877,19 +911,18 @@ the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
 
 The efficacy of the approach described in this work is further demonstrated when comparing
 the pipeline as outlined in Figure~\ref{figure:probobj_pipeline_diagram} to a version that 
-utilises only a single representation of the object of interest. Figure 
-~\ref{figure:probobj_gappy_teddy} demonstrates the difference in reconstruction output when 
-not utilising the multiple subvolume representation and it's accompanying enforcement 
-of consistency constraints. 
+utilises only a single representation of the object of interest. Figure~\ref{figure:probobj_gappy_teddy} 
+demonstrates the difference in reconstruction output when not utilising the multiple subvolume representation 
+and it's accompanying enforcement of consistency constraints. 
 
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
-		\includegraphics[width=.2\linewidth]{figures/object_recon/gappy/one_scene00.png}&
-    \includegraphics[width=.2\linewidth]{figures/object_recon/gappy/one_scene01.png}\\
+		\includegraphics[width=.3\linewidth]{figures/object_recon/gappy/one_scene00.png}&
+    \includegraphics[width=.3\linewidth]{figures/object_recon/gappy/one_scene01.png}\\
     (a) & (b) \\
-		\includegraphics[width=.2\linewidth]{figures/object_recon/gappy/multi_scene00.png}&
-    \includegraphics[width=.2\linewidth]{figures/object_recon/gappy/multi_scene01.png}\\
+		\includegraphics[width=.3\linewidth]{figures/object_recon/gappy/multi_scene00.png}&
+    \includegraphics[width=.3\linewidth]{figures/object_recon/gappy/multi_scene01.png}\\
     (c) & (d)\\
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results V]
@@ -902,7 +935,7 @@ of consistency constraints.
 
 The gaps in the isosurface depicted in Figure~\ref{figure:probobj_gappy_teddy} (a, b) 
 demonstrate the impact that drift in the pose estimation stage can have on the resultant 
-reconstruction; drift can incur irregularities in the extraction and rendering of the objects 
+reconstruction; drift can introduce irregularities in the extraction and rendering of the objects 
 isosurface. Note that the reconstructions given in Figure~\ref{figure:probobj_gappy_teddy} 
 (c, d) do not suffer such irregularities when utilising the object reconstruction pipeline 
 presented in this chapter.
@@ -913,7 +946,7 @@ In this section the performance of the proposed system is evaluated quantitative
 to both pose estimation accuracy and reconstruction accuracy. 
 
 For pose evaluation, the \textit{3D Object Reconstruction} subset of the 
-\textit{RGB-D SLAM Dataset and Benchmark}~\cite{Sturm2012}. The objects of interest in 
+\textit{RGB-D SLAM Dataset and Benchmark}~\cite{Sturm2012} is used. The objects of interest in 
 the dataset vary largely in both geometry and appearance. As with the quantitative 
 evaluation presented in Section~\ref{sec:moseg_quantitative}, the 
 \textit{Absolute Trajectory Error} is the primary metric of interest.
@@ -998,7 +1031,7 @@ The resultant quantitative comparisons may be found in Table~\ref{table:probobj_
 
 As can be seen by the similarity measures presented, the proposed system is capable of 
 yielding reconstructions to a high quality despite the markedly more difficult pose estimation 
-scenario of utilising the observations of a single object rather than those an entire scene. 
+scenario of utilising the observations of a single object rather than those of an entire scene. 
 It can be seen that the presented output reconstructions are geometrically close to those 
 reconstructed with a dense SLAM system~\cite{Prisacariu2014} following the KinectFusion 
 ~\cite{Newcombe2011} pipeline that is modelling and tracking the entire scene and thus has 
@@ -1012,16 +1045,17 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{@{}c@{}}
-    \begin{tabular}{cccc}
-      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/bear.png}&
-      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/brain.png}&
-      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/chair.png}&
-      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/dino.png} \\
-      (a) & (b) & (c) & (d) \\
+    \begin{tabular}{cc}
+      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/bear.png}&
+      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/brain.png}\\
+      (a) & (b) \\
+      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/chair.png}&
+      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/dino.png} \\
+      (c) & (d) \\
     \end{tabular} \\
     \begin{tabular}{ccc}
       \textit{Max} & 
-      \includegraphics[width=.2\linewidth]{figures/object_recon/hauss/colour_range.png} & 
+      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/colour_range.png} & 
       \textit{Min} \\
       & (e) & \\
     \end{tabular}
@@ -1039,11 +1073,15 @@ It is evident from Sections~\ref{sec:probobj_qualitative} and~\ref{sec:probobj_q
 that the proposed approach is capable of densely reconstructing a range of rigid objects, providing 
 closed and consistent object models, versus the state-of-the-art approach of \textit{Ren et al} 
 ~\cite{Ren2013}, which failed to reconstruct any of the objects with nontrivial geometry that it 
-was evaluated on. Additionally, the proposed approach shows an improvement over direct segmentation 
+was evaluated on. Recall from Section~\ref{sec:intro_aims_structure} that a primary research objective 
+of this work is to provide a means to reconstruct arbitrary object in a globally consistent manner.
+
+Additionally, the proposed approach shows an improvement over direct segmentation 
 in image space of the object of interest in terms of pose estimation. When evaluating the output 
 reconstructions of the proposed system versus those extracted from a standard \textit{KinectFusion} 
 like pipeline (post reconstruction), the proposed system is capable of producing reconstructions that 
-are geometrically similar.
+are geometrically similar. Again, noting the research objective of producing reconstructions of a 
+comparable quality to the state of the art, as outlined in Section~\ref{sec:intro_aims_structure}.
 
 The probabilistic formulation proposed in this work is intended to be easily generalised, such that 
 it may be adapted for a range of use cases. For example, when utilising stereo sensors where a noise 
