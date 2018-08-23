@@ -950,7 +950,6 @@ For pose evaluation, the \textit{3D Object Reconstruction} subset of the
 the dataset vary largely in both geometry and appearance. As with the quantitative 
 evaluation presented in Section~\ref{sec:moseg_quantitative}, the 
 \textit{Absolute Trajectory Error} is the primary metric of interest.
-
 \begin{table}[!htbp]
   \centering
   \begin{tabular}{l c c}
@@ -977,7 +976,30 @@ and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this w
 yields a marked improvement in Absolute Trajectory Error over that of the standard KinectFusion 
 pipeline with object segmentation. The remaining sequences that have the ATE marked as DNR did 
 not yield an interpretable reconstruction; sequences with ATE metrics marked DNR did not 
-reconstruct. In the case of the \textit{freiburg2\_metallic\_sphere (2)} sequences\ldots
+reconstruct. 
+
+In the case of the \textit{freiburg2\_metallic\_sphere (2)} sequences, the object 
+of interest is purely spherical in geometry. Such a shape is problematic for ICP like tracking 
+algorithms due to it's inherent ambiguity. Ambiguous geometry was also troublesome for the 
+\textit{freiburg2\_coke} sequence. The \textit{freiburg2\_flowerbouquet (brownbg)} sequences 
+also proved troublesome for both approaches. When inspecting the depth stream for this sequence 
+it is apparent that much of the flower bouquet does not have consistent depth data, in some cases 
+with a large amount of descriptive geometrial information missing. An example of such frames 
+from the sequence are given in Figure~\ref{figure:probobj_flower_depth}
+\begin{figure}[!htbp]
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=.4\linewidth]{figures/object_recon/flower_begin.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/flower_end.png}\\
+    (a) & (b) 
+	\end{tabular}
+  \caption[Probabilistic Object Reconstruction Qualitative Results V]
+  {
+    (a) Starting frame with much missing depth data. 
+    (b) End frame with much more depth data.
+  }
+~\label{figure:probobj_flower_depth}
+\end{figure}
 
 The trajectories of the two approaches evaluated on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences are plotted versus the ground truth trajectories 
