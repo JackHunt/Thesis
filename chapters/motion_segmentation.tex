@@ -253,9 +253,12 @@ rotation around one of three principal axes, as shown in Figure~\ref{figure:eule
   \( \alpha \), \( \beta \) and \( \gamma \).}
 ~\label{figure:euler_axes}
 \end{figure}
+The Rodriguez parameters \( \alpha \), \( \beta \) and \( \gamma \) form a member of the Lie Algebra 
+\( \mathfrak{g} \) corresponding to the tangent space of the \( \mathbb{SO}(3) \) Lie Group. Elements 
+of the Lie Algebra map to the Lie Group by the matrix exponential.
 
-The formulation of the Rodriguez paramaterization is given by the following 
-~\cite{Shuster1993}, with the parameter vector
+The formulation of the Rodriguez paramaterization (performing the aforementioned matrix exponential)
+~\cite{Shuster1993} is given by Equation~\ref{eqn:rodriguez_matrix_eq}, with the parameter vector
 \(\bm{p} = {[\alpha, \beta, \gamma]}^{T}\)
 \begin{equation}
   \label{eqn:rodriguez_matrix_eq}
@@ -266,8 +269,9 @@ The formulation of the Rodriguez paramaterization is given by the following
   2 \bm{pp}^{T} + \omega(\bm{p})
   \bigg]
 \end{equation}
-where for an arbitrary vector \(\bm{v}\), \(\omega(\bm{v})\) is defined as
-the cross product matrix operator and is defined as follows
+
+Where for an arbitrary vector \(\bm{v}\), \(\omega(\bm{v})\) is defined as
+the cross product matrix operator and is defined as follows in Equation~\ref{eqn:cross_prod_mat}.
 \begin{equation}
   \label{eqn:cross_prod_mat}
   \omega(\bm{v}) =
