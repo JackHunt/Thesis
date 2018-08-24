@@ -453,7 +453,7 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
 \end{align}
 
 \subsection{Latent Space Shape Estimation}
-~\label{sub:spp_latent_shape_est}
+~\label{subsec:spp_latent_shape_est}
 The form of the model outlined in Section~\ref{subsubsec:spp_gp_marginal_likelihood}
 when trained as outlined in Section~\ref{subsubsec:spp_gp_fitting} defines a Gaussian 
 Process prior over the latent space embedding \( \bm{X} \). When regressing shape, it 
@@ -682,6 +682,134 @@ same form of those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_ja
 
 \subsection{Loss Function and Backpropagation}
 ~\label{subsec:spp_loss}
+As outlined in Section~\ref{sec:spp_algorithm}, the proposed model is trained in a semi-supervised 
+manner on an information theoretic loss. For each of the left and right networks, the loss is 
+quantified by the KL Divergence between the appearances of the initial detection region and 
+the prediction region (the image space in which the predicted shape is rendered to). Appearences for 
+each of the regions are quantified by simple image statistics. The intuition behind such a loss is that 
+for an optimal predicted shape and pose, the KL Divergences will be minimal due to the very high overlap 
+between detection and prediction.
+
+Additionally, to reduce divergence during training between the left and right models of the siamese 
+architecture, the Jensen-Shannon Divergence is applied to the predictions of the left and right outputs.
+The overall loss is thus given in Equation~\ref{eqn:spp_overall_loss}.
+\begin{align}
+  \label{eqn:spp_overall_loss}
+  % Line 1.
+  \mathcal{L}(.) &{}= \frac{1}{2} \Bigg[
+    \mathbb{KL}(\bm{P} \vert \bm{Q}) + \mathbb{KL}(\bar{\bm{P}} \vert \bar{\bm{Q}})
+  \Bigg]
+  + \mathbb{JSD}(\bm{Q}, \bar{\bm{Q}})\\
+  % Line 2.
+  &{}= 
+  \begin{aligned}[t]
+    {}& \frac{1}{2} \Bigg[
+      -\sum_{d = 0}^{D} \ln{(\bm{Q}_{d})}\bm{P}_{d} + \sum_{d = 0}^{D} \bm{P}_{d}\ln{\bm{P}_{d}}
+      -\sum_{d = 0}^{D} \ln{(\bar{\bm{Q}}_{d})}\bar{\bm{P}}_{d} + \sum_{d = 0}^{D} \bar{\bm{P}}_{d}\ln{\bar{\bm{P}}_{d}}
+    \Bigg]\\
+    {}& + \frac{1}{2} \Bigg[
+      -\sum_{d = 0}^{D} \ln{(\bm{Q}_{d})}\bm{M}_{d} + \sum_{d = 0}^{D} \bm{M}_{d}\ln{\bm{M}_{d}}
+      -\sum_{d = 0}^{D} \ln{(\bar{\bm{Q}}_{d})}\bm{M}_{d} + \sum_{d = 0}^{D} \bm{M}_{d}\ln{\bm{M}_{d}}
+    \Bigg]
+  \end{aligned}\\
+  \shortintertext{Where \( \bm{M} = \frac{1}{2} (\bm{Q} + \bar{\bm{Q}}) \)}\\
+  % Line 3.
+  {}&= \frac{1}{2} \sum_{d = 0}^{D}
+    \begin{aligned}[t]
+    \Bigg[ {}&
+    -\ln{(\bm{Q}_{d})}\bm{P}_{d} + \bm{P}_{d}\ln{\bm{P}_{d}}
+    -\ln{(\bar{\bm{Q}_{d}})}\bar{\bm{P}_{d}} + \bar{\bm{P}}_{d}\ln{\bar{\bm{P}}_{d}}\\
+    {}& -\ln{(\bm{Q}_{d})}\bm{M}_{d} -\ln{(\bar{\bm{Q}_{d}})}\bm{M}_{d} + 2\bm{M}_{d}\ln{\bm{M}_{d}}
+    \Bigg]
+    \end{aligned}
+\end{align}
+
+The loss function given in Equation~\ref{eqn:spp_overall_loss} makes use if the mean seeking\ref{} 
+\textit{forward} KL Divergence from the observed detection regions to the rendered (predicted) 
+regions. The motivation behind which is to quantify, for each of the left and right networks, how 
+much information is lost for the currently predicted shapes and \( \mathbb{SE}(3) \) poses. To 
+enforce consistency between the left and right networks, the Jensen-Shannon Divergence is used as 
+unlike the KL Divergence, it is \textit{symmetric} and \( \bm{Q} \) need not approximate \( \bar{Q} \), 
+any better than \( \bar{\bm{Q}} \) need approximate \( \bm{Q} \).
+
+As with the model components outlined in Sections~\ref{subsec:spp_latent_shape_est},~\ref{subsec:spp_pose_estim} 
+and~\ref{subsec:rendering}, the loss of the model also requires differentiability for backpropagation. As such, 
+the gradient \( \frac{\partial \mathcal{L}}{\partial \bm{Q}} \) is as follows in Equation~\ref{eqn:spp_loss_grad}.
+\begin{align}
+  \label{eqn:spp_loss_grad}
+  % Line 1.
+  \frac{\partial \mathcal{L}}{\partial \bm{Q}} {}&=
+  \frac{1}{2} \sum_{d = 0}^{D} \frac{\partial}{\partial \bm{Q}}
+  \begin{aligned}[t]
+    \Bigg[ {}&
+      -\ln{(\bm{Q}_{d})}\bm{P}_{d} + \bm{P}_{d}\ln{\bm{P}_{d}}
+      -\ln{(\bar{\bm{Q}_{d}})}\bar{\bm{P}_{d}} + \bar{\bm{P}}_{d}\ln{\bar{\bm{P}}_{d}}
+      -\ln{(\bm{Q}_{d})}\bm{M}_{d}\\
+      {}& 
+      -\ln{(\bar{\bm{Q}_{d}})}\bm{M}_{d} + 2\bm{M}_{d}\ln{\bm{M}_{d}}
+    \Bigg]
+  \end{aligned}\\
+  % Line 2.
+  {}&= \frac{1}{2} \sum_{d = 0}^{D}
+  \begin{aligned}[t]
+    \Bigg[ {}&
+      -\frac{\partial}{\partial \bm{Q}_{d}} \ln{(\bm{Q}_{d})}\bm{P}_{d} 
+      +\frac{\partial}{\partial \bm{Q}_{d}} \bm{P}_{d}\ln{\bm{P}_{d}}
+      -\frac{\partial}{\partial \bm{Q}_{d}} \ln{(\bar{\bm{Q}_{d}})}\bar{\bm{P}_{d}}
+      +\frac{\partial}{\partial \bm{Q}_{d}} \bar{\bm{P}}_{d}\ln{\bar{\bm{P}}_{d}}\\
+      {}&
+      -\frac{\partial}{\partial \bm{Q}_{d}} \ln{(\bm{Q}_{d})}\bm{M}_{d} 
+      -\frac{\partial}{\partial \bm{Q}_{d}} \ln{(\bar{\bm{Q}_{d}})}\bm{M}_{d}
+      +2 \frac{\partial}{\partial \bm{Q}_{d}} \bm{M}_{d}\ln{\bm{M}_{d}}
+    \Bigg]
+  \end{aligned}\\
+  % Line 3.
+  {}&= \frac{1}{2} \sum_{d = 0}^{D}
+  \begin{aligned}[t]
+    \Bigg[ {}&
+      -\frac{\bm{P}_{d}}{\bm{Q}_{d}}
+      -\bm{M}_{d} \frac{\partial}{\partial \bm{Q}_{d}} \ln{\bm{Q}_{d}}
+      -\ln{\bm{Q}_{d}} \frac{\partial \bm{M}_{d}}{\partial \bm{Q}_{d}}
+      -\ln{\bar{\bm{Q}}} \frac{\partial \bm{M}_{d}}{\partial \bm{Q}_{d}}
+      +2 \frac{\partial \bm{M}_{d}}{\partial \bm{Q}_{d}} \ln{\bm{M}_{d}}\\
+      {}&
+      +2 \bm{M}_{d} \frac{\partial}{\partial \bm{Q}_{d}} \ln{\bm{M}_{d}}
+    \Bigg]
+  \end{aligned}\\
+\shortintertext{Where \( \bm{M} = \frac{1}{2} (\bm{Q} + \bar{\bm{Q}}) \)}\\
+  % Line 4.
+  {}&= \frac{1}{2} \sum_{d = 0}^{D}
+  \begin{aligned}[t]
+    \Bigg[ {}&
+      -\frac{\bm{P}_{d}}{\bm{Q}_{d}}
+      -\frac{\bm{M}_{d}}{\bm{Q}_{d}}
+      +\ln{\bm{Q}_{d}} \frac{\partial \bm{M}_{d}}{\partial \bm{Q}_{d}}
+      -\ln{\bar{\bm{Q}_{d}}} \frac{\partial \bm{M}_{d}}{\partial \bm{Q}_{d}}
+      +2 \frac{\partial \bm{M}_{d}}{\partial \bm{Q}_{d}} \ln{\bm{Q}_{d}}\\
+      {}&
+      +2 \bm{M}_{d} \frac{\partial}{\partial \bm{Q}_{d}} \ln{\bm{M}_{d}}
+    \Bigg]
+  \end{aligned}\\
+  % Line 5.
+  {}&= \frac{1}{2} \sum_{d = 0}^{D}
+  \begin{aligned}[t]
+    \Bigg[ {}&
+      -\frac{\bm{P}_{d} + \bm{M}_{d}}{\bm{Q}_{d}}
+      +\frac{\ln{\bm{Q}_{d} - \ln{\bar{\bm{Q}}_{d}}}}{2}
+      +\ln{\bm{M}_{d}} 
+      +\frac{2\bm{M}_{d}}{\bm{Q}_{d} + \bar{\bm{Q}}_{d}}
+    \Bigg]
+  \end{aligned}\\
+  % Line 6.
+  {}&= \frac{1}{2} \sum_{d = 0}^{D}
+  \begin{aligned}[t]
+    \Bigg[ {}&
+      -\frac{\bm{P}_{d} + \frac{\bm{Q}_{d} + \bar{\bm{Q}}_{d}}{2}}{\bm{Q}_{d}}
+      +\frac{\ln{\bm{Q}_{d}} + \ln{\bar{\bm{Q}}_{d}}}{2}
+      +\ln{\frac{\ln{\bm{Q}_{d}} + \ln{\bar{\bm{Q}}_{d}}}{2}}
+    \Bigg]
+  \end{aligned}
+\end{align}
 
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
