@@ -422,8 +422,8 @@ Equation~\ref{eqn:rodriguez_matrix_eq} of Section
 ~\ref{subsub:moseg_static_camera_attitude}.
 
 The form of the aforementioned surface prior \(P(\Phi)\) is taken to be that of
-the Logistic Distribution, due to the ``symmetric'' \(1 - f(x) = f(-x)\)
-and ``squashing'' \(\texttt{Range}[f(x)] = [0, 1]\) properties of it's Cumulative
+the Logistic Distribution, due to the \textit{symmetric} \(1 - f(x) = f(-x)\)
+and \textit{squashing} \(\texttt{Range}[f(x)] = [0, 1]\) properties of it's Cumulative
 Density Function (CDF). The PDF of the Logistic Distribution is given as follows.
 \begin{equation}
   \label{eqn:probobj_logistic_dist}
@@ -507,7 +507,7 @@ and behind the isosurface. As such, a suitable prior may be found by paramateris
 appropriate manner. With the paramaterisation of \( \mu = 4 \) and \( \sigma = 0.7 \), the CDF is 
 shifted appropriately and penalises on a strict range of SDF values. However, in this form the CDF 
 penalises SDF points close to the isosurface. However, this is trivially solved as in Figure
-~\ref{figure:probobj_shape_prior}.
+~\ref{figure:probobj_shape_prior}, note the symmetric property of the Logistic CDF.
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=.7\linewidth]{figures/object_recon/logistic/prior.eps}
@@ -517,15 +517,23 @@ penalises SDF points close to the isosurface. However, this is trivially solved 
 \end{figure}
 
 Given the Cumulative Density Function derived in Equation~\ref{eqn:probobj_surface_prior_cdf}, 
-the prior \( P(\Phi) \) is defined as follows.
+the prior \( P(\Phi) \) is redefined as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior}
-  \bar{P}(\Phi) \propto{}& 1 - \left. \int_{-\infty}^{b} \frac
-  {e^{-\frac{\Phi - \mu}{\sigma}}}
-  {\sigma {\Big( 1 + e^{-\frac{\Phi - \mu}{\sigma}} \Big)}^{2}} \intd{\Phi}
-  \right\rvert_{\mu = 4, \sigma = 0.7}\\
-  \propto& 1 - \left. \frac{1}{1 + e^{\frac{-\Phi + \mu}{\sigma}}}
-  \right\rvert_{\mu = 4, \sigma = 0.7}
+  % Line 1.
+  P(\Phi) \propto{}& 
+  \begin{cases}
+    1 - \left. 
+    \int_{-\infty}^{b} \text{Logistic}(\Phi \given \mu, \sigma) \intd{\Phi}
+    \right\rvert_{\mu = 4, \sigma = 0.7} & \textbf{if} \Phi \geq 0\\
+    0 & \textbf{if} \Phi < 0
+  \end{cases}\\
+  % Line 2.
+  \propto{}&
+  \begin{cases}
+    1 - \bar{P}(\Phi) & \textbf{if} \Phi \geq 0\\
+    0 & \textbf{if} \Phi < 0
+  \end{cases}
 \end{align}
 
 It is evident from Equation~\ref{eqn:probobj_surface_prior} that under an 
