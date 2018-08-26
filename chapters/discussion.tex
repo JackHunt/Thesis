@@ -58,9 +58,6 @@ and used for training of, and prediction with simple classifiers in an interacti
 ~\ref{sec:intro_aims_structure} potential use of dynamics for semantic purposes is outlined as an 
 additional research objective.
 
-%-> Specific contributions.
-%--> Novel expansion to classic KF pipeline
-%--> Dual represenation, adaptive mu
 The demonstrated improvements in pose estimation and the ability to perform simple semantic 
 understanding in dynamic scenes are facilitated by the following central contributions of 
 Chapter~\ref{chap:moseg}. First is the introduction of the novel \textit{dual representation} of 
@@ -96,6 +93,35 @@ dense SLAM.
 %----> As shown by results...
 %--> Without known pose and with commodity hardware
 %---> Initial aim of ease of use and applicability
+The second major research objective outlined in Section~\ref{sec:intro_aims_structure} is the 
+development of a system that allows for the reconstruction of arbitrary objects in a globally 
+consistent manner. As highlighted in Sections~\ref{sec:intro_object_recon} and
+~\ref{sec:lit_review_obj_recon}, object centric dense reconstruction is a markedly difficult 
+problem compared to it's scene scale counterpart. A prominent technical challenge in object 
+reconstruction is the enforcement of object consistency when there are erroneous pose estimation 
+results. The system outlined in Chapter~\ref{chap:probobj} mitigates object inconsistencies by 
+the use of a novel object reconstruction pipeline that includes an online correction procedure.
+
+The system outlined in Chapter~\ref{chap:probobj} when compared to the state-of-the-art object 
+reconstruction method of \textit{Ren et al}~\cite{Ren2013}, demonstrates a vast improvement in 
+efficacy for general object reconstruction. The latter system was unable to reconstruct the test 
+sequences used in Sections~\ref{sec:probobj_qualitative} and~\ref{sec:probobj_quantitative}. 
+
+Furthermore, it is shown in Table~\ref{table:probobj_hauss} and Figure~\ref{figure:probobj_hauss} 
+of Section~\ref{sec:probobj_quantitative} that the approach presented in this work is capable of 
+yielding high quality reconstructions, relative to manually extracted reconstructions obtained 
+with a standard, scene scale dense SLAM approach. As outlined in Section
+~\ref{sec:intro_aims_structure}, a principal requirement of the object reconstruction research 
+objective is to develop an approach that provides high quality reconstructions, utilising only 
+observations belonging to the object of interest.
+
+Whereas many dedicated object reconstruction systems rely on either known poses or poses for which 
+there is a strong prior (such as an object on a turntable in front of a laser scanner), the approach 
+proposed in this work is able to perform pose estimation online for arbitrary trajectories. In 
+Section~\ref{sec:intro_aims_structure} one of the requirements of the central research objective of 
+the work of Chapter~\ref{chap:probobj} is that the system is capable of operating with no a-priori
+known trajectory. This competency may be observed in Table~\ref{table:probobj_ate} and Figure
+~\ref{figure:probobj_comp_itm} of Section~\ref{sec:probobj_quantitative}.
 
 %-> Impact of results.
 %--> Globally consistent, dense reconstructions
