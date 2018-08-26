@@ -128,8 +128,6 @@ image data available for the learning of vision tasks, but not a comparable amou
 
 \section{Future Work and Limitations}
 ~\label{sec:discussion_limitations}
-%-> Though the contributions of this work..., future work...
-
 %-> Moseg
 %--> Limitations
 %---> Currently maintains two full SDF's; this can be optimised
@@ -138,6 +136,21 @@ image data available for the learning of vision tasks, but not a comparable amou
 %---> Optimise pipeline for better space complexity
 %---> Introduce semantics throughout; multi moving things etc
 %---> Expand to dynamic semantic slam system; a la spaint
+The system of Chapter~\ref{chap:moseg} provides a strong foundation for further research 
+into both dense SLAM for dynamic environments and semantic SLAM. However, there are 
+potential directions of subsequent research that follow on directly from the approach of 
+this work. Firstly, at present the system presented in this work currently maintains two full 
+TSDF volumes; there is a volume for the static scene representation and a volume for the dynamic 
+scene representation. An improvement that could be introduced in a later iteration of this work 
+is the use of a sparse representation of the dynamic scene volume which would improve the space 
+complexity of the system. 
+
+A second potential improvement to the work of Chapter~\ref{chap:moseg} is the expansion of the 
+motion segmentation itself to be semantically aware. At present, the system is capable of 
+determining which elements of the world are undergoing motion and is able to leverage this 
+information to improve pose estimation and thus the quality of the resultant reconstruction. 
+With further semantic capabilities at the lower level, a revised system could have the ability 
+to separate observed motion into instances of dynamic objects.
 
 %-> Object reconstruction.
 %--> Limitations
