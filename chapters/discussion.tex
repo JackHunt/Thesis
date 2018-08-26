@@ -30,7 +30,7 @@ One of the central research objectives outlined in Section~\ref{sec:intro_aims_s
 is the development of an algorithm which facilitates the dense reconstruction of dynamic 
 environments. As highlighted in Sections~\ref{sec:intro_scene_recon} and
 ~\ref{sec:lit_review_dynamic}, this has remained a challenging problem in 3D computer vision, 
-due to the reliance on prominent pose estimation techniques on reliant point correspondences 
+due to the reliance of prominent pose estimation techniques on reliant point correspondences 
 between frames. The novel approach taken in Chapter~\ref{chap:moseg} mitigates the restrictions 
 incurred by this dependence by actively excluding dynamic scene components from the pose 
 estimation phase of the pipeline, as shown in Figure~\ref{figure:moseg_pipeline}.
@@ -61,12 +61,30 @@ additional research objective.
 %-> Specific contributions.
 %--> Novel expansion to classic KF pipeline
 %--> Dual represenation, adaptive mu
+The demonstrated improvements in pose estimation and the ability to perform simple semantic 
+understanding in dynamic scenes are facilitated by the following central contributions of 
+Chapter~\ref{chap:moseg}. First is the introduction of the novel \textit{dual representation} of 
+the scene, in which a \textit{stable} version of the scene is maintained as both the resultant 
+reconstruction and the source of depth map to which live frames are registered. The 
+\textit{dynamic} scene representation has all observed data points integrated. This dual 
+representation allows for the separation and thus segmentation of dynamic, moving scene components 
+from their stable counterparts, thus allowing the pose estimation phase to use a reliable, non 
+corrupted scene model.
 
-%-> Impact of results
-%--> Larger scale reconstructions with dynamics possible (vs dynamicfusion)
-%---> Using volumetric representation and all it's advantages (versus non vol)
-%---> Potential for application in larger, troublesome environments
-%----> Industrial robotics
+In addition to the dual scene representation, the system outlined in Chapter~\ref{chap:moseg} 
+introduces a novel online adaption schema for the TSDF truncation region. This online adaption 
+of the truncation region allows for live integration and removal of surface data in the dynamic 
+model by facilitating real time space carving such that changes in the scene are reflected 
+instantly in the dynamic model. This technique combined with the dual representation is the 
+basis of the proposed approach.
+
+The system and results outlined in Chapter~\ref{chap:moseg} have the potential to impact 
+significantly on real world applications of 3D vision systems. Due to the approach utilising 
+volumetric representations versus less scalable alternatives, there is potential for application 
+in large scale robotics. Such applications are ordinarily inhibited by the static nature of 
+dense SLAM approaches. Additionally, the ability to operate in dynamic environments when coupled 
+with the ability to exploit dynamics has the potential to greatly impact on the fields of semantic 
+dense SLAM.
 
 \subsection{Probabilistic Object Reconstruction with Online Drift Correction}
 ~\label{subsec:discussion_probobj}
