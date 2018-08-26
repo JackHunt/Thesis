@@ -128,14 +128,6 @@ image data available for the learning of vision tasks, but not a comparable amou
 
 \section{Future Work and Limitations}
 ~\label{sec:discussion_limitations}
-%-> Moseg
-%--> Limitations
-%---> Currently maintains two full SDF's; this can be optimised
-%---> Single "moving thing" class; can add more semantics
-%--> Future work
-%---> Optimise pipeline for better space complexity
-%---> Introduce semantics throughout; multi moving things etc
-%---> Expand to dynamic semantic slam system; a la spaint
 The system of Chapter~\ref{chap:moseg} provides a strong foundation for further research 
 into both dense SLAM for dynamic environments and semantic SLAM. However, there are 
 potential directions of subsequent research that follow on directly from the approach of 
@@ -152,16 +144,21 @@ information to improve pose estimation and thus the quality of the resultant rec
 With further semantic capabilities at the lower level, a revised system could have the ability 
 to separate observed motion into instances of dynamic objects.
 
-%-> Object reconstruction.
-%--> Limitations
-%---> Purely observation driven; could better leverage stochastic framework
-%---> Requires manual indication of object of interest
-%--> Future work
-%---> Expand probability framework to directly estimate missing geometry
-%---> Exploit advances in saliency to remove manual indication requirement
-%---> Multiple objects?
+The object reconstruction system presented in Chapter~\ref{chap:probobj} provides a simple means 
+to obtain geometrically consistent reconstructions of 3D objects. Though the proposed system
+demonstrates an improvement over comparative methods, it still requires the end user to indicate 
+which object is to be reconstructed. An alternative approach would be to leverage some of the 
+advancements in salient object detection~\cite{SALIENT} to allow for automation of the process. 
 
-%-> General integration of moseg and object recon for super semantic slam
+The probabilistic framework on which the system is based could additionally be extended in a later 
+iteration of the work to estimate the geometry of any missing sections of the surface of the object 
+being reconstructed. Such an extension would further increase the consistency of the reconstructions 
+in the case where full coverage with the sensor has not been achieved.
+
+Another potential line of research following on from the contributions outlined is the extension to 
+the multiple object case. The ability to track and reconstruct multiple objects in the sensor view 
+combined with the potential salient object detection would greatly enhance the efficiency of 3D data 
+collection.
 
 \section{Conclusions}
 ~\label{sec:discussion_conclusions}
