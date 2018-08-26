@@ -26,21 +26,13 @@ remarks are given in Section~\ref{sec:discussion_conclusions}.
 
 \subsection{Real Time Motion Segmentation for Dense Volumetric Fusion}
 ~\label{subsec:discussion_moseg}
-%-> Dense reconstruction with dynamics
-%--> Aim to have KF like pipeline with dynamics
-%---> Previously prohibitive due to...
-%---> Results show...
-%--> With RT performance
-%--> TODO: measure this
-%--> With comparable reconstruction quality
-%--> With improved pose estimation
 One of the central research objectives outlined in Section~\ref{sec:intro_aims_structure} 
 is the development of an algorithm which facilitates the dense reconstruction of dynamic 
 environments. As highlighted in Sections~\ref{sec:intro_scene_recon} and
 ~\ref{sec:lit_review_dynamic}, this has remained a challenging problem in 3D computer vision, 
 due to the reliance on prominent pose estimation techniques on reliant point correspondences 
 between frames. The novel approach taken in Chapter~\ref{chap:moseg} mitigates the restrictions 
-incurred by this depencence by actively excluding dynamic scene components from the pose 
+incurred by this dependence by actively excluding dynamic scene components from the pose 
 estimation phase of the pipeline, as shown in Figure~\ref{figure:moseg_pipeline}.
 
 As demonstrated in Sections~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, the 
@@ -50,7 +42,7 @@ on the \textit{Dynamic Objects} subset of the TUM RGBD dataset~\cite{Sturm2012}.
 performance is evident in Tables~\ref{table:moseg_ate} and~\ref{table:moseg_rte}, and 
 Figures~\ref{figure:moseg_ate} and~\ref{figure:moseg_rte}. The improvement in the ability to 
 accurately track sensor pose during reconstruction fulfils the research objective of designing 
-an angorithm that provides an improvement in pose estimation versus static dense SLAM in dynamic 
+an algorithm that provides an improvement in pose estimation versus static dense SLAM in dynamic 
 scenes.
 
 Additionally, it is evident from Section~\ref{sec:moseg_qualitative} that the proposed approach 
@@ -59,8 +51,12 @@ counterparts when there is no motion in the scene. Again, this result is directl
 the research objective to design a system that is capable of providing comparable quality 
 reconstructions in previously troublesome environments.
 
-%-> Identification/segmentation of moving objects
-%--> Demonstrate potential for semantic use.
+Section~\ref{sec:moseg_semantic} demonstrates how the dynamic segmentation ability of the proposed 
+approach may be leveraged for semantic purposes. It is shown that the use of the dynamics information 
+may be used to indicate to the system an object of interest, such that 3D features may be extracted 
+and used for training of, and prediction with simple classifiers in an interactive manner. In Section
+~\ref{sec:intro_aims_structure} potential use of dynamics for semantic purposes is outlined as an 
+additional research objective.
 
 %-> Specific contributions.
 %--> Novel expansion to classic KF pipeline
