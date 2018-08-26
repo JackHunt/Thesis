@@ -6,11 +6,23 @@ of the initially outlined research objectives of this thesis.
 
 \section{Summary}
 ~\label{sec:discussion_summary}
-%-> This thesis has developed novel algo's for...
-%-> Progress towards applications...
-%-> This chapter proceeds...
+This work has outlined novel approaches to various challenges in 3D computer vision, 
+including handling dynamics in dense SLAM, reconstructing 3D objects and predicting both 
+shape and pose. This chapter evaluates the methods, contributions and outcomes of these 
+approaches, with the research objectives outlined in Section~\ref{sec:intro_aims_structure} 
+as a point of reference.
 
-Chapters~\ref{}
+This chapter proceeds as follows; first, Section~\ref{subsec:discussion_moseg} provides a 
+summary of the dynamic SLAM and motion segmentation approach outlined in Chapter~\ref{chap:moseg}.
+Following this, Section~\ref{subsec:discussion_probobj} provides a similar evaluation of the 
+approach to object reconstruction outlined in Chapter~\ref{chap:probobj}. Section
+~\ref{subsec:discussion_spp} evaluates the approach taken to shape and pose prediction in 
+Chapter~\ref{chap:spp}.
+
+Following the evaluations given in Sections~\ref{subsec:discussion_moseg},~\ref{subsec:discussion_probobj} 
+and~\ref{chap:spp}, consideration is given to the limitations of the approaches of this work and potential 
+future directions in Section~\ref{sec:discussion_limitations}. Finally, a high level conclusion and closing 
+remarks are given in Section~\ref{sec:discussion_conclusions}.
 
 \subsection{Real Time Motion Segmentation for Dense Volumetric Fusion}
 ~\label{subsec:discussion_moseg}
@@ -22,6 +34,30 @@ Chapters~\ref{}
 %--> TODO: measure this
 %--> With comparable reconstruction quality
 %--> With improved pose estimation
+One of the central research objectives outlined in Section~\ref{sec:intro_aims_structure} 
+is the development of an algorithm which facilitates the dense reconstruction of dynamic 
+environments. As highlighted in Sections~\ref{sec:intro_scene_recon} and
+~\ref{sec:lit_review_dynamic}, this has remained a challenging problem in 3D computer vision, 
+due to the reliance on prominent pose estimation techniques on reliant point correspondences 
+between frames. The novel approach taken in Chapter~\ref{chap:moseg} mitigates the restrictions 
+incurred by this depencence by actively excluding dynamic scene components from the pose 
+estimation phase of the pipeline, as shown in Figure~\ref{figure:moseg_pipeline}.
+
+As demonstrated in Sections~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, the 
+approach taken demonstrates improvements in pose estimation quality over an open implementation
+~\cite{Prisacariu2014} of the standard KinectFusion~\cite{Newcombe2011} pipeline when evaluated 
+on the \textit{Dynamic Objects} subset of the TUM RGBD dataset~\cite{Sturm2012}. This improved 
+performance is evident in Tables~\ref{table:moseg_ate} and~\ref{table:moseg_rte}, and 
+Figures~\ref{figure:moseg_ate} and~\ref{figure:moseg_rte}. The improvement in the ability to 
+accurately track sensor pose during reconstruction fulfils the research objective of designing 
+an angorithm that provides an improvement in pose estimation versus static dense SLAM in dynamic 
+scenes.
+
+Additionally, it is evident from Section~\ref{sec:moseg_qualitative} that the proposed approach 
+yields high quality reconstructions in dynamic environments that are comparable to their static 
+counterparts when there is no motion in the scene. Again, this result is directly satisfying of 
+the research objective to design a system that is capable of providing comparable quality 
+reconstructions in previously troublesome environments.
 
 %-> Identification/segmentation of moving objects
 %--> Demonstrate potential for semantic use.
