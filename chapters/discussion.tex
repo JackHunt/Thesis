@@ -3,3 +3,81 @@
 This chapter reviews the proposed algorithms in this work within the context 
 of the initially outlined research objectives of this thesis.
 \end{chapterabstract}
+
+\section{Summary}
+~\label{sec:discussion_summary}
+%-> This thesis has developed novel algo's for...
+%-> Progress towards applications...
+%-> This chapter proceeds...
+
+Chapters~\ref{}
+
+\subsection{Real Time Motion Segmentation for Dense Volumetric Fusion}
+~\label{subsec:discussion_moseg}
+%-> Dense reconstruction with dynamics
+%--> Aim to have KF like pipeline with dynamics
+%---> Previously prohibitive due to...
+%---> Results show...
+%--> With RT performance
+%--> TODO: measure this
+%--> With comparable reconstruction quality
+%--> With improved pose estimation
+
+%-> Identification/segmentation of moving objects
+%--> Demonstrate potential for semantic use.
+
+%-> Specific contributions.
+%--> Novel expansion to classic KF pipeline
+%--> Dual represenation, adaptive mu
+
+%-> Impact of results
+%--> Larger scale reconstructions with dynamics possible (vs dynamicfusion)
+%---> Using volumetric representation and all it's advantages (versus non vol)
+%---> Potential for application in larger, troublesome environments
+%----> Industrial robotics
+
+\subsection{Probabilistic Object Reconstruction with Online Drift Correction}
+~\label{subsec:discussion_probobj}
+%-> Dense reconstruction of objects
+%--> Globally consistent
+%---> As shown by results...
+%---> Comparison to SoTA
+%---> Previously problematic due to...
+%----> As shown by results...
+%--> Without known pose and with commodity hardware
+%---> Initial aim of ease of use and applicability
+
+%-> Impact of results.
+%--> Globally consistent, dense reconstructions
+%--> Runs without specialist hardware (unlike many current systems)
+%--> Potential applications in data profcurement for deep learning etc
+
+\subsection{Stereo Shape and Pose Regression}
+~\label{subsec:discussion_spp}
+
+\section{Future Work and Limitations}
+~\label{sec:discussion_limitations}
+%-> Though the contributions of this work..., future work...
+
+%-> Moseg
+%--> Limitations
+%---> Currently maintains two full SDF's; this can be optimised
+%---> Single "moving thing" class; can add more semantics
+%--> Future work
+%---> Optimise pipeline for better space complexity
+%---> Introduce semantics throughout; multi moving things etc
+%---> Expand to dynamic semantic slam system; a la spaint
+
+%-> Object reconstruction.
+%--> Limitations
+%---> Purely observation driven; could better leverage stochastic framework
+%---> Requires manual indication of object of interest
+%--> Future work
+%---> Expand probability framework to directly estimate missing geometry
+%---> Exploit advances in saliency to remove manual indication requirement
+%---> Multiple objects?
+
+%-> General integration of moseg and object recon for super semantic slam
+
+\section{Conclusions}
+~\label{sec:discussion_conclusions}
