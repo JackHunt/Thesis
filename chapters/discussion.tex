@@ -85,14 +85,6 @@ dense SLAM.
 
 \subsection{Probabilistic Object Reconstruction with Online Drift Correction}
 ~\label{subsec:discussion_probobj}
-%-> Dense reconstruction of objects
-%--> Globally consistent
-%---> As shown by results...
-%---> Comparison to SoTA
-%---> Previously problematic due to...
-%----> As shown by results...
-%--> Without known pose and with commodity hardware
-%---> Initial aim of ease of use and applicability
 The second major research objective outlined in Section~\ref{sec:intro_aims_structure} is the 
 development of a system that allows for the reconstruction of arbitrary objects in a globally 
 consistent manner. As highlighted in Sections~\ref{sec:intro_object_recon} and
@@ -121,12 +113,15 @@ proposed in this work is able to perform pose estimation online for arbitrary tr
 Section~\ref{sec:intro_aims_structure} one of the requirements of the central research objective of 
 the work of Chapter~\ref{chap:probobj} is that the system is capable of operating with no a-priori
 known trajectory. This competency may be observed in Table~\ref{table:probobj_ate} and Figure
-~\ref{figure:probobj_comp_itm} of Section~\ref{sec:probobj_quantitative}.
+~\ref{figure:probobj_comp_itm} of Section~\ref{sec:probobj_quantitative}. This competency allows 
+the system to be used with commodity equipment, thus facilitating ease of use.
 
-%-> Impact of results.
-%--> Globally consistent, dense reconstructions
-%--> Runs without specialist hardware (unlike many current systems)
-%--> Potential applications in data profcurement for deep learning etc
+The ability of the proposed object reconstruction system to produce globally consistent reconstructions 
+is demonstrated in Section~\ref{sec:probobj_qualitative} and is one of the key research objectives of the 
+work of Chapter~\ref{chap:probobj}. The potential impact of a system that can be used to easily obtain such 
+reconstructions is particularly evident for fields that are heavily data dependent. Such a field is machine 
+learning, where as outlined in Section~\ref{sec:intro_object_recon}, there is an abundance of real world 2D 
+image data available for the learning of vision tasks, but not a comparable amount for 3D geometry.
 
 \subsection{Stereo Shape and Pose Regression}
 ~\label{subsec:discussion_spp}
