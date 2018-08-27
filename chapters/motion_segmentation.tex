@@ -634,38 +634,57 @@ the scene isosurface. The basic Raycasting process is Given in Algorithm~\ref{al
   \begin{minipage}{\linewidth}
     \begin{algorithm}[H]
 ~\label{alg:raycast}
-      \caption{Volume Raycasting Algorithm.}
+      \caption{Volume Raycasting.}
       \begin{algorithmic}[1]
         % $.$ used instead of \(\) due to a bug(?) in algorithmic.
-        \Procedure{Raycast}{$\bm{\Phi}, \bm{\Omega}, \bm{C}, \bm{P}, z_{min}, z_{max}, D$}
+        \Procedure{Raycast}{$\bm{\Phi}, \bm{\Omega}_{in}, \bm{\Omega}_{out}, \bm{C}, \bm{P}, z_{min}, z_{max}, D$}
           \For{\( y \gets 0\ \text{to}\ H \)}
             \For{\( x \gets\ 0\ \text{to}\ W \)}
-            % Unproject.
+              % Unproject.
               \State{\( \bm{p}_{min} \gets  \big[
-                \big(x - \bm{C}_{0, 2}\big) \div \bm{C}_{0, 0}\quad
-                \big(y - \bm{C}_{1, 2}\big) \div \bm{C}_{1, 1}\quad
+                \frac{x - \bm{C}_{0, 2}}{\bm{C}_{0, 0}}\quad
+                \frac{y - \bm{C}_{1, 2}}{\bm{C}_{1, 1}}\quad
                 z_{min}\quad 
                 1
-              \big]^{T} \)}
+              \big]^{T} \)} \Comment{Unproject}
               \State{\( \bm{p}_{max} \gets  \big[
-                \big(x - \bm{C}_{0, 2}\big) \div \bm{C}_{0, 0}\quad
-                \big(y - \bm{C}_{1, 2}\big) \div \bm{C}_{1, 1}\quad
+                \frac{x - \bm{C}_{0, 2}}{\bm{C}_{0, 0}}\quad
+                \frac{y - \bm{C}_{1, 2}}{\bm{C}_{1, 1}}\quad
                 z_{max}\quad 
                 1
               \big]^{T} \)}
-            % Min and max model point.
-            \State{\( \bm{p}_{min}^{\star} \gets
-              \bm{P}^{-1} \bm{p}_{min}
-            \)}
-            \State{\( \bm{p}_{max}^{\star} \gets
-              \bm{P}^{-1} \bm{p}_{max}
-            \)}
-            \State{\( \bm{p}_{min}^{\star} \gets
-              D \bm{p}_{min}^{\star} \div \bm{p}_{min, 3}^{\star} + \eta
-            \)}
-            \State{\( \bm{p}_{max}^{\star} \gets
-              D \bm{p}_{max}^{\star} \div \bm{p}_{max, 3}^{\star} + \eta
-            \)}
+              % Min and max model point.
+              \State{\( \bm{p}_{min}^{\star} \gets
+                \bm{P}^{-1} \bm{p}_{min}
+              \)}\Comment{Object Point}
+              \State{\( \bm{p}_{max}^{\star} \gets
+                \bm{P}^{-1} \bm{p}_{max}
+              \)}
+              \State{\( \bm{p}_{min}^{\star} \gets
+                D \frac{\bm{p}_{min}^{\star}}{\bm{p}_{min, 3}^{\star}} + \eta
+              \)}
+              \State{\( \bm{p}_{max}^{\star} \gets
+                D \frac{\bm{p}_{max}^{\star}}{\bm{p}_{max, 3}^{\star}} + \eta
+              \)}
+              % Get step
+              \State{\(
+                \bm{s} \gets \bm{p}_{max}^{\star} - \bm{p}_{min}^{\star}
+              \)}\Comment{Ray Step}
+              \State{\(
+                \bm{s}^{\star} \gets \frac{\bm{s}}{\lVert \bm{s} \rVert}
+              \)}
+              % Raycast.
+              \State{\( \bm{p}_{m} \gets \bm{p}_{min}^{\star} - \bm{s}^{\star} \)} \Comment{Starting Point}
+              \For{\( \delta \gets 0\ \text{to}\ \lVert \bm{s} \rVert \)} \Comment{Traverse the Ray}
+                \If{\( \bm{\Phi}(\bm{p}_{m}) \) is valid} \Comment{Write Shaded Pixel}
+                  \State{\( \phi \gets \bm{\Phi}(\bm{p}_{m}) \)}
+                  \State{\( \bm{x} \gets \bm{P}(\frac{\bm{p}_{m}}{D} - \eta) \)}
+                  \State{\( \bm{x}^{\star} \gets \frac{\bm{x}}{\bm{x}_{3}} \)}
+                  \State{\( \bm{\Omega}_{x, y} \gets \bm{x}^{\star}_{2} \)}
+                  \State{\textbf{break}}
+                \EndIf{}
+                \State{\( \bm{p}_{m} \gets \bm{p}_{m} + \bm{s}^{\star}\)} \Comment{Increment Model Point}
+              \EndFor{}
             \EndFor{}
           \EndFor{}
         \EndProcedure{}
