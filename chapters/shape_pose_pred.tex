@@ -95,8 +95,15 @@ resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the Raycasting mo
 a rendering for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
 to the loss layer which computes appearance statistics for the detection region and the rendering 
 which are used to quantify loss. The topology of the proposed model is outlined in Figure
-~\ref{A}
-FIGURE HERE
+~\ref{figure:spp_pipeline}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/spp/model.pdf}
+  \caption[Shape and Pose Prediction Network]{The proposed shape and pose prediction network. 
+  Note that the \textit{ResNet-50}, \textit{Shape Net} and \textit{Latent Net} components have 
+  shared parameters.}
+~\label{figure:spp_pipeline}
+\end{figure}
 
 \subsection{Gaussian Process Latent Variable Model}
 ~\label{subsec:spp_gplvm}
@@ -110,6 +117,14 @@ Under a bayesian formulation, the often intractable latent variables pertaining 
 mapping may be marginalised such that the latent embedding itself may be optimised directly. The 
 given framework allows for complex, nonlinear embeddings to be learnt via the use kernel functions, 
 though the optmisation in this case is often non-convex and highly nonlinear.
+
+TODO: GP's are dists over functions...
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/spp/gp.pdf}
+  \caption[GP as a Distribution Over Functions]{}
+~\label{figure:gp_func_dist}
+\end{figure}
 
 \subsubsection{Gaussian Process Marginal Likelihood}
 ~\label{subsubsec:spp_gp_marginal_likelihood}
