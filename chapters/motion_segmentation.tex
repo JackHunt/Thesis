@@ -801,14 +801,49 @@ integration. The process is as follows in Algorithm~\ref{alg:moseg}
 {
   \centering
   \singlespacing{}
-  \begin{minipage}{.7\linewidth}
+  \begin{minipage}{\linewidth}
     \begin{algorithm}[H]
 ~\label{alg:moseg}
       \caption{Motion Segmentation and Dynamic SLAM}
       \begin{algorithmic}[1]
         % $.$ used instead of \(\) due to a bug(?) in algorithmic.
-        \Procedure{MoSeg Iteration}{$\bm{\Phi}_{s}, \bm{\Phi}_{d}, \bm{\Omega}, \bm{T}$}
-          
+        \Procedure{MoSeg Iteration}{$\bm{\Phi}_{s}, \bm{\Phi}_{d}, \bm{\Omega}, \bm{T}, t$}
+          \If{\( t \neq 0 \)}
+            \State{\( \mathcal{R} \gets \text{raycast}(\bm{\Phi}_{s}, \bm{\Omega}, \bm{T}) \)}
+            \Comment{Section~\ref{subsec:moseg_static_rendering}}
+            \State{\( \bm{T}_{t+1} \gets \text{estimatePose}(\mathcal{R}, \mathcal{D}) \)}
+            \Comment{Section~\ref{subsec:moseg_static_camera_tracking}}
+            \State{\( \text{updatePose}(\bm{T}_{t+1}) \)}
+          \EndIf{}
+
+          \State{\( \mathcal{D} \gets \text{unproject}(\bm{\Omega}_{d}) \)}
+          \State{\( \bm{\Phi}_{d} \gets \text{integrate}(\mathcal{D}, \bm{\Phi}_{d}, \bm{T})\)}
+          \Comment{Equation~\ref{eqn:sdf_update}}
+
+          \For{\( p \in \mathcal{D} \)}
+            \State{\( b \gets \text{getVoxelBlock}(p) \)}\\
+            \State{\( \tau_{b} \gets \text{getStability}(b) \)}
+            \Comment{Equation~\ref{eqn:moseg_stability_value}}
+            \State{\( l_{b} \gets \text{getLabel}(\tau_{b}) \)}
+            \Comment{Equation~\ref{eqn:moseg_stability_labelling}}
+            \State{\( \text{updateStability}(b, l_{b}) \)}
+            \Comment{Equation~\ref{eqn:moseg_stability_update}}\\
+
+            \If{\( t \leq \text{initial\_frame\_count} \lor l_{b} == \text{stable} \)}
+              \For{\( v \in \text{getVoxels}(b) \)}
+                \State{\( \phi_{s}(v) \gets \text{getWeight}(v) \)}
+                \State{\( \phi_{d}(v) \gets \text{getWeight}(v) \)}
+                \State{\( \bm{\Phi}_{s}(v) \gets \text{integrate}(\bm{\Phi}_{s}(v), 
+                \bm{\Phi}_{d}(v)), \phi_{s}(v), \phi_{d}(v) \)}
+                \Comment{Equation~\ref{eqn:moseg_sdf_update}}
+                \State{\( \text{updateStableWeight}(\phi_{s}(v), \phi_{d}(v)) \)}
+                \Comment{Equation~\ref{eqn:moseg_weight_update}}
+              \EndFor{}
+            \EndIf{}
+          \EndFor{}
+
+          \State{\( \text{raycast}(\bm(\Phi)_{d}, \bm{T}) \)}
+          \Comment{Visualise Dynamics}
         \EndProcedure{}
       \end{algorithmic}
     \end{algorithm}
