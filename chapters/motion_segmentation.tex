@@ -642,29 +642,29 @@ the scene isosurface. The basic Raycasting process is Given in Algorithm~\ref{al
             \For{\( x \gets\ 0\ \text{to}\ W \)}
             % Unproject.
               \State{\( \bm{p}_{min} \gets  \big[
-                \big(x - \bm{C}_{0, 2}\big) \div \bm{C}_{0, 0},\quad
-                \big(y - \bm{C}_{1, 2}\big) \div \bm{C}_{1, 1},\quad
-                z_{min},\quad 
+                \big(x - \bm{C}_{0, 2}\big) \div \bm{C}_{0, 0}\quad
+                \big(y - \bm{C}_{1, 2}\big) \div \bm{C}_{1, 1}\quad
+                z_{min}\quad 
                 1
-              \big] \)}
+              \big]^{T} \)}
               \State{\( \bm{p}_{max} \gets  \big[
-                \big(x - \bm{C}_{0, 2}\big) \div \bm{C}_{0, 0},\quad
-                \big(y - \bm{C}_{1, 2}\big) \div \bm{C}_{1, 1},\quad
-                z_{max},\quad 
+                \big(x - \bm{C}_{0, 2}\big) \div \bm{C}_{0, 0}\quad
+                \big(y - \bm{C}_{1, 2}\big) \div \bm{C}_{1, 1}\quad
+                z_{max}\quad 
                 1
-              \big] \)}
+              \big]^{T} \)}
             % Min and max model point.
             \State{\( \bm{p}_{min}^{\star} \gets
-              \bm{P}^{-1} \bm{p}_{min}^{T}
+              \bm{P}^{-1} \bm{p}_{min}
             \)}
             \State{\( \bm{p}_{max}^{\star} \gets
-              \bm{P}^{-1} \bm{p}_{max}^{T}
+              \bm{P}^{-1} \bm{p}_{max}
             \)}
             \State{\( \bm{p}_{min}^{\star} \gets
-              D \bm{p}_{min}^{'} \div \bm{p}_{min, 3}^{'} + \eta
+              D \bm{p}_{min}^{\star} \div \bm{p}_{min, 3}^{\star} + \eta
             \)}
             \State{\( \bm{p}_{max}^{\star} \gets
-              D \bm{p}_{max}^{'} \div \bm{p}_{max, 3}^{'} + \eta
+              D \bm{p}_{max}^{\star} \div \bm{p}_{max, 3}^{\star} + \eta
             \)}
             \EndFor{}
           \EndFor{}
