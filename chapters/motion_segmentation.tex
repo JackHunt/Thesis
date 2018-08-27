@@ -496,7 +496,6 @@ approximated by \(\bm{H} = \bm{J}^{T}\bm{J}\). The parameter \( \lambda \)
 controls the influence of the gradient on the update step and is adjusted
 according to the change in error, as shall be evident in the algorithm
 that follows.
-
 {
   \centering
   \singlespacing{}
@@ -536,7 +535,6 @@ that follows.
     \end{algorithm}
   \end{minipage}
   \par
-  
 }
 
 Note that for numerical stability, the matrix inverse in Equation~\ref{eqn:lm_update} 
@@ -627,7 +625,6 @@ at the next time step.
 Rendering in the pipeline is achieved by Raycasting~\cite{Roth1982}, the process of 
 ``casting'' a ray from the camera frame into the volume representation of the scene, to find intersections with 
 the scene isosurface. The basic Raycasting process is Given in Algorithm~\ref{alg:raycast}
-
 {
   \centering
   \singlespacing{}
@@ -794,6 +791,30 @@ Similarly, the update for the TSDF values is as follows.
   \phi^{d}_{t-1}(\bar{v}) \bm{\Phi}^{d}_{t-1}(\bar{v})
   \bigg]
 \end{equation}
+
+\subsection{Pipeline Summary}
+~\label{subsec:moseg_pipeline_summary}
+With the central components of the proposed algorithm now outlined, an algorithmic 
+summary may be given. As has been highlighted, the central components of the approach 
+are the dual volume representation, stability labelling and inter-volume surface 
+integration. The process is as follows in Algorithm~\ref{alg:moseg}
+{
+  \centering
+  \singlespacing{}
+  \begin{minipage}{.7\linewidth}
+    \begin{algorithm}[H]
+~\label{alg:moseg}
+      \caption{Motion Segmentation and Dynamic SLAM}
+      \begin{algorithmic}[1]
+        % $.$ used instead of \(\) due to a bug(?) in algorithmic.
+        \Procedure{MoSeg Iteration}{$\bm{\Phi}_{s}, \bm{\Phi}_{d}, \bm{\Omega}, \bm{T}$}
+          
+        \EndProcedure{}
+      \end{algorithmic}
+    \end{algorithm}
+  \end{minipage}
+  \par
+}
 
 \section{Qualitative Results}
 ~\label{sec:moseg_qualitative}
