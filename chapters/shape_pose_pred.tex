@@ -325,9 +325,9 @@ As such, the form of the normalized marginal likelihood \(P(\bm{Y} \given \bm{X}
   \label{eqn:spp_gp_marginal_simp}
   % Line 1.
   P(\bf{Y \given \bm{X}, \beta}) ={}& \mathcal{N}(\bm{Y} \given \bm{0}, 
-  \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})\\
+  \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})%\\
   % Line 2.
-  ={}& TODO
+  %={}& TODO
 \end{align}
 
 \subsubsection{Gaussian Process Fitting}
@@ -467,13 +467,16 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
   % Line 2.
   \frac{\partial \bm{\kappa}}{\partial \theta_{0}} ={}&
   e^{-\frac{\lambda}{2} 
-  \sum_{n = 0}^{D} -\frac{\lambda}{2} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}\\
+  \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}\\
   % Line 3.
   \frac{\partial \bm{\kappa}}{\partial \theta_{1}} ={}& 1\\
   % Line 4.
   \frac{\partial \bm{\kappa}}{\partial \theta_{2}} ={}& 0\\
   % Line 5.
-  \frac{\partial \bm{\kappa}}{\partial \lambda} ={}& \text{TODO}
+  \frac{\partial \bm{\kappa}}{\partial \lambda} ={}& 
+  -\frac{1}{2} \sum_{n = 0}^{D} \theta_{0} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}
+  e^{-\frac{\lambda}{2} 
+  \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}
 \end{align}
 
 \subsection{Latent Space Shape Estimation}
