@@ -496,6 +496,7 @@ approximated by \(\bm{H} = \bm{J}^{T}\bm{J}\). The parameter \( \lambda \)
 controls the influence of the gradient on the update step and is adjusted
 according to the change in error, as shall be evident in the algorithm
 that follows.
+
 {
   \centering
   \singlespacing{}
@@ -540,7 +541,10 @@ that follows.
 Note that for numerical stability, the matrix inverse in Equation~\ref{eqn:lm_update} 
 may be avoided by utilising the \texttt{chol} and \texttt{backsub} routines to 
 compute the Cholesky Decomposition~\cite{NumericalRecipes} and solve a linear system with 
-Backsubstitution~\cite{ElemLinAlg}, respectively.
+Backsubstitution~\cite{ElemLinAlg}, respectively. Additionally, it should be noted that 
+the cost term of Equation~\ref{eqn:pose_estimation_kf} and jacobian term of Equation
+~\ref{eqn:pose_jacobian} may be evaluated and reduced on the GPU as there exists no spatial 
+data dependence between either the model points or depth map points.
 
 \subsection{Volumetric Integration}
 ~\label{subsec:moseg_static_integration}
@@ -625,6 +629,7 @@ at the next time step.
 Rendering in the pipeline is achieved by Raycasting~\cite{Roth1982}, the process of 
 ``casting'' a ray from the camera frame into the volume representation of the scene, to find intersections with 
 the scene isosurface. The basic Raycasting process is Given in Algorithm~\ref{alg:raycast}
+
 {
   \centering
   \singlespacing{}
@@ -690,6 +695,9 @@ the scene isosurface. The basic Raycasting process is Given in Algorithm~\ref{al
   \end{minipage}
   \par
 }
+In Algorithm~\ref{alg:raycast} it should be noted that the loop over image pixels \( \bm{\Omega}_{x, y} \) 
+can be trivially optimised in a data parallel fashion on a GPU. This is possible as there exists no data 
+dependence between image pixels and TSDF accesses are read only.
 
 \section{Volumetric Fusion with Dynamic Scenes}
 ~\label{sec:moseg_dynamic_fusion}
@@ -798,6 +806,7 @@ With the central components of the proposed algorithm now outlined, an algorithm
 summary may be given. As has been highlighted, the central components of the approach 
 are the dual volume representation, stability labelling and inter-volume surface 
 integration. The process is as follows in Algorithm~\ref{alg:moseg}
+
 {
   \centering
   \singlespacing{}
@@ -850,6 +859,13 @@ integration. The process is as follows in Algorithm~\ref{alg:moseg}
   \end{minipage}
   \par
 }
+
+Algorithm~\ref{alg:moseg} is trivially parallelisable with commodity GPU hardware.
+The integration of points in the depth map \( \mathcal{D} \) is parallelisable 
+with minimal risk of race conditions ocurring. However care must be taken for edge 
+cases where multiple simultaneous writes may occur at the same TSDF location. 
+However, the integration of TSDF data from the dynamic model to the static model 
+has no such risk and as such is trivially parallelisable.
 
 \section{Qualitative Results}
 ~\label{sec:moseg_qualitative}

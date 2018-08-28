@@ -616,7 +616,9 @@ case, the log-posterior of Equation~\ref{eqn:probobj_log_posterior} is the
 target energy function and shall be denoted \(E(.)\) in the following derivation.
 The derivation of the partial derivatives of \(E(.)\) with respect
 to the Rodrigues rotational parameters is as follows for some parameter
-\( \tau \in \{ \alpha, \beta, \gamma \} \).
+\( \tau \in \{ \alpha, \beta, \gamma \} \). It should be noted that the partial 
+derivative with respect to the translation parameters can be derived in a similar 
+manner.
 \begin{align}
   \label{eqn:probobj_log_post_rot_grad}
   % Line 1.
@@ -850,6 +852,83 @@ is obtained by optimising the energy function of Equation~\ref{eqn:probobj_crf_e
 within a Max-Flow framework~\cite{Boykov2001} due to GPU parallelisation potential. However 
 it should be noted that alternatives such as Variational Bayesian Mean Field approximations 
 may also be of use~\cite{Krahenbuhl2011}.
+
+\section{Pipeline Summary}
+~\label{subsec:probobj_pipeline_summary}
+As outlined, the proposed object reconstruction system performs online correction of 
+reconstruction errors incurred by erroneous pose estimation results. The process of 
+reconstruction and correction is given in Algorithm~\ref{alg:probobj}
+
+{
+  \centering
+  \singlespacing{}
+  \begin{minipage}{\linewidth}
+    \begin{algorithm}[H]
+~\label{alg:probobj}
+      \caption{Object Reconstruction with Drift Correction}
+      \begin{algorithmic}[1]
+        % $.$ used instead of \(\) due to a bug(?) in algorithmic.
+        \Procedure{Object Reconstruction Iteration}{$\bm{\Omega}, \mathcal{S}, u, t$}
+          \State{\( \mathcal{P} \gets \text{getProbMap}(\bm{\Omega}_{rgb}) \)}
+
+          \For{\( s \in \mathcal{S} \)} \Comment{For Each Submap \( s \)}
+            \If{\( \text{isVisible}(s) \)}
+              \State{\( \bm{\Phi}_{s} \gets \text{getVolume}(s) \)}
+              \State{\( \bm{T}^{s}_{t} \gets \text{getPose}(s) \)}
+              
+              \State{\( \mathcal{R}_{s} \gets \text{raycast}(\bm{\Phi}_{s}, \bm{\Omega}_{depth}, \bm{T}^{s}_{t}) \)}
+              \State{\( \bm{T}^{s}_{t+1} \gets \text{estimatePose}(\mathcal{R}, \mathcal{D}) \)}
+              \State{\( \text{updatePose}(\bm{T}^{s}_{t+1}) \)}
+              
+              \State{\( \mathcal{D} \gets \text{unproject}(\bm{\Omega}_{depth}) \)}
+              \State{\( \bm{\Phi}_{s} \gets \text{integrate}(\mathcal{D}, \bm{\Phi}_{s}, \bm{T}^{s}_{t+1})\)}
+
+              \State{\( \text{updatePosteriorVolume}(\mathcal{D}, u, \mathcal{P}, \bm{T}^{s}_{t+1}) \)}
+              \Comment{Update Posterior with \( \mathcal{P} \)}
+
+              \If{\( \text{adjacentVolumesOverlap}(s) \geq 50\% \)}
+                \State{\( \text{newAdjacentSubmap}(s, \bm{T}^{s}_{t+1}) \)}
+              \EndIf{}
+            \EndIf{}
+          \EndFor{}
+
+          \For{\( s,s^{'} \in \mathcal{S} \)} \Comment{For Overlapping Submaps \( s,s^{'} \)}
+            \State{\( \bm{\Phi}_{s} \gets \text{getVolume}(s) \)}
+            \State{\( \bm{\Phi}_{s^{'}} \gets \text{getVolume}(s^{'}) \)}
+            \State{\( \bm{L}_{s, s^{'}} \gets \text{getConstraints}(s, s^{'}) \)}
+            \State{\( \bm{L}^{\star}_{s, s^{'}} \gets \text{inferOptimalConstraints}(\bm{\Phi}_{s}, \bm{\Phi}_{s^{'}}, \bm{L}_{s, s^{'}}) \)}
+            \Comment{Optimise Equation~\ref{eqn:probobj_log_post_rot_grad}}
+            \State{\( \text{updateConstraints}(s, s^{'}, \bm{L}^{\star}_{s, s^{'}}) \)}
+          \EndFor{}
+
+          \If{\( t \% n == 0 \)}
+            \For{\( s \in \mathcal{S} \)}
+              \State{\( \text{maxFlow}(s) \)}
+              \Comment{Optimise Equation~\ref{eqn:probobj_crf_energy}}
+            \EndFor{}
+          \EndIf{}
+        \EndProcedure{}
+      \end{algorithmic}
+    \end{algorithm}
+  \end{minipage}
+  \par
+}
+
+The process outlined in Algorithm~\ref{alg:probobj} is highly amenable to GPU parallelisation. 
+The first loop integrates the observed depth map into each active submap, estimates it's updated 
+pose and adds instantaneous probability information to it's appearance posterior volume. As 
+outlined in Section~\ref{subsec:moseg_pipeline_summary}, the integration and pose estimation phases 
+are largely parallelisable with minimal risk of race condition occurring if care is taken.
+
+Though the second loop itself is not directly parallelisable due to the dependencies between submaps 
+given their consistency constraints, the inference of optimal constraints is parallelisable. Though 
+multiple constraints may not be optimised for at a time, the process of registering two adjacent 
+submaps is easily amenable to GPU parallelisation, when each submap pair is taken sequentially.
+
+Finally, with careful implementationa and use of atomic primitives, the max flow procedure performed 
+on each submap may be parallelised for GPU hardware. In addition, each submap may be processed in 
+parallel as there is no data dependency at this stage that would be problematic for the task of 
+performing segmentation on each individual submap.
 
 \section{Qualitative Results}
 ~\label{sec:probobj_qualitative}
