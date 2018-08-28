@@ -5,27 +5,28 @@ and structure.
 \end{chapterabstract}
 
 In recent years there has been much research activity in the field of 3D computer vision, a field concerned 
-with the processing of three dimensional, geometric data for machine vision. This work addresses a number of 
-open technical challenges within the field of active, 3D vision. Specifically, the 3D reconstruction of 
-dynamic environments, robust 3D reconstruction of arbitrary objects and the prediction of shape \& pose of 
-objects. These areas of research are of interest to the computer vision community due to the broad application 
-potential of such systems. Scene reconstruction for example, has applications ranging from mobile robotics to 
-recreating the tangible world for Virtual Reality (VR) viewing. Object reconstruction has applications including 
-the reproduction of tangible objects via 3D printing and building 3D object models for the training of machine 
-learning systems. Finally, shape and pose prediction allows representations of a machines environment to be 
-inferred when traditional methods of reconstruction may not be feasible.
+with the processing of 3D geometric data for machine vision. This work addresses a number of open technical 
+challenges within the field of active, 3D vision. Specifically, the 3D reconstruction of dynamic environments, 
+robust 3D reconstruction of arbitrary objects and the prediction of shape \& pose of objects. These areas of 
+research are of interest to the computer vision community due to the broad application potential of such systems. 
+Scene reconstruction for example, has applications ranging from mobile robotics to recreating the tangible world 
+for Virtual Reality (VR) viewing. Object reconstruction has applications including the reproduction of tangible 
+objects via 3D printing and building 3D object models for the training of machine learning systems. Finally, shape 
+and pose prediction allows representations of a machine's environment to be inferred when traditional methods of 
+reconstruction may not be feasible.
 
 \section{3D Scene Reconstruction and Understanding}
 ~\label{sec:intro_scene_recon}
 Driven by the availability of consumer grade depth sensing equipment such as the Microsoft Kinect RGBD sensor 
-(introduced by Microsoft for the XBox 360), there has been a renewed interest in dense scene reconstruction. 
+(introduced by Microsoft in 2009 for the XBox 360), there has been a renewed interest in dense scene reconstruction. 
 Advances in recent years have allowed for the creation of digital reconstructions of the tangible world with 
-consumer grade computer equipment. Such systems iteratively integrate observed world points into a ``global'' 
-model, such that over time, a smooth representation of the observed world surfaces is built. In addition to the 
-integration of such information into a model, there is the task of inferring how the sensor has moved in world 
-space, such that the observed points may be transformed and integrated into the appropriate model location. The 
-amalgamation of these two tasks is known as SLAM (Simultaneous Localisation and Mapping). The basic SLAM pipeline 
-is given in Figure~\ref{figure:basic_slam}.
+consumer grade computer equipment~\cite{Newcombe2011,Kahler2016,Whelan2015}. Such systems iteratively integrate 
+observed world points into a ``global'' model, such that over time, a smooth representation of the observed world 
+surfaces is built. In addition to the integration of such information into a model, there is the task of inferring 
+how the sensor has moved in world space, such that the observed points may be transformed and integrated into the 
+appropriate model location. The amalgamation of these two tasks is known as SLAM (Simultaneous Localisation and Mapping). 
+The basic SLAM pipeline is given in Figure~\ref{figure:basic_slam}. A typical reconstruction using such a system is given 
+in Figure~\ref{figure:room_recon_example}.
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\linewidth]{figures/intro/basic_slam.pdf}
@@ -33,24 +34,23 @@ is given in Figure~\ref{figure:basic_slam}.
 ~\label{figure:basic_slam}
 \end{figure}
 
-A typical reconstruction using such a system is given in Figure~\ref{figure:room_recon_example}.
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=.5\linewidth]{figures/intro/room_scene.png}
+  \includegraphics[width=.7\linewidth]{figures/intro/room_scene.png}
   \caption[Room Scale Dense Reconstruction]{An example of room-scale dense reconstruction.}
 ~\label{figure:room_recon_example}
 \end{figure}
 
-There has been much advancement in the 2D semantic scene understanding literature, which can be utilised within 
-the context of 3D vision to introduce a semantic component to dense SLAM systems. Such a combination of techniques 
-provides an adaptable component to AR and robotics applications. Early work on amalgamating the two areas of research 
-have allowed one to view a reconstruction of their environment in VR and interactively label some of the objects within 
-it, with the system inferring the remaining labellings. An example of the output of such a system is given 
-in Figure~\ref{figure:spaint_teaser}.
+There has been much advancement in the 2D semantic scene understanding literature
+~\cite{Girshick2014,Shelhamer2017,Civera2011}, which can be utilised within the context of 3D vision to introduce a 
+semantic component to dense SLAM systems~\cite{Valentin2015,Golodetz2015,Cavallari2016}. Such a combination of techniques 
+provides an adaptable component to AR and robotics applications. Early work on amalgamating the two areas of research have 
+allowed one to view a reconstruction of their environment in VR and interactively label some of the objects within it, with 
+the system inferring the remaining labelling's. An example of the output of such a system is given in Figure~\ref{figure:spaint_teaser}.
 \afterpage{
   \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=.5\linewidth]{figures/intro/spaint-teaser.png}
+    \includegraphics[width=.7\linewidth]{figures/intro/spaint-teaser.png}
     \caption[Room Scale Dense Reconstruction]{An example of semantic SLAM.\footnotemark}
 ~\label{figure:spaint_teaser}
   \end{figure}
@@ -68,14 +68,14 @@ enable the segmentation to be performed rely on features utilising 2D image info
 no ``true'' semantic 3D object learning and recognition.
 
 As outlined, traditional dense SLAM systems have difficulty performing dense reconstruction in an 
-environment where there is motion. The aforementioned sensor pose estimation phase in many such systems
+environment where there is motion. The aforementioned sensor pose estimation phase in these systems
 is prone to error or failure in such a scenario. The reason for this is due to the reliance on point based 
 correspondences between frames. If a static environment is being modelled, then a high number of valid point 
 correspondences will be found. However, when motion (independent of the sensors motion) is introduced into 
 the scene, invalid correspondences may be found. For example, points that belong to a non moving object 
 such as a chair may erroneously be matched to those on a moving scene component, such as a walking person.
 Such erroneous correspondences can incur failure cases ranging from moderate model inconsistencies to total 
-loss of sensor tracking.
+loss of sensor tracking\cite{Newcombe2015}.
 
 Though there are many use cases for static scene reconstruction, the lack of robustness to dynamics is 
 prohibitive in scenarios where a high level of machine perception is required. For example, if 
@@ -90,11 +90,11 @@ would be capable of extracting pertinent semantic information from such events.
 Modern machine learning provides much of the semantic and contextual information required to make meaningful 
 inferences over the state of the world, as observed by a sensor (such as a camera). Much advancement 
 has been made in recent years on the tasks of object detection and semantic segmentation, in standard 2D 
-images. However, there are many technical challenges that must be overcome before such efficacy on these 
-tasks is reached for the 3D case. Many modern AI and machine learning algorithms require vast quantities of 
-data to learn to perform a given task successfully. This is not prohibitive for systems that operate on standard 
-2D images, due to the abundance of available data. However, for the 3D case there is not a comparable volume of 
-3D data with real world geometric information from which a system can learn to perform complex tasks in the real 
+images~\cite{Girshick2014,Shelhamer2017,Civera2011}. However, there are many technical challenges that must be 
+overcome before such efficacy on these tasks is reached for the 3D case. Many modern AI and machine learning algorithms 
+require vast quantities of data to learn to perform a given task successfully. This is not prohibitive for systems that 
+operate on standard 2D images, due to the abundance of available data. However, for the 3D case there is not a comparable 
+volume of 3D data with real world geometric information from which a system can learn to perform complex tasks in the real 
 world. One method of obtaining such geometric data is the reconstruction of objects, providing geometrically 
 accurate models of real world objects.
 % TODO: object reconstruction figure.
@@ -131,7 +131,7 @@ is likely to be problematic in a similar manner to outlined case of dynamic dens
 
 As such, a desirable approach to the 3D modelling of objects in problematic environments would not rely on 
 direct reconstruction (in the sense of the integration of range data into a 3D model). Rather, an inference based 
-approach is appropriate, due to the inherent stochastisity of building a full model of a partially observable 
+approach is appropriate, due to the inherent stochasticity of building a full model of a partially observable 
 object.
 
 \section{Technical Aims and Thesis Structure}
@@ -179,12 +179,12 @@ and shape prediction.
 Chapter~\ref{chap:moseg} introduces the approach taken in this work to the problem of dense reconstruction 
 in dynamic environments (environments with moving components). The chapter begins by outlining fundamental 
 concepts in the static dense SLAM pipeline that shall be fundamental to much of the content in this work. 
-Following this fundamental material, an approach to peforming dense reconstruction and motion segmentation 
+Following this fundamental material, an approach to performing dense reconstruction and motion segmentation 
 in dynamic scenes is presented. The method outlined in this chapter is evaluated against a state of the art 
 dense SLAM system for static scenes, to which the presented approach demonstrates an overall improvement 
 versus the static dense SLAM system. Additionally, the qualitative results of the presented approach 
 demonstrate high quality resultant reconstructions on the test scenes. Furthermore, a demonstration of 
-utilising motion segmentation to perform rudementary object recognition using 3D geometric features is 
+utilising motion segmentation to perform rudimentary object recognition using 3D geometric features is 
 given.
 
 Chapter~\ref{chap:probobj} introduces a novel approach to the segmentation and reconstruction of individual 
@@ -195,15 +195,16 @@ principle it is trivially extendable, by design) and yields high quality reconst
 quality is evaluated quantitatively and qualitatively against multiple alternative approaches. A 
 quantitative evaluation of pose estimation quality is also provided, demonstrating an improvement over 
 alternative approaches. The work in this chapter has been peer reviewed and published in the 
-\textit{International Conference on 3D Vision (3DV)}.
+\textit{International Conference on 3D Vision (3DV)}. Additionally, the lead author \textit{Jack Hunt} 
+presented a spotlight talk and poster at the event.
 
 % -- "Stereo Shape and Pose Regression"
-% ---- Outline approach; which questions adressed?
+% ---- Outline approach; which questions addressed?
 % ---- Outline experiments
 % ---- Outline results
 Chapter~\ref{chap:spp} approaches the problem of performing inference of shape and pose simultaneously. 
 The work in this chapter is notably different in nature relative to the approaches taken in Chapters
-~\ref{chap:moseg} and~\ref{chap:probobj}; The work in outlined in this chapter utilises a data driven, 
-non SLAM based approach to learn predictive models for shape and pose in a semi-supervised manner. A full 
+~\ref{chap:moseg} and~\ref{chap:probobj}. The work in outlined in this chapter utilises a data driven, 
+non-SLAM based approach to learn predictive models for shape and pose in a semi-supervised manner. A full 
 view of the object of interest is not required, nor is temporal consistency between frames; ad-hoc prediction 
 can be performed for arbitrarily sequenced frames.

@@ -125,7 +125,7 @@ Figure~\ref{figure:probobj_pipeline_diagram}.
 The surface map and camera pose are estimated using the standard KinectFusion
 like pipeline of~\cite{Newcombe2011,Prisacariu2014}. The surface is represented
 as the Zero Level Set of a TSDF discretised over voxels, with the isosurface 
-embedding built by a weigted mean of new observations, as outlined in Equations
+embedding built by a weighted mean of new observations, as outlined in Equations
 ~\ref{eqn:sdf_update} and~\ref{eqn:sdf_weight_update}. Camera pose estimation is
 performed with ICP, as outlined in Section~\ref{subsec:moseg_static_camera_tracking} 
 and is run simultaneously against the evolving map. Here, inspired by 
@@ -329,7 +329,7 @@ that \(s, s' \in \mathcal{S}\) with \(\mathcal{S}\) being the set of overlapping
 subvolume pairs \(s, s'\) in the Probabilistic Graphical Models given by Figures
 ~\ref{figure:probobj_pgm1} and~\ref{figure:probobj_pgm2} can be enforced in terms of
 minimising the disparity between each pair of adjacent subvolumes. The effect of
-this minimsation being that consistency in the pose estimation phase of the
+this minimisation being that consistency in the pose estimation phase of the
 pipeline outlined in Figure~\ref{figure:probobj_pipeline_diagram} is enforced. The
 objective of this procedure is to infer a robust and consistent deformation
 transformation for the subvolume pair.
@@ -422,7 +422,7 @@ applies the resultant \(\mathbb{SE}(3)\) transform to a given voxel position
 \end{align}
 In Equation~\ref{eqn:probobj_lambda_fn} \(R_{\bm{p}}\) is the \(\mathbb{SO}(3)\)
 rotation matrix generated from the Rodrigues parameters given by the Vector
-\(\bm{p}\). Recall the definition of the Rodrigues paramaterisation given in
+\(\bm{p}\). Recall the definition of the Rodrigues parameterisation given in
 Equation~\ref{eqn:rodriguez_matrix_eq} of Section
 ~\ref{subsub:moseg_static_camera_attitude}.
 
@@ -508,8 +508,8 @@ plotted in Figure~\ref{figure:probobj_logistic} for varying \( \mu \) and \( \si
 \end{figure}
 
 The requirement of the shape prior is to penalise SDF values that are both far from the isosurface 
-and behind the isosurface. As such, a suitable prior may be found by paramaterising the CDF is an 
-appropriate manner. With the paramaterisation of \( \mu = 4 \) and \( \sigma = 0.7 \), the CDF is 
+and behind the isosurface. As such, a suitable prior may be found by parameterising the CDF is an 
+appropriate manner. With the parameterisation of \( \mu = 4 \) and \( \sigma = 0.7 \), the CDF is 
 shifted appropriately and penalises on a strict range of SDF values. However, in this form the CDF 
 penalises SDF points close to the isosurface. However, this is trivially solved as in Figure
 ~\ref{figure:probobj_shape_prior}, note the symmetric property of the Logistic CDF.
@@ -925,7 +925,7 @@ given their consistency constraints, the inference of optimal constraints is par
 multiple constraints may not be optimised for at a time, the process of registering two adjacent 
 submaps is easily amenable to GPU parallelisation, when each submap pair is taken sequentially.
 
-Finally, with careful implementationa and use of atomic primitives, the max flow procedure performed 
+Finally, with careful implementations and use of atomic primitives, the max flow procedure performed 
 on each submap may be parallelised for GPU hardware. In addition, each submap may be processed in 
 parallel as there is no data dependency at this stage that would be problematic for the task of 
 performing segmentation on each individual submap.
@@ -960,7 +960,7 @@ As can be observed in Figure~\ref{figure:probobj_rock_s3d}, the proposed system 
 \textit{Ren et al} begins with a discretised SDF shape prior of a sphere that is 
 evolved over time whilst simultaneously optimising for pose. However, it is evident 
 that through the course of the sequence it is unable to evolve sufficiently to model 
-the object of interest, contary to the approach outlined in this chapter.
+the object of interest, contrary to the approach outlined in this chapter.
 
 \begin{figure}[!htbp]
   \centering
@@ -979,7 +979,7 @@ the object of interest, contary to the approach outlined in this chapter.
 
 As with the example given in Figure~\ref{figure:probobj_rock_s3d}, it can be seen in 
 Figure~\ref{figure:probobj_dino_s3d} that the system of \textit{Ren et al} is again 
-unable to evolve the SDF shape prior suffiently to model the object of interest. As 
+unable to evolve the SDF shape prior sufficiently to model the object of interest. As 
 can be observed, again the proposed system of this work is capable of yielding a suitable 
 reconstruction.
 
@@ -1117,7 +1117,7 @@ algorithms due to it's inherent ambiguity. Ambiguous geometry was also troubleso
 \textit{freiburg2\_coke} sequence. The \textit{freiburg2\_flowerbouquet (brownbg)} sequences 
 also proved troublesome for both approaches. When inspecting the depth stream for this sequence 
 it is apparent that much of the flower bouquet does not have consistent depth data, in some cases 
-with a large amount of descriptive geometrial information missing. An example of such frames 
+with a large amount of descriptive geometrical information missing. An example of such frames 
 from the sequence are given in Figure~\ref{figure:probobj_flower_depth}
 \begin{figure}[!htbp]
 	\centering
@@ -1194,7 +1194,7 @@ much more geometrical data with which to estimate pose.
 
 Figure~\ref{figure:probobj_hauss} presents renderings of the \textit{Teddy}, 
 \textit{Brain}, \textit{Chair} and \textit{Dinosaur Head} sequences textured 
-on the Haussdorf Distance between the output reconstructions of the presented 
+on the Hausdorff Distance between the output reconstructions of the presented 
 system and the base reconstructions extracted from the KinectFusion like pipeline.
 
 \begin{figure}[!htbp]
@@ -1243,7 +1243,7 @@ it may be adapted for a range of use cases. For example, when utilising stereo s
 model may not be known a-priori, the framework allows for a suitable prior to be used. Additionally, 
 the proposed approach is intentionally decoupled from the object segmentation model, allowing for 
 ease of adaption for multiple object scenarios, or those where a continuous distribution over voxel 
-labellings is required.
+labelling's is required.
 
 In summary, the presented approach has demonstrated efficacy for the reconstruction of arbitrary 
 objects in a geometrically consistent manner.

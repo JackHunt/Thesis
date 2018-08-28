@@ -38,7 +38,7 @@ is the removal of the dependence on input \textit{sequences}. Rather, in this wo
 the proposed system performs shape and pose prediction from an \textit{instantaneous}
 stereo pair, requiring no temporal consistency in both the training and prediction 
 phases. As such, there is no iterative solving for shape and pose, rather the process 
-is framed as an instananeous regression task. However, this work makes use of volumetric
+is framed as an instantaneous regression task. However, this work makes use of volumetric
 shape representations, as with the other works outlined in Chapters~\ref{chap:moseg} and
 ~\ref{chap:probobj}.
 
@@ -61,7 +61,7 @@ or semantic segmentation.
 The proposed model takes as input an RGB stereo pair with the object of interest within the 
 view frustrum of both frames. From this stereo pair, a Convolutional Neural Network extracts 
 feature descriptors which are used to regress a latent space point for shape, and six 
-\( \mathbb{SE}(3) \) pose parameters, forming a Lie Algebra. The genrated shape for the proposal 
+\( \mathbb{SE}(3) \) pose parameters, forming a Lie Algebra. The generated shape for the proposal 
 latent space point is drawn from the distribution of the GP prior conditioned on the latent space 
 point. The form of the pose is the Lie Group mapping of the parameters, as in Sections
 ~\ref{subsub:moseg_static_camera_attitude} and~\ref{subsec:probobj_analytic_alignment_map}. 
@@ -70,13 +70,13 @@ The goodness of fit of the regressed shape and pose is quantified by by renderin
 under the predicted pose and computing an information theoretic loss between the image statistics of 
 the rendered region vs the initial detection region. To maintain continuity, the rendering operation is 
 formulated in a differentiable manner. As there is often no ground truth pose and shape for ``real world'' 
-data, training is performed in an unsupervised manner against a detection of the object os interest.
+data, training is performed in an unsupervised manner against a detection of the object of interest.
 
 \subsection{Network Architecture}
 ~\label{subsec:spp_network_architecture}
-The model of the proposed approach is of a siamese topology, where for a given stereo 
+The model of the proposed approach is of a Siamese topology, where for a given stereo 
 pair each of the left and right frames are passed to a separate network. From end to 
-end, the model contains for each of the siamese networks a ResNet-50~\cite{He2015}, 
+end, the model contains for each of the Siamese networks a ResNet-50~\cite{He2015}, 
 Linear Layers, Nonlinear Activations, a mapping from Lie Algebra to Lie Group (for pose),
 a GPLVM followed by an Inverse Discrete Cosine Transform, a Raycaster and an information 
 theoretic loss. 
@@ -109,14 +109,14 @@ which are used to quantify loss. The topology of the proposed model is outlined 
 ~\label{subsec:spp_gplvm}
 The use of a GPLVM for the embedding of 3D shape is motivated by the assumption that for a 
 given category of object, cars for example, there is enough shared geometric structure that 
-a comprehensive generative model may be formed. In the linear case, the GPLVM is equivelant 
+a comprehensive generative model may be formed. In the linear case, the GPLVM is equivalent 
 to a probabilistic formulation of Principal Component Analysis (PCA), where a linear mapping 
-from observed to hdden, latent space is derived. 
+from observed to hidden, latent space is derived. 
 
-Under a bayesian formulation, the often intractable latent variables pertaining to the linear 
+Under a Bayesian formulation, the often intractable latent variables pertaining to the linear 
 mapping may be marginalised such that the latent embedding itself may be optimised directly. The 
 given framework allows for complex, nonlinear embeddings to be learnt via the use kernel functions, 
-though the optmisation in this case is often non-convex and highly nonlinear.
+though the optimisation in this case is often non-convex and highly nonlinear.
 
 A Gaussian Process may be viewed as a prior distribution over continuous functions. The posterior 
 may be obtained by conditioning on observed data, to obtain a function estimate for each data point.
@@ -151,7 +151,7 @@ The marginal likelihood of \(\bm{X}\) is of the form outlined in Equation~\ref{e
   P(\bm{Y} \given \bm{X}, \beta) = \int P(\bm{Y} \given \bm{X}, \bm{W}, \beta) P(\bm{W}) \intd{\bm{W}}
 \end{equation}
 Where in Equation~\ref{eqn:spp_gp_marginal}, \( P(\bm{Y} \given \bm{X}, \bm{W}, \beta) \) is of 
-a multivariate Guassian form and \(P(\bm{W})\) is a multivariate Gaussian conjugate prior of the 
+a multivariate Gaussian form and \(P(\bm{W})\) is a multivariate Gaussian conjugate prior of the 
 form \(\mathcal{N}(\bm{W} \given \bm{0}, \bm{I})\).
 
 To find the marginal distribution outlined in Equation~\ref{eqn:spp_gp_marginal}, it's form may 
@@ -394,7 +394,7 @@ The gradient derived in Equation~\ref{eqn:spp_gp_log_marginal_grad} holds
 for the case when \( \bm{\Sigma} = \bm{X}^{T}\bm{X} + \beta^{-1} \bm{I} \). 
 However, for \( \bm{\Sigma} = \bm{\kappa}(.) \) where \( \bm{\kappa} \) is 
 a given kernel function, the result of the derivation of Equation
-~\ref{eqn:spp_gp_log_marginal_grad} is applicable. When subsituting 
+~\ref{eqn:spp_gp_log_marginal_grad} is applicable. When substituting 
 \( \frac{\partial \bm{\Sigma}}{\partial \bm{X}} \) with 
 \( \frac{\partial \bm{\kappa}}{\partial \bm{X}} \), the gradient is thus 
 given in Equation~\ref{eqn:spp_gp_log_marginal_grad_kernel}.
@@ -409,7 +409,7 @@ given in Equation~\ref{eqn:spp_gp_log_marginal_grad_kernel}.
 \end{equation}
 
 It should be noted that the gradient \( \frac{\partial \bm{\kappa}}{\partial \bm{X}} \)
-may also be substitued for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), for 
+may also be substituted for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), for 
 some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \).
 
 A common nonlinear covariance kernel function in the Gaussian Process literature 
@@ -661,7 +661,7 @@ Equation~\ref{eqn:spp_idct}.
 
 The SDF \( \bm{\Phi} \) generated by the IDCT given in Equation~\ref{eqn:spp_idct} must be 
 differentiable with respect to the posterior mean \( \bm{f}^{\star} \) for backpropagation 
-training of the model. The gradent of the SDF \( \bm{\Phi} \) outlined in 
+training of the model. The gradient of the SDF \( \bm{\Phi} \) outlined in 
 Equation~\ref{eqn:spp_idct} is derived as follows in Equation~\ref{eqn:spp_idct_grad}. 
 For notational clarity, the DCT coefficients are defined as follows in Equation
 ~\ref{eqn:spp_dct_coeff}
@@ -712,7 +712,7 @@ The parameters of the \( \mathbb{SE}(3) \) pose applied to the predicted shape (
 as outlined in Section~\ref{subsubsec:sdf_extraction}) are obtained from a fully connected 
 component of the model outlined in Figure~\ref{A}, as with the latent pose point of Section
 ~\ref{subsubsec:sdf_extraction}. The form of the \( \mathbb{SE}(3) \) pose is analogous to 
-the Rodrigues paramaterisation outlined in Section~\ref{subsub:moseg_static_camera_poserec}.
+the Rodrigues parameterisation outlined in Section~\ref{subsub:moseg_static_camera_poserec}.
 
 The three rotational parameters \( \alpha \), \( \beta \) and \( \gamma \) are predicted by 
 the pose network component of the model on the interval \( [0, 2\pi) \). The translation parameters 
@@ -732,12 +732,12 @@ same form of those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_ja
 As outlined in Section~\ref{sec:spp_algorithm}, the proposed model is trained in a semi-supervised 
 manner on an information theoretic loss. For each of the left and right networks, the loss is 
 quantified by the KL Divergence between the appearances of the initial detection region and 
-the prediction region (the image space in which the predicted shape is rendered to). Appearences for 
+the prediction region (the image space in which the predicted shape is rendered to). Appearances for 
 each of the regions are quantified by simple image statistics. The intuition behind such a loss is that 
 for an optimal predicted shape and pose, the KL Divergences will be minimal due to the very high overlap 
 between detection and prediction.
 
-Additionally, to reduce divergence during training between the left and right models of the siamese 
+Additionally, to reduce divergence during training between the left and right models of the Siamese 
 architecture, the Jensen-Shannon Divergence is applied to the predictions of the left and right outputs.
 The overall loss is thus given in Equation~\ref{eqn:spp_overall_loss}.
 \begin{align}
@@ -913,7 +913,7 @@ as given in Equation~\ref{eqn:spp_idct} of Section~\ref{subsubsec:sdf_extraction
 ~\ref{eqn:spp_gp_posterior_draw}.
 
 In Equations~\ref{eqn:spp_grad_chain_pose} and~\ref{eqn:spp_grad_chain_latent}, the gradients 
-are averaged over the left and right sides of the siamese architecture. This is due to the fact 
+are averaged over the left and right sides of the Siamese architecture. This is due to the fact 
 that in such an architecture, neural network parameters are shared by both subnetworks. Without 
 the averaging over each subnetwork, exploding gradient updates can be problematic.
 
