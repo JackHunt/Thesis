@@ -7,7 +7,7 @@ and structure.
 In recent years there has been much research activity in the field of 3D computer vision, a field concerned 
 with the processing of 3D geometric data for machine vision. This work addresses a number of open technical 
 challenges within the field of active, 3D vision. Specifically, the 3D reconstruction of dynamic environments, 
-robust 3D reconstruction of arbitrary objects and the prediction of shape \& pose of objects. These areas of 
+robust 3D reconstruction of arbitrary objects and, the prediction of shape and pose of objects. These areas of 
 research are of interest to the computer vision community due to the broad application potential of such systems. 
 Scene reconstruction for example, has applications ranging from mobile robotics to recreating the tangible world 
 for Virtual Reality (VR) viewing. Object reconstruction has applications including the reproduction of tangible 
@@ -21,7 +21,7 @@ Driven by the availability of consumer grade depth sensing equipment such as the
 (introduced by Microsoft in 2009 for the XBox 360), there has been a renewed interest in dense scene reconstruction. 
 Advances in recent years have allowed for the creation of digital reconstructions of the tangible world with 
 consumer grade computer equipment~\cite{Newcombe2011,Kahler2016,Whelan2015}. Such systems iteratively integrate 
-observed world points into a ``global'' model, such that over time, a smooth representation of the observed world 
+observed world points into a \textit{global} model, such that over time, a smooth representation of the observed world 
 surfaces is built. In addition to the integration of such information into a model, there is the task of inferring 
 how the sensor has moved in world space, such that the observed points may be transformed and integrated into the 
 appropriate model location. The amalgamation of these two tasks is known as SLAM (Simultaneous Localisation and Mapping). 
@@ -60,12 +60,12 @@ the system inferring the remaining labelling's. An example of the output of such
 
 Though the results of the systems shown in Figures~\ref{figure:room_recon_example} and~\ref{figure:spaint_teaser} 
 represent impressive advancements in computer vision, there are however open technical challenges. One such 
-challenge is the successful modelling of real environments in which there are dynamic components (such as 
+challenge is the successful modelling of real environments in which there are \textit{dynamic} components (such as 
 people walking in the camera's view). The traditional dense SLAM pipeline is unable to accurately build a 
 globally consistent model in such environments. In addition, when using a combined reconstruction and 
 semantics system such as that shown in Figure~\ref{figure:spaint_teaser}, many of the descriptive cues that 
 enable the segmentation to be performed rely on features utilising 2D image information. As such, there is 
-no ``true'' semantic 3D object learning and recognition.
+no \textit{true} semantic 3D object learning and recognition.
 
 As outlined, traditional dense SLAM systems have difficulty performing dense reconstruction in an 
 environment where there is motion. The aforementioned sensor pose estimation phase in these systems
@@ -87,16 +87,21 @@ would be capable of extracting pertinent semantic information from such events.
 
 \section{Object Reconstruction}
 ~\label{sec:intro_object_recon}
+% TODO: improve link to previous section.
 Modern machine learning provides much of the semantic and contextual information required to make meaningful 
 inferences over the state of the world, as observed by a sensor (such as a camera). Much advancement 
 has been made in recent years on the tasks of object detection and semantic segmentation, in standard 2D 
-images~\cite{Girshick2014,Shelhamer2017,Civera2011}. However, there are many technical challenges that must be 
-overcome before such efficacy on these tasks is reached for the 3D case. Many modern AI and machine learning algorithms 
-require vast quantities of data to learn to perform a given task successfully. This is not prohibitive for systems that 
-operate on standard 2D images, due to the abundance of available data. However, for the 3D case there is not a comparable 
-volume of 3D data with real world geometric information from which a system can learn to perform complex tasks in the real 
-world. One method of obtaining such geometric data is the reconstruction of objects, providing geometrically 
-accurate models of real world objects.
+images~\cite{Girshick2014,Shelhamer2017,Civera2011}. The application of such techniques in 3D vision allows 
+for semantic reasoning about 2D representations of 3D objects, as shown in the semantic SLAM system of 
+Figure~\ref{figure:spaint_teaser}. 
+
+However, there are many technical challenges that must be overcome before such efficacy on these tasks is reached 
+for the \textit{true} 3D case. Many modern AI and machine learning algorithms require vast quantities of data to 
+learn to perform a given task successfully. This is not prohibitive for systems that operate on standard 2D images, 
+due to the abundance of available data. However, for the 3D case there is not a comparable volume of 3D data with 
+real world geometric information from which a system can learn to perform complex tasks in the real world. One 
+method of obtaining such geometric data is the reconstruction of objects, providing geometrically accurate models of 
+real world objects.
 % TODO: object reconstruction figure.
 
 A related problem to that of sensor pose estimation as outlined in Section~\ref{sec:intro_scene_recon}, 
@@ -112,7 +117,11 @@ an entire room is being reconstructed.
 Though the model consistency problem for objects may be circumvented somewhat when using specialist equipment 
 such as modelling turntables and laser range scanners, there are financial and practical issues that can be 
 prohibitive. Thus, the ability to build high quality, consistent reconstructions of arbitrary objects with 
-commodity depth sensing and computing hardware is desirable.
+commodity depth sensing and computing hardware is desirable. Additionally, such a system would be required to 
+perform robustly in non-specialised scenarios, such as scanning objects in a busy setting where there is no 
+\textit{ideal} object reconstruction setup and motion not related to the object of interest may occur in the 
+sensors view. Thus, it is desirable for such a system to be able to separate a given object from other components 
+in view.
 
 \section{Shape Prediction and Pose Prediction}
 ~\label{sec:intro_spp}
@@ -132,7 +141,8 @@ is likely to be problematic in a similar manner to outlined case of dynamic dens
 As such, a desirable approach to the 3D modelling of objects in problematic environments would not rely on 
 direct reconstruction (in the sense of the integration of range data into a 3D model). Rather, an inference based 
 approach is appropriate, due to the inherent stochasticity of building a full model of a partially observable 
-object.
+object. Additionally, due to the lack of a separate frame-to-frame pose estimation phase, such a system would 
+be required to infer accurate shape and pose from input data that is not necessarily temporally consistent.
 
 \section{Technical Aims and Thesis Structure}
 ~\label{sec:intro_aims_structure}
@@ -195,8 +205,7 @@ principle it is trivially extendable, by design) and yields high quality reconst
 quality is evaluated quantitatively and qualitatively against multiple alternative approaches. A 
 quantitative evaluation of pose estimation quality is also provided, demonstrating an improvement over 
 alternative approaches. The work in this chapter has been peer reviewed and published in the 
-\textit{International Conference on 3D Vision (3DV)}. Additionally, the lead author \textit{Jack Hunt} 
-presented a spotlight talk and poster at the event.
+\textit{International Conference on 3D Vision (3DV)}.
 
 % -- "Stereo Shape and Pose Regression"
 % ---- Outline approach; which questions addressed?
@@ -208,3 +217,12 @@ The work in this chapter is notably different in nature relative to the approach
 non-SLAM based approach to learn predictive models for shape and pose in a semi-supervised manner. A full 
 view of the object of interest is not required, nor is temporal consistency between frames; ad-hoc prediction 
 can be performed for arbitrarily sequenced frames.
+
+Chapter~\ref{chap:discussion}, begins by providing a brief discussion of the approaches, contributions and 
+results of Chapters~\ref{chap:moseg},~\ref{chap:probobj} and~\ref{chap:spp}. Followed by a more granular assessment 
+of each, within the context of the research objectives outlined in Section~\ref{sec:intro_aims_structure}. 
+Additionally, consideration is given to the limitations of the approaches presented in this work and the potential 
+directions of relevant, future work. Finally, this work is concluded with some brief closing remarks.
+
+Appendices~\ref{appendix:mathematical} and~\ref{appendix:moseg_additional_results} provide extra mathematical 
+details and results.
