@@ -152,7 +152,15 @@ between the scenes. Corrections between the scenes are made via the use of Pose 
 ~\cite{Grisetti2010}. Loop closures are detected by the use of Fern Conservatories~\cite{Glocker2014}.
 
 Many of the approaches and techniques evaluated in this section are foundational to the algorithms 
-presented in later chapters. 
+presented in later chapters. The fundamental geometric representations used in Chapters~\ref{chap:moseg},
+~\ref{chap:probobj} and~\ref{chap:spp} are variants of the volumetric representation introduced by 
+\textit{Curless \& Levoy}~\cite{Curless1996}; the Signed Distance Function. Additionally, a central theme 
+in the work that follows is pose estimation, specifically utilising variants of the Iterative Closest Points 
+(ICP) algorithm, as introduced by \textit{Besl \& McKay}~\cite{Besl1992}. Later work on the \textit{KinectFusion} 
+pipeline and it's variants~\cite{Prisacariu2014,NieBner2013}, first introduced by \textit{Newcombe et al}
+~\cite{Newcombe2011} builds on the aforementioned volumetric representation and pose estimation approaches to 
+provide a full, modern pipeline for dense reconstruction. This pipeline, in turn, is foundational to the 
+approaches taken in Chapters~\ref{chap:moseg} and~\ref{chap:probobj}.
 
 %% Semantic SLAM.
 \section{Semantic SLAM}
@@ -217,6 +225,15 @@ semantic dense SLAM pipeline built on top of the dense SLAM system presented by
 classes. Unlike \textit{Handa et al}~\cite{Handa2015}, the authors make use of an 
 Fully Connected Network (FCN)~\cite{Long2015}, taking the Probability Mass Function (PMF) 
 output to determine the class to be assigned to an isosurface region.
+% TODO: semanticfusion, matthias stuff
+
+The theme of dense 3D reconstruction with semantics is directly related to the research objectives 
+outlined in Section~\ref{sec:intro_aims_structure}. As outlined in this section, little research has 
+investigated semantic learning \textit{directly} on 3D geometry, though approaches such as that of 
+\textit{Handa et al}~\cite{Handa2015} work towards this. Prominent, prohibitive factors include the 
+lack of readily available 3D data and the increased complexity of dealing with environments in which 
+such capabilities are desirable, as outlined in Chapter~\ref{chap:intro}. The contributions that follow 
+in this work are intended to facilitate such research.
 
 %% Dynamic SLAM.
 \section{Dynamic SLAM, Motion Segmentation and Optical Flow}
@@ -241,7 +258,7 @@ correspondences.
 tracking of the human body. The proposed system extracts and skins a surface mesh from 
 multi-view video, after being fitted with a skeleton prior. To solve for nonrigid, articulated 
 motion, the authors utilise a weighted, hierarchical ICP algorithm, where weightings are obtained 
-by the Approximate Nearest Neighbour~\cite{Indyk2000} algorithm.
+by the Approximate Nearest Neighbour (ANN)~\cite{Indyk2000} algorithm.
 
 In the following year, \textit{Sun et al}~\cite{Sun2012} proposed an approach to motion estimation 
 for objects in images. The proposed approach estimates optical flow in a layered manner, where each 
@@ -302,16 +319,28 @@ solving of the warp field is achieved by the use of Dual Quaternion blending~\ci
 Though promising results are presented, there are limitations, such as lack of robustness to 
 open/closed topology changes, such as hands. In addition, the authors highlight scalability issues.
 
+% TODO matthias, siemens, TUM
+The research outlined in this section is pertinent to the work presented in Chapter~\ref{chap:moseg}, 
+which presents an approach to the handling of dynamics for dense reconstruction in real time, and 
+with a volumetric representation. Though the aforementioned works of \textit{Perera et al}
+~\cite{Perera2015} and \textit{Newcombe et al} provide algorithms for handling dynamics in such 
+representations, there remain complexity and scalability issues, the target of which is the focus of 
+Chapter~\ref{chap:moseg}.
+
 %% Object Reconstruction.
 \section{Object Reconstruction}
 ~\label{sec:lit_review_obj_recon}
 It is evident from Sections~\ref{sec:lit_review_tam},~\ref{sec:lit_review_dynamic} and 
 ~\ref{sec:lit_review_semantic} that much progress has been made in the fields of TAM/SLAM, 
 dynamic SLAM and semantic SLAM.\@ However, \textit{Object Reconstruction} remains a very open 
-and active field of research. This Section provides a review of pertinent literature on the 
-task of reconstructing consistent models of objects, rather than full scale scenes. The problem of 
-interest in this section, though related to SLAM, incurs additional complications with regards 
-to pose estimation.
+and active field of research. As outlined in Section~\ref{sec:lit_review_obj_recon}, cumulative 
+errors in pose estimation are troublesome for the smaller scale (relative to scene-scale), 
+object centric SLAM. The combination of inherently less geometric information and potentially 
+rapid, repetitive motion exacerbates the difficulties faced in scene-scale SLAM.
+
+This Section provides a review of pertinent literature on the task of reconstructing consistent 
+models of objects, rather than full scale scenes. The problem of interest in this section, though 
+related to SLAM, incurs additional complications with regards to pose estimation.
 
 \textit{Curless \& Levoy}~\cite{Curless1996} as introduced in Section~\ref{sec:lit_review_tam} 
 presented a method of statically reconstructing shapes from range images taken from different 
@@ -362,7 +391,17 @@ for object pose, with keyframe based loop closure detection. However, the author
 building sufficiently granular reconstructions. In addition, the authors report drift in pose estimation 
 to be problematic.
 
+The contributions of Chapter~\ref{chap:probobj} for the problem of object reconstruction outlined in 
+Section~\ref{sec:intro_object_recon} draw on the work of \textit{Kolev et al}~\cite{Kolev2006}. The 
+probabilistic volumetric representation used for the authors level set evolution approach influences the 
+formulation of object segmentation given in Chapter~\ref{chap:probobj}. Additionally, the work of 
+\textit{Ren et al}~\cite{Ren2013} provides a suitable base of comparison for the approach outlined later 
+in this work; the approach of \textit{Ren et al} performs simultaneous segmentation, pose estimation and 
+reconstruction of objects from an RGBD image source, as is the case with the approach taken in Chapter
+~\ref{chap:moseg}.
+
 %% Object Shape Prediction.
+% TODO: Fill this section out a bit.
 \section{Shape and Pose Prediction}
 ~\label{sec:lit_review_prediction}
 Section~\ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
@@ -420,3 +459,5 @@ and prediction.
 weakly supervised manner on silhouettes and 3D shapes with a log-barrier objective function. 
 However, the applicability to ``real world'' scenarios is questionable, due to the synthetic nature of 
 the data used to train and evaluate the network.
+
+% TODO: Add some closing remarks.
