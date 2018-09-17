@@ -1,7 +1,12 @@
 ~\label{chap:moseg}
 \begin{chapterabstract}
 This chapter introduces an approach to motion segmentation and dense reconstruction 
-in dynamic scenes with RGBD observations.
+in dynamic scenes with RGBD observations. The approach outlined in this chapter is 
+capable of performing dense reconstruction in dynamic environments and segmenting objects 
+undergoing motion. The approach presented in this chapter yields an improvement in pose 
+estimation accuracy with respect to the standard KinectFusion-like pipeline. Furthermore, 
+it is demonstrated that the segmentation of dynamic objects may be leveraged for semantic 
+purposes.
 \end{chapterabstract}
 
 \section{Introduction}
@@ -20,10 +25,13 @@ additional error to the pose estimation component in the pipeline and as such
 causes model corruption ranging from noise in the reconstruction to spurious 
 surface data due to erroneous pose estimation.
 
-In this chapter an approach to mitigating the problems present when performing 
-dense volumetric reconstruction in dynamic scenes is presented. Central to the
-pipeline is the introduction of a dual scene representation based on the use
-of an implicit TSDF~\cite{Curless1996}. The use of a dual TSDF approach allows
+In this chapter, an approach to mitigating the problems present when performing 
+dense volumetric reconstruction in dynamic scenes is presented. The basic SLAM 
+pipeline on which this work is based is the \textit{InfiniTAM}~\cite{Prisacariu2014} 
+variant of the \textit{KinectFusion}~\cite{Newcombe2011} pipeline (InfiniTAM is also used 
+as a base of comparison in Section~\ref{sec:moseg_quantitative}). Central to the
+proposed, modified pipeline is the introduction of a dual scene representation based on 
+the use of an implicit TSDF~\cite{Curless1996}. The use of a dual TSDF approach allows
 for the segmentation of moving components in the scene from static components,
 e.g.\ segmenting a person getting up from a chair from the chair itself. One of
 the two scene representations is the \textit{static} scene and the other the
@@ -37,7 +45,7 @@ tracking to drift, or completely fail. By tracking against only the stable
 scene components, this interference in the ICP pose estimation process can be
 mitigated.
 
-Once a part of the dynamic model has been stable for a sufficient period, it's
+Once a part of the dynamic model has been stable for a sufficient period, its
 volumetric data is integrated in to the static model and is used for the
 tracking phase of the pipeline. The use of volumetric structures in this work
 is motivated by previous works on Voxel Block Hashing~\cite{NieBner2013},
@@ -214,7 +222,7 @@ corresponds to a portion of a global voxel block array, pertaining to a region i
 scene. This division of the scene into voxel blocks is used for the later process of 
 determining and labelling dynamic regions in the scene.
 
-\subsection{Camera Tracking}
+\subsection{Camera Pose Estimation}
 ~\label{subsec:moseg_static_camera_tracking}
 As in previous works~\cite{Newcombe2011, Prisacariu2014}, the gradient
 optimisation based ICP algorithm is utilised to register consecutive images
@@ -277,6 +285,7 @@ The formulation of the Rodriguez parameterization (performing the aforementioned
 
 Where for an arbitrary vector \(\bm{v}\), \(\omega(\bm{v})\) is defined as
 the cross product matrix operator and is defined as follows in Equation~\ref{eqn:cross_prod_mat}.
+% TODO: Tidy. Maybe merge into above equation?
 \begin{equation}
   \label{eqn:cross_prod_mat}
   \omega(\bm{v}) =
@@ -630,7 +639,7 @@ at the next time step.
 
 Rendering in the pipeline is achieved by Raycasting~\cite{Roth1982}, the process of 
 ``casting'' a ray from the camera frame into the volume representation of the scene, to find intersections with 
-the scene isosurface. The basic Raycasting process is Given in Algorithm~\ref{alg:raycast}
+the scene isosurface. The basic Raycasting process is Given in the following Algorithm.
 
 {
   \centering
@@ -697,7 +706,7 @@ the scene isosurface. The basic Raycasting process is Given in Algorithm~\ref{al
   \end{minipage}
   \par
 }
-In Algorithm~\ref{alg:raycast} it should be noted that the loop over image pixels \( \bm{\Omega}_{x, y} \) 
+It should be noted that the loop over image pixels \( \bm{\Omega}_{x, y} \) 
 can be trivially optimised in a data parallel fashion on a GPU. This is possible as there exists no data 
 dependence between image pixels and TSDF accesses are read only.
 
@@ -807,7 +816,7 @@ Similarly, the update for the TSDF values is as follows.
 With the central components of the proposed algorithm now outlined, an algorithmic 
 summary may be given. As has been highlighted, the central components of the approach 
 are the dual volume representation, stability labelling and inter-volume surface 
-integration. The process is as follows in Algorithm~\ref{alg:moseg}
+integration. The process is given in the following Algorithm.
 
 {
   \centering
@@ -862,7 +871,7 @@ integration. The process is as follows in Algorithm~\ref{alg:moseg}
   \par
 }
 
-Algorithm~\ref{alg:moseg} is trivially parallelisable with commodity GPU hardware.
+The presented Algorithm is trivially parallelisable with commodity GPU hardware.
 The integration of points in the depth map \( \mathcal{D} \) is parallelisable 
 with minimal risk of race conditions occurring. However care must be taken for edge 
 cases where multiple simultaneous writes may occur at the same TSDF location. 
@@ -1115,3 +1124,5 @@ for further research into problems such as live semantic scene understanding and
 flow. The proposed approach has the potential to be further developed in to a fully dynamic, 
 semantic scene understanding and reconstruction system for use in robotics, VR and AR applications 
 as outlined in Section~\ref{sec:intro_scene_recon}.
+
+% TODO: Link in to next chapter.
