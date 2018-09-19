@@ -3,6 +3,7 @@
 This chapter introduces an approach to the simultaneous prediction of object shape 
 and pose from stereo image pairs.
 \end{chapterabstract}
+% TODO: extend this abstract.
 
 \section{Introduction}
 ~\label{sec:spp_introduction}
@@ -50,7 +51,9 @@ frames to train. The proposed system regresses rotational and translational para
 from the neural network, whilst the object shape is a draw from a Gaussian Process 
 Latent Variable Model. The use of a GPLVM for latent space embeddings of 3D shape 
 allows for a simple way to learn complex 3D geometrical features, thus simplifying 
-the learning tasks of the neural network.
+the learning tasks of the neural network. In the proposed approach, the Neural Network 
+component need only learn a mapping from observation to latent space, rather than from observation 
+to full geometry.
 
 The system is trained on an information theoretic loss over a rendering of a predicted 
 shape under it's associated predicted pose, with respect to a given detection bounding box 
@@ -105,6 +108,7 @@ which are used to quantify loss. The topology of the proposed model is outlined 
 ~\label{figure:spp_pipeline}
 \end{figure}
 
+% TODO: Reorder this; goes from high level intro to GP's... bit heavy 
 \subsection{Gaussian Process Latent Variable Model}
 ~\label{subsec:spp_gplvm}
 The use of a GPLVM for the embedding of 3D shape is motivated by the assumption that for a 
@@ -318,6 +322,7 @@ takes the following form.
   % Line 2.
   ={}& \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I}
 \end{align}
+% TODO: Maybe make one line?
 
 As such, the form of the normalized marginal likelihood \(P(\bm{Y} \given \bm{X}, \beta)\) of 
 \( \bm{W} \) is given in Equation~\ref{eqn:spp_gp_marginal_simp}.

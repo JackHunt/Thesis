@@ -11,7 +11,7 @@ against multiple baseline approaches.
 \section{Introduction}
 ~\label{sec:probobj_introduction}
 Dense SLAM has proven to be an effective paradigm for the reconstruction of 
-scenes of moderate scale, with much research on the topic driven by the 
+scenes of moderate scale, with much research on the topic being driven by the 
 availability of consumer grade depth sensing equipment. However, there is a 
 heavy reliance on descriptive geometry in the scene when there is a lack of 
 texture. Less descriptive geometry leads to an increase in camera tracking 
@@ -19,6 +19,11 @@ error and causes model inconsistencies, especially when a loop closure event
 occurs. This is due to the small but cumulative errors incurred in pose 
 estimation that prevent a reconstructed model from being closed when the 
 camera returns to it's starting position.
+
+Such model inconsistencies and corruptions are prohibitive when accurate, non-synthetic 
+geometric models of real world objects are required. As outlined in Section
+~\ref{sec:intro_object_recon}, such accurate geometric data is required for learning 
+based approaches to semantic scene understanding.
 
 As object reconstruction can be seen as a smaller scale equivalent of the scene
 based dense reconstruction problem, it too is prone to the tracking drift and
@@ -66,6 +71,7 @@ features of each region, foreground and background.
 At each timestep, an appearance based probability map is generated over the observed 
 RGB frame, with respect to the appearance distributions built prior to the reconstruction 
 process. An example of such instantaneous map is given in Figure~\ref{figure:probobj_prob_maps}.
+% TODO: Replace this fig with a "teaser"
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
@@ -86,6 +92,8 @@ in the probability volume, with respect to the instantaneous image space probabi
 ~\ref{figure:probobj_prob_maps}. Only those voxels with a posterior higher for the foreground than the 
 background are rendered.
 
+% TODO: outline remainder of chapter.
+
 \section{Algorithm Overview}
 In the proposed system, the object model is divided into \textit{subvolumes}, 
 each consisting of a TSDF, colour volume and object Probability Volume. 
@@ -102,7 +110,7 @@ of the active subvolume.
 
 As with the dense SLAM system outlined earlier in this work, the proposed system
 also has \textit{Integration}, \textit{Tracking} and \textit{Rendering}
-stages in it's pipeline (all of which are run at each time step). However, in
+stages in its pipeline (all of which are run at each time step). However, in
 the proposed system, there are an additional two stages to the pipeline;
 \textit{Online Model Correction} and \textit{CRF Based Segmentation}.
 
@@ -161,7 +169,7 @@ P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty}
 P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 \end{equation}
 
-In Equation~\ref{eqn:eqn:probobj_voxel_posterior} \( \Psi \) is the volume of 
+In Equation~\ref{eqn:probobj_voxel_posterior} \( \Psi \) is the volume of 
 voxels for which measurements are accumulated, \( \Phi \)  is the volume of voxels 
 pertaining to the object \(\bm{\Phi}\) of interest, \(\Omega_{t}\) is the current 
 RGBD image observation at time \(t\) and \(p_{t}\) is the currently tracked pose at 
@@ -205,11 +213,11 @@ Graphical Model (PGM) of Figure~\ref{figure:probobj_pgm1}.
 ~\label{figure:probobj_pgm1}
 \end{figure}
 
-Where \( \Phi \) is the shape of the object to be reconstructed (represented as a
-subset of voxels for which surface data has been integrated into the relevant
-TSDF), \(u\) is the appearance model volume (aforementioned appearance Posteriors 
-of Equation~\ref{eqn:probobj_voxel_posterior}), \(L\) is the set of consistency 
-constraints for each adjacent sub volume pair in the form of rigid body 
+In Figure~\ref{figure:probobj_pgm1}, \( \Phi \) is the shape of the object to be 
+reconstructed (represented as a subset of voxels for which surface data has been 
+integrated into the relevant TSDF), \(u\) is the appearance model volume (aforementioned 
+appearance Posteriors of Equation~\ref{eqn:probobj_voxel_posterior}), \(L\) is the set 
+of consistency constraints for each adjacent sub volume pair in the form of rigid body 
 transformations, \( \Omega \) is the set of RGBD image pixels and \(p\) the set of 
 poses over time.
 
@@ -228,7 +236,7 @@ factorisation over the full Joint Distribution given in Equation
     & P(L_{s, s'})P(p_{t})P(\Omega_{p, t})
   \end{split}
 \end{equation}
-Where in Equation~\ref{eqn:probobj_full_joint}, \( \Psi \) is the set of voxels
+In Equation~\ref{eqn:probobj_full_joint}, \( \Psi \) is the set of voxels
 across all subvolumes, \(\mathcal{P}\) is the set of RGBD pixels for a given 
 frame \(\Omega_{t}\) and \(\mathcal{S}\) is the set of subvolumes. Note that the 
 notation \(s, s' \in \mathcal{S}\) refers to pairs of adjacent, overlapping 
@@ -861,7 +869,7 @@ may also be of use~\cite{Krahenbuhl2011}.
 ~\label{subsec:probobj_pipeline_summary}
 As outlined, the proposed object reconstruction system performs online correction of 
 reconstruction errors incurred by erroneous pose estimation results. The process of 
-reconstruction and correction is given in Algorithm~\ref{alg:probobj}
+reconstruction and correction is given in the Algorithm that follows.
 
 {
   \centering
@@ -918,7 +926,7 @@ reconstruction and correction is given in Algorithm~\ref{alg:probobj}
   \par
 }
 
-The process outlined in Algorithm~\ref{alg:probobj} is highly amenable to GPU parallelisation. 
+The process outlined in the given Algorithm is highly amenable to GPU parallelisation. 
 The first loop integrates the observed depth map into each active submap, estimates it's updated 
 pose and adds instantaneous probability information to it's appearance posterior volume. As 
 outlined in Section~\ref{subsec:moseg_pipeline_summary}, the integration and pose estimation phases 
@@ -1045,6 +1053,7 @@ the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
   }
 ~\label{figure:probobj_comp_itm}
 \end{figure}
+% TODO: Make figures bigger; all figure...
 
 The efficacy of the approach described in this work is further demonstrated when comparing
 the pipeline as outlined in Figure~\ref{figure:probobj_pipeline_diagram} to a version that 
@@ -1107,6 +1116,7 @@ evaluation presented in Section~\ref{sec:moseg_quantitative}, the
   {ATE results achieved by the proposed approach versus InfiniTAM with object segmentation.}
 ~\label{table:probobj_ate}
 \end{table}
+% TODO: Remove DNR's; sufficient to talk about them. 
 
 It can be seen from Table~\ref{table:probobj_ate} that on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this work 
@@ -1251,3 +1261,4 @@ labelling's is required.
 
 In summary, the presented approach has demonstrated efficacy for the reconstruction of arbitrary 
 objects in a geometrically consistent manner.
+% TODO: Link back to thesis "storyline".
