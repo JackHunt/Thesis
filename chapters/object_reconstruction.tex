@@ -1238,14 +1238,38 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
 
 \section{Performance Evaluation}
 ~\label{sec:probobj_performance}
+This section provides an analysis of the performance of the proposed approach. The research 
+objectives outlined in Section~\ref{sec:intro_aims_structure} highlight the requirement that 
+commodity hardware be used for ease of applicability. As such, the proposed system has been 
+designed with real time performance in mind. Figure~\ref{figure:probobj_timing} gives performance 
+statistics on a subset of the evaluation sequences.
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{figures/object_recon/timings_objects.eps}
   \caption[Object Reconstruction Performance.]
   {Performance of the proposed approach on the \textit{Bear}, \textit{Dinosaur Head} and 
   \textit{Museum Rock} sequences.}
-~\label{figure:moseg_timing_coffee}
+~\label{figure:probobj_timing}
 \end{figure}
+
+It can be seen in Figure~\ref{figure:probobj_timing} that for the \textit{Bear} and 
+\textit{Dinosaur Head} sequences there are Mean per-frame runtimes of 0.011948 and 
+0.010490 seconds, respectively. It can also be seen that the Standard Deviations of the frame 
+runtimes are small (0.002129 and 0.002185 seconds respectively). As these sequences focus on objects 
+with sufficient geometry to converge to a consistent model in a relatively short period, the 
+fluctuations in runtime due to online correction are minimal. However, it may be seen in 
+Figure~\ref{figure:probobj_timing} that for the \textit{Museum Rock} sequence, the runtime is 
+less stable. This sequence demonstrates a Mean per frame runtime of 0.021890 seconds, with 
+a larger Standard Deviation of 0.007783 seconds. This behaviour is caused by the lack of 
+descriptive geometry of the object, resulting in less stable pose estimation. As such, for this 
+sequence, the online correction procedure requires more iterations to converge to a consistent 
+model. The spikes in Figure~\ref{figure:probobj_timing} reflect the practical implications of 
+this; though correction is performed asynchronously, occasionally the correction thread blocks the 
+main pipeline.
+
+However, in all cases the system demonstrates real time performance with framerates of 
+\( \approx 84Hz \), \( \approx 95Hz \) and \( \approx 45Hz \) for the \textit{Bear}, 
+\textit{Dinosaur Head} and \textit{Museum Rock} sequences, respectively.
 
 \section{Summary}
 ~\label{sec:probobj_discussion}
