@@ -1034,6 +1034,35 @@ highlighted in bold.}
 ~\label{figure:moseg_rte}
 \end{figure}
 
+\section{Performance Evaluation}
+~\label{sec:moseg_performance}
+As outlined in the research objectives of Section~\ref{sec:intro_aims_structure}, the proposed 
+dynamic SLAM pipeline is required to run in real-time if it is to be suitable for use at scale. 
+The basic dense SLAM pipeline of \textit{Prisacariu et al}~\cite{Prisacariu2014} is a highly 
+optimised implementation of the Voxel Hashing approach of \textit{Nei{\ss}ner et al}~\cite{NieBner2013}, 
+achieving very high framerates on consumer computing equipment. For the purpose of evaluating the 
+performance of the modified pipeline outlined in this work, a direct comparison is drawn to 
+\textit{InfiniTAM}, the implementation of \textit{Prisacariu et al}~\cite{Prisacariu2014}.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/moseg/timings_coffee.eps}
+  \caption[Motion Segmentation Performance on CoffeeTable Sequence]
+  {Performance of the proposed approach versus the standard dense SLAM pipeline of 
+  \textit{Prisacariu et al}~\cite{Prisacariu2014}.}
+~\label{figure:moseg_timing_coffee}
+\end{figure}
+
+It can be seen from Figure~\ref{figure:figure:moseg_timing_coffee} that the motion segmentation and 
+dynamic SLAM system proposed in this work is capable of operating at above real time performance. The 
+sequence from which the performance statistics of Figure~\ref{figure:moseg_timing_coffee} are derived 
+consists of 1108 frames in which dynamics are prevalent throughout. It can be seen that although the 
+cost of the proposed system is higher than that of the standard SLAM pipeline, performance is still 
+better than real-time. It should be noted however that the Mean processing time for a given frame 
+is 0.011843 seconds, the Standard Deviation over the sequence is 0.000862 seconds. Such varying per 
+frame times are due to the varying degree of observed dynamic scene components. However, the proposed 
+approach performs at \(\approx 84Hz\) versus the standard pipeline's performance of \(\approx 136Hz\), 
+indicating a non detrimental performance deficit.
+
 \section{Application to Semantic Scene Understanding}
 ~\label{sec:moseg_semantic}
 The dynamic scene handling approach described in Section~\ref{sec:moseg_dynamic_fusion}
