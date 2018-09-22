@@ -75,8 +75,8 @@ process. An example of such instantaneous map is given in Figure~\ref{figure:pro
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
-    \includegraphics[width=.3\linewidth]{figures/object_recon/prob/dino.png} &
-    \includegraphics[width=.3\linewidth]{figures/object_recon/prob/rock.png} \\ 
+    \includegraphics[width=.4\linewidth]{figures/object_recon/prob/dino.png} &
+    \includegraphics[width=.4\linewidth]{figures/object_recon/prob/rock.png} \\ 
     (a)  & (b) \\
   \end{tabular}
   \caption[Raw Foreground Probability Maps]
@@ -126,7 +126,7 @@ Figure~\ref{figure:probobj_pipeline_diagram}.
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{figures/object_recon/pipeline.pdf}
+  \includegraphics[width=\linewidth]{figures/object_recon/pipeline.pdf}
   \caption[Probabilistic Object Reconstruction Pipeline]
   {The pipeline of the proposed Object Reconstruction approach.}
 ~\label{figure:probobj_pipeline_diagram}
@@ -173,7 +173,7 @@ In Equation~\ref{eqn:probobj_voxel_posterior} \( \Psi \) is the volume of
 voxels for which measurements are accumulated, \( \Phi \)  is the volume of voxels 
 pertaining to the object \(\bm{\Phi}\) of interest, \(\Omega_{t}\) is the current 
 RGBD image observation at time \(t\) and \(p_{t}\) is the currently tracked pose at 
-time \(t\). Equation ~\ref{eqn:probobj_voxel_posterior} gives the probability of 
+time \(t\). Equation~\ref{eqn:probobj_voxel_posterior} gives the probability of 
 a voxel belonging to the object of interest as the product of instantaneous appearance-derived 
 pixel-wise conditionals. Note that in the above, \( \Phi \) is a discretisation of 
 the continuous \( \Phi \) in the probabilistic formulation that follows.
@@ -187,7 +187,7 @@ formulation of the full joint distribution over the object as the Probabilistic
 Graphical Model (PGM) of Figure~\ref{figure:probobj_pgm1}.
 \begin{figure}[!htbp]
   \centering
-  \resizebox{0.3\linewidth}{!}{
+  \resizebox{0.4\linewidth}{!}{
     \begin{tikzpicture}
       % Declare nodes.
       \node[latent] (phi) {\(\Phi\)};
@@ -247,7 +247,7 @@ independence is assumed in the poses, the plate containing \( \Omega \) and \(p\
 be removed as shown in Figure~\ref{figure:probobj_pgm2}.
 \begin{figure}[!htbp]
   \centering
-  \resizebox{0.3\linewidth}{!}{
+  \resizebox{0.4\linewidth}{!}{
     \begin{tikzpicture}
       % Declare nodes.
       \node[latent] (phi) {\(\Phi\)};
@@ -377,7 +377,7 @@ Gaussian Distribution \(\mathcal{N}(\bm{0} \given \bm{I})\) over the
 ~\ref{subsub:moseg_static_camera_attitude}. 
 
 The choice of such a prior distribution is motivated by the assumption that motion between 
-consecutive frames is minor (for a real-time sensor running at at least \( 30Hz \),
+consecutive frames is minor (for a real-time sensor running at at least \( 30Hz \)),
 thus the given prior will have the effect of constraining the \(\mathbb{SE}(3)\)
 transformation as such. The prior distribution \(P(\Phi)\) serves as a
 \textit{Surface Prior} to mitigate the effect of noise introduced in to the TSDF
@@ -453,7 +453,7 @@ To encode the probability of a given voxel \(\psi \in \bm{\Psi}\) encoding an
 isosurface point, represented as the Zero Level Set defined in Equation
 ~\ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
 probability with a function that has the aforementioned properties. As such, the
-CDF of \(P(\Phi)^{\prime}\) is derived as follows.
+CDF of \(P{(\Phi)}^{\prime}\) is derived as follows.
 \begin{align}
   \label{eqn:probobj_surface_prior_cdf}
   % Line 1.
@@ -497,16 +497,16 @@ CDF of \(P(\Phi)^{\prime}\) is derived as follows.
 
 With the CDF of Equation~\ref{eqn:probobj_logistic_dist} derived in Equation
 ~\ref{eqn:probobj_surface_prior_cdf}, an appropriate choice of the parameters \( \mu \)
-and \( \sigma \) must be made for the prior over the SDF. The Logistic PDF and CDF is 
+and \( \sigma \) must be made for the prior over the SDF\@. The Logistic PDF and CDF is 
 plotted in Figure~\ref{figure:probobj_logistic} for varying \( \mu \) and \( \sigma \).
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
-		\includegraphics[width=.45\linewidth]{figures/object_recon/logistic/mu_pdf.eps}&
-    \includegraphics[width=.45\linewidth]{figures/object_recon/logistic/mu_cdf.eps} \\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/logistic/mu_pdf.eps}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/logistic/mu_cdf.eps} \\
     (a) & (b) \\
-		\includegraphics[width=.45\linewidth]{figures/object_recon/logistic/sigma_pdf.eps}&
-    \includegraphics[width=.45\linewidth]{figures/object_recon/logistic/sigma_cdf.eps} \\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/logistic/sigma_pdf.eps}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/logistic/sigma_cdf.eps} \\
     (c) & (d) \\
 	\end{tabular}
   \caption[Shape Prior PDF's and CDF's]
@@ -524,10 +524,10 @@ and behind the isosurface. As such, a suitable prior may be found by parameteris
 appropriate manner. With the parameterisation of \( \mu = 4 \) and \( \sigma = 0.7 \), the CDF is 
 shifted appropriately and penalises on a strict range of SDF values. However, in this form the CDF 
 penalises SDF points close to the isosurface. However, this is trivially solved as in Figure
-~\ref{figure:probobj_shape_prior}, note the symmetric property of the Logistic CDF.
+~\ref{figure:probobj_shape_prior}, note the symmetric property of the Logistic CDF\@.
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=.7\linewidth]{figures/object_recon/logistic/prior.eps}
+  \includegraphics[width=.8\linewidth]{figures/object_recon/logistic/prior.eps}
   \caption[Shape Prior PDF's and CDF's]
   {\( P(\Phi) \) and \( 1 - P(\Phi) \)}
 ~\label{figure:probobj_shape_prior}
@@ -698,7 +698,7 @@ in Figure~\ref{figure:probobj_crf}
 
 \begin{figure}[!htbp]
   \centering
-  \resizebox{0.5\linewidth}{!}{
+  \resizebox{0.6\linewidth}{!}{
     \begin{tikzpicture}[every node/.style={minimum size=1cm},on grid]
       % Define dimension and multiplier - tweakable.
       \newcommand\graphdim{2}
@@ -956,9 +956,9 @@ a Quantitative evaluation of Reconstruction quality is given.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{@{}c@{}}
-    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
+    \includegraphics[width=.75\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
     (a) \\
-    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/rock.png} \\ 
+    \includegraphics[width=.75\linewidth]{figures/object_recon/strips/rock.png} \\ 
     (b)\\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results I]
@@ -977,9 +977,9 @@ the object of interest, contrary to the approach outlined in this chapter.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{@{}c@{}}
-    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/dino_s3d.png} \\
+    \includegraphics[width=.75\linewidth]{figures/object_recon/strips/dino_s3d.png} \\
     (a) \\
-    \includegraphics[width=.7\linewidth]{figures/object_recon/strips/dino.png} \\ 
+    \includegraphics[width=.75\linewidth]{figures/object_recon/strips/dino.png} \\ 
     (b) \\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results II]
@@ -1039,11 +1039,11 @@ the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
-		\includegraphics[width=.3\linewidth]{figures/object_recon/top/teddy_top00.png}&
-    \includegraphics[width=.3\linewidth]{figures/object_recon/top/dino_top00.png} \\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/top/teddy_top00.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/top/dino_top00.png} \\
     (a) & (b) \\
-		\includegraphics[width=.3\linewidth]{figures/object_recon/top/chair_top00.png}&
-    \includegraphics[width=.3\linewidth]{figures/object_recon/top/rock_top00.png} \\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/top/chair_top00.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/top/rock_top00.png} \\
     (c) & (d) \\
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results IV]
@@ -1064,11 +1064,11 @@ and it's accompanying enforcement of consistency constraints.
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
-		\includegraphics[width=.3\linewidth]{figures/object_recon/gappy/one_scene00.png}&
-    \includegraphics[width=.3\linewidth]{figures/object_recon/gappy/one_scene01.png}\\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/gappy/one_scene00.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/gappy/one_scene01.png}\\
     (a) & (b) \\
-		\includegraphics[width=.3\linewidth]{figures/object_recon/gappy/multi_scene00.png}&
-    \includegraphics[width=.3\linewidth]{figures/object_recon/gappy/multi_scene01.png}\\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/gappy/multi_scene00.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/gappy/multi_scene01.png}\\
     (c) & (d)\\
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results V]
@@ -1136,8 +1136,8 @@ from the sequence are given in Figure~\ref{figure:probobj_flower_depth}
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
-		\includegraphics[width=.4\linewidth]{figures/object_recon/flower_begin.png}&
-    \includegraphics[width=.4\linewidth]{figures/object_recon/flower_end.png}\\
+		\includegraphics[width=.45\linewidth]{figures/object_recon/flower_begin.png}&
+    \includegraphics[width=.45\linewidth]{figures/object_recon/flower_end.png}\\
     (a) & (b) 
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results V]
@@ -1215,11 +1215,11 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
   \centering
   \begin{tabular}{@{}c@{}}
     \begin{tabular}{cc}
-      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/bear.png}&
-      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/brain.png}\\
+      \includegraphics[width=.4\linewidth]{figures/object_recon/hauss/bear.png}&
+      \includegraphics[width=.4\linewidth]{figures/object_recon/hauss/brain.png}\\
       (a) & (b) \\
-      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/chair.png}&
-      \includegraphics[width=.3\linewidth]{figures/object_recon/hauss/dino.png} \\
+      \includegraphics[width=.4\linewidth]{figures/object_recon/hauss/chair.png}&
+      \includegraphics[width=.4\linewidth]{figures/object_recon/hauss/dino.png} \\
       (c) & (d) \\
     \end{tabular} \\
     \begin{tabular}{ccc}
@@ -1245,7 +1245,7 @@ designed with real time performance in mind. Figure~\ref{figure:probobj_timing} 
 statistics on a subset of the evaluation sequences.
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.95\linewidth]{figures/object_recon/timings_objects.eps}
+  \includegraphics[width=\linewidth]{figures/object_recon/timings_objects.eps}
   \caption[Object Reconstruction Performance.]
   {Performance of the proposed approach on the \textit{Bear}, \textit{Dinosaur Head} and 
   \textit{Museum Rock} sequences.}

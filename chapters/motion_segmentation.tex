@@ -64,7 +64,7 @@ is presented in Figure~\ref{figure:voxel_blocks}.
 % Based on http://www.texample.net/tikz/examples/sudoku-3d-cube/.
 \begin{figure}[!htbp]
   \centering
-  \resizebox{0.5\linewidth}{!}{
+  \resizebox{.6\linewidth}{!}{
     \begin{tikzpicture}[every node/.style={minimum size=1cm},on grid]
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %%% BEGIN: BIG GRID.
@@ -199,7 +199,7 @@ representing distances to the zero crossing point; positive in front of the
 surface, negative behind. Surface points are known as the Zero Level Set.
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=.5\linewidth]{figures/moseg/3d_sdf.eps}
+  \includegraphics[width=.6\linewidth]{figures/moseg/3d_sdf.eps}
   \caption[Signed Distance Function]{An example of a sphere embedded within a 
   three dimensional SDF.}
 ~\label{figure:sdf_example}
@@ -261,7 +261,7 @@ parameters, \( \alpha \), \( \beta \) and \( \gamma \). Each parameter represent
 rotation around one of three principal axes, as shown in Figure~\ref{figure:euler_axes}.
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=.5\linewidth]{figures/moseg/euler_angles.png}
+  \includegraphics[width=.6\linewidth]{figures/moseg/euler_angles.png}
   \caption[Rotational Axes]{Right handed coordinate system and the three rotational axes; 
   \( \alpha \), \( \beta \) and \( \gamma \).}
 ~\label{figure:euler_axes}
@@ -632,7 +632,7 @@ In addition, the weight \(\phi(\bm{x}_{v})\) is updated as follows.
 
 \subsection{Rendering}
 ~\label{subsec:moseg_static_rendering}
-Following the integration process outlined in Section ~\ref{subsec:moseg_static_integration} 
+Following the integration process outlined in Section~\ref{subsec:moseg_static_integration} 
 is the rendering stage in which an image of the scene under the current pose is generated, to 
 provide an updated rendering for the tracking stage outlined in Section~\ref{subsec:moseg_static_camera_tracking}, 
 at the next time step.
@@ -654,18 +654,18 @@ the scene isosurface. The basic Raycasting process is Given in the following Alg
           \For{\( y \gets 0\ \text{to}\ H \)}
             \For{\( x \gets\ 0\ \text{to}\ W \)}
               % Unproject.
-              \State{\( \bm{p}_{min} \gets  \big[
+              \State{\( \bm{p}_{min} \gets  \big{[
                 \frac{x - \bm{C}_{0, 2}}{\bm{C}_{0, 0}}\quad
                 \frac{y - \bm{C}_{1, 2}}{\bm{C}_{1, 1}}\quad
                 z_{min}\quad 
                 1
-              \big]^{T} \)} \Comment{Unproject}
-              \State{\( \bm{p}_{max} \gets  \big[
+              \big]}^{T} \)} \Comment{Unproject}
+              \State{\( \bm{p}_{max} \gets  \big{[
                 \frac{x - \bm{C}_{0, 2}}{\bm{C}_{0, 0}}\quad
                 \frac{y - \bm{C}_{1, 2}}{\bm{C}_{1, 1}}\quad
                 z_{max}\quad 
                 1
-              \big]^{T} \)}
+              \big]}^{T} \)}
               % Min and max model point.
               \State{\( \bm{p}_{min}^{\star} \gets
                 \bm{P}^{-1} \bm{p}_{min}
@@ -707,7 +707,7 @@ the scene isosurface. The basic Raycasting process is Given in the following Alg
   \par
 }
 It should be noted that the loop over image pixels \( \bm{\Omega}_{x, y} \) 
-can be trivially optimised in a data parallel fashion on a GPU. This is possible as there exists no data 
+can be trivially optimised in a data parallel fashion on a GPU\@. This is possible as there exists no data 
 dependence between image pixels and TSDF accesses are read only.
 
 \section{Volumetric Fusion with Dynamic Scenes}
@@ -727,7 +727,7 @@ from contributing to tracking drift.
 An overview of the proposed pipeline is given in Figure~\ref{figure:moseg_pipeline}
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.95\linewidth]{figures/moseg/pipeline.pdf}
+  \includegraphics[width=\linewidth]{figures/moseg/pipeline.pdf}
   \caption[Motion Segmentation Pipeline]{The proposed motion segmentation pipeline. 
   Note the additional voxel block labelling stage with a feedback to the model 
   integration stage.}
@@ -862,7 +862,7 @@ integration. The process is given in the following Algorithm.
             \EndIf{}
           \EndFor{}
 
-          \State{\( \text{raycast}(\bm(\Phi)_{d}, \bm{T}) \)}
+          \State{\( \text{raycast}(\bm{(\Phi)}_{d}, \bm{T}) \)}
           \Comment{Visualise Dynamics}
         \EndProcedure{}
       \end{algorithmic}
@@ -893,9 +893,9 @@ and sitting on a Setee is given in Figure~\ref{figure:moseg_qualitative_setee}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{ccc}
-    \includegraphics[height=.2\linewidth]{figures/moseg/original_sitting.png} &
-    \includegraphics[height=.2\linewidth]{figures/moseg/infinitam_sitting.png} &
-    \includegraphics[height=.2\linewidth]{figures/moseg/moseg_sitting.png}\\
+    \includegraphics[height=.25\linewidth]{figures/moseg/original_sitting.png} &
+    \includegraphics[height=.25\linewidth]{figures/moseg/infinitam_sitting.png} &
+    \includegraphics[height=.25\linewidth]{figures/moseg/moseg_sitting.png}\\
     (a) & (b) & (c)
   \end{tabular}
   \caption[Motion Segmentation Qualitative Results I]
@@ -918,11 +918,11 @@ behaviour may be observed in Figure~\ref{figure:moseg_qualitative_chair}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
-    \includegraphics[height=.25\linewidth]{figures/moseg/chair0.png} &
-    \includegraphics[height=.25\linewidth]{figures/moseg/chair1.png} \\
+    \includegraphics[height=.4\linewidth]{figures/moseg/chair0.png} &
+    \includegraphics[height=.4\linewidth]{figures/moseg/chair1.png} \\
     (a) & (b) \\
-    \includegraphics[height=.25\linewidth]{figures/moseg/chair2.png} &
-    \includegraphics[height=.25\linewidth]{figures/moseg/chair3.png} \\
+    \includegraphics[height=.4\linewidth]{figures/moseg/chair2.png} &
+    \includegraphics[height=.4\linewidth]{figures/moseg/chair3.png} \\
     (c) & (d)
   \end{tabular}
   \caption[Motion Segmentation Qualitative Results II]
@@ -987,7 +987,7 @@ The results of Table~\ref{table:moseg_ate} are visualised in Figure
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.95\linewidth]{figures/moseg/ate.eps}
+  \includegraphics[width=\linewidth]{figures/moseg/ate.eps}
   \caption[Motion Segmentation ATE]
   {Absolute Trajectory Error for the TUM Dynamic Scenes dataset.}
 ~\label{figure:moseg_ate}
@@ -1028,7 +1028,7 @@ highlighted in bold.}
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.95\linewidth]{figures/moseg/rte.eps}
+  \includegraphics[width=\linewidth]{figures/moseg/rte.eps}
   \caption[Motion Segmentation RTE]
   {Relative Trajectory Error for the TUM Dynamic Scenes dataset.}
 ~\label{figure:moseg_rte}
@@ -1045,7 +1045,7 @@ performance of the modified pipeline outlined in this work, a direct comparison 
 \textit{InfiniTAM}, the implementation of \textit{Prisacariu et al}~\cite{Prisacariu2014}.
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.95\linewidth]{figures/moseg/timings_coffee.eps}
+  \includegraphics[width=\linewidth]{figures/moseg/timings_coffee.eps}
   \caption[Motion Segmentation Performance on CoffeeTable Sequence]
   {Performance of the proposed approach versus the standard dense SLAM pipeline of 
   \textit{Prisacariu et al}~\cite{Prisacariu2014}.}
@@ -1099,13 +1099,13 @@ prediction process for dynamic objects.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{ccc}
-    \includegraphics[width=.28\linewidth]{figures/moseg/objects1.png} &
-    \includegraphics[width=.28\linewidth]{figures/moseg/objects2.png} &
-    \includegraphics[width=.28\linewidth]{figures/moseg/objects3.png} \\ 
+    \includegraphics[width=.3\linewidth]{figures/moseg/objects1.png} &
+    \includegraphics[width=.3\linewidth]{figures/moseg/objects2.png} &
+    \includegraphics[width=.3\linewidth]{figures/moseg/objects3.png} \\ 
     (a) & (b) & (c) \\
-    \includegraphics[width=.28\linewidth]{figures/moseg/objects4.png} &
-    \includegraphics[width=.28\linewidth]{figures/moseg/objects5.png} &
-    \includegraphics[width=.28\linewidth]{figures/moseg/objects6.png} \\ 
+    \includegraphics[width=.3\linewidth]{figures/moseg/objects4.png} &
+    \includegraphics[width=.3\linewidth]{figures/moseg/objects5.png} &
+    \includegraphics[width=.3\linewidth]{figures/moseg/objects6.png} \\ 
     (d) & (e) & (f) \\
   \end{tabular}
   \caption[Motion Segmentation Object Recognition]
