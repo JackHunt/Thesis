@@ -50,7 +50,9 @@ of the object.
 Over time, multiple volumes containing both surface and probabilistic appearance
 information are maintained and manipulated to yield a robust and temporally
 consistent model. Finally, the optimum object shape is optimised for within a 
-Conditional Random Field (CRF)~\cite{BishopPRML} framework.
+Conditional Random Field (CRF)~\cite{BishopPRML} framework. Textured renderings 
+of various objects reconstructed with the proposed system are given in 
+Figure~\ref{figure:probobj_teaser}.
 
 \begin{figure}[!htbp]
   \centering
@@ -87,11 +89,11 @@ background, with the foreground object indicated by a user indicated bounding bo
 on the first RGB frame. An appearance distribution is fitted over the appearance 
 features of each region, foreground and background. 
 
+% TODO: Move this.
 \iffalse
 At each timestep, an appearance based probability map is generated over the observed 
 RGB frame, with respect to the appearance distributions built prior to the reconstruction 
 process. An example of such instantaneous map is given in Figure~\ref{figure:probobj_prob_maps}.
-% TODO: Replace this fig with a "teaser"
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
@@ -116,9 +118,21 @@ in the probability volume, with respect to the instantaneous image space probabi
 ~\ref{figure:probobj_prob_maps}. Only those voxels with a posterior higher for the foreground than the 
 background are rendered.
 
-% TODO: outline remainder of chapter.
+The remainder of this chapter proceeds as follows; Section~\ref{sec:probobj_alg_overview} provides a high 
+level overview of the proposed algorithm in terms of it's separate components. Section
+~\ref{sec:probobj_prob_formulation} introduces and formalises the probabilistic framework on which the 
+proposed object reconstruction system is based. Following the introduction of the probabilistic framework, 
+Section~\ref{sec:probobj_model_correction} introduces it's use for the online correction process. 
+Section~\ref{sec:probobj_segmentation} describes the volumetric segmentation approach taken for refinement 
+of the resultant object reconstructions. To conclude the introduction of the technical aspects of the system 
+introduced in this chapter, Section~\ref{sec:probobj_pipeline_summary} provides an algorithmic summary of the 
+proposed approach. Sections~\ref{sec:probobj_qualitative} and~\ref{sec:probobj_quantitative} present comparative 
+qualitative and quantitative results, respectively, against alternative object reconstruction approaches. Finally, 
+Sections~\ref{sec:probobj_performance} and~\ref{sec:probobj_discussion} provide performance analyses and a 
+discussion of findings, respectively.
 
 \section{Algorithm Overview}
+~\label{sec:probobj_alg_overview}
 In the proposed system, the object model is divided into \textit{subvolumes}, 
 each consisting of a TSDF, colour volume and object Probability Volume. 
 Additionally, each has associated with it a rigid body transform 
@@ -706,6 +720,7 @@ manner.
 \end{align}
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
+~\label{sec:probobj_segmentation}
 The final component of the proposed pipeline performs a segmentation in three
 dimensional observed model space to perform refinements over the appearance
 posteriors that separate the voxels pertaining to the object of interest from
@@ -892,7 +907,7 @@ it should be noted that alternatives such as Variational Bayesian Mean Field app
 may also be of use~\cite{Krahenbuhl2011}.
 
 \section{Pipeline Summary}
-~\label{subsec:probobj_pipeline_summary}
+~\label{sec:probobj_pipeline_summary}
 As outlined, the proposed object reconstruction system performs online correction of 
 reconstruction errors incurred by erroneous pose estimation results. The process of 
 reconstruction and correction is given in the Algorithm that follows.

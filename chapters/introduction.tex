@@ -87,21 +87,21 @@ would be capable of extracting pertinent semantic information from such events.
 
 \section{Object Reconstruction}
 ~\label{sec:intro_object_recon}
-% TODO: improve link to previous section.
 Modern machine learning provides much of the semantic and contextual information required to make meaningful 
 inferences over the state of the world, as observed by a sensor (such as a camera). Much advancement 
 has been made in recent years on the tasks of object detection and semantic segmentation, in standard 2D 
 images~\cite{Girshick2014,Shelhamer2017,Civera2011}. The application of such techniques in 3D vision allows 
 for semantic reasoning about 2D representations of 3D objects, as shown in the semantic SLAM system of 
-Figure~\ref{figure:spaint_teaser}. 
+Figure~\ref{figure:spaint_teaser}, in which semantic labellings of \textit{3D objects} are applied to a 
+dense 3D reconstruction of a scene.
 
 However, there are many technical challenges that must be overcome before such efficacy on these tasks is reached 
-for the \textit{true} 3D case. Many modern AI and machine learning algorithms require vast quantities of data to 
-learn to perform a given task successfully. This is not prohibitive for systems that operate on standard 2D images, 
-due to the abundance of available data. However, for the 3D case there is not a comparable volume of 3D data with 
-real world geometric information from which a system can learn to perform complex tasks in the real world. One 
-method of obtaining such geometric data is the reconstruction of objects, providing geometrically accurate models of 
-real world objects.
+for the \textit{true} 3D case (where both learning and inference are performed from geometry). Many modern AI and 
+machine learning algorithms require vast quantities of data to learn to perform a given task successfully. This is 
+not prohibitive for systems that operate on standard 2D images, due to the abundance of available data. However, for 
+the 3D case there is not a comparable volume of 3D data with real world geometric information from which a system can 
+learn to perform complex tasks in the real world. One method of obtaining such geometric data is the reconstruction of 
+objects, providing geometrically accurate models of real world objects.
 % TODO: object reconstruction figure.
 
 A related problem to that of sensor pose estimation as outlined in Section~\ref{sec:intro_scene_recon}, 
