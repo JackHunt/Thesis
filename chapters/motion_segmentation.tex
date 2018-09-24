@@ -650,44 +650,44 @@ the scene isosurface. The basic Raycasting process is Given in the following Alg
       \caption{Volume Raycasting.}
       \begin{algorithmic}[1]
         % $.$ used instead of \(\) due to a bug(?) in algorithmic.
-        \Procedure{Raycast}{$\bm{\Phi}, \bm{\Omega}_{in}, \bm{\Omega}_{out}, \bm{C}, \bm{P}, z_{min}, z_{max}, D$}
+        \Procedure{Raycast}{$\bm{\Phi}, \bm{\Omega}_{in}, \bm{\Omega}_{out}, \bm{C}, \bm{P}, z_{\min}, z_{\max}, D$}
           \For{\( y \gets 0\ \text{to}\ H \)}
             \For{\( x \gets\ 0\ \text{to}\ W \)}
               % Unproject.
-              \State{\( \bm{p}_{min} \gets  \big{[
+              \State{\( \bm{p}_{\min} \gets  \big{[
                 \frac{x - \bm{C}_{0, 2}}{\bm{C}_{0, 0}}\quad
                 \frac{y - \bm{C}_{1, 2}}{\bm{C}_{1, 1}}\quad
-                z_{min}\quad 
+                z_{\min}\quad 
                 1
               \big]}^{T} \)} \Comment{Unproject}
-              \State{\( \bm{p}_{max} \gets  \big{[
+              \State{\( \bm{p}_{\max} \gets  \big{[
                 \frac{x - \bm{C}_{0, 2}}{\bm{C}_{0, 0}}\quad
                 \frac{y - \bm{C}_{1, 2}}{\bm{C}_{1, 1}}\quad
-                z_{max}\quad 
+                z_{\max}\quad 
                 1
               \big]}^{T} \)}
               % Min and max model point.
-              \State{\( \bm{p}_{min}^{\star} \gets
-                \bm{P}^{-1} \bm{p}_{min}
+              \State{\( \bm{p}_{\min}^{\star} \gets
+                \bm{P}^{-1} \bm{p}_{\min}
               \)}\Comment{Object Point}
-              \State{\( \bm{p}_{max}^{\star} \gets
-                \bm{P}^{-1} \bm{p}_{max}
+              \State{\( \bm{p}_{\max}^{\star} \gets
+                \bm{P}^{-1} \bm{p}_{\max}
               \)}
-              \State{\( \bm{p}_{min}^{\star} \gets
-                D \frac{\bm{p}_{min}^{\star}}{\bm{p}_{min, 3}^{\star}} + \eta
+              \State{\( \bm{p}_{\min}^{\star} \gets
+                D \frac{\bm{p}_{\min}^{\star}}{\bm{p}_{\min, 3}^{\star}} + \eta
               \)}
-              \State{\( \bm{p}_{max}^{\star} \gets
-                D \frac{\bm{p}_{max}^{\star}}{\bm{p}_{max, 3}^{\star}} + \eta
+              \State{\( \bm{p}_{\max}^{\star} \gets
+                D \frac{\bm{p}_{\max}^{\star}}{\bm{p}_{\max, 3}^{\star}} + \eta
               \)}
               % Get step
               \State{\(
-                \bm{s} \gets \bm{p}_{max}^{\star} - \bm{p}_{min}^{\star}
+                \bm{s} \gets \bm{p}_{\max}^{\star} - \bm{p}_{\min}^{\star}
               \)}\Comment{Ray Step}
               \State{\(
                 \bm{s}^{\star} \gets \frac{\bm{s}}{\lVert \bm{s} \rVert}
               \)}
               % Raycast.
-              \State{\( \bm{p}_{m} \gets \bm{p}_{min}^{\star} - \bm{s}^{\star} \)} \Comment{Starting Point}
+              \State{\( \bm{p}_{m} \gets \bm{p}_{\min}^{\star} - \bm{s}^{\star} \)} \Comment{Starting Point}
               \For{\( \delta \gets 0\ \text{to}\ \lVert \bm{s} \rVert \)} \Comment{Traverse the Ray}
                 \If{\( \bm{\Phi}(\bm{p}_{m}) \) is valid} \Comment{Write Shaded Pixel}
                   \State{\( \phi \gets \bm{\Phi}(\bm{p}_{m}) \)}
@@ -893,18 +893,22 @@ and sitting on a Setee is given in Figure~\ref{figure:moseg_qualitative_setee}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{ccc}
-    \includegraphics[height=.22\linewidth]{figures/moseg/original_sitting.png} &
-    \includegraphics[height=.22\linewidth]{figures/moseg/infinitam_sitting.png} &
-    \includegraphics[height=.22\linewidth]{figures/moseg/moseg_sitting.png}\\
+    \includegraphics[width=.3\linewidth]{figures/moseg/original_sitting.png} &
+    \includegraphics[width=.3\linewidth]{figures/moseg/infinitam_sitting.png} &
+    \includegraphics[width=.3\linewidth]{figures/moseg/moseg_sitting.png}\\
     (a) & (b) & (c)
   \end{tabular}
   \caption[Motion Segmentation Qualitative Results I]
-  {A qualitative comparison between the proposed system and InfiniTAM~\cite{Prisacariu2014}.
-    (a) A static scene containing a Setee is reconstructed.
-    (b) When a person enters the scene using standard InfiniTAM, the tracking
-    fails, leading to a corrupted scene model.
-    (c) Using the proposed system, tracking is maintained and the person is
-    integrated successfully into the scene.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      A qualitative comparison between the proposed system and InfiniTAM~\cite{Prisacariu2014}.\\
+      (a) A static scene containing a Setee is reconstructed.\\
+      (b) When a person enters the scene using standard InfiniTAM, the tracking
+      fails,\\ leading to a corrupted scene model.\\
+      (c) Using the proposed system, tracking is maintained and the person is\\
+      integrated successfully into the scene.
+    \end{tabular}
+  }
 ~\label{figure:moseg_qualitative_setee}
 \end{figure}
 
@@ -918,22 +922,26 @@ behaviour may be observed in Figure~\ref{figure:moseg_qualitative_chair}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
-    \includegraphics[height=.36\linewidth]{figures/moseg/chair0.png} &
-    \includegraphics[height=.36\linewidth]{figures/moseg/chair1.png} \\
+    \includegraphics[width=.4\linewidth]{figures/moseg/chair0.png} &
+    \includegraphics[width=.4\linewidth]{figures/moseg/chair1.png} \\
     (a) & (b) \\
-    \includegraphics[height=.36\linewidth]{figures/moseg/chair2.png} &
-    \includegraphics[height=.36\linewidth]{figures/moseg/chair3.png} \\
+    \includegraphics[width=.4\linewidth]{figures/moseg/chair2.png} &
+    \includegraphics[width=.4\linewidth]{figures/moseg/chair3.png} \\
     (c) & (d)
   \end{tabular}
   \caption[Motion Segmentation Qualitative Results II]
-  {A qualitative example of the proposed systems ability to segment
-    dynamic scene components.
-    (a) A static scene containing a Chair is reconstructed.
-    (b) A person enters the scene, is marked as ``dynamic'' and sits down.
-    (c) After gaining a sufficient confidence score, the person is labelled
-    ``static'' and is integrated in to the static model.
-    (d) The person gets up from the Chair and leaves the scene. The original
-    reconstruction of the Chair from (a) is in tact.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      A qualitative example of the proposed systems ability to segment
+      dynamic scene components.\\
+      (a) A static scene containing a Chair is reconstructed.\\
+      (b) A person enters the scene, is marked as \textit{dynamic} and sits down.\\
+      (c) After gaining a sufficient confidence score, the person is labelled
+      \textit{static} and is integrated in to the static model.\\
+      (d) The person gets up from the Chair and leaves the scene. The original
+      reconstruction of the Chair from (a) is in tact.
+    \end{tabular}
+  }
 ~\label{figure:moseg_qualitative_chair}
 \end{figure}
 
@@ -1109,14 +1117,17 @@ prediction process for dynamic objects.
     (d) & (e) & (f) \\
   \end{tabular}
   \caption[Motion Segmentation Object Recognition]
-  {An example of the training and prediction process for dynamic
-    objects:
-    (a) A teapot is placed in the scene;
-    (b) The teapot is recognised as a new object and an SVM is trained for it;
-    (c) A box is placed in the scene; (d) the box is recognised as being
-    distinct from the teapot, and a separate SVM is trained for it;
-    (e) Another teapot is placed in the scene; (f) the new teapot is recognised
-    as being a teapot rather than a box, and is labelled accordingly.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      An example of the training and prediction process for dynamic objects:\\
+      (a) A teapot is placed in the scene.\\
+      (b) The teapot is recognised as a new object and an SVM is trained for it.\\
+      (c) A box is placed in the scene.\\ 
+      (d) The box is recognised as being distinct from the teapot, so a separate \\SVM is trained.\\
+      (e) Another teapot is placed in the scene.\\
+      (f) The new teapot is recognised, and is labelled accordingly.
+    \end{tabular}
+  }
 ~\label{figure:moseg_recognition}
 \end{figure}
 

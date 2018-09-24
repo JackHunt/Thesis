@@ -52,6 +52,25 @@ information are maintained and manipulated to yield a robust and temporally
 consistent model. Finally, the optimum object shape is optimised for within a 
 Conditional Random Field (CRF)~\cite{BishopPRML} framework.
 
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{ccc}
+    \includegraphics[width=.3\linewidth]{figures/object_recon/colour/bear.png} &
+    \includegraphics[width=.3\linewidth]{figures/object_recon/colour/chair.png} &
+    \includegraphics[width=.3\linewidth]{figures/object_recon/colour/cabinet.png} \\
+    (a) & (b) & (c) \\
+  \end{tabular}
+  \caption[Textured Object Reconstructions]
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      (a) Textured reconstruction of a Teddy Bear. \\
+      (b) Textured reconstruction of a Chair. \\
+      (c) Textured reconstruction of a Filing Cabinet.
+    \end{tabular}
+  }
+~\label{figure:probobj_teaser}
+\end{figure}
+
 The proposed system is inspired by that of \textit{Kolev et al}~\cite{Kolev2006} 
 in that the representation used for the shape of the object to be modelled is a 
 volume of probabilities, pertaining to posteriors over a voxels assignment to 
@@ -68,6 +87,7 @@ background, with the foreground object indicated by a user indicated bounding bo
 on the first RGB frame. An appearance distribution is fitted over the appearance 
 features of each region, foreground and background. 
 
+\iffalse
 At each timestep, an appearance based probability map is generated over the observed 
 RGB frame, with respect to the appearance distributions built prior to the reconstruction 
 process. An example of such instantaneous map is given in Figure~\ref{figure:probobj_prob_maps}.
@@ -77,14 +97,18 @@ process. An example of such instantaneous map is given in Figure~\ref{figure:pro
   \begin{tabular}{cc}
     \includegraphics[width=.4\linewidth]{figures/object_recon/prob/dino.png} &
     \includegraphics[width=.4\linewidth]{figures/object_recon/prob/rock.png} \\ 
-    (a)  & (b) \\
+    (a) & (b) \\
   \end{tabular}
   \caption[Raw Foreground Probability Maps]
-  {(a) An instantaneous probability map in which much noise is present in the background. 
-  (b) A map that is very probabilistically polarized with respect to foreground and background 
-  beliefs.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      (a) An instantaneous probability map in which much noise is present in the background.\\
+      (b) A map that is very probabilistically polarized with respect to foreground and background beliefs.
+    \end{tabular}
+  } 
 ~\label{figure:probobj_prob_maps}
 \end{figure}
+\fi
 
 During the fusion process, the PDF's of these distributions are evaluated on the latest 
 colour observation for a given frame. The aforementioned voxel posteriors are computed \& updated accordingly 
@@ -511,10 +535,12 @@ plotted in Figure~\ref{figure:probobj_logistic} for varying \( \mu \) and \( \si
 	\end{tabular}
   \caption[Shape Prior PDF's and CDF's]
   {
-    (a) PDF of the Logistic Distribution with varying \( \mu \) and \( \sigma = 1 \).
-    (b) CDF of the Logistic Distribution with varying \( \mu \) and \( \sigma = 1 \).
-    (c) PDF of the Logistic Distribution with varying \( \sigma \) and \( \mu = 0 \).
-    (d) CDF of the Logistic Distribution with varying \( \sigma \) and \( \mu = 0 \).
+    \begin{tabular}[t]{@{}l@{}}
+      (a) PDF of the Logistic Distribution with varying \( \mu \) and \( \sigma = 1 \).\\
+      (b) CDF of the Logistic Distribution with varying \( \mu \) and \( \sigma = 1 \).\\
+      (c) PDF of the Logistic Distribution with varying \( \sigma \) and \( \mu = 0 \).\\
+      (d) CDF of the Logistic Distribution with varying \( \sigma \) and \( \mu = 0 \).
+    \end{tabular}
   }
 ~\label{figure:probobj_logistic}
 \end{figure}
@@ -957,14 +983,19 @@ a Quantitative evaluation of Reconstruction quality is given.
   \centering
   \begin{tabular}{@{}c@{}}
     \includegraphics[width=.75\linewidth]{figures/object_recon/strips/rock_s3d.png} \\
-    (a) \\
+    (a)\\
     \includegraphics[width=.75\linewidth]{figures/object_recon/strips/rock.png} \\ 
     (b)\\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results I]
-  {(a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
-  from RGBD observations on the Museum Rock sequence. (b) The proposed system reconstructing 
-  the same object from observations of the Museum Rock sequence.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      (a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
+      from\\ RGBD observations on the Museum Rock sequence.\\ 
+      (b) The proposed system reconstructing 
+      the same object from RGBD\\ observations of the Museum Rock sequence.
+    \end{tabular}
+  }
 ~\label{figure:probobj_rock_s3d}
 \end{figure}
 
@@ -983,9 +1014,14 @@ the object of interest, contrary to the approach outlined in this chapter.
     (b) \\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results II]
-  {(a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
-  from RGBD observations on the Museum Dinosaur Head sequence. (b) The proposed system 
-  reconstructing same the object from observations of the Museum Dinosaur Head sequence.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      (a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
+      from RGBD\\ observations on the Museum Dinosaur Head sequence.\\ 
+      (b) The proposed system reconstructing same the object from RGBD\\ observations of the 
+      Museum Dinosaur Head sequence.
+    \end{tabular}
+  }
 ~\label{figure:probobj_dino_s3d}
 \end{figure}
 
@@ -1026,9 +1062,13 @@ for tracking, versus utilising only that of a single, potentially small object.
     (g) & (h) \\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results III]
-  {(a, b, c, d) Base reconstructions extracted from the output of the 
-  standard KinectFusion pipeline. (e, f, g, h) Reconstructions yielded by 
-  the proposed approach.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      (a, b, c, d) Base reconstructions extracted from the output of the 
+      standard KinectFusion pipeline. \\
+      (e, f, g, h) Reconstructions yielded by the proposed approach.
+    \end{tabular}
+  }
 ~\label{figure:probobj_comp_itm}
 \end{figure}
 
@@ -1050,12 +1090,16 @@ the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results IV]
   {
-    Closed reconstructions of the (a) Teddy, (b) Dinosaur Head, 
-    (c) Chair and (d) Rock sequences.
+    \begin{tabular}[t]{@{}l@{}}
+      Closed reconstructions of the following sequences: 
+      (a) Teddy.\\
+      (b) Dinosaur Head.\\
+      (c) Chair.\\
+      (d) Rock sequences.
+    \end{tabular}
   }
 ~\label{figure:probobj_comp_itm}
 \end{figure}
-% TODO: Make figures bigger; all figure...
 
 The efficacy of the approach described in this work is further demonstrated when comparing
 the pipeline as outlined in Figure~\ref{figure:probobj_pipeline_diagram} to a version that 
@@ -1075,8 +1119,11 @@ and it's accompanying enforcement of consistency constraints.
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results V]
   {
-    Teddy reconstruction with InfiniTAM (a, b) versus the system proposed in this 
-    work (c, d).
+    \begin{tabular}[t]{@{}l@{}}
+      Teddy reconstruction with InfiniTAM versus the system proposed in this work:\\
+      (a, b) InfiniTAM.\\
+      (c, d) Approach of this work.
+    \end{tabular}
   }
 ~\label{figure:probobj_gappy_teddy}
 \end{figure}
@@ -1144,8 +1191,10 @@ from the sequence are given in Figure~\ref{figure:probobj_flower_depth}
 	\end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results V]
   {
-    (a) Starting frame with much missing depth data. 
-    (b) End frame with much more depth data.
+    \begin{tabular}[t]{@{}l@{}}
+      (a) Starting frame with much missing depth data.\\
+      (b) End frame with much more depth data.
+    \end{tabular}
   }
 ~\label{figure:probobj_flower_depth}
 \end{figure}
@@ -1162,8 +1211,13 @@ in Figure~\ref{figure:probobj_traj}
   (a) & (b)
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Trajectory Plots]
-  {Trajectory plots for the \textit{freiburg3\_cabinet} (a) 
-  and \textit{\textsf{freiburg3\_teddy}} (b) sequences.}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+    Trajectory plots for the following sequences:\\
+    (a) \textit{freiburg3\_cabinet}.\\
+    (b) \textit{\textsf{freiburg3\_teddy}}.
+    \end{tabular}
+  }
 ~\label{figure:probobj_traj}
 \end{figure}
 
@@ -1232,9 +1286,13 @@ system and the base reconstructions extracted from the KinectFusion like pipelin
     \end{tabular}
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Hausdorff Distance]
-  {Renderings of the sequences evaluated in Table~\ref{table:probobj_hauss} textured 
-  on Hausdorff Distance (a, b, c, d). The minimum and maximum values given in Table 
-~\ref{table:probobj_hauss} are mapped to the colour range of (e).}
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      (a, b, c, d) Renderings of the sequences evaluated in Table~\ref{table:probobj_hauss} textured\\ 
+      on Hausdorff Distance.\\
+      (e) Intensity mapping corresponding to the minimum and maximum\\ values given in Table~\ref{table:probobj_hauss}.
+    \end{tabular}
+  }
 ~\label{figure:probobj_hauss}
 \end{figure}
 
