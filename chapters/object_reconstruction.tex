@@ -89,29 +89,6 @@ background, with the foreground object indicated by a user indicated bounding bo
 on the first RGB frame. An appearance distribution is fitted over the appearance 
 features of each region, foreground and background. 
 
-% TODO: Move this.
-\iffalse
-At each timestep, an appearance based probability map is generated over the observed 
-RGB frame, with respect to the appearance distributions built prior to the reconstruction 
-process. An example of such instantaneous map is given in Figure~\ref{figure:probobj_prob_maps}.
-\begin{figure}[!htbp]
-  \centering
-  \begin{tabular}{cc}
-    \includegraphics[width=.4\linewidth]{figures/object_recon/prob/dino.png} &
-    \includegraphics[width=.4\linewidth]{figures/object_recon/prob/rock.png} \\ 
-    (a) & (b) \\
-  \end{tabular}
-  \caption[Raw Foreground Probability Maps]
-  {
-    \begin{tabular}[t]{@{}l@{}}
-      (a) An instantaneous probability map in which much noise is present in the background.\\
-      (b) A map that is very probabilistically polarized with respect to foreground and background beliefs.
-    \end{tabular}
-  } 
-~\label{figure:probobj_prob_maps}
-\end{figure}
-\fi
-
 During the fusion process, the PDF's of these distributions are evaluated on the latest 
 colour observation for a given frame. The aforementioned voxel posteriors are computed \& updated accordingly 
 in the probability volume, with respect to the instantaneous image space probability maps shown in Figures
@@ -144,7 +121,24 @@ generate an object \textit{Probability Map} defining the segmented region to be
 the object of interest (as shown in Figure~\ref{figure:probobj_prob_maps}) and the 
 remainder the background, to be discarded. Using these generated Probability Maps, 
 the system accumulates the probabilities into the object \textit{Probability Volume} 
-of the active subvolume.
+of the active subvolume. Examples of such instantaneous probability maps are given in 
+Figure~\ref{figure:probobj_prob_maps}.
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.4\linewidth]{figures/object_recon/prob/dino.png} &
+    \includegraphics[width=.4\linewidth]{figures/object_recon/prob/rock.png} \\ 
+    (a) & (b) \\
+  \end{tabular}
+  \caption[Raw Foreground Probability Maps]
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      (a) An instantaneous probability map in which much noise is present\\ in the background.\\
+      (b) A map that is very probabilistically polarized with respect to foreground\\ and background beliefs.
+    \end{tabular}
+  } 
+~\label{figure:probobj_prob_maps}
+\end{figure}
 
 As with the dense SLAM system outlined earlier in this work, the proposed system
 also has \textit{Integration}, \textit{Tracking} and \textit{Rendering}
@@ -1063,25 +1057,29 @@ for tracking, versus utilising only that of a single, potentially small object.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
-    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/bear00.png}&
-    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/brain00.png}\\
+    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/prob/dino00.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/dino00.png}\\
     (a) & (b)\\
-		\includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/chair00.png}&
-    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/dino00.png} \\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/comp/prob/chair00.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/chair00.png} \\
     (c) & (d) \\
 		\includegraphics[width=.4\linewidth]{figures/object_recon/comp/prob/bear00.png}&
-    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/prob/brain00.png}\\
+    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/bear00.png}\\
     (e) & (f)\\
-		\includegraphics[width=.4\linewidth]{figures/object_recon/comp/prob/chair00.png}&
-    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/dino00.png} \\
+		\includegraphics[width=.4\linewidth]{figures/object_recon/comp/prob/brain00.png}&
+    \includegraphics[width=.4\linewidth]{figures/object_recon/comp/itm/brain00.png} \\
     (g) & (h) \\
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Qualitative Results III]
   {
     \begin{tabular}[t]{@{}l@{}}
-      (a, b, c, d) Base reconstructions extracted from the output of the 
-      standard KinectFusion pipeline. \\
-      (e, f, g, h) Reconstructions yielded by the proposed approach.
+      Comparisons of object reconstructions, versus manually segmented (after\\ scene reconstruction) 
+      ground truth models:\\
+      (a, b) Dinosaur Head.\\
+      (c, d) Chair.\\
+      (e, f) Bear.\\
+      (g, h) Brain.\\
+      Reconstructions from the proposed system are on the left, ground truth\\ is on the right.
     \end{tabular}
   }
 ~\label{figure:probobj_comp_itm}
@@ -1166,30 +1164,30 @@ evaluation presented in Section~\ref{sec:moseg_quantitative}, the
     \emph{Sequence Name} & \emph{Proposed Approach ATE (m)} & \emph{InfiniTAM (m)}\\
     \midrule
     \textsf{freiburg3\_cabinet} & 0.077903 & 0.520693\\
-    \textsf{freiburg3\_teddy}   & 0.030596 & 0.048560 \\
-    \textsf{freiburg1\_plant}   & DNR & DNR \\
-    \textsf{freiburg2\_coke}   & DNR & DNR \\
-    \textsf{freiburg2\_dishes}   & DNR & DNR \\
-    \textsf{freiburg2\_flowerbouquet}   & DNR & DNR \\
-    \textsf{freiburg2\_flowerbouquet\_brownbg}   & DNR & DNR \\
-    \textsf{freiburg2\_metallic\_sphere}   & DNR & DNR \\
-    \textsf{freiburg2\_metallic\_sphere2}   & DNR & DNR \\
-    \textsf{freiburg3\_large\_cabinet}   & DNR & DNR
+    \textsf{freiburg3\_teddy}   & 0.030596 & 0.048560%\\
+    %\textsf{freiburg1\_plant}   & DNR & DNR \\
+    %\textsf{freiburg2\_coke}   & DNR & DNR \\
+    %\textsf{freiburg2\_dishes}   & DNR & DNR \\
+    %\textsf{freiburg2\_flowerbouquet}   & DNR & DNR \\
+    %\textsf{freiburg2\_flowerbouquet\_brownbg}   & DNR & DNR \\
+    %\textsf{freiburg2\_metallic\_sphere}   & DNR & DNR \\
+    %\textsf{freiburg2\_metallic\_sphere2}   & DNR & DNR \\
+    %\textsf{freiburg3\_large\_cabinet}   & DNR & DNR
   \end{tabular}
   \caption[Probabilistic Object Reconstruction ATE]
   {ATE results achieved by the proposed approach versus InfiniTAM with object segmentation.}
 ~\label{table:probobj_ate}
 \end{table}
-% TODO: Remove DNR's; sufficient to talk about them. 
 
 It can be seen from Table~\ref{table:probobj_ate} that on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this work 
 yields a marked improvement in Absolute Trajectory Error over that of the standard KinectFusion 
-pipeline with object segmentation. The remaining sequences that have the ATE marked as DNR did 
-not yield an interpretable reconstruction; sequences with ATE metrics marked DNR did not 
-reconstruct. 
+pipeline with object segmentation. 
 
-In the case of the \textit{freiburg2\_metallic\_sphere (2)} sequences, the object 
+The remaining sequences in the \textit{3D Object Reconstruction} subset of the 
+\textit{RGB-D SLAM Dataset and Benchmark}~\cite{Sturm2012} did not yield an interpretable reconstruction; 
+these sequences did not reconstruct in \textit{neither} the proposed approach, \textit{nor} the baseline 
+approach (InfiniTAM). In the case of the \textit{freiburg2\_metallic\_sphere (2)} sequences, the object 
 of interest is purely spherical in geometry. Such a shape is problematic for ICP like tracking 
 algorithms due to it's inherent ambiguity. Ambiguous geometry was also troublesome for the 
 \textit{freiburg2\_coke} sequence. The \textit{freiburg2\_flowerbouquet (brownbg)} sequences 
@@ -1214,16 +1212,16 @@ from the sequence are given in Figure~\ref{figure:probobj_flower_depth}
 ~\label{figure:probobj_flower_depth}
 \end{figure}
 
-The trajectories of the two approaches evaluated on the \textit{freiburg3\_cabinet} 
-and \textit{\textsf{freiburg3\_teddy}} sequences are plotted versus the ground truth trajectories 
-in Figure~\ref{figure:probobj_traj}
-
+The trajectories of the proposed object reconstruction system are evaluated on the \textit{freiburg3\_cabinet} 
+and \textit{\textsf{freiburg3\_teddy}} sequences of Table~\ref{table:probobj_ate}, and are plotted versus the 
+ground truth trajectories in Figure~\ref{figure:probobj_traj}.
 \begin{figure}[!htbp]
   \centering
-  \begin{tabular}{cc}
-  \includegraphics[width=.45\linewidth]{figures/object_recon/plots/traj/cab_traj.eps} & 
-  \includegraphics[width=.45\linewidth]{figures/object_recon/plots/traj/ted_traj.eps} \\
-  (a) & (b)
+  \begin{tabular}{@{}l@{}}
+  \includegraphics[width=.8\linewidth]{figures/object_recon/plots/traj/cab_traj.eps}\\
+  (a)\\
+  \includegraphics[width=.8\linewidth]{figures/object_recon/plots/traj/ted_traj.eps}\\
+  (b)
   \end{tabular}
   \caption[Probabilistic Object Reconstruction Trajectory Plots]
   {
