@@ -98,15 +98,17 @@ resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the Raycasting mo
 a rendering for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
 to the loss layer which computes appearance statistics for the detection region and the rendering 
 which are used to quantify loss. The topology of the proposed model is outlined in Figure
-~\ref{figure:spp_pipeline}
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=\linewidth]{figures/spp/model.pdf}
-  \caption[Shape and Pose Prediction Network]{The proposed shape and pose prediction network. 
-  Note that the \textit{ResNet-50}, \textit{Shape Net} and \textit{Latent Net} components have 
-  shared parameters.}
+~\ref{figure:spp_pipeline}.
+\begin{landscape}
+  \begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.9\linewidth]{figures/spp/model.pdf}
+    \caption[Shape and Pose Prediction Network]{The proposed shape and pose prediction network. 
+    Note that the \textit{ResNet-50}, \textit{Shape Net} and \textit{Latent Net} components have 
+    shared parameters.}
 ~\label{figure:spp_pipeline}
-\end{figure}
+  \end{figure}
+\end{landscape}
 
 % TODO: Reorder this; goes from high level intro to GP's... bit heavy 
 \subsection{Gaussian Process Latent Variable Model}

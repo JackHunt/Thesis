@@ -720,17 +720,19 @@ blocks in the current view frustum at each frame. The second integrates blocks
 whose stability values are above a given threshold into the static model.
 Camera tracking is performed against the static model as soon as it contains
 valid isosurface data to track against, preventing moving objects in the scene
-from contributing to tracking drift.
+from contributing to tracking drift. An overview of the proposed pipeline is 
+given in Figure~\ref{figure:moseg_pipeline}.
 
-An overview of the proposed pipeline is given in Figure~\ref{figure:moseg_pipeline}
+\begin{landscape}
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=\linewidth]{figures/moseg/pipeline.pdf}
+  \includegraphics[width=.9\linewidth]{figures/moseg/pipeline.pdf}
   \caption[Motion Segmentation Pipeline]{The proposed motion segmentation pipeline. 
   Note the additional voxel block labelling stage with a feedback to the model 
   integration stage.}
 ~\label{figure:moseg_pipeline}
 \end{figure}
+\end{landscape}
 
 \subsection{Stability Labelling}
 ~\label{sub:moseg_stability_labelling}
