@@ -36,7 +36,27 @@ for the segmentation of moving components in the scene from static components,
 e.g.\ segmenting a person getting up from a chair from the chair itself. One of
 the two scene representations is the \textit{static} scene and the other the
 \textit{dynamic} scene. Such separation prevents corruption in the static scene,
-the reconstruction output of the system.
+the reconstruction output of the system. Examples of motion segmentation are given in 
+Figure~\ref{figure:moseg_teaser}.
+\begin{figure}[!htbp]
+	\centering
+	\begin{tabular}{ccc}
+    \includegraphics[width=.3\linewidth]{figures/moseg/teaser/sitting.png}&
+    \includegraphics[width=.3\linewidth]{figures/moseg/teaser/objects.png}&
+    \includegraphics[width=.3\linewidth]{figures/moseg/teaser/arms.png}\\
+    (a) & (b) & (c)\\
+	\end{tabular}
+  \caption[Motion Segmentation Example]
+  {
+    \begin{tabular}[t]{@{}l@{}}
+      Examples of motion segmentation (note that red indicates motion):\\
+      (a) A person sits on a setee.\\
+      (b) Dynamic objects that have become stable and semantically identified.\\
+      (c) A person waving their arms in the scene.
+    \end{tabular}
+  }
+~\label{figure:moseg_teaser}
+\end{figure}
 
 Without the segmentation of dynamic scene components, when tracking against the
 current reconstruction the integrated dynamic components may cause artefacts
