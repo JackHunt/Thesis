@@ -713,6 +713,47 @@ manner.
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} \Bigg]
 \end{align}
 
+\subsection{Implicit Surface Deformation}
+~\label{subsec:probobj_implicit_surface_deform}
+The resultant object surface \( \Phi \) is implicitly deformed according to the 
+inferred consistency constraints \( L \) by a blending function \( \zeta(\mathcal{X}) \) 
+over each set \( \mathcal{X} \) of overlapping subvolumes for which surface data has been integrated.
+The set \( \mathcal{X} \) is defined as follows in Equation~\ref{eqn:probobj_blend_chi}.
+\begin{equation}
+  \label{eqn:probobj_blend_chi}
+  \mathcal{X} = \Big\{ 
+    L_{s, s^{'}}, \bm{\Psi}_{s}, \bm{\Psi}_{s^{'}} 
+  \Big\}
+  \forall s, s^{'} \in \mathcal{S}
+\end{equation}
+
+The blending of surface data between two volumes \( \bm{\Psi}_{s} \) and \( \bm{\Psi}_{s^{'}} \) 
+approximates the \textit{true} object surface \( \bm{\Phi} \), assumed to exist between that of 
+\( \bm{\Psi}_{s} \) and \( \bm{\Psi}_{s^{'}} \). This notion is depicted in Figure
+~\ref{figure:probobj_implicit_surface}.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/object_recon/deformation.png}
+  \caption[Implicit Surface Deformation]{An example of deformations being applied to observed surfaces 
+  to approximate a true surface.}
+~\label{figure:probobj_implicit_surface}
+\end{figure}
+
+For the experiments performed in this work, the blending function \( \zeta \) is defined as follows in 
+Equation~\ref{eqn:probobj_blending_func}. Note that the output of the blending function \( \zeta \) is 
+the approximated object surface \( \bm{\Phi} \).
+\begin{align}
+  \label{eqn:probobj_blending_func}
+  \bm{\Phi} ={}& \zeta(\mathcal{X}) \\
+  ={}&
+  \frac{1}{\left| \bm{X} \right|} \sum_{\chi \in \mathcal{X}}
+  % TODO: fix this.
+  \begin{cases}
+    \psi_{\chi} & \text{if $P(\psi \in \mathbf{\Phi} | \Omega, p) > P(\psi \notin \mathbf{\Phi} | \Omega, p)$} \\
+    0 & \text{if $P(\psi \in \mathbf{\Phi} | \Omega, p) < P(\psi \notin \mathbf{\Phi} | \Omega, p)$}
+  \end{cases}
+\end{align}
+
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
 ~\label{sec:probobj_segmentation}
 The final component of the proposed pipeline performs a segmentation in three

@@ -101,8 +101,14 @@ machine learning algorithms require vast quantities of data to learn to perform 
 not prohibitive for systems that operate on standard 2D images, due to the abundance of available data. However, for 
 the 3D case there is not a comparable volume of 3D data with real world geometric information from which a system can 
 learn to perform complex tasks in the real world. One method of obtaining such geometric data is the reconstruction of 
-objects, providing geometrically accurate models of real world objects.
-% TODO: object reconstruction figure.
+objects, providing geometrically accurate models of real world objects. An example of an object centric reconstruction 
+is given in Figure~\ref{figure:intro_object_teaser}.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/intro/chair.png}
+  \caption[Object Scale Dense Reconstruction]{An example of a reconstructed Chair.}
+~\label{figure:intro_object_teaser}
+\end{figure}
 
 A related problem to that of sensor pose estimation as outlined in Section~\ref{sec:intro_scene_recon}, 
 is pose estimation when performing reconstruction of individual objects. As with the larger scale case, point 
