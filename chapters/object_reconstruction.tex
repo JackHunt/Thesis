@@ -746,12 +746,16 @@ the approximated object surface \( \bm{\Phi} \).
   \label{eqn:probobj_blending_func}
   \bm{\Phi} ={}& \zeta(\mathcal{X}) \\
   ={}&
-  \frac{1}{\left| \bm{X} \right|} \sum_{\chi \in \mathcal{X}}
-  % TODO: fix this.
-  \begin{cases}
-    \psi_{\chi} & \text{if $P(\psi \in \mathbf{\Phi} | \Omega, p) > P(\psi \notin \mathbf{\Phi} | \Omega, p)$} \\
-    0 & \text{if $P(\psi \in \mathbf{\Phi} | \Omega, p) < P(\psi \notin \mathbf{\Phi} | \Omega, p)$}
-  \end{cases}
+  \frac{1}{\left| \mathcal{X} \right|} \sum_{\chi \in \mathcal{X}} 
+    \begin{aligned}[t]
+      {}& \Big[ 
+        \bm{\Psi}_{s}(v) - \bm{\Psi}_{s^{'}}(v^{'})
+        \forall v, v^{'} \in \bm{\Psi}_{s} \cup \bm{\Psi}_{s^{'}}
+        \leftrightarrow \\ 
+      {}& 1 - P(\bm{\Psi}_{s}(v) \in \mathbf{\Phi} | \Omega, p) < 0.5 \wedge \\
+      {}& 1 - P(\bm{\Psi}_{s^{'}}(v^{'}) \in \mathbf{\Phi} | \Omega, p) < 0.5
+      \Big]
+    \end{aligned}
 \end{align}
 
 \section{Volumetric Segmentation and Explicit Loop Closure Detection}
