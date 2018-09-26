@@ -734,11 +734,36 @@ same form of those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_ja
 
 \subsection{Rendering}
 ~\label{subsec:spp_rendering}
-% refer to prev(still to write) raycast
-% differentiable by...
-% refer back to log sigmoid and derivative
-% give pseudocode
-% example probability map
+The dynamic SLAM and object reconstruction works of Chapters~\ref{chap:moseg} and~\ref{chap:probobj}, 
+both rely on Raycasting to obtain a rendering of a surface embedded within an implicit volume, under 
+some estimated pose. The approach taken in this chapter is very similar. 
+
+Raycasting is first and foremost used in the model outlined in Section~\ref{sec:spp_algorithm} for 
+visualisation purposes, to render the estimated shape under the estimated pose for an instantaneous scene 
+view. In Chapters~\ref{chap:moseg} and~\ref{chap:probobj}, the output rendering is also used for frame-wise 
+evaluation and optimisation of the pose energy function. However, as the approach outlined in this chapter 
+does not assume temporal consistency, the requirements for optimisation differ.
+
+As the model outlined in Section~\ref{sec:spp_algorithm} relies on the backpropagation of gradients for it's 
+training, the rendering module must be differentiable for the backward pass. As such, this section outlines a 
+simple formulation of \textit{differentiable} Raycasting, inspired by the work of \textit{Prisacariu et al}
+~\cite{Prisacariu2011}. In addition to generating a shaded rendering, proposed approach generates a probabilistic 
+map. For a review of the general Raycasting algorithm, refer to Section~\ref{subsec:moseg_static_rendering}.
+
+By accumulating log probabilities of voxels visited on traversal of the ray, a differentiable representation 
+of the process can be obtained. However, this relies on the use of a differentiable PMF\@. As with the approach 
+to object reconstruction outlined in Chapter~\ref{chap:probobj}, the desired behaviour is that the distribution 
+shall encode the probability of a voxel being very close to the isosurface. As such, the Log-Sigmoid of Equation
+~\ref{eqn:probobj_surface_prior_cdf} is used. Thus, for a pixel location \( [x, y] \), the output probabistic 
+value is as follows in Equation~\ref{eqn:spp_diff_raycast}.
+\begin{equation}
+~\label{eqn:spp_diff_raycast}
+\mathcal{R}(x, y) = \sum_{v \in \mathcal{V}} \ln P(v)
+\end{equation}
+
+In Equation~\ref{eqn:spp_diff_raycast}, \( \mathcal{V} \) is the set of voxels in the SDF \( \bm{\Phi} \) that 
+intersect the ray from the given pixel in the image frame. The gradient of the \( \ln P(v) \) term in 
+Equation~\ref{eqn:spp_diff_raycast} if the form given in Equation~\ref{eqn:probobj_log_post_rot_grad}.
 
 \subsection{Information Theoretic Loss}
 ~\label{subsec:spp_loss}
