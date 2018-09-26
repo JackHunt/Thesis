@@ -17,14 +17,14 @@ reconstruction may not be feasible.
 
 \section{3D Scene Reconstruction and Understanding}
 ~\label{sec:intro_scene_recon}
-Driven by the availability of consumer grade depth sensing equipment such as the Microsoft Kinect RGBD sensor 
-(introduced by Microsoft in 2009 for the XBox 360), there has been a renewed interest in dense scene reconstruction. 
+Driven by the availability of consumer grade depth sensing equipment such as the Microsoft Kinect Red-Green-Blue-Depth (RGBD) 
+sensor (introduced by Microsoft in 2009 for the XBox 360), there has been a renewed interest in dense scene reconstruction. 
 Advances in recent years have allowed for the creation of digital reconstructions of the tangible world with 
 consumer grade computer equipment~\cite{Newcombe2011,Kahler2016,Whelan2015}. Such systems iteratively integrate 
 observed world points into a \textit{global} model, such that over time, a smooth representation of the observed world 
 surfaces is built. In addition to the integration of such information into a model, there is the task of inferring 
 how the sensor has moved in world space, such that the observed points may be transformed and integrated into the 
-appropriate model location. The amalgamation of these two tasks is known as SLAM (Simultaneous Localisation and Mapping). 
+appropriate model location. The amalgamation of these two tasks is known as Simultaneous Localisation and Mapping (SLAM). 
 The basic SLAM pipeline is given in Figure~\ref{figure:basic_slam}. A typical reconstruction using such a system is given 
 in Figure~\ref{figure:room_recon_example}.
 \begin{figure}[!htbp]
@@ -44,8 +44,8 @@ in Figure~\ref{figure:room_recon_example}.
 There has been much advancement in the 2D semantic scene understanding literature
 ~\cite{Girshick2014,Shelhamer2017,Civera2011}, which can be utilised within the context of 3D vision to introduce a 
 semantic component to dense SLAM systems~\cite{Valentin2015,Golodetz2015,Cavallari2016}. Such a combination of techniques 
-provides an adaptable component to AR and robotics applications. Early work on amalgamating the two areas of research have 
-allowed one to view a reconstruction of their environment in VR and interactively label some of the objects within it, with 
+provides an adaptable component to Augmented Reality (AR) and robotics applications. Early work on amalgamating the two areas 
+of research have allowed one to view a reconstruction of their environment in VR and interactively label some of the objects within it, with 
 the system inferring the remaining labelling's. An example of the output of such a system is given in Figure~\ref{figure:spaint_teaser}.
 \afterpage{
   \begin{figure}[!htbp]
@@ -96,12 +96,12 @@ Figure~\ref{figure:spaint_teaser}, in which semantic labellings of \textit{3D ob
 dense 3D reconstruction of a scene.
 
 However, there are many technical challenges that must be overcome before such efficacy on these tasks is reached 
-for the \textit{true} 3D case (where both learning and inference are performed from geometry). Many modern AI and 
-machine learning algorithms require vast quantities of data to learn to perform a given task successfully. This is 
-not prohibitive for systems that operate on standard 2D images, due to the abundance of available data. However, for 
-the 3D case there is not a comparable volume of 3D data with real world geometric information from which a system can 
-learn to perform complex tasks in the real world. One method of obtaining such geometric data is the reconstruction of 
-objects, providing geometrically accurate models of real world objects. An example of an object centric reconstruction 
+for the \textit{true} 3D case (where both learning and inference are performed from geometry). Many modern Artificial 
+Intelligence (AI) and Machine Learning (ML) algorithms require vast quantities of data to learn to perform a given task 
+successfully. This is not prohibitive for systems that operate on standard 2D images, due to the abundance of available 
+data. However, for the 3D case there is not a comparable volume of 3D data with real world geometric information from which 
+a system can learn to perform complex tasks in the real world. One method of obtaining such geometric data is the reconstruction 
+of objects, providing geometrically accurate models of real world objects. An example of an object centric reconstruction 
 is given in Figure~\ref{figure:intro_object_teaser}.
 \begin{figure}[!htbp]
   \centering

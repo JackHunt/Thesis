@@ -89,7 +89,7 @@ background, with the foreground object indicated by a user indicated bounding bo
 on the first RGB frame. An appearance distribution is fitted over the appearance 
 features of each region, foreground and background. 
 
-During the fusion process, the PDF's of these distributions are evaluated on the latest 
+During the fusion process, the PDF's or PMF's of these distributions are evaluated on the latest 
 colour observation for a given frame. The aforementioned voxel posteriors are computed \& updated accordingly 
 in the probability volume, with respect to the instantaneous image space probability maps shown in Figures
 ~\ref{figure:probobj_prob_maps}. Only those voxels with a posterior higher for the foreground than the 
@@ -1135,7 +1135,6 @@ capable of providing reconstructions of a wide variety of objects in an
 aesthetically similar manner to a well established baseline. The proposed 
 system provides globally consistent, closed reconstructions as is evident from 
 the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
-
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
@@ -1164,7 +1163,6 @@ the pipeline as outlined in Figure~\ref{figure:probobj_pipeline_diagram} to a ve
 utilises only a single representation of the object of interest. Figure~\ref{figure:probobj_gappy_teddy} 
 demonstrates the difference in reconstruction output when not utilising the multiple subvolume representation 
 and it's accompanying enforcement of consistency constraints. 
-
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
@@ -1324,7 +1322,6 @@ Figure~\ref{figure:probobj_hauss} presents renderings of the \textit{Teddy},
 \textit{Brain}, \textit{Chair} and \textit{Dinosaur Head} sequences textured 
 on the Hausdorff Distance between the output reconstructions of the presented 
 system and the base reconstructions extracted from the KinectFusion like pipeline.
-
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{@{}c@{}}

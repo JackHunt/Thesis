@@ -2,7 +2,7 @@
 This preliminary section introduces the mathematical notation used in this work. The following 
 table outlines essential notational details, separated into sections on Sets, Fields and Groups, 
 Linear Algebra, Sums and Products, Calculus and Probability Theory.
-\begin{longtable}{p{.20\textwidth} | p{.80\textwidth}}
+\begin{longtable}{p{.20\textwidth} | p{.8\textwidth}}
   \hline
   Symbolic Form & Meaning \\
   \hline
@@ -12,6 +12,8 @@ Linear Algebra, Sums and Products, Calculus and Probability Theory.
   \( a \in \mathcal{A} \) & The element \( a \), in the set \( \mathcal{A} \).\\
   \( f(a) \forall a \in \mathcal{A} \) & \( f(a) \) for all \( a \) in \( \mathcal{A} \).\\
   \( | \mathcal{S} | \) & Cardinality of \( \mathcal{S} \); the number of elements in \( \mathcal{S} \).\\
+  \( \inf \mathcal{S} \) & Infimum of \( \mathcal{S} \).\\
+  \( \sup \mathcal{S} \) & Supremum of \( \mathcal{S} \).\\
   \hline
   \( \mathbb{R}^{N} \) & The field of real numbers, of dimension \( N \).\\
   \( \mathbb{SE}(3) \) & The Special Eucledian Group of \( 4 \times 4 \) transform matrices.\\
@@ -22,6 +24,7 @@ Linear Algebra, Sums and Products, Calculus and Probability Theory.
   \( \lVert \bm{a} \rVert_{n} \) & \( n \)-norm of a vector.\\
   \( \bm{a}^{T} \), \( \bm{A}^{T} \) & Transpose of a vector or matrix.\\
   \( \bm{A}^{-1} \) & The matrix inverse of \( \bm{A} \).\\
+  \( \text{tr}(\bm{A}) \) & Trace of the matrix \( A \).\\
   \hline
   \(\sum_{a = 0}^{N} a\) & The sum from \( 0 \) to \( N \) of \( a \).\\
   \(\sum_{a \in \mathcal{A}}\) & The sum of the elements in \( \mathcal{A} \).\\
@@ -29,9 +32,65 @@ Linear Algebra, Sums and Products, Calculus and Probability Theory.
   \hline
   \( \frac{\partial f(\bm{a})}{\partial \bm{a}_{i}} \) & Partial derivative of \( f \) with respect to the \( i^{th} \) element of \( \bm{a} \).\\
   \( \nabla f(\bm{a}) \) & Gradient vector of \( f(\bm{a}) \). The vector of partial derivatives.\\
-  %\hline
-  % From Volumetric Appearance Model
+  \( \int f(a) \intd a \) & Infedinite integral over \( f(a) \) with respect to \( a \).\\
+  \( \int_{m}^{n} f(a) \intd a \) & Definite integral over \( f(a) \) with respect to \( a \), between \( m \) and \( n \).\\
+  \hline
+  \( P(a, b, c) \) & Joint distribution over the random variables \( a \), \( b \) and \( c \).\\
+  \( P(a \given b, c) \) & Distribution over the random variable \( a \), conditioned on \( b \) and \( c \).\\
+  \( P(a) \) & Marginal distribution over the random variable \( a \).\\
+  \( \mathcal{N}(a \given \mu, \sigma) \) & Gaussian distribution parameterised by mean \( \mu \) and standard deviation \( \sigma \).\\
+  \( \mathcal{N}(\bm{a} \given \bm{\mu}, \bm{\Sigma}) \) & Multivariate Gaussian distribution parameterised by mean \( \bm{\mu} \) and covariance \( \bm{\sigma} \).\\
+  \( \mathbb{E}(a) \) & Expectation over the random variable \( a \).\\
+  \( b \sim P(a) \) & A sample \( b \), drawn from the distribution \( P(a) \).\\
+  \( f(a) \sim \mathcal{GP}(a) \) & A function \( f(a) \), drawn from the Gaussian Process \( \mathcal{GP}(\bm{\mu}), \bm{\Sigma} \).\\
+  \( \mathbb{KL}(P(a) \given P(b)) \) & KL Divergence from the distribution \( P(a) \) to the distribution \( P(b) \).\\
+  \( \mathbb{JSD}(P(a) \given P(b)) \) & Jensen-Shannon Divergence between the distributions \( P(a) \) and \( P(b) \).
 ~\label{table:mathematical_notation}
 \end{longtable}
 
 \section*{Abbreviations}
+In this preliminary section, a reference of abbreviations used in this work is given. The 
+abbreviations and their associated meanings are given in the following table. Note that 
+abbreviations that are used only in the literature review of Chapter~\ref{chap:lit_review} 
+are excluded. Abbreviations are listed in approximate order of first appearance in the text.
+\begin{longtable}{p{.20\textwidth} | p{.8\textwidth}}
+  \hline
+  Abbreviation & Meaning \\
+  \hline
+  3D & Three Dimensional.\\
+  VR & Virtual Reality.\\
+  AR & Augmented Reality.\\
+  RGB & Red-Green-Blue.\\
+  RGBD & Red-Green-Blue-Depth.\\
+  SLAM & Simultaneous Localisation and Mapping.\\
+  AI & Artificial Intelligence.\\
+  ML & Machine Learning.\\
+  GPU & Graphical Processing Unit.\\
+  SDF & Signed Distance Function.\\
+  \hline
+  TSDF & Truncated Signed Distance Function.\\
+  ICP & Iterative Closest Points.\\
+  ATE & Absolute Trajectory Error.\\
+  RTE & Relative Trajectory Error.\\
+  RMSE & Root Mean Squared Error.\\
+  SVM & Suport Vector Machine.\\
+  FPFH & Fast Point Feature Histogram.\\
+  \hline
+  CRF & Conditional Random Field.\\
+  MLE & Maximum Likelihood Estimate.\\
+  PDF & Probability Density Function.\\
+  PMF & Probability Mass Function.\\
+  CDF & Cumulative Density Function.\\
+  PwP & Pixel-wise-Posteriors.\\
+  PGM & Probabilistic Graphical Model.\\
+  MAP & Maximum a Posteriori.\\
+  CNN & Convolutional Neural Network.\\
+  GP & Gaussian Process.\\
+  GPLVM & Gaussian Process Latent Variable Model.\\
+  DCT & Discrete Cosine Transform.\\
+  IDCT & Inverse Discrete Cosine Transform.\\
+  PCA & Principal Component Analysis.\\
+  KL & Kullback-Leibler (Divergence).\\
+  JSD & Jensen-Shannon Divergence.
+~\label{table:abbreviations}
+\end{longtable}

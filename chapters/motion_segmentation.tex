@@ -286,6 +286,7 @@ rotation around one of three principal axes, as shown in Figure~\ref{figure:eule
   \( \alpha \), \( \beta \) and \( \gamma \).}
 ~\label{figure:euler_axes}
 \end{figure}
+
 The Rodriguez parameters \( \alpha \), \( \beta \) and \( \gamma \) form a member of the Lie Algebra 
 \( \mathfrak{g} \) corresponding to the tangent space of the \( \mathbb{SO}(3) \) Lie Group. Elements 
 of the Lie Algebra map to the Lie Group by the matrix exponential.
@@ -615,7 +616,6 @@ and \(y_{0}\) are the focal lengths, scale and camera principal points respectiv
 
 The integration of new data points into the TSDF volume is achieved by computing 
 running means; each voxel contains a running average of its SDF value over time.
-
 Projecting to the depth image \(\bm{\Omega}\) coordinates as in Equation
 ~\ref{eqn:project_tsdf_to_image} to perform a depth pixel lookup in \(\bm{\Omega}\)
 and subtracting the \(z\) component of \(\bm{x}_{v}\) from the resulting value
