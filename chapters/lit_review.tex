@@ -66,7 +66,7 @@ and \textit{pose update}. Applications of the presented system however are limit
 those that require the reconstruction of static scenes; dynamic scenes are not supported 
 by \textit{KinectFusion}.
 
-Further optimisations were made in 2013 by \textit{Nei{\ss}ner at al}~\cite{NieBner2013} to the 
+Further optimisations were made in 2013 by \textit{Nei{\ss}ner et al}~\cite{NieBner2013} to the 
 \textit{KinectFusion} pipeline proposed by \textit{Newcombe et al}~\cite{Newcombe2011}. The authors 
 introduce a spatially hashed TSDF data structure, in which the TSDF is split in to hashed blocks of 
 voxels allowing for very fast voxel lookups. The presented approach yields low space and time complexity 
@@ -198,7 +198,7 @@ objects in the scene to provide training data for Streaming Random Forests\cite{
 which are used to detect and label parts of the rendered isosurface belonging to a given 
 object class. Segmentations are refined using Variational Bayesian Mean Field Inference 
 ~\cite{Xing2002, Krahenbuhl2011}. The features extracted for this training 
-process are named \textit{Voxel Oriented Patch} features and consist of surface normal vectors
+process are Voxel Oriented Patch features, consisting of surface normal vectors
 and CIELab appearance information.
 
 \textit{Golodetz et al}~\cite{Golodetz2015} in the same year released an open source 
@@ -271,9 +271,9 @@ function for each layer, where object layers are a set of depth ordered Markov R
 estimation of motion of objects undergoing rigid body motion in images. The authors present a 
 variational formulation for motion estimation and segmentation with occlusion handling. As with 
 the contributions of \textit{Sun et al}~\cite{Sun2012}, the authors utilise a parametric labelling 
-of the flow field for each object undergoing motion, with labels encoded with an MRF Potts Model 
+of the flow field for each object undergoing motion, with labels encoded with an MRF Potts Model
 ~\cite{Levada2008}. However, contrary to \textit{Sun et al}~\cite{Sun2012} who utilise a Maximum Flow 
-algorithm over the MRF models, \textit{Unger et al} solved for flow and labels within a Primal-Dual 
+algorithm over the MRF models, \textit{Unger et al} solved for flow and labels within a Primal-Dual
 ~\cite{Boyd2004Convex} based optimisation framework.
 
 In the same year, \textit{Herbst et al}~\cite{Herbst2013} proposed an extension to optical 
@@ -285,7 +285,7 @@ of the well established variational optical flow algorithm of \textit{Brox et al
 In the following year, \textit{St{\"u}ckler et al}~\cite{Stueckler2013} presented a framework 
 for the segmentation of rigid body motion from RGBD data. The authors represent regions undergoing 
 rigid body motion and their associated motion parameters as latent variables, with the resultant 
-segmentations and parameters being solved for within an Expectation Maximisation (EM) 
+segmentations and parameters being solved for within an Expectation Maximisation (EM)
 ~\cite{BishopPRML, Murphy2012ML} framework. The presented approach is robust to both simultaneous 
 foreground and background motion by giving each parity in the probabilistic model.
 
@@ -304,12 +304,12 @@ have the advantages of it's highly optimised volumetric counterparts, such as th
 In 2015, \textit{Perera et al}~\cite{Perera2015} presented an approach to motion segmentation in 
 TSDF volumes. Similar to it's planar counterparts presented by \textit{Sun et al}~\cite{Sun2012} 
 and \textit{Unger et al}~\cite{Unger2012}, the authors utilise a Markov network over the domain 
-of interest. Motion segmentation is posed as a Maximum a Posteriori (MAP) 
-~\cite{BishopPRML, Murphy2012ML} inference problem over a Conditional Random Field (CRF) 
+of interest. Motion segmentation is posed as a Maximum a Posteriori (MAP)
+~\cite{BishopPRML, Murphy2012ML} inference problem over a Conditional Random Field (CRF)
 ~\cite{Krahenbuhl2011} defined over TSDF voxels. The proposed system is able to segment objects 
 undergoing both minor and major displacements, with motion labels and parameters found with 
 respect to the live frame and the TSDF\@ However, the proposed approach is limited only to very 
-small scenes, with very long runtimes reported for TSDF volumes of dimensionality \(256^{3}\).
+small scenes, with very long runtimes reported for TSDF volumes of dimensionality \( 256^{3} \).
 
 \textit{Newcombe et al}~\cite{Newcombe2015} again in 2015, introduced a dynamic dense SLAM 
 system based on the earlier \textit{KinectFusion}~\cite{Newcombe2015} pipeline, with the addition 
@@ -396,7 +396,7 @@ Section~\ref{sec:intro_object_recon} draw on the work of \textit{Kolev et al}~\c
 probabilistic volumetric representation used for the authors level set evolution approach influences the 
 formulation of object segmentation given in Chapter~\ref{chap:probobj}. Additionally, the work of 
 \textit{Ren et al}~\cite{Ren2013} provides a suitable base of comparison for the approach outlined later 
-in this work; the approach of \textit{Ren et al} performs simultaneous segmentation, pose estimation and 
+in this work. The approach of \textit{Ren et al} performs simultaneous segmentation, pose estimation and 
 reconstruction of objects from an RGBD image source, as is the case with the approach taken in Chapter
 ~\ref{chap:moseg}.
 
@@ -405,7 +405,7 @@ reconstruction of objects from an RGBD image source, as is the case with the app
 \section{Shape and Pose Prediction}
 ~\label{sec:lit_review_prediction}
 Section~\ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
-which demonstrates that although much progress has been made since the early work of \textit{Curless \& 
+which demonstrates thet although much progress has been made since the early work of \textit{Curless \& 
 Levoy}~\cite{Curless1996}, many open research problems remain. This section provides a survey of research 
 into an alternative, inference driven approach to obtaining three dimensional models of observed 
 objects, whereby rather than direct optimisation and integration being used for pose estimation and 
@@ -431,7 +431,7 @@ framework for the complex task of articulated human pose estimation.
 \textit{Wohlhart et al}~\cite{Wohlhart2015} in 2015 presented an approach to the 3D detection and pose 
 recovery of objects. The proposed approach, utilises features extracted from a Convolutional Neural 
 Network (CNN)~\cite{LeCun2015} within a nearest neighbour cost function for object detection and recovery 
-of rough pose. As such, the proposed approach poses the problem as a K-Nearest Neighbour (KNN) 
+of rough pose. As such, the proposed approach poses the problem as a K-Nearest Neighbour (KNN)
 ~\cite{Altman1992} search in descriptor space. Object and pose are coupled in training (i.e.\ two similar 
 cars with different poses will have spatially distant descriptors).
 
