@@ -324,18 +324,14 @@ takes the following form.
   % Line 2.
   ={}& \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I}
 \end{align}
-% TODO: Maybe make one line?
 
 As such, the form of the normalized marginal likelihood \(P(\bm{Y} \given \bm{X}, \beta)\) of 
 \( \bm{W} \) is given in Equation~\ref{eqn:spp_gp_marginal_simp}.
-\begin{align}
+\begin{equation}
   \label{eqn:spp_gp_marginal_simp}
-  % Line 1.
-  P(\bf{Y \given \bm{X}, \beta}) ={}& \mathcal{N}(\bm{Y} \given \bm{0}, 
-  \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})%\\
-  % Line 2.
-  %={}& TODO
-\end{align}
+  P(\bf{Y \given \bm{X}, \beta}) = \mathcal{N}(\bm{Y} \given \bm{0}, 
+  \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})
+\end{equation}
 
 \subsubsection{Gaussian Process Fitting}
 ~\label{subsubsec:spp_gp_fitting}
