@@ -3,6 +3,7 @@
 This chapter reviews the proposed algorithms in this work within the context 
 of the initially outlined research objectives of this thesis.
 \end{chapterabstract}
+% TODO: Expand this abstract.
 
 \section{Summary}
 ~\label{sec:discussion_summary}
@@ -20,9 +21,9 @@ approach to object reconstruction outlined in Chapter~\ref{chap:probobj}. Sectio
 Chapter~\ref{chap:spp}.
 
 Following the evaluations given in Sections~\ref{subsec:discussion_moseg},~\ref{subsec:discussion_probobj} 
-and~\ref{chap:spp}, consideration is given to the limitations of the approaches of this work and potential 
-future directions in Section~\ref{sec:discussion_limitations}. Finally, a high level conclusion and closing 
-remarks are given in Section~\ref{sec:discussion_conclusions}.
+and~\ref{sec:spp_discussion}, consideration is given to the limitations of the approaches of this work and 
+potential future directions in Section~\ref{sec:discussion_limitations}. Finally, a high level conclusion and 
+closing remarks are given in Section~\ref{sec:discussion_conclusions}.
 
 \subsection{Real Time Motion Segmentation for Dense Volumetric Fusion}
 ~\label{subsec:discussion_moseg}
@@ -36,7 +37,7 @@ incurred by this dependence by actively excluding dynamic scene components from 
 estimation phase of the pipeline, as shown in Figure~\ref{figure:moseg_pipeline}.
 
 As demonstrated in Sections~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, the 
-approach taken demonstrates improvements in pose estimation quality over an open implementation
+approach taken shows improvements in pose estimation quality over an open implementation
 ~\cite{Prisacariu2014} of the standard KinectFusion~\cite{Newcombe2011} pipeline when evaluated 
 on the \textit{Dynamic Objects} subset of the TUM RGBD dataset~\cite{Sturm2012}. This improved 
 performance is evident in Tables~\ref{table:moseg_ate} and~\ref{table:moseg_rte}, and 
@@ -60,10 +61,10 @@ additional research objective.
 
 The demonstrated improvements in pose estimation and the ability to perform simple semantic 
 understanding in dynamic scenes are facilitated by the following central contributions of 
-Chapter~\ref{chap:moseg}. First is the introduction of the novel \textit{dual representation} of 
-the scene, in which a \textit{stable} version of the scene is maintained as both the resultant 
+Chapter~\ref{chap:moseg}. First is the introduction of the novel dual representation of 
+the scene, in which a stable version of the scene is maintained as both the resultant 
 reconstruction and the source of depth map to which live frames are registered. The 
-\textit{dynamic} scene representation has all observed data points integrated. This dual 
+dynamic scene representation has all observed data points integrated. This dual 
 representation allows for the separation and thus segmentation of dynamic, moving scene components 
 from their stable counterparts, thus allowing the pose estimation phase to use a reliable, non 
 corrupted scene model.
@@ -126,7 +127,7 @@ image data available for the learning of vision tasks, but not a comparable amou
 \subsection{Stereo Shape and Pose Regression}
 ~\label{subsec:discussion_spp}
 
-\section{Future Work and Limitations}
+\section{Future Work}
 ~\label{sec:discussion_limitations}
 The system of Chapter~\ref{chap:moseg} provides a strong foundation for further research 
 into both dense SLAM for dynamic environments and semantic SLAM\@. However, there are 
@@ -148,7 +149,8 @@ The object reconstruction system presented in Chapter~\ref{chap:probobj} provide
 to obtain geometrically consistent reconstructions of 3D objects. Though the proposed system
 demonstrates an improvement over comparative methods, it still requires the end user to indicate 
 which object is to be reconstructed. An alternative approach would be to leverage some of the 
-advancements in salient object detection~\cite{SALIENT} to allow for automation of the process. 
+advancements in salient object detection~\cite{SALIENT} to allow for automation of the process.
+% TODO: salient region ref
 
 The probabilistic framework on which the system is based could additionally be extended in a later 
 iteration of the work to estimate the geometry of any missing sections of the surface of the object 
