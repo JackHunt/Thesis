@@ -46,7 +46,7 @@ Search (BFS) construction algorithm. The level of parallelism introduced allows 
 application to problems that require real time performance. The authors provide 
 examples of use in ray tracing~\cite{Purcell2002} and photon mapping~\cite{Kajiya1986}.
 
-In the same year, \textit{Censi}~\cite{Censi2008} introduced Point-to-Line ICP (PL-ICP), a 
+In the same year, \textit{Censi}~\cite{Censi2008} introduced Point-to-Line ICP, a 
 variant of the ICP algorithm introduced in the work of \textit{Besl \& McKay} 
 ~\cite{Besl1992}. The presented approach utilises a point-to-line metric rather than 
 a point-to-point metric and has a closed form solution in the planar case. For the non 
@@ -123,7 +123,7 @@ source implementation. The proposed work provides further improvements to those 
 \textit{Nei{\ss}ner et al}~\cite{NieBner2013} including a number of low level optimisations to the 
 core hashed TSDF data structure, it's allocation and update (integration of observation points) and 
 the rendering phase of the pipeline. In addition, the authors demonstrate that pose estimation quality 
-may be greatly improved by the use of commodity Inertial Motion Unit (IMU) devices, commonly found 
+may be greatly improved by the use of commodity Inertial Motion Unit devices, commonly found 
 on mobile phones and tablet computers. \textit{Prisacariu et al} report runtimes of 
 \(\approx47Hz\) on an NVIDIA Shield tablet and \(\approx910Hz\) with a commodity NVIDIA Titan X GPU.\@
 
@@ -179,8 +179,8 @@ survey of research that amalgamates the two fields of semantic scene understandi
 %Girshick et.al~\cite{Girshick2014} - feature hierarchies.
 \textit{Civera et al}~\cite{Civera2011} in 2011 introduced an approach to semantic SLAM 
 that utilises image based features to attach semantic meaning to 3D observations. The SLAM 
-system itself is based on Monocular Extended Kalman Filter (EKF) SLAM~\cite{Smith1990} with 
-semantics added to points via correspondences between Speeded Up Robust Features (SURF)~\cite{Bay2006} 
+system itself is based on Monocular Extended Kalman Filter SLAM~\cite{Smith1990} with 
+semantics added to points via correspondences between Speeded Up Robust Features~\cite{Bay2006} 
 image features extracted from the observed RGB frames and precomputed object descriptors. Consistency 
 is then enforced by a geometric compatibility measure.
 
@@ -225,7 +225,7 @@ semantic dense SLAM pipeline built on top of the dense SLAM system presented by
 \textit{Nei{\ss}ner et al}~\cite{NieBner2013}. Much like the work of \textit{Handa et al} 
 ~\cite{Handa2015}, the proposed approach depends on a model pretrained on a set of object 
 classes. Unlike \textit{Handa et al}~\cite{Handa2015}, the authors make use of an 
-Fully Connected Network (FCN)~\cite{Long2015}, taking the Probability Mass Function (PMF) 
+Fully Connected Network~\cite{Long2015}, taking the Probability Mass Function (PMF) 
 output to determine the class to be assigned to an isosurface region.
 % TODO: semanticfusion, matthias stuff
 
@@ -253,14 +253,14 @@ dynamic scenes.
 tracking of objects. The presented approach solves for dense motion vector fields between 
 3D objects by modelling motion with finite elements. The proposed system analyses differences 
 between actual and predicted behaviour, using gradient descent to find a set of optimal parameters 
-for the nonlinear Finite Element Model (FEM). Additionally, pose estimation is improved by using point 
+for the nonlinear Finite Element Model. Additionally, pose estimation is improved by using point 
 correspondences.
 
 \textit{Chen et al}~\cite{Chen2011}, in 2011, introduced a system to perform nonrigid motion 
 tracking of the human body. The proposed system extracts and skins a surface mesh from 
 multi-view video, after being fitted with a skeleton prior. To solve for non-rigid, articulated 
 motion, the authors utilise a weighted, hierarchical ICP algorithm, where weightings are obtained 
-by the Approximate Nearest Neighbour (ANN)~\cite{Indyk2000} algorithm.
+by the Approximate Nearest Neighbour~\cite{Indyk2000} algorithm.
 
 In the following year, \textit{Sun et al}~\cite{Sun2012} proposed an approach to motion estimation 
 for objects in images. The proposed approach estimates optical flow in a layered manner, where each 
@@ -287,7 +287,7 @@ of the well established variational optical flow algorithm of \textit{Brox et al
 In the following year, \textit{St{\"u}ckler et al}~\cite{Stueckler2013} presented a framework 
 for the segmentation of rigid body motion from RGBD data. The authors represent regions undergoing 
 rigid body motion and their associated motion parameters as latent variables, with the resultant 
-segmentations and parameters being solved for within an Expectation Maximisation (EM)
+segmentations and parameters being solved for within an Expectation Maximisation
 ~\cite{BishopPRML, Murphy2012ML} framework. The presented approach is robust to both simultaneous 
 foreground and background motion by giving each parity in the probabilistic model.
 
@@ -424,7 +424,7 @@ In 2013, \textit{Dame et al}~\cite{Dame2013} proposed an approach to dense objec
 monocular image source. Like the approach of \textit{Prisacariu et al}~\cite{Prisacariu2011}, the authors 
 utilise GPLVM's as shape priors to aid reconstruction and segmentation of the object of interest. Depth maps 
 for the observed monocular sequence are optimised for within a Primal Dual framework, utilising 
-Total Variation (TV)~\cite{Rudin1992} regularisation. However, there is no pose estimation 
+Total Variation~\cite{Rudin1992} regularisation. However, there is no pose estimation 
 ability in the formulation, as poses are known a priori from PTAM~\cite{Klein2007}.
 
 In the following year, \textit{Toshev et al}~\cite{Toshev2014} proposed an approach to pose estimation 
@@ -434,7 +434,7 @@ framework for the complex task of articulated human pose estimation. %TODO: elab
 \textit{Wohlhart et al}~\cite{Wohlhart2015} in 2015 presented an approach to the 3D detection and pose 
 recovery of objects. The proposed approach, utilises features extracted from a Convolutional Neural 
 Network (CNN)~\cite{LeCun2015} within a nearest neighbour cost function for object detection and recovery 
-of rough pose. As such, the proposed approach poses the problem as a K-Nearest Neighbour (KNN)
+of rough pose. As such, the proposed approach poses the problem as a K-Nearest Neighbour
 ~\cite{Altman1992} search in descriptor space. Object and pose are coupled in training (i.e.\ two similar 
 cars with different poses will have spatially distant descriptors).
 
@@ -453,12 +453,12 @@ optimisation process.
 
 In 2017, \textit{Zhou et al}~\cite{Zhou2017} introduced an approach to object detection from 3D point 
 clouds. Central to the proposed approach is an end-to-end trainable convolutional Region Proposal 
-Network (RPN)~\cite{Girshick2015_2}. The authors evaluate the proposed approach on the KITTI LIDAR
+Network~\cite{Girshick2015_2}. The authors evaluate the proposed approach on the KITTI LIDAR
 ~\cite{Geiger2013} dataset, with input point clouds quantized into a voxel volume prior to training 
 and prediction.
 
-\textit{Gwak et al}~\cite{Gwak2017}, also in 2017 introduced a Generalised Adversarial Network 
-(GAN)~\cite{Goodfellow2014} like approach to shape prediction. The proposed network is trained in a 
+\textit{Gwak et al}~\cite{Gwak2017}, also in 2017 introduced a Generalised Adversarial Network
+~\cite{Goodfellow2014} like approach to shape prediction. The proposed network is trained in a 
 weakly supervised manner on silhouettes and 3D shapes with a log-barrier objective function. 
 However, the applicability to ``real world'' scenarios is questionable, due to the synthetic nature of 
 the data used to train and evaluate the network.
