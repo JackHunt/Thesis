@@ -24,7 +24,7 @@ manual reconstruction, pose estimation must also be performed.
 There has been much progress on learning based methods for both pose estimation and 
 shape prediction, as outlined in Section~\ref{sec:lit_review_prediction}. However, much of 
 this progress has been on the two problems when decoupled. In this work, an approach is 
-proposed to the problem of simultaneous shape and pose \textit{prediction}. The first 
+proposed to the problem of simultaneous shape and pose prediction. The first 
 difference in this work to those outlined in Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
 is the use of stereo RGB frames versus RGBD\@.
 
@@ -35,8 +35,8 @@ views of an object (from each sensor in the stereo pair) will make the pose esti
 learning based methods.
 
 The second major deviation from the contributions of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
-is the removal of the dependence on input \textit{sequences}. Rather, in this work 
-the proposed system performs shape and pose prediction from an \textit{instantaneous}
+is the removal of the dependence on temorally consistent input sequences. Rather, in this work 
+the proposed system performs shape and pose prediction from an instantaneous
 stereo pair, requiring no temporal consistency in both the training and prediction 
 phases. As such, there is no iterative solving for shape and pose, rather the process 
 is framed as an instantaneous regression task. However, this work makes use of volumetric
@@ -44,16 +44,14 @@ shape representations, as with the other works outlined in Chapters~\ref{chap:mo
 ~\ref{chap:probobj}.
 
 The approach outlined in this chapter makes use of Siamese~\cite{SIAMESE} 
-Convolutional Neural Networks (CNN) and Gaussian Process Latent Variable Models (GPLVM) to jointly regress 
-shape and pose given a stereo pair with an object of interest present in both frames. The training of the 
-model is unsupervised and requires only a detection or segmentation of the object of interest in the input 
-frames to train. The proposed system regresses rotational and translational parameters directly 
-from the neural network, whilst the object shape is a draw from a Gaussian Process 
-Latent Variable Model. The use of a GPLVM for latent space embeddings of 3D shape 
-allows for a simple way to learn complex 3D geometrical features, thus simplifying 
-the learning tasks of the neural network. In the proposed approach, the Neural Network 
-component need only learn a mapping from observation to latent space, rather than from observation 
-to full geometry.
+CNN's and GPLVM's to jointly regress shape and pose given a stereo pair with an object of interest 
+present in both frames. The training of the model is unsupervised and requires only a detection or 
+segmentation of the object of interest in the input frames to train. The proposed system regresses 
+rotational and translational parameters directly from the neural network, whilst the object shape is 
+a draw from a GPLVM\@. The use of a GPLVM for latent space embeddings of 3D shape allows for a simple 
+way to learn complex 3D geometrical features, thus simplifying the learning tasks of the neural network. 
+In the proposed approach, the Neural Network component need only learn a mapping from observation to latent 
+space, rather than from observation to full geometry.
 
 The system is trained on an information theoretic loss over a rendering of a predicted 
 shape under it's associated predicted pose, with respect to a given detection bounding box 
@@ -62,12 +60,12 @@ or semantic segmentation.
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
 The proposed model takes as input an RGB stereo pair with the object of interest within the 
-view frustrum of both frames. From this stereo pair, a Convolutional Neural Network extracts 
-feature descriptors which are used to regress a latent space point for shape, and six 
-\( \mathbb{SE}(3) \) pose parameters, forming a Lie Algebra. The generated shape for the proposal 
-latent space point is drawn from the distribution of the GP prior conditioned on the latent space 
-point. The form of the pose is the Lie Group mapping of the parameters, as in Sections
-~\ref{subsub:moseg_static_camera_attitude} and~\ref{subsec:probobj_analytic_alignment_map}. 
+view frustrum of both frames. From this stereo pair, a CNN extracts feature descriptors which are 
+used to regress a latent space point for shape, and six \( \mathbb{SE}(3) \) pose parameters, forming 
+a Lie Algebra. The generated shape for the proposal latent space point is drawn from the distribution of 
+the Gaussian Process (GP) prior conditioned on the latent space point. The form of the pose is the Lie 
+Group mapping of the parameters, as in Sections~\ref{subsub:moseg_static_camera_attitude} 
+and~\ref{subsec:probobj_analytic_alignment_map}. 
 
 The goodness of fit of the regressed shape and pose is quantified by by rendering the generated shape 
 under the predicted pose and computing an information theoretic loss between the image statistics of 
@@ -126,7 +124,7 @@ though the optimisation in this case is often non-convex and highly nonlinear.
 
 A Gaussian Process may be viewed as a prior distribution over continuous functions. The posterior 
 may be obtained by conditioning on observed data, to obtain a function estimate for each data point.
-An visual example of a GP is given in Figure~\ref{figure:gp_func_dist}
+A visual example of a GP is given in Figure~\ref{figure:gp_func_dist}.
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\linewidth]{figures/spp/gp.pdf}
@@ -138,12 +136,12 @@ An visual example of a GP is given in Figure~\ref{figure:gp_func_dist}
 
 \subsubsection{Gaussian Process Marginal Likelihood}
 ~\label{subsubsec:spp_gp_marginal_likelihood}
-Given a Latent Variable Model of the following form
+The first step is to define a Latent Variable Model of the form given in Equation~\ref{eqn:spp_gp_lvm}.
 \begin{equation}
   \label{eqn:spp_gp_lvm}
   P(\bm{Y} \given \bm{X}, \bm{W}, \beta) = P(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
 \end{equation}
-Where in Equation~\ref{eqn:spp_gp_lvm} the observed data \(\bm{Y} \in \mathbb{R}^{N \times D}\) 
+In Equation~\ref{eqn:spp_gp_lvm} the observed data \(\bm{Y} \in \mathbb{R}^{N \times D}\) 
 is mapped to a lower dimensionality manifold \(\bm{X} \in \mathbb{R}^{N \times P}\), by parameters 
 \(\bm{W} \in \mathbb{R}^{P \times D}\) and variance \( \beta \). In Equation~\ref{eqn:spp_gp_lvm}, 
 the latent variable model \( P(\bm{Y} \given \bm{X}, \bm{W}, \beta) \) provides a linear mapping 
@@ -275,8 +273,7 @@ into a valid multivariate Gaussian form is as follows in Equation~\ref{eqn:spp_g
 With the distribution \(P(\bm{Y} \given \bm{X}, \beta)\) derived as being proportional to  
 an exponentiated quadratic form as in Equation~\ref{eqn:spp_gp_complete}, it is 
 clear that the inverse covariance matrix \(\bm{\Sigma}^{-1}\) of the Gaussian distribution 
-corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation 
-~\ref{eqn:spp_sig_inv}.
+corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation~\ref{eqn:spp_sig_inv}.
 \begin{align}
   \label{eqn:spp_sig_inv}
   % Line 1.
@@ -341,11 +338,9 @@ in Equation~\ref{eqn:spp_gp_marginal_simp} can be optimised directly for the lat
 space (for \( P < D \)), the latent embedding \( \bm{X} \) may be initialized by applying an 
 orthogonal linear transform to the observed data and reducing dimensionality. One such approach 
 is to apply PCA to the observed data, taking the first \(P\) reverse sorted Eigenvalues of the 
-covariance matrix.
-
-Additionally, in the nonlinear case, where the covariance matrix \( \bm{\Sigma} \) is generated by 
-a given kernel function \( \bm{\kappa} \), the hyperparameters of \( \bm{\kappa} \) may also be 
-optimised.
+covariance matrix. Additionally, in the nonlinear case, where the covariance matrix \( \bm{\Sigma} \) 
+is generated by a given kernel function \( \bm{\kappa} \), the hyperparameters of \( \bm{\kappa} \) may 
+also be optimised.
 
 To find the most probable latent space embedding, the latent variables \( \bm{X} \) may be 
 found by directly optimising the marginal likelihood of Equation~\ref{eqn:spp_gp_marginal_simp}. 
@@ -415,9 +410,8 @@ It should be noted that the gradient \( \frac{\partial \bm{\kappa}}{\partial \bm
 may also be substituted for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), for 
 some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \).
 
-A common nonlinear covariance kernel function in the Gaussian Process literature 
-is the Exponentiated Quadratic~\cite{Lawrence2005}, which takes the form given in 
-Equation~\ref{eqn:spp_exp_quad}.
+A common nonlinear covariance kernel function in the GP literature is the Exponentiated 
+Quadratic~\cite{Lawrence2005}, which takes the form given in Equation~\ref{eqn:spp_exp_quad}.
 \begin{align}
   \label{eqn:spp_exp_quad}
   % Line 1.
@@ -485,31 +479,29 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
 \subsection{Latent Space Shape Estimation}
 ~\label{subsec:spp_latent_shape_est}
 The form of the model outlined in Section~\ref{subsubsec:spp_gp_marginal_likelihood}
-when trained as outlined in Section~\ref{subsubsec:spp_gp_fitting} defines a Gaussian 
-Process prior over the latent space embedding \( \bm{X} \). When regressing shape, it 
-is desirable to predict the 3D shape of a given latent space point, conditioned on this 
-prior. This conditioning yields a posterior mean estimation over 3D shape for a given 
-latent space point.
+when trained as outlined in Section~\ref{subsubsec:spp_gp_fitting} defines a GP prior 
+over the latent space embedding \( \bm{X} \). When regressing shape, it is desirable to 
+predict the 3D shape of a given latent space point, conditioned on this prior. This 
+conditioning yields a posterior mean estimation over 3D shape for a given latent space point.
 
-The estimated posterior mean provides a DCT compressed representation of an SDF shape 
-volume \( \bm{\Phi} \in \mathbb{R}^{N \times N \times N} \). The DCT compressed form 
-of \( \bm{\Phi} \) given by the aforementioned posterior mean is obtained by Gaussian 
-Process Regression~\cite{GPML}. Finally, the true, uncompressed form of \( \bm{\Phi} \) is 
-obtained by taking the IDCT of the posterior mean. The granularity of the geometric 
-properties captured by the GP shape prior is governed by the number of DCT harmonics 
-used in the compression and decompression processes at training and prediction.
+The estimated posterior mean provides a Discrete Cosine Transform (DCT) compressed representation 
+of an SDF shape volume \( \bm{\Phi} \in \mathbb{R}^{N \times N \times N} \). The DCT compressed form 
+of \( \bm{\Phi} \) given by the aforementioned posterior mean is obtained by GP regression~\cite{GPML}. 
+Finally, the true, uncompressed form of \( \bm{\Phi} \) is obtained by taking the IDCT of the posterior mean. 
+The granularity of the geometric properties captured by the GP shape prior is governed by the number of DCT 
+harmonics used in the compression and decompression processes at training and prediction.
 
 \subsubsection{Shape Posterior Mean Estimation}
 ~\label{subsubsec:spp_pos_mean_est}
 With the optimised latent variables \( \bm{X} \), the formulation outlined in 
-Equation~\ref{eqn:spp_gp_marginal_simp} defines a Gaussian Process prior 
+Equation~\ref{eqn:spp_gp_marginal_simp} defines a GP prior 
 over functions of \( \bm{X} \), as follows.
 \begin{equation}
   \label{eqn:gp_prior}
   \bm{f}(\bm{X}) \sim \mathcal{GP}(\bm{0}, \bm{\Sigma}_{\bm{XX}})
 \end{equation}
 
-A Gaussian Process prior may similarly be constructed for observed latent 
+A GP prior may similarly be constructed for observed latent 
 space points \( \bm{L} \), as follows.
 \begin{equation}
   \label{eqn:gp_prior_latent}
@@ -570,8 +562,8 @@ Given the form of \( P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f}) \) in Equat
 \end{align}
 
 Due to the gradient based optimisation of the approach outlined in this chapter, each 
-component outlined in Figure~\ref{A} must be differentiable. The formulation of the 
-posterior mean of Equation~\ref{eqn:spp_mean_var} is differentiable and it's gradient 
+component outlined in Figure~\ref{figure:spp_pipeline} must be differentiable. The formulation 
+of the posterior mean of Equation~\ref{eqn:spp_mean_var} is differentiable and it's gradient 
 is derived as follows in Equation~\ref{eqn:spp_pos_mean_grad}.
 \begin{align}
   \label{eqn:spp_pos_mean_grad}
@@ -593,12 +585,13 @@ is derived as follows in Equation~\ref{eqn:spp_pos_mean_grad}.
 
 \subsubsection{Signed Distance Function Extraction}
 ~\label{subsubsec:sdf_extraction}
-As outlined in Section~\ref{sub:spp_latent_shape_est}, the SDF volume \( \bm{\Phi} \) 
+As outlined in Section~\ref{subsec:spp_latent_shape_est}, the SDF volume \( \bm{\Phi} \) 
 is generated by taking the IDCT of the posterior mean of the GP prior conditioned on 
 a given latent space point, as given by Equation~\ref{eqn:spp_gp_conditional}. In the 
 formulation presented in this work, the 2D latent point is generated by the pose 
 network component following the Resnet-50 CNN of Figure~\ref{A}. The output of the network 
 is constrained to the interval \( [0, 1] \) by the use of a Sigmoid activation function.
+% TODO ResNet figure.
 
 The latent variable model outlined in Section~\ref{subsec:spp_gplvm} is a distribution 
 over a latent space embedding of 3D shape. However, the 3D shape data on which the GP 
@@ -623,7 +616,7 @@ in Figure~\ref{figure:spp_sdf_slices}.
   \caption[SDF Slices Generated by DCT]
   {
     \begin{tabular}[t]{@{}l@{}}
-      a
+      a %TODO: figure legend
     \end{tabular}
   }
 ~\label{figure:spp_sdf_slices}
@@ -717,11 +710,10 @@ in Equation~\ref{eqn:spp_pos_mean_grad}.
 
 \subsection{Pose Estimation}
 ~\label{subsec:spp_pose_estim}
-The parameters of the \( \mathbb{SE}(3) \) pose applied to the predicted shape (obtained 
-as outlined in Section~\ref{subsubsec:sdf_extraction}) are obtained from a fully connected 
-component of the model outlined in Figure~\ref{A}, as with the latent pose point of Section
-~\ref{subsubsec:sdf_extraction}. The form of the \( \mathbb{SE}(3) \) pose is analogous to 
-the Rodrigues parameterisation outlined in Section~\ref{subsub:moseg_static_camera_poserec}.
+The parameters of the \( \mathbb{SE}(3) \) pose applied to the predicted shape are obtained 
+from a fully connected component of the model outlined in Figure~\ref{figure:spp_pipeline}, as with the 
+latent pose point of Section~\ref{subsubsec:sdf_extraction}. The form of the \( \mathbb{SE}(3) \) pose is 
+analogous to the Rodrigues parameterisation outlined in Section~\ref{subsub:moseg_static_camera_poserec}.
 
 The three rotational parameters \( \alpha \), \( \beta \) and \( \gamma \) are predicted by 
 the pose network component of the model on the interval \( [0, 2\pi) \). The translation parameters 
@@ -742,9 +734,10 @@ does not assume temporal consistency, the requirements for optimisation differ.
 
 As the model outlined in Section~\ref{sec:spp_algorithm} relies on the backpropagation of gradients for it's 
 training, the rendering module must be differentiable for the backward pass. As such, this section outlines a 
-simple formulation of \textit{differentiable} Raycasting, inspired by the work of \textit{Prisacariu et al}
-~\cite{Prisacariu2011}. In addition to generating a shaded rendering, proposed approach generates a probabilistic 
-map. For a review of the general Raycasting algorithm, refer to Section~\ref{subsec:moseg_static_rendering}.
+simple formulation of differentiable Raycasting, inspired by the work of \textit{Prisacariu et al}
+~\cite{Prisacariu2011}. In addition to generating a shaded rendering, the proposed approach generates a 
+probabilistic map. For a review of the general Raycasting algorithm, refer to 
+Section~\ref{subsec:moseg_static_rendering}.
 
 By accumulating log probabilities of voxels visited on traversal of the ray, a differentiable representation 
 of the process can be obtained. However, this relies on the use of a differentiable PMF\@. As with the approach 
@@ -805,16 +798,17 @@ The overall loss is thus given in Equation~\ref{eqn:spp_overall_loss}.
     \end{aligned}
 \end{align}
 
-The loss function given in Equation~\ref{eqn:spp_overall_loss} makes use if the mean seeking\ref{} 
+% TODO: Cite mean-seeking
+The loss function given in Equation~\ref{eqn:spp_overall_loss} makes use of the mean seeking\ref{} 
 \textit{forward} KL Divergence from the observed detection regions to the rendered (predicted) 
 regions. The motivation behind which is to quantify, for each of the left and right networks, how 
 much information is lost for the currently predicted shapes and \( \mathbb{SE}(3) \) poses. To 
-enforce consistency between the left and right networks, the Jensen-Shannon Divergence is used as 
-unlike the KL Divergence, it is \textit{symmetric} and \( \bm{Q} \) need not approximate \( \bar{Q} \), 
-any better than \( \bar{\bm{Q}} \) need approximate \( \bm{Q} \).
+enforce consistency between the left and right networks, the JSD is used, as unlike the KL Divergence, 
+it is \textit{symmetric} and \( \bm{Q} \) need not approximate \( \bar{Q} \), any better than 
+\( \bar{\bm{Q}} \) need approximate \( \bm{Q} \).
 
 As with the model components outlined in Sections~\ref{subsec:spp_latent_shape_est},~\ref{subsec:spp_pose_estim} 
-and~\ref{subsec:rendering}, the loss of the model also requires differentiability for backpropagation. As such, 
+and~\ref{subsec:spp_rendering}, the loss of the model also requires differentiability for backpropagation. As such, 
 the gradient \( \frac{\partial \mathcal{L}}{\partial \bm{Q}} \) is as follows in Equation~\ref{eqn:spp_loss_grad}.
 \begin{align}
   \label{eqn:spp_loss_grad}
@@ -926,10 +920,9 @@ In Equation~\ref{eqn:spp_grad_chain_pose}, \( \mathcal{L} \) is the information 
 given in Equation~\ref{eqn:spp_overall_loss} of Section~\ref{subsec:spp_loss}.
 \( \mathcal{R} \) is the rendering of the predicted shape \( \bm{\Phi} \) under the predicted 
 pose \( \bm{T} \) outlined in Section~\ref{subsec:subsec:spp_rendering}. \( \bm{T} \) is the 
-\( \mathbb{SE}(3) \) pose outlined in Section~\ref{subsec:spp_pose_estim}.
-
-The gradient with respect to the latent shape point generated by CNN output \( \mathcal{O}_{l} \) may 
-also be found in the same manner and is given in Equation~\ref{eqn:spp_grad_chain_latent}.
+\( \mathbb{SE}(3) \) pose outlined in Section~\ref{subsec:spp_pose_estim}. The gradient with respect 
+to the latent shape point generated by CNN output \( \mathcal{O}_{l} \) may also be found in the same 
+manner and is given in Equation~\ref{eqn:spp_grad_chain_latent}.
 \begin{equation}
   \label{eqn:spp_grad_chain_latent}
   \frac{\partial \mathcal{L}}{\partial \mathcal{O}_{l}} = 
@@ -940,10 +933,11 @@ also be found in the same manner and is given in Equation~\ref{eqn:spp_grad_chai
     \frac{\partial \bm{f}^{\star}_{\omega}}{\partial \mathcal{O}_{l}}
   \Bigg]
 \end{equation}
-Where in Equation~\ref{eqn:spp_grad_chain_latent}, \( \mathcal{L} \) and \( \mathcal{R} \) 
+
+In Equation~\ref{eqn:spp_grad_chain_latent}, \( \mathcal{L} \) and \( \mathcal{R} \) 
 are as in Equation~\ref{eqn:spp_grad_chain_pose}. \( \Phi \) is the SDF given by the IDCT, 
 as given in Equation~\ref{eqn:spp_idct} of Section~\ref{subsubsec:sdf_extraction}. 
-\( \bm{f}^{\star} \) is the Posterior Mean of the GPLVM, given by Equation
+\( \bm{f}^{\star} \) is the posterior mean of the GPLVM, given by Equation
 ~\ref{eqn:spp_gp_posterior_draw}.
 
 In Equations~\ref{eqn:spp_grad_chain_pose} and~\ref{eqn:spp_grad_chain_latent}, the gradients 
