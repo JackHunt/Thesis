@@ -22,7 +22,7 @@ camera returns to it's starting position.
 
 Such model inconsistencies and corruptions are prohibitive when accurate, non-synthetic 
 geometric models of real world objects are required. As outlined in Section
-~\ref{sec:intro_object_recon}, such accurate geometric data is required for learning 
+~\ref{sec:intro_object_recon}, such accurate geometric data is needed for learning 
 based approaches to semantic scene understanding.
 
 As object reconstruction can be seen as a smaller scale equivalent of the scene
@@ -50,9 +50,8 @@ of the object.
 Over time, multiple volumes containing both surface and probabilistic appearance
 information are maintained and manipulated to yield a robust and temporally
 consistent model. Finally, the optimum object shape is optimised for within a 
-Conditional Random Field (CRF)~\cite{BishopPRML} framework. Textured renderings 
-of various objects reconstructed with the proposed system are given in 
-Figure~\ref{figure:probobj_teaser}.
+CRF~\cite{BishopPRML} framework. Textured renderings of various objects reconstructed 
+with the proposed system are given in Figure~\ref{figure:probobj_teaser}.
 
 \begin{figure}[!htbp]
   \centering
@@ -85,15 +84,15 @@ The probabilities that are ``fused'' into the volume are generated from an
 appearance model, initialised prior to reconstruction by a Maximum Likelihood 
 Estimation (MLE)~\cite{BishopPRML} procedure over the first frame of the RGB image. 
 There are two appearance models, one for the foreground object and one for the 
-background, with the foreground object indicated by a user indicated bounding box 
+background, with the foreground object indicated by a user inputted bounding box 
 on the first RGB frame. An appearance distribution is fitted over the appearance 
 features of each region, foreground and background. 
 
-During the fusion process, the PDF's or PMF's of these distributions are evaluated on the latest 
-colour observation for a given frame. The aforementioned voxel posteriors are computed \& updated accordingly 
-in the probability volume, with respect to the instantaneous image space probability maps shown in Figures
-~\ref{figure:probobj_prob_maps}. Only those voxels with a posterior higher for the foreground than the 
-background are rendered.
+During the fusion process, the Probability Density Functions (PDF) or Probability Mass Functions (PMF) of 
+these distributions are evaluated on the latest colour observation for a given frame. The aforementioned 
+voxel posteriors are computed \& updated accordingly in the probability volume, with respect to the 
+instantaneous image space probability maps shown in Figures~\ref{figure:probobj_prob_maps}. Only those 
+voxels with a posterior higher for the foreground than the background are rendered.
 
 The remainder of this chapter proceeds as follows; Section~\ref{sec:probobj_alg_overview} provides a high 
 level overview of the proposed algorithm in terms of it's separate components. Section
@@ -111,16 +110,16 @@ discussion of findings, respectively.
 \section{Algorithm Overview}
 ~\label{sec:probobj_alg_overview}
 In the proposed system, the object model is divided into \textit{subvolumes}, 
-each consisting of a TSDF, colour volume and object Probability Volume. 
-Additionally, each has associated with it a rigid body transform 
+each consisting of a TSDF, colour volume and object probability volume.
+Additionally, each has associated with it, a rigid body transform 
 \(\bm{T} \in \mathbb{SE}(3)\) that specifies it's pose relative to the global 
 coordinate frame.
 
 At each time step, a segmentation model is applied to the RGB input image to
-generate an object \textit{Probability Map} defining the segmented region to be
+generate an object probability map defining the segmented region to be
 the object of interest (as shown in Figure~\ref{figure:probobj_prob_maps}) and the 
-remainder the background, to be discarded. Using these generated Probability Maps, 
-the system accumulates the probabilities into the object \textit{Probability Volume} 
+remainder the background, to be discarded. Using these generated probability maps, 
+the system accumulates the probabilities into the object probability volume
 of the active subvolume. Examples of such instantaneous probability maps are given in 
 Figure~\ref{figure:probobj_prob_maps}.
 \begin{figure}[!htbp]
@@ -152,11 +151,10 @@ Once the reconstruction process is finished, a CRF-based optimisation is
 performed to refine the resulting object segmentation over all subvolumes.
 
 The proposed approach is not tied to the use of any one probabilistic model,
-though in the presented experiments Pixel Wise Posteriors (PwP) of \textit{Bibby et al} 
-~\cite{Bibby2008} are used. An overview of the object reconstruction pipeline is shown in
-Figure~\ref{figure:probobj_pipeline_diagram}.
-
+though in the presented experiments PwP of \textit{Bibby et al}~\cite{Bibby2008} is used. 
+An overview of the object reconstruction pipeline is shown in Figure~\ref{figure:probobj_pipeline_diagram}.
 \begin{figure}[!htbp]
+  % TODO: Try and do something with this image. Too small to read text.
   \centering
   \includegraphics[width=\linewidth]{figures/object_recon/pipeline.pdf}
   \caption[Probabilistic Object Reconstruction Pipeline]
@@ -167,9 +165,9 @@ Figure~\ref{figure:probobj_pipeline_diagram}.
 \section{Probabilistic Formulation of Object Reconstruction}
 ~\label{sec:probobj_prob_formulation}
 The surface map and camera pose are estimated using the standard KinectFusion
-like pipeline of~\cite{Newcombe2011,Prisacariu2014}. The surface is represented
-as the Zero Level Set of a TSDF discretised over voxels, with the isosurface 
-embedding built by a weighted mean of new observations, as outlined in Equations
+like pipeline of \textit{Newcombe et al, Prisacariu et al}~\cite{Newcombe2011,Prisacariu2014}. 
+The surface is represented as the Zero Level Set of a TSDF discretised over voxels, with the 
+isosurface embedding built by a weighted mean of new observations, as outlined in Equations
 ~\ref{eqn:sdf_update} and~\ref{eqn:sdf_weight_update}. Camera pose estimation is
 performed with ICP, as outlined in Section~\ref{subsec:moseg_static_camera_tracking} 
 and is run simultaneously against the evolving map. Here, inspired by 
@@ -319,7 +317,7 @@ The formalisms defined in Figures~\ref{figure:probobj_pgm1} and
 ~\ref{figure:probobj_pgm2} and Equations~\ref{eqn:probobj_full_joint} and
 ~\ref{eqn:probobj_simplified_joint} describe a probabilistic framework in which
 online corrections can be made to the reconstructed model (piecewise over
-subvolumes) to counter errors caused by pose tracking inconsistencies. As with
+subvolumes), to counter errors caused by pose tracking inconsistencies. As with
 scene scale dense SLAM systems~\cite{Newcombe2011, Prisacariu2014, NieBner2013},
 the presented system follows a pipeline that consists of a tracking stage and an
 integration stage, as outlined in Section~\ref{sec:moseg_static_fusion}.
@@ -361,19 +359,17 @@ Note that the Appearance Posterior Volume outlined in Section
 ~\ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
 Section~\ref{sec:probobj_model_correction} for the purposes of subvolume alignment 
 and determining the subset of voxels \(\bm{\Phi} \subset \bm{\Psi}\) that yield the 
-target object shape.
-
-Further details pertaining to the inference procedure for the per-subvolume
-deformations is provided in Section~\ref{sec:probobj_model_correction}.
+target object shape. Further details pertaining to the inference procedure for the 
+per-subvolume deformations are provided in Section~\ref{sec:probobj_model_correction}.
 
 \section{Online Model Correction}
 ~\label{sec:probobj_model_correction}
 The tracking consistency constraints denoted by the variables \(L_{s, s'}\) such
-that \(s, s' \in \mathcal{S}\) with \(\mathcal{S}\) being the set of overlapping
+that \(s, s' \in \mathcal{S}\), where \(\mathcal{S}\) is the set of overlapping
 subvolume pairs \(s, s'\) in the Probabilistic Graphical Models given by Figures
-~\ref{figure:probobj_pgm1} and~\ref{figure:probobj_pgm2} can be enforced in terms of
-minimising the disparity between each pair of adjacent subvolumes. The effect of
-this minimisation being that consistency in the pose estimation phase of the
+~\ref{figure:probobj_pgm1} and~\ref{figure:probobj_pgm2}. These constraints can be 
+enforced in terms of minimising the disparity between each pair of adjacent subvolumes. 
+The effect of this minimisation being that consistency in the pose estimation phase of the
 pipeline outlined in Figure~\ref{figure:probobj_pipeline_diagram} is enforced. The
 objective of this procedure is to infer a robust and consistent deformation
 transformation for the subvolume pair.
@@ -382,8 +378,8 @@ transformation for the subvolume pair.
 ~\label{subsec:probobj_alignment_map}
 Referring back to the joint distribution of Equation~\ref{eqn:probobj_simplified_joint}, 
 to achieve the aforementioned minimisation of disparity between overlapping subvolumes, 
-a Maximum a Posteriori (MAP) estimate is desirable. As such, a MAP estimate over \(L_{s, s'}\) 
-in Equation~\ref{eqn:probobj_simplified_joint} for a given subvolume pair \(s, s'\) may be
+a MAP estimate is desirable. The MAP estimate over \(L_{s, s'}\) in 
+Equation~\ref{eqn:probobj_simplified_joint}, for a given subvolume pair \(s, s'\), may be
 derived as follows.
 \begin{align}
   \label{eqn:probobj_map_estimate}
@@ -411,7 +407,7 @@ Gaussian Distribution \(\mathcal{N}(\bm{0} \given \bm{I})\) over the
 The choice of such a prior distribution is motivated by the assumption that motion between 
 consecutive frames is minor (for a real-time sensor running at at least \( 30Hz \)),
 thus the given prior will have the effect of constraining the \(\mathbb{SE}(3)\)
-transformation as such. The prior distribution \(P(\Phi)\) serves as a
+transformation accordingly. The prior distribution \(P(\Phi)\) serves as a
 \textit{Surface Prior} to mitigate the effect of noise introduced in to the TSDF
 volumes. The form of \(P(\Phi)\) shall be discussed in Section
 ~\ref{subsec:probobj_analytic_alignment_map}.
@@ -466,9 +462,9 @@ applies the resultant \(\mathbb{SE}(3)\) transform to a given voxel position
 \end{align}
 In Equation~\ref{eqn:probobj_lambda_fn} \(R_{\bm{p}}\) is the \(\mathbb{SO}(3)\)
 rotation matrix generated from the Rodrigues parameters given by the Vector
-\(\bm{p}\). Recall the definition of the Rodrigues parameterisation given in
+\(\bm{p}\) (recall the definition of the Rodrigues parameterisation given in
 Equation~\ref{eqn:rodriguez_matrix_eq} of Section
-~\ref{subsub:moseg_static_camera_attitude}.
+~\ref{subsub:moseg_static_camera_attitude}).
 
 The form of the aforementioned surface prior \(P(\Phi)\) is taken to be that of
 the Logistic Distribution, due to the \textit{symmetric} \(1 - f(x) = f(-x)\)
@@ -529,9 +525,10 @@ CDF of \(P{(\Phi)}^{\prime}\) is derived as follows.
 
 With the CDF of Equation~\ref{eqn:probobj_logistic_dist} derived in Equation
 ~\ref{eqn:probobj_surface_prior_cdf}, an appropriate choice of the parameters \( \mu \)
-and \( \sigma \) must be made for the prior over the SDF\@. The Logistic PDF and CDF is 
-plotted in Figure~\ref{figure:probobj_logistic} for varying \( \mu \) and \( \sigma \).
+and \( \sigma \) must be made for the prior over the SDF\@. The Logistic PDF and CDF are 
+plotted in Figure~\ref{figure:probobj_logistic} for varying values of \( \mu \) and \( \sigma \).
 \begin{figure}[!htbp]
+  % TODO: bigger
 	\centering
 	\begin{tabular}{cc}
 		\includegraphics[width=.4\linewidth]{figures/object_recon/logistic/mu_pdf.eps}&
@@ -732,12 +729,15 @@ approximates the \textit{true} object surface \( \bm{\Phi} \), assumed to exist 
 \( \bm{\Psi}_{s} \) and \( \bm{\Psi}_{s^{'}} \). This notion is depicted in Figure
 ~\ref{figure:probobj_implicit_surface}.
 \begin{figure}[!htbp]
+  % TODO: phi's
   \centering
   \includegraphics[width=.6\linewidth]{figures/object_recon/deformation.png}
   \caption[Implicit Surface Deformation]{An example of deformations being applied to observed surfaces 
   to approximate a true surface.}
 ~\label{figure:probobj_implicit_surface}
 \end{figure}
+In Figure~\ref{figure:probobj_implicit_surface}, \( \bm{T}_{1} \) and \( \bm{T}_{2} \) are 
+\( \mathbb{SE}(3) \) transforms applied to the surfaces of the object subvolumes.
 
 For the experiments performed in this work, the blending function \( \zeta \) is defined as follows in 
 Equation~\ref{eqn:probobj_blending_func}. Note that the output of the blending function \( \zeta \) is 
@@ -941,9 +941,9 @@ components for which valid SDF data has been integrated.
 
 In the implementation used in this work, the aforementioned cut in voxel space
 is obtained by optimising the energy function of Equation~\ref{eqn:probobj_crf_energy} 
-within a Max-Flow framework~\cite{Boykov2001} due to GPU parallelisation potential. However 
-it should be noted that alternatives such as Variational Bayesian Mean Field approximations 
-may also be of use~\cite{Krahenbuhl2011}.
+within a Max-Flow framework~\cite{Boykov2001} due to GPU parallelisation potential. %However 
+%it should be noted that alternatives such as Variational Bayesian Mean Field approximations 
+%may also be of use~\cite{Krahenbuhl2011}.
 
 \section{Pipeline Summary}
 ~\label{sec:probobj_pipeline_summary}
@@ -1026,7 +1026,7 @@ performing segmentation on each individual submap.
 ~\label{sec:probobj_qualitative}
 Empirically the proposed system is capable of reconstructing a range of objects 
 characterised by a range of different sizes and geometries. The experiments in 
-this section demonstrate efficacy over the approach of \textit{Ren et al} 
+this section demonstrate efficacy over the approach of \textit{Ren et al}
 ~\cite{Ren2013} for the task of obtaining closed, small object reconstructions 
 from RGBD data. Each evaluation sequence is run on the system proposed in this 
 chapter versus that of \textit{Ren et al}, with output snapshots taken at 
@@ -1046,7 +1046,7 @@ a Quantitative evaluation of Reconstruction quality is given.
     \begin{tabular}[t]{@{}l@{}}
       (a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
       from\\ RGBD observations on the Museum Rock sequence.\\ 
-      (b) The proposed system reconstructing 
+      (b) The proposed system (of this work) reconstructing 
       the same object from RGBD\\ observations of the Museum Rock sequence.
     \end{tabular}
   }
@@ -1072,7 +1072,7 @@ the object of interest, contrary to the approach outlined in this chapter.
     \begin{tabular}[t]{@{}l@{}}
       (a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
       from RGBD\\ observations on the Museum Dinosaur Head sequence.\\ 
-      (b) The proposed system reconstructing same the object from RGBD\\ observations of the 
+      (b) The proposed system (of this work) reconstructing same the object from RGBD\\ observations of the 
       Museum Dinosaur Head sequence.
     \end{tabular}
   }
@@ -1092,13 +1092,13 @@ the use of the two approaches for the purposes of this comparison is that in the
 system, only the observed points of the live frame and of the reconstruction that belong to 
 the object of interest are used for pose estimation. 
 
-In the KinectFusion pipeline used as a base of comparison however, the entire scene is modelled 
+In the KinectFusion pipeline, used as a base of comparison however, the entire scene is modelled 
 as the camera moves, with the reconstruction of the object of interest being segmented as a post 
 processing step. As such, the results extracted from the KinectFusion pipeline are taken to be the 
 ground truth reconstructions of the object of interest. This is due to the more robust 
 pose estimation that would be expected from utilising all available geometric data 
-for tracking, versus utilising only that of a single, potentially small object.
-
+for tracking, versus utilising only that of a single, potentially small object. The reconstructions 
+of each approach are given in Figure~\ref{figure:probobj_comp_itm}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
@@ -1197,10 +1197,11 @@ In this section the performance of the proposed system is evaluated quantitative
 to both pose estimation accuracy and reconstruction accuracy. 
 
 For pose evaluation, the \textit{3D Object Reconstruction} subset of the 
-\textit{RGB-D SLAM Dataset and Benchmark}~\cite{Sturm2012} is used. The objects of interest in 
-the dataset vary largely in both geometry and appearance. As with the quantitative 
-evaluation presented in Section~\ref{sec:moseg_quantitative}, the 
-\textit{Absolute Trajectory Error} is the primary metric of interest.
+\textit{RGB-D SLAM Dataset and Benchmark}~\cite{Sturm2012} is used\footnotemark. The objects 
+of interest in the dataset vary largely in both geometry and appearance. As with the quantitative 
+evaluation presented in Section~\ref{sec:moseg_quantitative}, the ATE is the primary metric of interest.
+~\footnotetext{Technical University of Munich, RGB-D SLAM Dataset and Benchmark.\\
+\url{https://vision.in.tum.de/data/datasets/rgbd-dataset}}
 \begin{table}[!htbp]
   \centering
   \begin{tabular}{l c c}
@@ -1224,8 +1225,8 @@ evaluation presented in Section~\ref{sec:moseg_quantitative}, the
 
 It can be seen from Table~\ref{table:probobj_ate} that on the \textit{freiburg3\_cabinet} 
 and \textit{\textsf{freiburg3\_teddy}} sequences the approach proposed in this work 
-yields a marked improvement in Absolute Trajectory Error over that of the standard KinectFusion 
-pipeline with object segmentation. 
+yields a marked improvement in ATE over that of the standard KinectFusion pipeline with object 
+segmentation. 
 
 The remaining sequences in the \textit{3D Object Reconstruction} subset of the 
 \textit{RGB-D SLAM Dataset and Benchmark}~\cite{Sturm2012} did not yield an interpretable reconstruction; 
@@ -1233,9 +1234,9 @@ these sequences did not reconstruct in \textit{neither} the proposed approach, \
 approach (InfiniTAM). In the case of the \textit{freiburg2\_metallic\_sphere (2)} sequences, the object 
 of interest is purely spherical in geometry. Such a shape is problematic for ICP like tracking 
 algorithms due to it's inherent ambiguity. Ambiguous geometry was also troublesome for the 
-\textit{freiburg2\_coke} sequence. The \textit{freiburg2\_flowerbouquet (brownbg)} sequences 
-also proved troublesome for both approaches. When inspecting the depth stream for this sequence 
-it is apparent that much of the flower bouquet does not have consistent depth data, in some cases 
+\textit{freiburg2\_coke} sequence in \textit{both} systems. The \textit{freiburg2\_flowerbouquet (brownbg)} 
+sequences also proved troublesome for \textit{both} approaches. When inspecting the depth stream for this 
+sequence it is apparent that much of the flower bouquet does not have consistent depth data, in some cases 
 with a large amount of descriptive geometrical information missing. An example of such frames 
 from the sequence are given in Figure~\ref{figure:probobj_flower_depth}
 \begin{figure}[!htbp]
@@ -1375,7 +1376,7 @@ with sufficient geometry to converge to a consistent model in a relatively short
 fluctuations in runtime due to online correction are minimal. However, it may be seen in 
 Figure~\ref{figure:probobj_timing} that for the \textit{Museum Rock} sequence, the runtime is 
 less stable. This sequence demonstrates a Mean per frame runtime of 0.021890 seconds, with 
-a larger Standard Deviation of 0.007783 seconds. This behaviour is caused by the lack of 
+a larger Standard Deviation of 0.007783 seconds. This behaviour is likely to be caused by the lack of 
 descriptive geometry of the object, resulting in less stable pose estimation. As such, for this 
 sequence, the online correction procedure requires more iterations to converge to a consistent 
 model. The spikes in Figure~\ref{figure:probobj_timing} reflect the practical implications of 
@@ -1407,7 +1408,7 @@ it may be adapted for a range of use cases. For example, when utilising stereo s
 model may not be known a-priori, the framework allows for a suitable prior to be used. Additionally, 
 the proposed approach is intentionally decoupled from the object segmentation model, allowing for 
 ease of adaption for multiple object scenarios, or those where a continuous distribution over voxel 
-labelling's is required.
+labels is required.
 
 In summary, the presented approach has demonstrated efficacy for the reconstruction of arbitrary 
 objects in a geometrically consistent manner.
