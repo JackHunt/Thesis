@@ -13,16 +13,16 @@ purposes.
 ~\label{sec:moseg_introduction}
 Progress in dense volumetric fusion has been accelerated in recent years with
 the availability of consumer grade RGBD sensors such as the Microsoft Kinect and
-the Asus Xtion coupled with the increasingly parallel nature of Graphical Processing 
-Unit (GPU) hardware. Systems such as the seminal KinectFusion~\cite{Newcombe2011} 
-allow one to build high quality, globally consistent scene models trivially, as 
-outlined in Section~\ref{sec:intro_scene_recon} and Figure~\ref{figure:room_recon_example}.
+the Asus Xtion coupled with the increasingly parallel nature of GPU hardware. Systems such 
+as the seminal KinectFusion~\cite{Newcombe2011} allow one to build high quality, globally 
+consistent scene models trivially, as outlined in Section~\ref{sec:intro_scene_recon} and 
+Figure~\ref{figure:room_recon_example}.
 Applications of such reconstruction pipelines however are limited due to the 
-inability of such systems to handle scenes in which there are dynamics; such 
+inability of such systems to handle scenes in which there are dynamics; these 
 systems are unable to yield reliable reconstructions when there is motion in the 
-sensors field of view independent of the sensors own motion. Such a scenario introduces
-additional error to the pose estimation component in the pipeline and as such
-causes model corruption ranging from noise in the reconstruction to spurious 
+sensors field of view, independent of the sensors own motion. Such a scenario introduces
+additional error to the pose estimation component of the pipeline, resulting in
+model corruption ranging from noise in the reconstruction to spurious 
 surface data due to erroneous pose estimation.
 
 In this chapter, an approach to mitigating the problems present when performing 
@@ -65,6 +65,7 @@ tracking to drift, or completely fail. By tracking against only the stable
 scene components, this interference in the ICP pose estimation process can be
 mitigated.
 
+% TODO: Chack spacing, which changes from this point.
 Once a part of the dynamic model has been stable for a sufficient period, its
 volumetric data is integrated in to the static model and is used for the
 tracking phase of the pipeline. The use of volumetric structures in this work
@@ -77,10 +78,8 @@ blocks in the dynamic scene, such that isosurface information is not transferred
 to the static model (used for camera tracking) until there is sufficient
 confidence in it's stability. From a survey of the literature, it appears that 
 this approach is the first to utilise such a dual representation for the motion 
-segmentation problem.
-
-A graphical representation of the voxel block based structure of a given Scene
-is presented in Figure~\ref{figure:voxel_blocks}.
+segmentation problem. A graphical representation of the voxel block based structure 
+of a given scene is presented in Figure~\ref{figure:voxel_blocks}.
 % Based on http://www.texample.net/tikz/examples/sudoku-3d-cube/.
 \begin{figure}[!htbp]
   \centering
@@ -182,18 +181,16 @@ is presented in Figure~\ref{figure:voxel_blocks}.
 \end{figure}
 
 The remainder of this chapter is structured as follows.
-Section~\ref{sec:moseg_related_work} presents an assessment of related and
-relevant literature. Section~\ref{sec:moseg_static_fusion} introduces
-preliminaries pertaining to the static Fusion pipeline followed by Section
-~\ref{sec:moseg_dynamic_fusion} describing the dynamic Fusion component of the
-pipeline. Qualitative and quantitative results are presented in Sections
-~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, respectively.
-Finally, an application to interactive object recognition is given in Section
+Section~\ref{sec:moseg_static_fusion} introduces preliminaries pertaining to 
+the static Fusion pipeline followed by Section~\ref{sec:moseg_dynamic_fusion} 
+describing the dynamic Fusion component of theipeline. Qualitative and quantitative 
+results are presented in Sections~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, 
+respectively. Finally, an application to interactive object recognition is given in Section
 ~\ref{sec:moseg_semantic}.
 
 \section{Static Volumetric Fusion}
 ~\label{sec:moseg_static_fusion}
-The volumetric fusion approach taken in this work draws on previous Volumetric
+The volumetric fusion approach taken in this work draws on previous volumetric
 integration techniques~\cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2014} 
 and shall be introduced in this section as preliminary material as it shall be
 referred to in later chapters. Following this approach, at each frame the camera
@@ -225,14 +222,14 @@ surface, negative behind. Surface points are known as the Zero Level Set.
 ~\label{figure:sdf_example}
 \end{figure}
 
-For a given TSDF \(\bm{\Phi}\), the Zero Level Set is defined as follows
+For a given TSDF \(\bm{\Phi}\), the Zero Level Set is defined as follows in Equation
+~\ref{eqn:zeri_level_definition} where \(v\) denotes a TSDF voxel. An example of such an 
+embedding is given in Figure~\ref{figure:sdf_example}.
 \begin{equation}
   \label{eqn:zero_level_definition}
   \mathcal{S} = \{v \given \bm{\Phi}(v) = 0\}, 
   \mkern2mu \forall \mkern2mu v \in \bm{\Phi}
 \end{equation}
-where \(v\) denotes a TSDF voxel. An example of such an embedding is given in
-Figure~\ref{figure:sdf_example}.
 
 To facilitate real time fusion, the InfiniTAM framework employs a voxel block
 hashing mechanism for fast access to scene voxels~\cite{NieBner2013}. Within
@@ -495,7 +492,7 @@ be combined in to the following translation Jacobian as in Equation~\ref{eqn:rot
 \end{equation}
 
 The overall combined Jacobian for the energy function defined in Equation
-~\ref{eqn:pose_estimation_kf} is as follows
+~\ref{eqn:pose_estimation_kf}, for use in pose optimisation is as follows
 \begin{equation}
   \label{eqn:pose_jacobian}
   \bm{J} =
@@ -559,7 +556,7 @@ that follows.
         \State{\( \bm{C} = \text{chol}(\bm{H} + \lambda \text{diag}(\bm{H})) \)}
         \State{\( \delta = \text{backsub}(\bm{C}, \bm{J}) \)}
         \State{\( \theta_{tmp} \gets \theta_{tmp} - \delta \)}
-        \EndWhile{\\}
+        \EndWhile{}
         \Return{\( \theta_{t} \)}
         \EndProcedure{}
       \end{algorithmic}
@@ -758,13 +755,11 @@ given in Figure~\ref{figure:moseg_pipeline}.
 ~\label{sub:moseg_stability_labelling}
 The purpose of the stability labelling section of the pipeline is to distinguish
 between stable and unstable voxel blocks in the dynamic model, resulting in
-parts of the scene that are moving being excluded from the static model.
-
-For each voxel block in the dynamic model, a stability value is maintained, 
+parts of the scene that are moving being excluded from the static model. For each voxel 
+block in the dynamic model, a stability value is maintained, 
 representing the extent to which the instantaneous TSDF values for the voxels 
 in a given voxel block (visible in the current view frustrum under the current 
-pose) have remained sufficiently similar to the existing TSDF values for those voxels
-over time.
+pose) have remained sufficiently similar over time.
 
 The stability value for each voxel block in the scene is initialised to nought.
 At each frame, the instantaneous TSDF values for the voxels in each visible
@@ -890,7 +885,7 @@ integration. The process is given in the following Algorithm.
   \end{minipage}
   \par
 }
-
+% TODO: Spacing. Gap not showing.
 The presented Algorithm is trivially parallelisable with commodity GPU hardware.
 The integration of points in the depth map \( \mathcal{D} \) is parallelisable 
 with minimal risk of race conditions occurring. However care must be taken for edge 
@@ -913,6 +908,7 @@ and sitting on a Setee is given in Figure~\ref{figure:moseg_qualitative_setee}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{ccc}
+    % TODO: Middle picture is smaller.
     \includegraphics[width=.3\linewidth]{figures/moseg/original_sitting.png} &
     \includegraphics[width=.3\linewidth]{figures/moseg/infinitam_sitting.png} &
     \includegraphics[width=.3\linewidth]{figures/moseg/moseg_sitting.png}\\
@@ -971,12 +967,14 @@ In this section, a quantitative evaluation of the system's efficacy in terms of
 and camera tracking ability is provided.
 
 For the quantitative analysis, the system has been evaluated on the dynamic
-objects subset of the TUM RGBD dataset~\cite{Sturm2012} with respect to
+objects subset of the TUM\footnotemark RGBD dataset~\cite{Sturm2012} with respect to
 trajectory quality. The scenes provided in the dataset contain a range of
 dynamic components ranging from arm movement to people walking around, occluding
 parts of the scene. Comparison is drawn against the standard InfiniTAM framework
 on which the proposed system is based, using standard, static InfiniTAM as a
 baseline.
+~\footnotetext{Technical University of Munich, RGB-D SLAM Dataset and Benchmark.\\
+\url{https://vision.in.tum.de/data/datasets/rgbd-dataset}}
 
 \begin{table}[!htbp]
 \begin{center}
@@ -1004,25 +1002,22 @@ achieved by the proposed approach in comparison to the baseline InfiniTAM
 ~\label{table:moseg_ate}
 \end{table}
 
-Given in Table~\ref{table:moseg_ate} is the Absolute Trajectory Error measures
-for each of the TUM Dynamic Scenes. The Absolute Trajectory Error utilises the
-method of Horn~\cite{Horn1987} to solve for the error incurred by mapping the
-trajectory of the proposed system on to the ground truth trajectory of the TUM
-sequence, for a given TUM Dynamic Objects sequence.
-
-The results of Table~\ref{table:moseg_ate} are visualised in Figure
-~\ref{figure:moseg_ate}.
+Given in Table~\ref{table:moseg_ate} is the Absolute Trajectory Error (ATE) measures
+for each of the TUM Dynamic Scenes. The ATE utilises the method of Horn~\cite{Horn1987} to 
+solve for the error incurred by mapping the trajectory of the proposed system on to the ground 
+truth trajectory of the TUM sequence, for a given TUM Dynamic Objects sequence. The results of 
+Table~\ref{table:moseg_ate} are visualised in Figure~\ref{figure:moseg_ate}.
 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\linewidth]{figures/moseg/ate.eps}
   \caption[Motion Segmentation ATE]
-  {Absolute Trajectory Error for the TUM Dynamic Scenes dataset.}
+  {Absolute Trajectory Error (ATE) for the TUM Dynamic Scenes dataset.}
 ~\label{figure:moseg_ate}
 \end{figure}
 
 In addition to evaluating quantitatively in terms of Absolute Trajectory Error,
-additional results are provided in terms of Relative Trajectory Error
+additional results are provided in terms of Relative Trajectory Error (RTE)
 ~\cite{Sturm2012}. RTE measures the relative pose error over a fixed time
 interval, with the final score being the Root Mean Squared Error (RMSE) over all 
 time windows. RTE results are provided in Table~\ref{table:moseg_rte} and visualised 
@@ -1058,7 +1053,7 @@ highlighted in bold.}
   \centering
   \includegraphics[width=\linewidth]{figures/moseg/rte.eps}
   \caption[Motion Segmentation RTE]
-  {Relative Trajectory Error for the TUM Dynamic Scenes dataset.}
+  {Relative Trajectory Error (RTE) for the TUM Dynamic Scenes dataset.}
 ~\label{figure:moseg_rte}
 \end{figure}
 
@@ -1080,13 +1075,13 @@ performance of the modified pipeline outlined in this work, a direct comparison 
 ~\label{figure:moseg_timing_coffee}
 \end{figure}
 
-It can be seen from Figure~\ref{figure:figure:moseg_timing_coffee} that the motion segmentation and 
+It can be seen from Figure~\ref{figure:moseg_timing_coffee} that the motion segmentation and 
 dynamic SLAM system proposed in this work is capable of operating at above real time performance. The 
 sequence from which the performance statistics of Figure~\ref{figure:moseg_timing_coffee} are derived 
 consists of 1108 frames in which dynamics are prevalent throughout. It can be seen that although the 
 cost of the proposed system is higher than that of the standard SLAM pipeline, performance is still 
-better than real-time. It should be noted however that the Mean processing time for a given frame 
-is 0.011843 seconds, the Standard Deviation over the sequence is 0.000862 seconds. Such varying per 
+better than real-time. It should be noted however that the mean processing time for a given frame 
+is 0.011843 seconds, the standard deviation over the sequence is 0.000862 seconds. Such varying per 
 frame times are due to the varying degree of observed dynamic scene components. However, the proposed 
 approach performs at \(\approx 84Hz\) versus the standard pipeline's performance of \(\approx 136Hz\), 
 indicating a non detrimental performance deficit.
@@ -1097,11 +1092,9 @@ The dynamic scene handling approach described in Section~\ref{sec:moseg_dynamic_
 can be used to prevent moving objects from being integrated into the static
 scene model. However, for many applications (e.g.\ mobile robotics), there is an
 additional need to understand what objects are present in the scene and where
-they are, as outlined in Section~\ref{sec:intro_scene_recon}.
-
-In this section, it is therefore shown that classifiers may be trained for the
-moving objects and used to recognise new instances of those objects as they
-enter the scene.
+they are, as outlined in Section~\ref{sec:intro_scene_recon}. In this section, it is 
+therefore shown that classifiers may be trained for the moving objects and used to recognise 
+new instances of those objects as they enter the scene.
 
 The voxel blocks in the dynamic model that were identified as ``unstable''
 provide a natural representation of the dynamic parts of the scene. Where
@@ -1117,12 +1110,10 @@ class.
 
 To make the training examples for the detected object, points are uniformly sampled from the object's
 isosurface and Fast Point Feature Histogram (FPFH) descriptors~\cite{Rusu2009} are computed
-at those points. FPFH descriptors are geometric features that provide a
+at these points. FPFH descriptors are geometric features that provide a
 per-point statistic of the curvature within some neighbourhood of the point
-(empirically, a \(2.5cm\) radius around the point is used).
-
-Figure~\ref{figure:moseg_recognition} shows an example of this training and
-prediction process for dynamic objects.
+(empirically, a \(2.5cm\) radius around the point is used). Figure~\ref{figure:moseg_recognition} 
+shows an example of this training and prediction process for dynamic objects.
 
 \begin{figure}[!htbp]
   \centering
