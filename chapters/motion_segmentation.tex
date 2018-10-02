@@ -303,7 +303,6 @@ The formulation of the Rodriguez parameterization (performing the aforementioned
 
 Where for an arbitrary vector \(\bm{v}\), \(\omega(\bm{v})\) is defined as
 the cross product matrix operator and is defined as follows in Equation~\ref{eqn:cross_prod_mat}.
-% TODO: Tidy. Maybe merge into above equation?
 \begin{equation}
   \label{eqn:cross_prod_mat}
   \omega(\bm{v}) =
@@ -625,7 +624,8 @@ yields the depth offset from the surface, as follows
 If \( \eta \geq -\mu \), that is that the depth of the point is not beyond the
 truncation band of the TSDF behind the isosurface, where \( \mu \) is half the 
 width of the truncation band, then the TSDF depth measurement update 
-proceeds as follows for a voxel \(\bm{x}_{v} \in \bm{\Phi}\).
+proceeds as follows for a voxel \(\bm{x}_{v} \in \bm{\Phi}\). A graphical depiction 
+of the 2D case of a TSDF truncation region is given in Figure~\ref{figure:moseg_truncation}.
 \begin{equation}
 \label{eqn:sdf_update}
 \bm{\Phi}{(\bm{x}_{v})}_{t} = \frac{1}{\phi{(\bm{x}_{v})}_{t-1} + 1}
@@ -634,10 +634,15 @@ proceeds as follows for a voxel \(\bm{x}_{v} \in \bm{\Phi}\).
 \bigg]
 \end{equation}
 
-\begin{figure}[!htbp]
-  \caption{TODO}
-~\label{figure:truncation_band}
-\end{figure}
+\afterpage{
+  \begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{figures/moseg/whelan_sdf.png}
+    \caption[2D TSDF Truncation Region]{A 2D TSDF with it's truncation region specified.\footnotemark}
+~\label{figure:moseg_truncation}
+  \end{figure}
+~\footnotetext{Image copyright: \textit{Whelan et al}~\cite{Whelan2014}.}
+}
 
 In addition, the weight \(\phi(\bm{x}_{v})\) is updated as follows.
 \begin{equation}
