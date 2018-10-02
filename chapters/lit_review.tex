@@ -245,7 +245,14 @@ semantic dense SLAM pipeline built on top of the dense SLAM system presented by
 classes. Unlike \textit{Handa et al}~\cite{Handa2015}, the authors make use of an 
 Fully Connected Network~\cite{Long2015}, taking the Probability Mass Function (PMF) 
 output to determine the class to be assigned to an isosurface region.
-% TODO: semanticfusion, matthias stuff
+
+Later work by \textit{McCormack et al}~\cite{McCormac2017} in 2017 further integrates CNN based 
+semantic information with dense SLAM.\@ The authors make use of CNN generated semantic probability 
+maps over a set of object classes when densely reconstructing a scene, using the approach of 
+\textit{Whelan et al}~\cite{Whelan2016}. The instantaneous, pixel-wise distributions over class labels 
+are fused into the scene model via the use of a Bayesian update procedure. The authors report a high 
+degree of semantic accuracy with their approach, and highlight that due to the multi-view nature of the 
+approach, an improvement on the 2D case is also achieved on the NYUv2 dataset.
 
 The theme of dense 3D reconstruction with semantics is directly related to the research objectives 
 outlined in Section~\ref{sec:intro_aims_structure}. As outlined in this section, little research has 

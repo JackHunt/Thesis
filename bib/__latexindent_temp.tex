@@ -1,15 +1,21 @@
-@inproceedings{Newcombe:2011:DDT:2355573.2356447,
- author = {Newcombe, Richard A. and Lovegrove, Steven J. and Davison, Andrew J.},
- title = {DTAM: Dense Tracking and Mapping in Real-time},
- booktitle = {Proceedings of the 2011 International Conference on Computer Vision},
- series = {ICCV '11},
- year = {2011},
- isbn = {978-1-4577-1101-5},
- pages = {2320--2327},
- numpages = {8},
- url = {http://dx.doi.org/10.1109/ICCV.2011.6126513},
- doi = {10.1109/ICCV.2011.6126513},
- acmid = {2356447},
- publisher = {IEEE Computer Society},
- address = {Washington, DC, USA},
-} 
+@article{doi:10.1177/0278364916669237,
+author = {Thomas Whelan and Renato F Salas-Moreno and Ben Glocker and Andrew J Davison and Stefan Leutenegger},
+title ={ElasticFusion: Real-time dense SLAM and light source estimation},
+journal = {The International Journal of Robotics Research},
+volume = {35},
+number = {14},
+pages = {1697-1716},
+year = {2016},
+doi = {10.1177/0278364916669237},
+
+URL = { 
+        https://doi.org/10.1177/0278364916669237
+    
+},
+eprint = { 
+        https://doi.org/10.1177/0278364916669237
+    
+}
+,
+    abstract = { We present a novel approach to real-time dense visual simultaneous localisation and mapping. Our system is capable of capturing comprehensive dense globally consistent surfel-based maps of room scale environments and beyond explored using an RGB-D camera in an incremental online fashion, without pose graph optimization or any post-processing steps. This is accomplished by using dense frame-to-model camera tracking and windowed surfel-based fusion coupled with frequent model refinement through non-rigid surface deformations. Our approach applies local model-to-model surface loop closure optimizations as often as possible to stay close to the mode of the map distribution, while utilizing global loop closure to recover from arbitrary drift and maintain global consistency. In the spirit of improving map quality as well as tracking accuracy and robustness, we furthermore explore a novel approach to real-time discrete light source detection. This technique is capable of detecting numerous light sources in indoor environments in real-time as a user handheld camera explores the scene. Absolutely no prior information about the scene or number of light sources is required. By making a small set of simple assumptions about the appearance properties of the scene our method can incrementally estimate both the quantity and location of multiple light sources in the environment in an online fashion. Our results demonstrate that our technique functions well in many different environments and lighting configurations. We show that this enables (a) more realistic augmented reality rendering; (b) a richer understanding of the scene beyond pure geometry and; (c) more accurate and robust photometric tracking. }
+}
