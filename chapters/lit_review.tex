@@ -488,4 +488,28 @@ weakly supervised manner on silhouettes and 3D shapes with a log-barrier objecti
 However, the applicability to ``real world'' scenarios is questionable, due to the synthetic nature of 
 the data used to train and evaluate the network.
 
-% TODO: Add some closing remarks.
+\section{Summary}
+~\label{sec:lit_review_summary}
+From the evaluation of the literature given in Sections~\ref{sec:lit_review_tam},~\ref{sec:lit_review_dynamic},
+~\ref{sec:lit_review_semantic},~\ref{sec:lit_review_obj_recon} and~\ref{sec:lit_review_prediction}, it is clear 
+that much progress has been made in many areas of 3D computer vision, with much commonality across the different 
+domains. However, when assessed within the context of the research objectives of this work, as outlined in Section
+~\ref{sec:intro_aims_structure}, there is still much that can be contributed.
+
+The literature reviewed in Sections~\ref{sec:lit_review_tam} and~\ref{sec:lit_review_dynamic} is directly related to 
+the subject matter of Chapter~\ref{chap:moseg}, which approaches the problems faced when utilising dense SLAM techniques 
+in an environment that is dynamic, rather than static, as with the approaches outlined in Section~\ref{sec:lit_review_tam}.
+Though it is evident from the literature assessment of Section~\ref{sec:lit_review_dynamic} that much progress has been made, 
+it is also evident from Section~\ref{sec:lit_review_dynamic} that there exist limitations in current work. 
+Section~\ref{sec:moseg_introduction} introduces approaches to solving some of these limitations.
+
+Section~\ref{sec:lit_review_obj_recon} reviewed literature pertinent to the object reconstruction subject matter of 
+Chapter~\ref{chap:probobj}. Though it is clear that much advancement has been made on representations and combined TAM for 
+objects, Section~\ref{sec:probobj_introduction} introduces an approach to the ongoing research problem around global model 
+consistency. Additionally, the primarily 2D featured nature of the systems outlined in Section~\ref{sec:lit_review_semantic} 
+provide a motivation for such approaches, as outlined in Sections~\ref{sec:intro_object_recon} and~\ref{sec:probobj_introduction}.
+
+The data driven works outlined in Section~\ref{sec:lit_review_prediction} provide a basis for the approach to shape and pose 
+prediction presented in Chapter~\ref{chap:spp}. Though much of the work reviewed in Section~\ref{sec:lit_review_prediction} 
+addresses each of these problems in a \textit{decoupled} way, may of the techniques are pertinent to the integrated approach 
+taken in Chapter~\ref{chap:spp}, as outlined in Section~\ref{sec:spp_introduction}.
