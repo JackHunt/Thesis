@@ -200,7 +200,7 @@ P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 
 In Equation~\ref{eqn:probobj_voxel_posterior} \( \Psi \) is the volume of 
 voxels for which measurements are accumulated, \( \Phi \)  is the volume of voxels 
-pertaining to the object \(\bm{\Phi}\) of interest, \(\Omega_{t}\) is the current 
+pertaining to the object \(\Phi\) of interest, \(\Omega_{t}\) is the current 
 RGBD image observation at time \(t\) and \(p_{t}\) is the currently tracked pose at 
 time \(t\). Equation~\ref{eqn:probobj_voxel_posterior} gives the probability of 
 a voxel belonging to the object of interest as the product of instantaneous appearance-derived 
@@ -238,7 +238,7 @@ Graphical Model (PGM) of Figure~\ref{figure:probobj_pgm1}.
   }
   \caption[Probabilistic Object Reconstruction Formulation I]
   {Probabilistic Graphical Model representing the full Joint
-    Distribution over the shape \(\bm{\Phi}\) of the object of interest.}
+    Distribution over the shape \(\Phi\) of the object of interest.}
 ~\label{figure:probobj_pgm1}
 \end{figure}
 
@@ -297,17 +297,17 @@ be removed as shown in Figure~\ref{figure:probobj_pgm2}.
   }
   \caption[Probabilistic Object Reconstruction Formulation II]
   {Probabilistic Graphical Model representing the simplified Joint
-    Distribution over the shape \(\bm{\Phi}\) of the object of interest.}
+    Distribution over the shape \(\Phi\) of the object of interest.}
 ~\label{figure:probobj_pgm2}
 \end{figure}
 
 The simplifications transforming the PGM of Figure~\ref{figure:probobj_pgm1} in to
 that of Figure~\ref{figure:probobj_pgm2} lead to the factorisation of the
-Joint Distribution over \(\bm{\Phi}\) given in Equation~\ref{eqn:probobj_simplified_joint}.
+Joint Distribution over \(\Phi\) given in Equation~\ref{eqn:probobj_simplified_joint}.
 \begin{equation}
   \label{eqn:probobj_simplified_joint}
   P(\Phi, \Omega, p, u, L) = 
-  \prod_{\psi \in \bm{\Psi}}P(\Phi \given u_{\psi})
+  \prod_{\psi \in \Psi}P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega)
 \end{equation}
@@ -343,21 +343,21 @@ the appearance model \(u\) may be marginalised as follows.
   % Line 1.
   P(\Phi, \Omega, p, L) ={}&
   \int
-  \prod_{\psi \in \bm{\Psi}} P(\Phi \given u_{\psi})
+  \prod_{\psi \in \Psi} P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \intd{u} \\
   % Line 2.
-  ={}& \prod_{\psi \in \bm{\Psi}} 
+  ={}& \prod_{\psi \in \Psi} 
   \int P(\Phi \given u_{\psi})
   \prod_{s, s' \in \mathcal{S}}P(u_{\psi} \given \Omega, p, L_{s, s'})
   P(L_{s, s'} \given \Omega, p) P(L_{s, s'})P(p)P(\Omega) \intd{u} \\
   ={}& \prod_{s, s' \in \mathcal{S}} P(L_{s, s'} \given \Omega, p)
-  P(L_{s, s'})P(p)P(\Omega)P(\bm{\Phi})
+  P(L_{s, s'})P(p)P(\Omega)P(\Phi)
 \end{align}
 Note that the Appearance Posterior Volume outlined in Section 
 ~\ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
 Section~\ref{sec:probobj_model_correction} for the purposes of subvolume alignment 
-and determining the subset of voxels \(\bm{\Phi} \subset \bm{\Psi}\) that yield the 
+and determining the subset of voxels \(\Phi \subset \Psi\) that yield the 
 target object shape. Further details pertaining to the inference procedure for the 
 per-subvolume deformations are provided in Section~\ref{sec:probobj_model_correction}.
 
@@ -476,7 +476,7 @@ Density Function (CDF). The PDF of the Logistic Distribution is given as follows
   {\sigma {\big( 1 + e^{-\frac{x - \mu}{\sigma}} \big)}^{2}}
 \end{equation}
 
-To encode the probability of a given voxel \(\psi \in \bm{\Psi}\) encoding an
+To encode the probability of a given voxel \(\psi \in \Psi\) encoding an
 isosurface point, represented as the Zero Level Set defined in Equation
 ~\ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
 probability with a function that has the aforementioned properties. As such, the
@@ -717,14 +717,14 @@ The set \( \mathcal{X} \) is defined as follows in Equation~\ref{eqn:probobj_ble
 \begin{equation}
   \label{eqn:probobj_blend_chi}
   \mathcal{X} = \Big\{ 
-    L_{s, s^{'}}, \bm{\Psi}_{s}, \bm{\Psi}_{s^{'}} 
+    L_{s, s^{'}}, \Psi_{s}, \Psi_{s^{'}} 
   \Big\}
   \forall s, s^{'} \in \mathcal{S}
 \end{equation}
 
-The blending of surface data between two volumes \( \bm{\Psi}_{s} \) and \( \bm{\Psi}_{s^{'}} \) 
-approximates the \textit{true} object surface \( \bm{\Phi} \), assumed to exist between that of 
-\( \bm{\Psi}_{s} \) and \( \bm{\Psi}_{s^{'}} \). This notion is depicted in Figure
+The blending of surface data between two volumes \( \Psi_{s} \) and \( \Psi_{s^{'}} \) 
+approximates the \textit{true} object surface \( \Phi \), assumed to exist between that of 
+\( \Psi_{s} \) and \( \Psi_{s^{'}} \). This notion is depicted in Figure
 ~\ref{figure:probobj_implicit_surface}.
 \begin{figure}[!htbp]
   % TODO: phi's
@@ -739,19 +739,19 @@ In Figure~\ref{figure:probobj_implicit_surface}, \( \bm{T}_{1} \) and \( \bm{T}_
 
 For the experiments performed in this work, the blending function \( \zeta \) is defined as follows in 
 Equation~\ref{eqn:probobj_blending_func}. Note that the output of the blending function \( \zeta \) is 
-the approximated object surface \( \bm{\Phi} \).
+the approximated object surface \( \Phi \).
 \begin{align}
   \label{eqn:probobj_blending_func}
-  \bm{\Phi} ={}& \zeta(\mathcal{X}) \\
+  \Phi ={}& \zeta(\mathcal{X}) \\
   ={}&
   \frac{1}{\left| \mathcal{X} \right|} \sum_{\chi \in \mathcal{X}} 
     \begin{aligned}[t]
       {}& \Big[ 
-        \bm{\Psi}_{s}(v) - \bm{\Psi}_{s^{'}}(v^{'})
-        \forall v, v^{'} \in \bm{\Psi}_{s} \cup \bm{\Psi}_{s^{'}}
+        \Psi_{s}(v) - \Psi_{s^{'}}(v^{'})
+        \forall v, v^{'} \in \Psi_{s} \cup \Psi_{s^{'}}
         \leftrightarrow \\ 
-      {}& 1 - P(\bm{\Psi}_{s}(v) \in \mathbf{\Phi} | \Omega, p) < 0.5 \wedge \\
-      {}& 1 - P(\bm{\Psi}_{s^{'}}(v^{'}) \in \mathbf{\Phi} | \Omega, p) < 0.5
+      {}& 1 - P(\Psi_{s}(v) \in \mathbf{\Phi} | \Omega, p) < 0.5 \wedge \\
+      {}& 1 - P(\Psi_{s^{'}}(v^{'}) \in \mathbf{\Phi} | \Omega, p) < 0.5
       \Big]
     \end{aligned}
 \end{align}
@@ -963,15 +963,15 @@ reconstruction and correction is given in the Algorithm that follows.
 
           \For{\( s \in \mathcal{S} \)} \Comment{For Each Submap \( s \)}
             \If{\( \text{isVisible}(s) \)}
-              \State{\( \bm{\Phi}_{s} \gets \text{getVolume}(s) \)}
+              \State{\( \Phi_{s} \gets \text{getVolume}(s) \)}
               \State{\( \bm{T}^{s}_{t} \gets \text{getPose}(s) \)}
               
-              \State{\( \mathcal{R}_{s} \gets \text{raycast}(\bm{\Phi}_{s}, \bm{\Omega}_{depth}, \bm{T}^{s}_{t}) \)}
+              \State{\( \mathcal{R}_{s} \gets \text{raycast}(\Phi_{s}, \bm{\Omega}_{depth}, \bm{T}^{s}_{t}) \)}
               \State{\( \bm{T}^{s}_{t+1} \gets \text{estimatePose}(\mathcal{R}, \mathcal{D}) \)}
               \State{\( \text{updatePose}(\bm{T}^{s}_{t+1}) \)}
               
               \State{\( \mathcal{D} \gets \text{unproject}(\bm{\Omega}_{depth}) \)}
-              \State{\( \bm{\Phi}_{s} \gets \text{integrate}(\mathcal{D}, \bm{\Phi}_{s}, \bm{T}^{s}_{t+1})\)}
+              \State{\( \Phi_{s} \gets \text{integrate}(\mathcal{D}, \Phi_{s}, \bm{T}^{s}_{t+1})\)}
 
               \State{\( \text{updatePosteriorVolume}(\mathcal{D}, u, \mathcal{P}, \bm{T}^{s}_{t+1}) \)}
               \Comment{Update Posterior with \( \mathcal{P} \)}
@@ -983,10 +983,10 @@ reconstruction and correction is given in the Algorithm that follows.
           \EndFor{}
 
           \For{\( s,s^{'} \in \mathcal{S} \)} \Comment{For Overlapping Submaps \( s,s^{'} \)}
-            \State{\( \bm{\Phi}_{s} \gets \text{getVolume}(s) \)}
-            \State{\( \bm{\Phi}_{s^{'}} \gets \text{getVolume}(s^{'}) \)}
+            \State{\( \Phi_{s} \gets \text{getVolume}(s) \)}
+            \State{\( \Phi_{s^{'}} \gets \text{getVolume}(s^{'}) \)}
             \State{\( \bm{L}_{s, s^{'}} \gets \text{getConstraints}(s, s^{'}) \)}
-            \State{\( \bm{L}^{\star}_{s, s^{'}} \gets \text{inferOptimalConstraints}(\bm{\Phi}_{s}, \bm{\Phi}_{s^{'}}, \bm{L}_{s, s^{'}}) \)}
+            \State{\( \bm{L}^{\star}_{s, s^{'}} \gets \text{inferOptimalConstraints}(\Phi_{s}, \Phi_{s^{'}}, \bm{L}_{s, s^{'}}) \)}
             \Comment{Optimise Equation~\ref{eqn:probobj_log_post_rot_grad}}
             \State{\( \text{updateConstraints}(s, s^{'}, \bm{L}^{\star}_{s, s^{'}}) \)}
           \EndFor{}
