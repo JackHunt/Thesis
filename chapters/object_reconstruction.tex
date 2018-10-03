@@ -200,7 +200,7 @@ P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 
 In Equation~\ref{eqn:probobj_voxel_posterior} \( \Psi \) is the volume of 
 voxels for which measurements are accumulated, \( \Phi \)  is the volume of voxels 
-pertaining to the object \(\Phi\) of interest, \(\Omega_{t}\) is the current 
+pertaining to the object \( \Phi \) of interest, \(\Omega_{t}\) is the current 
 RGBD image observation at time \(t\) and \(p_{t}\) is the currently tracked pose at 
 time \(t\). Equation~\ref{eqn:probobj_voxel_posterior} gives the probability of 
 a voxel belonging to the object of interest as the product of instantaneous appearance-derived 
@@ -238,7 +238,7 @@ Graphical Model (PGM) of Figure~\ref{figure:probobj_pgm1}.
   }
   \caption[Probabilistic Object Reconstruction Formulation I]
   {Probabilistic Graphical Model representing the full Joint
-    Distribution over the shape \(\Phi\) of the object of interest.}
+    Distribution over the shape \( \Phi \) of the object of interest.}
 ~\label{figure:probobj_pgm1}
 \end{figure}
 
@@ -297,13 +297,13 @@ be removed as shown in Figure~\ref{figure:probobj_pgm2}.
   }
   \caption[Probabilistic Object Reconstruction Formulation II]
   {Probabilistic Graphical Model representing the simplified Joint
-    Distribution over the shape \(\Phi\) of the object of interest.}
+    Distribution over the shape \( \Phi \) of the object of interest.}
 ~\label{figure:probobj_pgm2}
 \end{figure}
 
 The simplifications transforming the PGM of Figure~\ref{figure:probobj_pgm1} in to
 that of Figure~\ref{figure:probobj_pgm2} lead to the factorisation of the
-Joint Distribution over \(\Phi\) given in Equation~\ref{eqn:probobj_simplified_joint}.
+Joint Distribution over \( \Phi \) given in Equation~\ref{eqn:probobj_simplified_joint}.
 \begin{equation}
   \label{eqn:probobj_simplified_joint}
   P(\Phi, \Omega, p, u, L) = 
@@ -357,7 +357,7 @@ the appearance model \(u\) may be marginalised as follows.
 Note that the Appearance Posterior Volume outlined in Section 
 ~\ref{subsec:probobj_vol_appearance_model} is reintroduced later in this work in
 Section~\ref{sec:probobj_model_correction} for the purposes of subvolume alignment 
-and determining the subset of voxels \(\Phi \subset \Psi\) that yield the 
+and determining the subset of voxels \( \Phi \subset \Psi \) that yield the 
 target object shape. Further details pertaining to the inference procedure for the 
 per-subvolume deformations are provided in Section~\ref{sec:probobj_model_correction}.
 
@@ -476,7 +476,7 @@ Density Function (CDF). The PDF of the Logistic Distribution is given as follows
   {\sigma {\big( 1 + e^{-\frac{x - \mu}{\sigma}} \big)}^{2}}
 \end{equation}
 
-To encode the probability of a given voxel \(\psi \in \Psi\) encoding an
+To encode the probability of a given voxel \( \psi \in \Psi \) encoding an
 isosurface point, represented as the Zero Level Set defined in Equation
 ~\ref{eqn:zero_level_definition} of a TSDF, it is desirable to quantify the
 probability with a function that has the aforementioned properties. As such, the
@@ -716,9 +716,9 @@ over each set \( \mathcal{X} \) of overlapping subvolumes for which surface data
 The set \( \mathcal{X} \) is defined as follows in Equation~\ref{eqn:probobj_blend_chi}.
 \begin{equation}
   \label{eqn:probobj_blend_chi}
-  \mathcal{X} = \Big\{ 
+  \mathcal{X} = \Big \{ 
     L_{s, s^{'}}, \Psi_{s}, \Psi_{s^{'}} 
-  \Big\}
+  \Big \}
   \forall s, s^{'} \in \mathcal{S}
 \end{equation}
 
