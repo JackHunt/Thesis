@@ -63,6 +63,28 @@ approach presents a greater challenge than in the case of known ground truth, it
 of the approach. In many \textit{real world} scenarios it is not possible to obtain such ground truth data 
 without first solving the problem of this work, itself, first.
 
+As outlined previously, the proposed approach differs from that of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
+in that it is data driven. Rather than instantaneous algorithmic procedures being performed at each frame, the 
+result of the input frames is derived from a learnt model. As outlined in Sections~\ref{sec:intro_spp} and
+~\ref{sec:intro_aims_structure}, the research interest is in shape and pose prediction for objects in larger scale, 
+\textit{real world} environments. As such, the dataset used in this work is the 
+\textit{The KITTI Vision Benchmark Suite}~\cite{Geiger2013,Menze2015,Geiger2012}, which consists of a variety of frames 
+taken in RGB stereo, from a sensor rigged on top of a car. The dataset is thus suitable to the initial objective 
+of real world application.
+
+The remainder of this chapter is structured as follows; Section~\ref{sec:spp_algorithm} introduces the high level 
+structure of the proposed model and the structure of it's neural network components. Section~\ref{sec:spp_gplvm} 
+introduces and derives the GPLVM that provides a generative model over shape. Following the introduction 
+of the GPLVM, Section~\ref{sec:spp_latent_shape_est} outlines the process of extracting a candidate shape for the observed 
+object segmentation, from the GPLVM\@. Sections~\ref{sec:spp_pose_estim} and~\ref{sec:spp_rendering} outline the attitude 
+representation of pose and shape rendering method used. Though, these are akin to those of Sections
+~\ref{subsub:moseg_static_camera_attitude} and~\ref{subsec:moseg_static_rendering}, respectively, the rendering stage is 
+modified to introduce the property of differentiability. Sections~\ref{sec:spp_loss} and~\ref{sec:sec:spp_backprop} 
+outline the loss function of the model and it's gradient for Backpropagation, respectively. Sections~\ref{sec:spp_qualitative} 
+and~\ref{sec:spp_quantitative} provide qualitative and quantitative results on the aforementioned dataset, respectively. 
+Finally, Section~\ref{sec:spp_discussion} provides a summary of the approach taken in this work and the preliminary results 
+of it's use.
+
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
 The proposed model takes as input an RGB stereo pair with the object of interest within the 
@@ -587,6 +609,8 @@ Given the form of \( P(\bm{f}^{\star} \given \bm{X}, \bm{L}, \bm{f}) \) in Equat
   \bm{\Sigma}_{\bm{LL}} - \bm{\Sigma}_{\bm{LL}}^{T} \bm{\Sigma}_{XL}^{-1} \bm{\Sigma}_{LL}
 \end{align}
 
+\subsection{Gaussian Process Posterior Mean Gradient}
+~\label{subsec:gp_posterior_mean_grad}
 Due to the gradient based optimisation of the approach outlined in this chapter, each 
 component outlined in Figure~\ref{figure:spp_pipeline} must be differentiable. The formulation 
 of the posterior mean of Equation~\ref{eqn:spp_mean_var} is differentiable and it's gradient 
@@ -621,7 +645,11 @@ activation function.%TODO verify
 
 The latent variable model outlined in Section~\ref{subsec:spp_gplvm} is a distribution 
 over a latent space embedding of 3D shape. However, the 3D shape data on which the GP 
-prior was modelled is compressed with the DCT\@. An example of an SDF of a car is given 
+prior was modelled is compressed with the DCT\@. The intuition behind the use of the DCT is 
+the property that the number of harmonics used in the transform impacts on the granularity of 
+the resultant 3D shape geometry. It has been shown~\cite{Ren2014} that the lower frequency 
+harmonics of the DCT capture general structure and shape, whilst higher frequency harmonics 
+capture finer detailed geometric features. An example of a decompressed SDF of a car is given 
 in Figure~\ref{figure:spp_sdf_slices}.
 \begin{figure}[!htbp]
   \centering
@@ -652,11 +680,6 @@ in Figure~\ref{figure:spp_sdf_slices}.
 ~\label{figure:spp_sdf_slices}
 \end{figure}
 
-The intuition behind the use of the DCT is the property that the number of harmonics used 
-in the transform impacts on the granularity of the resultant 3D shape geometry. It has been 
-shown~\cite{Ren2014} that the lower frequency harmonics of the DCT capture general structure 
-and shape, whilst higher frequency harmonics capture finer detailed geometric features.
-
 The voxels of an input SDF \( \bm{V} \) under the DCT (for model training) are thus given 
 as follows in Equation~\ref{eqn:spp_dct}.
 \begin{align}
@@ -678,7 +701,7 @@ as follows in Equation~\ref{eqn:spp_dct}.
   \cos \Big[ \frac{\pi \big( z^{2} + \frac{z}{2} \big)}{N} \Big]
 \end{align}
 
-It follows that for a predicted posterior mean \( \bm{f}^{\star} \) as outlined in 
+It follows that for a predicted posterior mean \( \bm{f}^{\star} \), as outlined in 
 Equation~\ref{eqn:spp_gp_posterior_draw}, the voxels of the SDF corresponding to the 
 estimation \( \bm{f}^{\star} \) may be extracted via the IDCT as follows in 
 Equation~\ref{eqn:spp_idct}.
@@ -692,7 +715,7 @@ Equation~\ref{eqn:spp_idct}.
 \end{equation}
 
 An example of how the geometric detail of the decompressed model varies with the number 
-of harmonics used is given in Figure~\ref{figure:spp_sdf_diff_harmonics}.
+of harmonics used, \( N \), is given in Figure~\ref{figure:spp_sdf_diff_harmonics}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{ccc}
@@ -718,6 +741,8 @@ of harmonics used is given in Figure~\ref{figure:spp_sdf_diff_harmonics}.
 ~\label{figure:spp_sdf_diff_harmonics}
 \end{figure}
 
+\subsection{Signed Distance Function Gradient}
+~\label{subsec:spp_sdf_grad}
 The SDF \( \bm{\Phi} \) generated by the IDCT given in Equation~\ref{eqn:spp_idct} must be 
 differentiable with respect to the posterior mean \( \bm{f}^{\star} \) for backpropagation 
 training of the model. The gradient of the SDF \( \bm{\Phi} \) outlined in 
@@ -775,7 +800,7 @@ analogous to the Rodrigues parameterisation outlined in Section~\ref{subsub:mose
 The three rotational parameters \( \alpha \), \( \beta \) and \( \gamma \) are predicted by 
 the pose network component of the model on the interval \( [0, 2\pi) \). The translation parameters 
 however do not have their output restricted. It should be noted that the pose Jacobians are of the 
-same form of those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_jac}.
+same form as those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_jac}.
 
 \section{Rendering}
 ~\label{sec:spp_rendering}
@@ -855,8 +880,7 @@ The overall loss is thus given in Equation~\ref{eqn:spp_overall_loss}.
     \end{aligned}
 \end{align}
 
-% TODO: Cite mean-seeking
-The loss function given in Equation~\ref{eqn:spp_overall_loss} makes use of the mean seeking\ref{} 
+The loss function given in Equation~\ref{eqn:spp_overall_loss} makes use of the mode seeking~\cite{Minka2005} 
 \textit{forward} KL Divergence from the observed detection regions to the rendered (predicted) 
 regions. The motivation behind which is to quantify, for each of the left and right networks, how 
 much information is lost for the currently predicted shapes and \( \mathbb{SE}(3) \) poses. To 
@@ -864,6 +888,8 @@ enforce consistency between the left and right networks, the JSD is used, as unl
 it is \textit{symmetric} and \( \bm{Q} \) need not approximate \( \bar{Q} \), any better than 
 \( \bar{\bm{Q}} \) need approximate \( \bm{Q} \).
 
+\subsection{Information Theoretic Loss Gradient}
+~\label{subsec:spp_inf_loss_grad}
 As with the model components outlined in Sections~\ref{subsec:spp_latent_shape_est},~\ref{subsec:spp_pose_estim} 
 and~\ref{subsec:spp_rendering}, the loss of the model also requires differentiability for backpropagation. As such, 
 the gradient \( \frac{\partial \mathcal{L}}{\partial \bm{Q}} \) is as follows in Equation~\ref{eqn:spp_loss_grad}.
@@ -957,7 +983,7 @@ the gradient \( \frac{\partial \mathcal{L}}{\partial \bm{Q}} \) is as follows in
 
 \section{Gradients for Training With Backpropagation}
 ~\label{sec:spp_backprop}
-With the gradients of the model components now derived, the gradient update to the CNN component 
+With the gradients of the model components now derived, the gradient update to the neural network component 
 of the model may be given. As the proposed model is optimised using the Backpropagation algorithm, 
 the gradient update for layer \( n - m \) is computed by applying the chain rule to layer \( n \), 
 successively working backwards to layer \( n - m \). As such, the gradient for the non CNN components 
