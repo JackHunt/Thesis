@@ -10,18 +10,19 @@ Gaussian Processes.
 \section{Introduction}
 ~\label{sec:spp_introduction}
 In the Computer Vision literature, there has been research on the reconstruction of objects
-from observed points in a range image, such as those obtained with an RGBD sensor such 
-as the Microsoft Kinect. As outlined in Chapter~\ref{chap:probobj}, progress has been made 
+from observed points in a range image, such as those obtained with an RGBD sensor (like 
+the Microsoft Kinect). As outlined in Chapter~\ref{chap:probobj}, progress has been made 
 on the techniques used, such that globally consistent models of an object of interest can be 
 easily obtained.
 
 Though the traditional reconstruction paradigm is suitable for tasks such as 3D data 
 collection, it is less applicable in scenarios where full sensor coverage of the object 
-of interest is not possible, as outlined in Section~\ref{sec:intro_aims_structure}. When a full 
-view of an object is not available, only a partial reconstruction may be built. Data driven, 
-learning based approaches that yield reconstructions as predictions from a generative model 
-however do not have such a limitation. However, for application as a direct replacement for 
-manual reconstruction, pose estimation must also be performed.
+of interest is not possible, as outlined in the research problems in Section
+~\ref{sec:intro_aims_structure}. When a full view of an object is not available, only a 
+partial reconstruction may be built. Data driven, learning based approaches that yield 
+reconstructions as predictions from a generative model, however, do not have such a limitation. 
+However, for application as a direct replacement for manual reconstruction, pose estimation 
+must also be performed.
 
 There has been much progress on learning based methods for both pose estimation and 
 shape prediction, as outlined in Section~\ref{sec:lit_review_prediction}. However, much of 
@@ -31,75 +32,70 @@ difference in this work to those outlined in Chapters~\ref{chap:moseg} and~\ref{
 is the use of stereo RGB frames versus RGBD\@.
 
 The reason for the change of input data format is twofold. First, the use of RGBD is prohibitive 
-when considering outdoor environments where lighting conditions may prevent RGBD sensors such as the 
-Microsoft Kinect from producing a meaningful depth map. Second, the intuition that utilising multiple 
+when considering outdoor environments where lighting conditions may prevent RGBD sensors, such as the 
+Microsoft Kinect, from producing a meaningful depth map. Second, the intuition that utilising multiple 
 views of an object (from each sensor in the stereo pair) will make the pose estimation more amenable to 
-learning based methods.
+learning based methods, due to the inherent disparity information from the frame pair.
 
 The second major deviation from the contributions of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
 is the removal of the dependence on temorally consistent input sequences. Rather, in this work 
 the proposed system performs shape and pose prediction from an instantaneous
 stereo pair, requiring no temporal consistency in both the training and prediction 
-phases. As such, there is no iterative solving for shape and pose, rather the process 
+phases. As such, there is no iterative solving for shape and pose per frame, rather, the process 
 is framed as an instantaneous regression task. However, this work makes use of volumetric
 shape representations, as with the other works outlined in Chapters~\ref{chap:moseg} and
 ~\ref{chap:probobj}.
 
-The approach outlined in this chapter makes use of Siamese~\cite{SIAMESE} 
+The approach outlined in this chapter makes use of Siamese~\cite{Bromley1993} 
 CNN's and GPLVM's to jointly regress shape and pose given a stereo pair with an object of interest 
-present in both frames. The training of the model is unsupervised and requires only a detection or 
-segmentation of the object of interest in the input frames to train. The proposed system regresses 
-rotational and translational parameters directly from the neural network, whilst the object shape is 
+present in both frames. The training of the model is unsupervised and requires only a segmentation 
+of the object of interest in the input frames to train. The proposed system regresses rotational and 
+translational parameters directly from the neural network component, whilst the object shape is 
 a draw from a GPLVM\@. The use of a GPLVM for latent space embeddings of 3D shape allows for a simple 
 way to learn complex 3D geometrical features, thus simplifying the learning tasks of the neural network. 
-In the proposed approach, the Neural Network component need only learn a mapping from observation to latent 
-space, rather than from observation to full geometry.
+In the proposed approach, the neural network component need only learn a mapping from observation to latent 
+space, rather than from observation to full geometry for the shape of interest.
 
 The system is trained on an information theoretic loss over a rendering of a predicted 
-shape under it's associated predicted pose, with respect to a given detection bounding box 
-or semantic segmentation. 
+shape under it's associated predicted pose, with respect to a given detection segmentation. As such, the 
+model is trained in a weakly-supervised manner, with neither ground truth shape or pose. Though such an 
+approach presents a greater challenge than in the case of known ground truth, it does widen the applicability 
+of the approach. In many \textit{real world} scenarios it is not possible to obtain such ground truth data 
+without first solving the problem of this work, itself, first.
 
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
 The proposed model takes as input an RGB stereo pair with the object of interest within the 
-view frustrum of both frames. From this stereo pair, a CNN extracts feature descriptors which are 
-used to regress a latent space point for shape, and six \( \mathbb{SE}(3) \) pose parameters, forming 
+view frustrum of both frames. From this stereo pair, a ResNet~\cite{He2015} extracts feature descriptors 
+which are used to regress a latent space point for shape, and six \( \mathbb{SE}(3) \) pose parameters, forming 
 a Lie Algebra. The generated shape for the proposal latent space point is drawn from the distribution of 
 the Gaussian Process (GP) prior conditioned on the latent space point. The form of the pose is the Lie 
-Group mapping of the parameters, as in Sections~\ref{subsub:moseg_static_camera_attitude} 
+Group mapping of the parameters, as given in Sections~\ref{subsub:moseg_static_camera_attitude} 
 and~\ref{subsec:probobj_analytic_alignment_map}. 
 
 The goodness of fit of the regressed shape and pose is quantified by by rendering the generated shape 
 under the predicted pose and computing an information theoretic loss between the image statistics of 
-the rendered region vs the initial detection region. To maintain continuity, the rendering operation is 
+the rendered region vs the initial segmentation region. To maintain continuity, the rendering operation is 
 formulated in a differentiable manner. As there is often no ground truth pose and shape for \textit{real world} 
-data, training is performed in an unsupervised manner against a detection of the object of interest.
+data, training is performed in a weakly-supervised manner against a segmentation of the object of interest.
 
-\subsection{Network Architecture}
+\subsection{Model Architecture}
 ~\label{subsec:spp_network_architecture}
 The model of the proposed approach is of a Siamese topology, where for a given stereo 
-pair each of the left and right frames are passed to a separate network. From end to 
-end, the model contains for each of the Siamese networks a ResNet-50~\cite{He2015}, 
-Linear Layers, Nonlinear Activations, a mapping from Lie Algebra to Lie Group (for pose),
-a GPLVM followed by an Inverse Discrete Cosine Transform (IDCT), a Raycaster and an information 
-theoretic loss. 
+pair, each of the left and right frames are passed to a separate network. From end to 
+end, the model contains for each of the Siamese networks a ResNet-101~\cite{He2015}, 
+Linear Layers, Batch Normalisation Layers, Nonlinear Activations, a mapping from Lie Algebra to 
+Lie Group (for pose), a GPLVM followed by an Inverse Discrete Cosine Transform (IDCT), a Raycaster and 
+an information theoretic loss. 
 
 The purpose of the ResNet-50 components is to extract pertinent features from the stereo 
 pair that are descriptive of the the object of interest in relation to the scene. For each 
-of the networks, the output of the ResNet-50 network is fed into two subnetworks consisting 
+of the networks, the output of the ResNet-101 network is fed into two subnetworks consisting 
 of linear transforms and nonlinear activations. The purpose of these subnetworks is to regress 
 a latent space point for object shape, and a 6DoF pose parameter vector for the object pose. 
 Following these two subnetworks is the aforementioned GPLVM and Lie Algebra mapping. The 
 GPLVM generates a posterior mean over shape for a given latent space point, whilst the 
 Lie Algebra mapping generates an \( \mathbb{SE}(3) \) transform. 
-
-\begin{figure}[!htbp]%TODO: talk about resnet more
-  \centering
-  \includegraphics[width=.6\linewidth]{figures/spp/residual_block_he.png}
-  \caption[ResNet Block]{The central building block of the ResNet architecture.\footnotemark}
-~\label{figure:moseg_truncation}
-\end{figure}
-~\footnotetext{Image copyright: \textit{He et al}~\cite{He2015}.}
 
 The IDCT decompresses the posterior mean output of the GPLVM to generate a valid SDF\@. Both the 
 resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the Raycasting module, which generates 
@@ -118,9 +114,31 @@ which are used to quantify loss. The topology of the proposed model is outlined 
   \end{figure}
 \end{landscape}
 
+\subsection{Neural Network Architecture}
+~\label{subsec:spp_neural_architecture}
+The ResNet architecture, introduced by \textit{He at al}~\cite{He2015}, is designed to overcome the 
+convergence challenges of very ``deep'' neural network models. The central reformulation in the 
+Residual Network model is the notion that layers learn \textit{residual functions} with respect to 
+their inputs. Instead of a layer learning a mapping \( \mathcal{H}(\bm{x}) \) of it's input \( \bm{x} \), 
+it learns a \textit{residual} mapping, as given in Equation~\ref{eqn:resnet}.
+\begin{align}
+~\label{eqn:resnet}
+  \mathcal{F}(\bm{x}) ={}& \mathcal{H}(\bm{x}) - \bm{x}\\
+  \mathcal{F}(\bm{x}) + \bm{x} ={}& \mathcal{H}(\bm{x})
+\end{align}
+
+The formulation of Equation~\ref{eqn:resnet} is depicted in Figure~\ref{figure:resnet_block}.
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/spp/residual_block_he.png}
+  \caption[ResNet Block]{The central building block of the ResNet architecture.\footnotemark}
+~\label{figure:resnet_block}
+\end{figure}
+~\footnotetext{Image copyright: \textit{He et al}~\cite{He2015}.}
+
 % TODO: Reorder this; goes from high level intro to GP's... bit heavy 
-\subsection{Gaussian Process Latent Variable Model}
-~\label{subsec:spp_gplvm}
+\section{Gaussian Process Latent Variable Model}
+~\label{sec:spp_gplvm}
 The use of a GPLVM for the embedding of 3D shape is motivated by the assumption that for a 
 given category of object, cars for example, there is enough shared geometric structure that 
 a comprehensive generative model may be formed. In the linear case, the GPLVM is equivalent 
@@ -144,7 +162,7 @@ A visual example of a GP is given in Figure~\ref{figure:gp_func_dist}.
 ~\label{figure:gp_func_dist}
 \end{figure}
 
-\subsubsection{Gaussian Process Marginal Likelihood}
+\subsection{Gaussian Process Marginal Likelihood}
 ~\label{subsubsec:spp_gp_marginal_likelihood}
 The first step is to define a Latent Variable Model of the form given in Equation~\ref{eqn:spp_gp_lvm}.
 \begin{equation}
@@ -164,13 +182,12 @@ The marginal likelihood of \(\bm{X}\) is of the form outlined in Equation~\ref{e
   \label{eqn:spp_gp_marginal}
   P(\bm{Y} \given \bm{X}, \beta) = \int P(\bm{Y} \given \bm{X}, \bm{W}, \beta) P(\bm{W}) \intd{\bm{W}}
 \end{equation}
-Where in Equation~\ref{eqn:spp_gp_marginal}, \( P(\bm{Y} \given \bm{X}, \bm{W}, \beta) \) is of 
+In Equation~\ref{eqn:spp_gp_marginal}, \( P(\bm{Y} \given \bm{X}, \bm{W}, \beta) \) is of 
 a multivariate Gaussian form and \(P(\bm{W})\) is a multivariate Gaussian conjugate prior of the 
 form \(\mathcal{N}(\bm{W} \given \bm{0}, \bm{I})\).
 
 To find the marginal distribution outlined in Equation~\ref{eqn:spp_gp_marginal}, it's form may 
 first be simplified as follows in Equation~\ref{eqn:spp_gp_marginal_simplify}.
-
 \begin{align}
   \label{eqn:spp_gp_marginal_simplify}
   % Line 1.
@@ -340,7 +357,7 @@ As such, the form of the normalized marginal likelihood \(P(\bm{Y} \given \bm{X}
   \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})
 \end{equation}
 
-\subsubsection{Gaussian Process Fitting}
+\subsection{Gaussian Process Fitting}
 ~\label{subsubsec:spp_gp_fitting}
 As outlined in Section~\ref{subsec:spp_gplvm}, the given formulation of the marginal likelihood 
 in Equation~\ref{eqn:spp_gp_marginal_simp} can be optimised directly for the latent embedding 
@@ -418,10 +435,9 @@ given in Equation~\ref{eqn:spp_gp_log_marginal_grad_kernel}.
 
 It should be noted that the gradient \( \frac{\partial \bm{\kappa}}{\partial \bm{X}} \)
 may also be substituted for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), for 
-some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \).
-
-A common nonlinear covariance kernel function in the GP literature is the Exponentiated 
-Quadratic~\cite{Lawrence2005}, which takes the form given in Equation~\ref{eqn:spp_exp_quad}.
+some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \). A common nonlinear covariance 
+kernel function in the GP literature is the Exponentiated Quadratic~\cite{Lawrence2005}, which takes 
+the form given in Equation~\ref{eqn:spp_exp_quad}.
 \begin{align}
   \label{eqn:spp_exp_quad}
   % Line 1.
@@ -486,8 +502,8 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
   \sum_{n = 0}^{D} {\big( \bm{x}_{i, n} - \bm{x}_{j, n} \big)}^{2}}
 \end{align}
 
-\subsection{Latent Space Shape Estimation}
-~\label{subsec:spp_latent_shape_est}
+\section{Latent Space Shape Estimation}
+~\label{sec:spp_latent_shape_est}
 The form of the model outlined in Section~\ref{subsubsec:spp_gp_marginal_likelihood}
 when trained as outlined in Section~\ref{subsubsec:spp_gp_fitting} defines a GP prior 
 over the latent space embedding \( \bm{X} \). When regressing shape, it is desirable to 
@@ -501,8 +517,8 @@ Finally, the true, uncompressed form of \( \bm{\Phi} \) is obtained by taking th
 The granularity of the geometric properties captured by the GP shape prior is governed by the number of DCT 
 harmonics used in the compression and decompression processes at training and prediction.
 
-\subsubsection{Shape Posterior Mean Estimation}
-~\label{subsubsec:spp_pos_mean_est}
+\subsection{Shape Posterior Mean Estimation}
+~\label{subsec:spp_pos_mean_est}
 With the optimised latent variables \( \bm{X} \), the formulation outlined in 
 Equation~\ref{eqn:spp_gp_marginal_simp} defines a GP prior 
 over functions of \( \bm{X} \), as follows.
@@ -593,8 +609,8 @@ is derived as follows in Equation~\ref{eqn:spp_pos_mean_grad}.
   \bm{\Sigma}_{\bm{XX}}^{-1} \bm{Y}
 \end{align}
 
-\subsubsection{Signed Distance Function Extraction}
-~\label{subsubsec:sdf_extraction}
+\subsection{Signed Distance Function Extraction}
+~\label{subsec:sdf_extraction}
 As outlined in Section~\ref{subsec:spp_latent_shape_est}, the SDF volume \( \bm{\Phi} \) 
 is generated by taking the IDCT of the posterior mean of the GP prior conditioned on 
 a given latent space point, as given by Equation~\ref{eqn:spp_gp_conditional}. In the 
@@ -748,8 +764,8 @@ to compute as the derivative of the IDCT is simply the IDCT of the derivative.
 Furthermore, the gradient of the posterior mean is trivial to compute, as shown 
 in Equation~\ref{eqn:spp_pos_mean_grad}.
 
-\subsection{Pose Estimation}
-~\label{subsec:spp_pose_estim}
+\section{Pose Estimation}
+~\label{sec:spp_pose_estim}
 The parameters of the \( \mathbb{SE}(3) \) pose applied to the predicted shape are obtained 
 from a fully connected component of the model outlined in Figure~\ref{figure:spp_pipeline}, as with the 
 latent pose point of Section~\ref{subsubsec:sdf_extraction}. The form of the \( \mathbb{SE}(3) \) pose is 
@@ -760,8 +776,8 @@ the pose network component of the model on the interval \( [0, 2\pi) \). The tra
 however do not have their output restricted. It should be noted that the pose Jacobians are of the 
 same form of those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_jac}.
 
-\subsection{Rendering}
-~\label{subsec:spp_rendering}
+\section{Rendering}
+~\label{sec:spp_rendering}
 The dynamic SLAM and object reconstruction works of Chapters~\ref{chap:moseg} and~\ref{chap:probobj}, 
 both rely on Raycasting to obtain a rendering of a surface embedded within an implicit volume, under 
 some estimated pose. The approach taken in this chapter is very similar. 
@@ -794,8 +810,8 @@ In Equation~\ref{eqn:spp_diff_raycast}, \( \mathcal{V} \) is the set of voxels i
 intersect the ray from the given pixel in the image frame. The gradient of the \( \ln P(v) \) term in 
 Equation~\ref{eqn:spp_diff_raycast} if the form given in Equation~\ref{eqn:probobj_log_post_rot_grad}.
 
-\subsection{Information Theoretic Loss}
-~\label{subsec:spp_loss}
+\section{Information Theoretic Loss}
+~\label{sec:spp_loss}
 As outlined in Section~\ref{sec:spp_algorithm}, the proposed model is trained in a semi-supervised 
 manner on an information theoretic loss. For each of the left and right networks, the loss is 
 quantified by the Kullback-Leibler (KL) Divergence between the appearances of the initial detection region 
@@ -938,8 +954,8 @@ the gradient \( \frac{\partial \mathcal{L}}{\partial \bm{Q}} \) is as follows in
   \end{aligned}
 \end{align}
 
-\subsection{Gradients for Backpropagation}
-~\label{subsec:spp_backprop}
+\section{Gradients for Training With Backpropagation}
+~\label{sec:spp_backprop}
 With the gradients of the model components now derived, the gradient update to the CNN component 
 of the model may be given. As the proposed model is optimised using the Backpropagation algorithm, 
 the gradient update for layer \( n - m \) is computed by applying the chain rule to layer \( n \), 
