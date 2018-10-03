@@ -705,7 +705,8 @@ manner.
   \frac{\partial \Phi}{\partial \Lambda}
   \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} - \bm{p}^{T} +
   \frac{1}{1 + e^{\Phi}} \frac{\partial \Phi}{\partial \Lambda}
-  \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} \Bigg]
+  \frac{\partial \Lambda}{\partial \bm{R}_{\tau}} 
+  \Bigg]
 \end{align}
 
 \subsection{Implicit Surface Deformation}
@@ -1045,7 +1046,7 @@ a Quantitative evaluation of Reconstruction quality is given.
       (a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
       from\\ RGBD observations on the Museum Rock sequence.\\ 
       (b) The proposed system (of this work) reconstructing 
-      the same object from RGBD\\ observations of the Museum Rock sequence.
+      the same object\\ from RGBD observations of the Museum Rock sequence.
     \end{tabular}
   }
 ~\label{figure:probobj_rock_s3d}
@@ -1070,7 +1071,7 @@ the object of interest, contrary to the approach outlined in this chapter.
     \begin{tabular}[t]{@{}l@{}}
       (a) The system of \textit{Ren et al}~\cite{Ren2013} evolving a shape prior SDF 
       from RGBD\\ observations on the Museum Dinosaur Head sequence.\\ 
-      (b) The proposed system (of this work) reconstructing same the object from RGBD\\ observations of the 
+      (b) The proposed system (of this work) reconstructing same the object\\ from RGBD observations of the 
       Museum Dinosaur Head sequence.
     \end{tabular}
   }
@@ -1096,7 +1097,7 @@ processing step. As such, the results extracted from the KinectFusion pipeline a
 ground truth reconstructions of the object of interest. This is due to the more robust 
 pose estimation that would be expected from utilising all available geometric data 
 for tracking, versus utilising only that of a single, potentially small object. The reconstructions 
-of each approach are given in Figure~\ref{figure:probobj_comp_itm}.
+of each approach are given in Figures~\ref{figure:probobj_comp_itm} and~\ref{figure:probobj_comp_itm2}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
@@ -1128,11 +1129,11 @@ of each approach are given in Figure~\ref{figure:probobj_comp_itm}.
 ~\label{figure:probobj_comp_itm}
 \end{figure}
 
-As can be seen in Figure~\ref{figure:probobj_comp_itm} the proposed system is 
-capable of providing reconstructions of a wide variety of objects in an 
+As can be seen in Figures~\ref{figure:probobj_comp_itm} and~\ref{figure:probobj_comp_itm2}, 
+the proposed system is capable of providing reconstructions of a wide variety of objects in an 
 aesthetically similar manner to a well established baseline. The proposed 
 system provides globally consistent, closed reconstructions as is evident from 
-the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
+the top-down views presented in Figures~\ref{figure:probobj_comp_itm} and~\ref{figure:probobj_comp_itm2}.
 \begin{figure}[!htbp]
 	\centering
 	\begin{tabular}{cc}
@@ -1153,7 +1154,7 @@ the top-down views presented in Figure~\ref{figure:probobj_comp_itm}.
       (d) Rock sequences.
     \end{tabular}
   }
-~\label{figure:probobj_comp_itm}
+~\label{figure:probobj_comp_itm2}
 \end{figure}
 
 The efficacy of the approach described in this work is further demonstrated when comparing

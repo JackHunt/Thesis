@@ -334,10 +334,10 @@ corresponding to \(P(\bm{Y} \given \bm{X}, \beta)\) is as follows in Equation~\r
 To obtain the covariance matrix of the distribution \(P(\bm{Y} \given \bm{X}, \beta)\), the 
 form of it's inverse may be simplified by the use of the Matrix Inversion Lemma (also known 
 as the Woodbury Identity)~\cite{GPML}. First making a change of variables in the Woodbury Identity 
-as in Equation~\ref{eqn:spp_sig_inv_simp}.
+as in Equation~\ref{eqn:spp_sig_inv_w}.
 \begin{align}
   % Variable change.
-  \label{eqn:spp_sig_inv_simp}
+  \label{eqn:spp_sig_inv_w}
     \bm{A} ={}& \beta^{-1}\bm{I}\\
     \bm{C} ={}& \bm{I}\\
     \bm{U} ={}& \bm{X}^{T}\\
@@ -732,7 +732,7 @@ of harmonics used, \( N \), is given in Figure~\ref{figure:spp_sdf_diff_harmonic
   \caption[SDF's generated with differing DCT harmonics.]
   {
     \begin{tabular}[t]{@{}l@{}}
-      The effect of varying the number of DCT harmonics on the resultant 3D shape is shown for:\\
+      The effect of varying the number of DCT harmonics on the resultant\\ 3D shape is shown for:\\
       (a, b) One DCT harmonic.\\
       (c, d) Three DCT harmonics.\\
       (e, f) All DCT harmonics.\\
