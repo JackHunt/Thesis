@@ -429,7 +429,6 @@ reconstruction of objects from an RGBD image source, as is the case with the app
 ~\ref{chap:moseg}.
 
 %% Object Shape Prediction.
-% TODO: Fill this section out a bit.
 \section{Shape and Pose Prediction}
 ~\label{sec:lit_review_prediction}
 Section~\ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
@@ -475,6 +474,11 @@ Also proposed in 2015 by \textit{Rock et al}~\cite{Rock2015} is an approach to t
 database of a priori known objects by the use of an RF~\cite{Ho1995}. The matched shapes are 
 coarsely matched to the input depth map, then later deformed at a higher granularity by a separate 
 optimisation process.
+
+\textit{Kendall et al}~\cite{Kendall2015}, again in 2015, proposed a CNN approach to the regression of 
+6DoF camera pose from RGB input. The authors base their CNN architecture on that of \textit{Szegedy et al}
+~\cite{Szegedy2014}, with a depth of 23 layers. The authors report high levels of accuracy on indoor scenes, 
+attributing this to the use of Transfer Learning~\cite{Pan2010} applied to classification models.
 
 In 2017, \textit{Zhou et al}~\cite{Zhou2017} introduced an approach to object detection from 3D point 
 clouds. Central to the proposed approach is an end-to-end trainable convolutional Region Proposal 
