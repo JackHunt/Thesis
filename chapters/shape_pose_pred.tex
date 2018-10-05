@@ -61,7 +61,7 @@ shape under it's associated predicted pose, with respect to a given detection se
 model is trained in a weakly-supervised manner, with neither ground truth shape or pose. Though such an 
 approach presents a greater challenge than in the case of known ground truth, it does widen the applicability 
 of the approach. In many \textit{real world} scenarios it is not possible to obtain such ground truth data 
-without first solving the problem of this work, itself, first.
+without first solving the problem of this work.
 
 As outlined previously, the proposed approach differs from that of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
 in that it is data driven. Rather than instantaneous algorithmic procedures being performed at each frame, the 
@@ -80,7 +80,7 @@ object segmentation, from the GPLVM\@. Sections~\ref{sec:spp_pose_estim} and~\re
 representation of pose and shape rendering method used. Though, these are akin to those of Sections
 ~\ref{subsub:moseg_static_camera_attitude} and~\ref{subsec:moseg_static_rendering}, respectively, the rendering stage is 
 modified to introduce the property of differentiability. Sections~\ref{sec:spp_loss} and~\ref{sec:spp_backprop} 
-outline the loss function of the model and it's gradient for Backpropagation, respectively. Sections~\ref{sec:spp_qualitative} 
+outline the loss function of the model and it's gradient for backpropagation, respectively. Sections~\ref{sec:spp_qualitative} 
 and~\ref{sec:spp_quantitative} provide qualitative and quantitative results on the aforementioned dataset, respectively. 
 Finally, Section~\ref{sec:spp_discussion} provides a summary of the approach taken in this work and the preliminary results 
 of it's use.
@@ -90,14 +90,14 @@ of it's use.
 The proposed model takes as input an RGB stereo pair with the object of interest within the 
 view frustrum of both frames. From this stereo pair, a ResNet~\cite{He2015} extracts feature descriptors 
 which are used to regress a latent space point for shape, and six \( \mathbb{SE}(3) \) pose parameters, forming 
-a Lie Algebra. The generated shape for the proposal latent space point is drawn from the distribution of 
+a Lie Algebra. The generated shape for the proposed latent space point is drawn from the distribution of 
 the Gaussian Process (GP) prior conditioned on the latent space point. The form of the pose is the Lie 
 Group mapping of the parameters, as given in Sections~\ref{subsub:moseg_static_camera_attitude} 
 and~\ref{subsec:probobj_analytic_alignment_map}. 
 
 The goodness of fit of the regressed shape and pose is quantified by by rendering the generated shape 
 under the predicted pose and computing an information theoretic loss between the image statistics of 
-the rendered region vs the initial segmentation region. To maintain continuity, the rendering operation is 
+the rendered region versus the initial segmentation region. To maintain continuity, the rendering operation is 
 formulated in a differentiable manner. As there is often no ground truth pose and shape for \textit{real world} 
 data, training is performed in a weakly-supervised manner against a segmentation of the object of interest.
 
@@ -105,7 +105,7 @@ data, training is performed in a weakly-supervised manner against a segmentation
 ~\label{subsec:spp_network_architecture}
 The model of the proposed approach is of a Siamese topology, where for a given stereo 
 pair, each of the left and right frames are passed to a separate network. From end to 
-end, the model contains for each of the Siamese networks a ResNet-101~\cite{He2015}, 
+end, the model contains for each of the Siamese networks, a ResNet-101~\cite{He2015}, 
 Linear Layers, Batch Normalisation Layers, Nonlinear Activations, a mapping from Lie Algebra to 
 Lie Group (for pose), a GPLVM followed by an Inverse Discrete Cosine Transform (IDCT), a Raycaster and 
 an information theoretic loss. 
@@ -120,7 +120,7 @@ GPLVM generates a posterior mean over shape for a given latent space point, whil
 Lie Algebra mapping generates an \( \mathbb{SE}(3) \) transform. 
 
 The IDCT decompresses the posterior mean output of the GPLVM to generate a valid SDF\@. Both the 
-resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the Raycasting module, which generates 
+resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the raycasting module, which generates 
 a rendering for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
 to the loss layer which computes appearance statistics for the detection region and the rendering 
 which are used to quantify loss. The topology of the proposed model is outlined in Figure
@@ -140,7 +140,7 @@ which are used to quantify loss. The topology of the proposed model is outlined 
 ~\label{subsec:spp_neural_architecture}
 The ResNet architecture, introduced by \textit{He at al}~\cite{He2015}, is designed to overcome the 
 convergence challenges of very ``deep'' neural network models. The central reformulation in the 
-Residual Network model is the notion that layers learn \textit{residual functions} with respect to 
+Residual Network (ResNet) model is the notion that layers learn \textit{residual functions} with respect to 
 their inputs. Instead of a layer learning a mapping \( \mathcal{H}(\bm{x}) \) of it's input \( \bm{x} \), 
 it learns a \textit{residual} mapping, as given in Equation~\ref{eqn:resnet}.
 \begin{align}
@@ -168,11 +168,11 @@ to a probabilistic formulation of Principal Component Analysis (PCA), where a li
 from observed to hidden, latent space is derived. 
 
 Under a Bayesian formulation, the often intractable latent variables pertaining to the linear 
-mapping may be marginalised such that the latent embedding itself may be optimised directly. The 
-given framework allows for complex, nonlinear embeddings to be learnt via the use kernel functions, 
+mapping may be marginalised, such that the latent embedding itself may be optimised directly. The 
+given framework allows for complex, nonlinear embeddings to be learnt via the use of kernel functions, 
 though the optimisation in this case is often non-convex and highly nonlinear.
 
-A Gaussian Process may be viewed as a prior distribution over continuous functions. The posterior 
+A GP may be viewed as a prior distribution over continuous functions. The posterior 
 may be obtained by conditioning on observed data, to obtain a function estimate for each data point.
 A visual example of a GP is given in Figure~\ref{figure:gp_func_dist}.
 \begin{figure}[!htbp]
@@ -186,7 +186,7 @@ A visual example of a GP is given in Figure~\ref{figure:gp_func_dist}.
 
 \subsection{Gaussian Process Marginal Likelihood}
 ~\label{subsec:spp_gp_marginal_likelihood}
-The first step is to define a Latent Variable Model of the form given in Equation~\ref{eqn:spp_gp_lvm}.
+The first step is to define a latent variable model of the form given in Equation~\ref{eqn:spp_gp_lvm}.
 \begin{equation}
   \label{eqn:spp_gp_lvm}
   P(\bm{Y} \given \bm{X}, \bm{W}, \beta) = P(\bm{Y} \given \bm{WX}^{T}, \beta^{-1}\bm{I})
@@ -387,7 +387,7 @@ in Equation~\ref{eqn:spp_gp_marginal_simp} can be optimised directly for the lat
 space (for \( P < D \)), the latent embedding \( \bm{X} \) may be initialized by applying an 
 orthogonal linear transform to the observed data and reducing dimensionality. One such approach 
 is to apply PCA to the observed data, taking the first \(P\) reverse sorted Eigenvalues of the 
-covariance matrix. Additionally, in the nonlinear case, where the covariance matrix \( \bm{\Sigma} \) 
+covariance matrix. Additionally, in the non-linear case, where the covariance matrix \( \bm{\Sigma} \) 
 is generated by a given kernel function \( \bm{\kappa} \), the hyperparameters of \( \bm{\kappa} \) may 
 also be optimised.
 
@@ -457,7 +457,7 @@ given in Equation~\ref{eqn:spp_gp_log_marginal_grad_kernel}.
 
 It should be noted that the gradient \( \frac{\partial \bm{\kappa}}{\partial \bm{X}} \)
 may also be substituted for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), for 
-some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \). A common nonlinear covariance 
+some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \). A common non-linear covariance 
 kernel function in the GP literature is the Exponentiated Quadratic~\cite{Lawrence2005}, which takes 
 the form given in Equation~\ref{eqn:spp_exp_quad}.
 \begin{align}
@@ -784,9 +784,10 @@ For notational clarity, the DCT coefficients are defined as follows in Equation
   \cos \Big[ \frac{\pi \big( y^{2} + \frac{y}{2} \big)}{N} \Big]
   \cos \Big[ \frac{\pi \big( z^{2} + \frac{z}{2} \big)}{N} \Big]
 \end{align}
+
 From Equation~\ref{eqn:spp_idct_grad} it is evident that the partial derivative 
 \( \frac{\partial \bm{\Phi}}{\partial \bm{f}_{x, y, z}^{\star}} \) is trivial 
-to compute as the derivative of the IDCT is simply the IDCT of the derivative. 
+to compute, as the derivative of the IDCT is simply the IDCT of the derivative. 
 Furthermore, the gradient of the posterior mean is trivial to compute, as shown 
 in Equation~\ref{eqn:spp_pos_mean_grad}.
 
@@ -805,7 +806,7 @@ same form as those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_ja
 \section{Rendering}
 ~\label{sec:spp_rendering}
 The dynamic SLAM and object reconstruction works of Chapters~\ref{chap:moseg} and~\ref{chap:probobj}, 
-both rely on Raycasting to obtain a rendering of a surface embedded within an implicit volume, under 
+both rely on raycasting to obtain a rendering of a surface embedded within an implicit volume, under 
 some estimated pose. The approach taken in this chapter is very similar. 
 
 Raycasting is first and foremost used in the model outlined in Section~\ref{sec:spp_algorithm} for 
@@ -816,15 +817,15 @@ does not assume temporal consistency, the requirements for optimisation differ.
 
 As the model outlined in Section~\ref{sec:spp_algorithm} relies on the backpropagation of gradients for it's 
 training, the rendering module must be differentiable for the backward pass. As such, this section outlines a 
-simple formulation of differentiable Raycasting, inspired by the work of \textit{Prisacariu et al}
+simple formulation of differentiable raycasting, inspired by the work of \textit{Prisacariu et al}
 ~\cite{Prisacariu2011}. In addition to generating a shaded rendering, the proposed approach generates a 
-probabilistic map. For a review of the general Raycasting algorithm, refer to 
+probabilistic map. For a review of the general raycasting algorithm, refer to 
 Section~\ref{subsec:moseg_static_rendering}.
 
 By accumulating log probabilities of voxels visited on traversal of the ray, a differentiable representation 
 of the process can be obtained. However, this relies on the use of a differentiable PMF\@. As with the approach 
 to object reconstruction outlined in Chapter~\ref{chap:probobj}, the desired behaviour is that the distribution 
-shall encode the probability of a voxel being very close to the isosurface. As such, the Log-Sigmoid of Equation
+shall encode the probability of a voxel being very close to the isosurface. As such, the log-sigmoid of Equation
 ~\ref{eqn:probobj_surface_prior_cdf} is used. Thus, for a pixel location \( [x, y] \), the output probabistic 
 value is as follows in Equation~\ref{eqn:spp_diff_raycast}.
 \begin{equation}
@@ -984,7 +985,7 @@ the gradient \( \frac{\partial \mathcal{L}}{\partial \bm{Q}} \) is as follows in
 \section{Gradients for Training With Backpropagation}
 ~\label{sec:spp_backprop}
 With the gradients of the model components now derived, the gradient update to the neural network component 
-of the model may be given. As the proposed model is optimised using the Backpropagation algorithm, 
+of the model may be given. As the proposed model is optimised using the backpropagation algorithm, 
 the gradient update for layer \( n - m \) is computed by applying the chain rule to layer \( n \), 
 successively working backwards to layer \( n - m \). As such, the gradient for the non CNN components 
 with respect to the CNN output for pose \( \mathcal{O}_{p} \), is given as follows in Equation
@@ -1038,7 +1039,7 @@ it is demonstrated that the model outlined in this chapter is regressing pose an
 that is tending towards ground truth.
 \begin{figure}[!htbp]
   \centering
-  \begin{tabular}{@{}l@{}}
+  \begin{tabular}{@{}c@{}}
   \includegraphics[width=.8\linewidth]{figures/spp/qual/pred.jpg}\\
   (a)\\
   \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_1.jpg}\\
@@ -1061,7 +1062,7 @@ at other points in the dataset, it is evident that the predictions yielded by th
 an example of which is given in Figure~\ref{figure:spp_qual2}.
 \begin{figure}[!htbp]
   \centering
-  \begin{tabular}{@{}l@{}}
+  \begin{tabular}{@{}c@{}}
   \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_3.jpg}\\
   (a)\\
   \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_5.jpg}\\
@@ -1104,7 +1105,7 @@ for transfer learning. However, the Receiver Operating Characteristic (ROC) metr
 of false positive predictions, as can be seen in Figure~\ref{figure:spp_roc}.
 \begin{figure}[!htbp]
   \centering
-  \begin{tabular}{@{}l@{}}
+  \begin{tabular}{@{}c@{}}
   \includegraphics[width=.6\linewidth]{figures/spp/quant/left_roc.eps}\\
   (a)\\
   \includegraphics[width=.6\linewidth]{figures/spp/quant/right_roc.eps}\\
@@ -1113,7 +1114,7 @@ of false positive predictions, as can be seen in Figure~\ref{figure:spp_roc}.
   \caption[Shape and Pose Prediction Quantitative II]
   {
     \begin{tabular}[t]{@{}l@{}}
-    Receiver Operating Characteristic metric for the predicted region (class 1) and background(class 0).\\
+    Receiver Operating Characteristic metric for the predicted region (class 1)\\ and background(class 0).\\
     (a) Left section of the model.\\
     (b) Right section of the model.
     \end{tabular}

@@ -135,7 +135,7 @@ potential directions of subsequent research that follow on directly from the app
 this work. Firstly, at present the system presented in this work currently maintains two full 
 TSDF volumes; there is a volume for the static scene representation and a volume for the dynamic 
 scene representation. An improvement that could be introduced in a later iteration of this work 
-is the use of a sparse representation of the dynamic scene volume which would improve the space 
+is the use of a sparse representation of the dynamic scene volume, which would improve the space 
 complexity of the system. 
 
 A second potential improvement to the work of Chapter~\ref{chap:moseg} is the expansion of the 
@@ -150,7 +150,6 @@ to obtain geometrically consistent reconstructions of 3D objects. Though the pro
 demonstrates an improvement over comparative methods, it still requires the end user to indicate 
 which object is to be reconstructed. An alternative approach would be to leverage some of the 
 advancements in salient object detection~\cite{Borji2014} to allow for automation of the process.
-% TODO: salient region ref
 
 The probabilistic framework on which the system is based could additionally be extended in a later 
 iteration of the work to estimate the geometry of any missing sections of the surface of the object 
@@ -162,13 +161,20 @@ the multiple object case. The ability to track and reconstruct multiple objects 
 combined with the potential salient object detection would greatly enhance the efficiency of 3D data 
 collection.
 
+Finally, much future research may be carried out on the method of simultaneous shape and pose prediction 
+outlined in Chapter~\ref{chap:spp}. Predominantly, this research would be focused around the neural network 
+architecture, and it's representational suitability for the task. Additionally, further investigation into 
+the suitability of ``minor'' model components (such as activation functions) would also be desirable. Finally, 
+it would be relevant to formulate a way of handling the case where a predicted pose does not induce an intersection 
+with the shape surface during the raycasting procedure.
+
 \section{Closing Remarks}
 ~\label{sec:discussion_conclusions}
 This work has introduced novel approaches to a range of nontrivial research problems in 3D computer 
 vision. The contributions of this work span the extension of the traditional dense SLAM pipeline to 
 the dynamic case, the consistent reconstruction of arbitrary objects and the prediction of real world 
-objects for which only a single view pair is available. The remit of this work has direct relevance to 
+objects, for which only a single view pair is available. The remit of this work has direct relevance to 
 the increasingly automated world of machine perception and intelligence.
 
-It is the authors hope that this relevance is useful to practitioners in the field in their endeavours 
+It is my hope that this relevance is useful to practitioners in the field in their endeavours 
 to continue the rapid technological advancement of our society.
