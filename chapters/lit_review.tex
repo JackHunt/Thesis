@@ -121,7 +121,7 @@ used for scene representation is a Voxel Octree~\cite{Laine2010}, containing bot
 probability distributions over appearance and shape. Pose estimation is achieved by optimising for 
 a unit quaternion~\cite{Mukundan2002} and translation vector within a maximum likelihood framework, 
 in which the energy function to be maximised is the likelihood of the RGBD observations given the 
-accumulated Probability Distributions stored in the Octree. The presented pipeline also incorporates 
+accumulated probability distributions stored in the Octree. The presented pipeline also incorporates 
 a randomised, graph and keyframe based loop closure component.
 
 Following the approach of \textit{Thomas et al}~\cite{Thomas2013}, \textit{Salas-Moreno et al} 
@@ -156,7 +156,7 @@ The proposed pipeline provides loop closure capabilities by utilising pose graph
 ~\cite{Grisetti2010}.
 
 \textit{Zhou et al}~\cite{Zhou2015} also, in 2015, proposed another variant of the 
-\textit{KinectFusion}~\cite{Newcombe2011} pipeline proposed by \textit{Newcombe et al}. 
+\textit{KinectFusion}~\cite{Newcombe2011} pipeline proposed by \textit{Newcombe et al}.
 The authors present improvements to the pose estimation phase of the pipeline, utilising 
 contour cues to aid association and enforcing correspondence constraints on the estimated 
 pose, with respect to scene geometry. Central to the presented approach is the depth image 
@@ -197,9 +197,9 @@ survey of research that amalgamates the two fields of semantic scene understandi
 %Girshick et.al~\cite{Girshick2014} - feature hierarchies.
 \textit{Civera et al}~\cite{Civera2011} in 2011 introduced an approach to semantic SLAM 
 that utilises image based features to attach semantic meaning to 3D observations. The SLAM 
-system itself is based on Monocular Extended Kalman Filter SLAM~\cite{Smith1990} with 
-semantics added to points via correspondences between Speeded Up Robust Features~\cite{Bay2006} 
-image features extracted from the observed RGB frames and precomputed object descriptors. Consistency 
+system itself is based on Monocular Extended Kalman Filter SLAM~\cite{Smith1990}, with 
+semantics added to points via correspondences between Speeded Up Robust Features~\cite{Bay2006}, 
+extracted from the observed RGB frames and precomputed object descriptors. Consistency 
 is then enforced by a geometric compatibility measure.
 
 \textit{St{\"u}ckler et al}~\cite{Stuckler2012} in 2012 presented a semantic dense SLAM 
@@ -226,7 +226,7 @@ implementation of the pipeline proposed by \textit{Valentin et al}~\cite{Valenti
 utilising the implementation of the \textit{KinectFusion}~\cite{Newcombe2011} pipeline 
 provided by \textit{Prisacariu et al}~\cite{Prisacariu2014}. The framework proposed by 
 the authors extends that of \textit{Valentin et al}~\cite{Valentin2015} greatly, for 
-example by supporting the use of motion capture systems and virtual reality headsets. 
+example by supporting the use of motion capture systems and VR headsets. 
 In addition, the implementation provided is optimised to allow for real time use.
 
 \textit{Handa et al}~\cite{Handa2015}, again in 2015 introduced an alternative, 
@@ -238,7 +238,7 @@ the authors make use of stacked Deep Autoencoders~\cite{Liou2008}, trained on sy
 images a priori. As such, the proposed system makes use only of depth cues and may not be 
 adapted to new object classes on an ad-hoc basis.
 
-\textit{Cavallari et al}~\cite{Cavallari2016} in the following year presented another 
+\textit{Cavallari et al}~\cite{Cavallari2016}, in the following year, presented another 
 semantic dense SLAM pipeline built on top of the dense SLAM system presented by 
 \textit{Nei{\ss}ner et al}~\cite{NieBner2013}. Much like the work of \textit{Handa et al} 
 ~\cite{Handa2015}, the proposed approach depends on a model pretrained on a set of object 
@@ -246,7 +246,7 @@ classes. Unlike \textit{Handa et al}~\cite{Handa2015}, the authors make use of a
 Fully Connected Network~\cite{Long2015}, taking the Probability Mass Function (PMF) 
 output to determine the class to be assigned to an isosurface region.
 
-Later work by \textit{McCormack et al}~\cite{McCormac2017} in 2017 further integrates CNN based 
+Later work by \textit{McCormack et al}~\cite{McCormac2017} in 2017, further integrates CNN based 
 semantic information with dense SLAM.\@ The authors make use of CNN generated semantic probability 
 maps over a set of object classes when densely reconstructing a scene, using the approach of 
 \textit{Whelan et al}~\cite{Whelan2016}. The instantaneous, pixel-wise distributions over class labels 
@@ -366,26 +366,26 @@ errors in pose estimation are troublesome for the smaller scale (relative to sce
 object centric SLAM\@. The combination of inherently less geometric information and potentially 
 rapid, repetitive motion exacerbates the difficulties faced in scene-scale SLAM\@.
 
-This Section provides a review of pertinent literature on the task of reconstructing consistent 
+This section provides a review of pertinent literature on the task of reconstructing consistent 
 models of objects, rather than full scale scenes. The problem of interest in this section, though 
 related to SLAM, incurs additional complications with regards to pose estimation.
 
 \textit{Curless \& Levoy}~\cite{Curless1996} as introduced in Section~\ref{sec:lit_review_tam} 
 presented a method of statically reconstructing shapes from range images taken from different 
-viewpoints. However, the presented approach predates many of the advancements that have allowed 
+viewpoints. However, the presented approach predates many of the advances that have allowed 
 for simultaneous tracking and mapping.
 
-\textit{Kolev et al}~\cite{Kolev2006} in 2006 presented a probabilistic approach to 3D shape 
+\textit{Kolev et al}~\cite{Kolev2006}, in 2006, presented a probabilistic approach to 3D shape 
 segmentation and recovery. Rather than the direct reconstruction approach taken by 
 \textit{Curless \& Levoy}~\cite{Curless1996}, the authors take the approach of inferring the most 
 probable shape with respect to the observed image sequences. The shape to be inferred is encoded as a 
-zero level set, extracted from a level set representation (such as an SDF). The Level Set of the shape is 
+zero level set, extracted from a level set representation (such as an SDF). The level set of the shape is 
 evolved over time within a variational framework, with respect to a volume of segmentation 
-probabilities (foreground vs background). However, the proposed approach does not have an additional pose 
+probabilities (foreground versus background). However, the proposed approach does not have an additional pose 
 estimation phase and has only been evaluated on synthetic data of very polarised appearance.
 
-\textit{Weise et al}~\cite{Weise2009} in 2009 proposed an approach to the in hand scanning of 3D objects. 
-The authors utilise an explicit Point Cloud representation of shape, rendered as Surfels~\cite{Pfister2000}. 
+\textit{Weise et al}~\cite{Weise2009}, in 2009, proposed an approach to the in hand scanning of 3D objects. 
+The authors utilise an explicit point cloud representation of shape, rendered as Surfels~\cite{Pfister2000}. 
 Objects are rotated in front of a sensor with poses recovered by the use of an ICP like algorithm. During 
 pose estimation, a topology graph is built which is used to offset drift in estimated poses in an 
 as-rigid-as-possible~\cite{Igarashi2005} manner. However, the specification of object rotation in front of 
@@ -412,9 +412,9 @@ suitable for real time use.
 In the following year, \textit{Gupta et al}~\cite{Gupta2016} proposed a system for the reconstruction and 
 segmentation of 3D objects from data obtained with an RGBD sensor. The reconstructed object is represented 
 implicitly within an SDF volume, but notably observations are integrated using the Softmax~\cite{Murphy2012ML} 
-function rather than weighted means as with \textit{KinectFusion}~\cite{Newcombe2011}. Each Voxel in the 
+function rather than weighted means as with \textit{KinectFusion}~\cite{Newcombe2011}. Each voxel in the 
 volume is assigned a label pertaining to it's membership of the object set, with objects refined utilising 
-Graph Cuts and Alpha Expansions~\cite{CLRS}. The proposed approach utilises a photometric loss to optimise 
+Graph Cuts~\cite{CLRS} and Alpha Expansions~\cite{CLRS}. The proposed approach utilises a photometric loss to optimise 
 for object pose, with keyframe based loop closure detection. However, the authors report difficulties in 
 building sufficiently granular reconstructions. In addition, the authors report drift in pose estimation 
 to be problematic.
@@ -434,9 +434,9 @@ reconstruction of objects from an RGBD image source, as is the case with the app
 Section~\ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
 which demonstrates thet although much progress has been made since the early work of \textit{Curless \& 
 Levoy}~\cite{Curless1996}, many open research problems remain. This section provides a survey of research 
-into an alternative, inference driven approach to obtaining three dimensional models of observed 
+into an alternative, inference driven approach to obtaining 3D models of observed 
 objects, whereby rather than direct optimisation and integration being used for pose estimation and 
-model building, the process is posed as a Probabilistic Inference procedure.
+model building, the process is posed as a probabilistic inference procedure.
 
 \textit{Prisacariu et al}~\cite{Prisacariu2011} in 2011 introduced an approach to shape prediction, 
 segmentation and pose estimation. Shape is predicted from a hierarchy of generative Gaussian Process 
@@ -447,7 +447,7 @@ energy function optimised with respect to the shape latent space point and the o
 In 2013, \textit{Dame et al}~\cite{Dame2013} proposed an approach to dense object reconstruction from a 
 monocular image source. Like the approach of \textit{Prisacariu et al}~\cite{Prisacariu2011}, the authors 
 utilise GPLVM's as shape priors to aid reconstruction and segmentation of the object of interest. Depth maps 
-for the observed monocular sequence are optimised for within a Primal Dual framework, utilising 
+for the observed monocular sequence are optimised for within a Primal-Dual~\cite{Boyd2004Convex} framework, utilising 
 Total Variation~\cite{Rudin1992} regularisation. However, there is no pose estimation 
 ability in the formulation, as poses are known a priori from PTAM~\cite{Klein2007}.
 
@@ -455,21 +455,21 @@ In the following year, \textit{Toshev et al}~\cite{Toshev2014} proposed an appro
 utilising cascaded Deep Neural Network (DNN)~\cite{LeCun2015} regressors. The authors utilise the DNN 
 framework for the complex task of articulated human pose estimation. %TODO: elaborate
 
-\textit{Wohlhart et al}~\cite{Wohlhart2015} in 2015 presented an approach to the 3D detection and pose 
-recovery of objects. The proposed approach, utilises features extracted from a Convolutional Neural 
+\textit{Wohlhart et al}~\cite{Wohlhart2015}, in 2015, presented an approach to the 3D detection and pose 
+recovery of objects. The proposed approach utilises features extracted from a Convolutional Neural 
 Network (CNN)~\cite{LeCun2015} within a nearest neighbour cost function for object detection and recovery 
 of rough pose. As such, the proposed approach poses the problem as a K-Nearest Neighbour
 ~\cite{Altman1992} search in descriptor space. Object and pose are coupled in training (i.e.\ two similar 
 cars with different poses will have spatially distant descriptors).
 
-\textit{Chang et al}~\cite{Chang2015} also in 2015 presented a large scale dataset of 3D shapes. The 
+\textit{Chang et al}~\cite{Chang2015}, also in 2015, presented a large scale dataset of 3D shapes. The 
 dataset can be used for a variety of 3D vison tasks due to the potential of modern machine learning 
 techniques to learn rich latent space embeddings, as demonstrated by the approaches of 
 \textit{Prisacariu et al}~\cite{Prisacariu2011} and \textit{Dame et al}~\cite{Dame2013}. However, the 
 shapes in the dataset are synthetic and as such have no depth sequences. Though, such sequences may be 
 artificially rendered.
 
-Also proposed in 2015 by \textit{Rock et al}~\cite{Rock2015} is an approach to the recovery of complete 
+Also proposed in 2015 by \textit{Rock et al}~\cite{Rock2015}, is an approach to the recovery of complete 
 3D models from a single depth image of an object of interest. The input depth image is regressed into a 
 database of a priori known objects by the use of an RF~\cite{Ho1995}. The matched shapes are 
 coarsely matched to the input depth map, then later deformed at a higher granularity by a separate 
@@ -488,7 +488,7 @@ and prediction.
 
 \textit{Gwak et al}~\cite{Gwak2017}, also in 2017 introduced a Generalised Adversarial Network
 ~\cite{Goodfellow2014} like approach to shape prediction. The proposed network is trained in a 
-weakly supervised manner on silhouettes and 3D shapes with a log-barrier objective function. 
+weakly-supervised manner on silhouettes and 3D shapes with a log-barrier objective function. 
 However, the applicability to ``real world'' scenarios is questionable, due to the synthetic nature of 
 the data used to train and evaluate the network.
 
@@ -496,7 +496,7 @@ the data used to train and evaluate the network.
 ~\label{sec:lit_review_summary}
 From the evaluation of the literature given in Sections~\ref{sec:lit_review_tam},~\ref{sec:lit_review_dynamic},
 ~\ref{sec:lit_review_semantic},~\ref{sec:lit_review_obj_recon} and~\ref{sec:lit_review_prediction}, it is clear 
-that much progress has been made in many areas of 3D computer vision, with much commonality across the different 
+that much progress has been made in many areas of 3D computer vision, with a high level of commonality across the different 
 domains. However, when assessed within the context of the research objectives of this work, as outlined in Section
 ~\ref{sec:intro_aims_structure}, there is still much that can be contributed.
 
@@ -508,7 +508,7 @@ it is also evident from Section~\ref{sec:lit_review_dynamic} that there exist li
 Section~\ref{sec:moseg_introduction} introduces approaches to solving some of these limitations.
 
 Section~\ref{sec:lit_review_obj_recon} reviewed literature pertinent to the object reconstruction subject matter of 
-Chapter~\ref{chap:probobj}. Though it is clear that much advancement has been made on representations and combined TAM for 
+Chapter~\ref{chap:probobj}. Though it is clear that many advances have been made on representations and combined TAM for 
 objects, Section~\ref{sec:probobj_introduction} introduces an approach to the ongoing research problem around global model 
 consistency. Additionally, the primarily 2D featured nature of the systems outlined in Section~\ref{sec:lit_review_semantic} 
 provide a motivation for such approaches, as outlined in Sections~\ref{sec:intro_object_recon} and~\ref{sec:probobj_introduction}.

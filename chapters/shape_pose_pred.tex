@@ -9,7 +9,7 @@ Gaussian Processes.
 
 \section{Introduction}
 ~\label{sec:spp_introduction}
-In the Computer Vision literature, there has been research on the reconstruction of objects
+In the computer vision literature, there has been much research on the reconstruction of objects
 from observed points in a range image, such as those obtained with an RGBD sensor (like 
 the Microsoft Kinect). As outlined in Chapter~\ref{chap:probobj}, progress has been made 
 on the techniques used, such that globally consistent models of an object of interest can be 
@@ -70,7 +70,7 @@ result of the input frames is derived from a learnt model. As outlined in Sectio
 \textit{real world} environments. As such, the dataset used in this work is the 
 \textit{The KITTI Vision Benchmark Suite}~\cite{Geiger2013,Menze2015,Geiger2012}, which consists of a variety of frames 
 taken in RGB stereo, from a sensor rigged on top of a car. The dataset is thus suitable to the initial objective 
-of real world application.
+of real world application. The object class of interest in this work is cars.
 
 The remainder of this chapter is structured as follows; Section~\ref{sec:spp_algorithm} introduces the high level 
 structure of the proposed model and the structure of it's neural network components. Section~\ref{sec:spp_gplvm} 
@@ -1030,9 +1030,124 @@ the averaging over each subnetwork, exploding gradient updates can be problemati
 
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
+The model outlined in this chapter has been trained on the \textit{Stereo2015} section of the 
+\textit{The KITTI Vision Benchmark Suite}~\cite{Geiger2013,Menze2015,Geiger2012}. Though this work 
+is in it's early stages, preliminary qualitative results demonstrate that the proposed model is 
+yielding predictions that are tending towards the desired behaviour. In Figure~\ref{figure:spp_qual1}, 
+it is demonstrated that the model outlined in this chapter is regressing pose and shape for a given input 
+that is tending towards ground truth.
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{@{}l@{}}
+  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred.jpg}\\
+  (a)\\
+  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_1.jpg}\\
+  (b)
+  \end{tabular}
+  \caption[Shape and Pose Prediction Qualitative I]
+  {
+    \begin{tabular}[t]{@{}l@{}}
+    Ground truth car segmentation (green) with predicted rendering (red):\\
+    (a) A frame in which the location and shape of the rendering are in the\\ region of the ground truth.\\
+    (b) A frame in which the position of the rendered object is in the same\\ region as the ground truth.
+    \end{tabular}
+  }
+~\label{figure:spp_qual1}
+\end{figure}
+
+In Figure~\ref{figure:spp_qual1}, it is evident that although the regressed shape and pose for the first image 
+renders to a region that is of similar scale and shape, it is evident that the orientation is incorrect. However, 
+at other points in the dataset, it is evident that the predictions yielded by the model are improving with training time, 
+an example of which is given in Figure~\ref{figure:spp_qual2}.
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{@{}l@{}}
+  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_3.jpg}\\
+  (a)\\
+  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_5.jpg}\\
+  (b)
+  \end{tabular}
+  \caption[Shape and Pose Prediction Qualitative II]
+  {
+    \begin{tabular}[t]{@{}l@{}}
+    Ground truth car segmentation (green) with predicted rendering (red):\\
+    (a) A frame in which the location and shape of the rendering are in the\\ region of the ground truth.\\
+    (b) The rendered object is closer to ground truth later in training.
+    \end{tabular}
+  }
+~\label{figure:spp_qual2}
+\end{figure}
+
+Figure~\ref{figure:spp_qual2} demonstrates an increase in overlap between the ground truth and predicted regions at 
+different points in the training process, suggesting that the model predictions are improving.
 
 \section{Quantitative Results}
 ~\label{sec:spp_quantitative}
+As outlined in Section~\ref{sec:spp_qualitative}, early results demonstrate behaviour encouraging of the model 
+formulation, however, it is clear that refinement to the approach is likely required. As the proposed method is 
+addressing the very difficult problem of \textit{weakly-supervised} training of a model on a problem for which 
+the solution space is broad, it is neccessary to quantify the model's performance.
+
+Given in Figure~\ref{figure:spp_training} is the model's loss, quantified by Equation~\ref{eqn:spp_overall_loss} over a trainining session 
+of \( 500,000 \) examples, utilising the Adam Optimizer~\cite{Diederik2014} and a learning rate of \( 0.0001 \).
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/spp/quant/scores_170_smooth.eps}
+  \caption[Shape and Pose Prediction Quantitative I]
+  {The model's loss over a \( 500,000 \) example training period.}
+~\label{figure:spp_training}
+\end{figure}
+
+It is evident from Figure~\ref{figure:spp_training} that the loss of the proposed model is decreasing with time, from 
+a fresh weight initialisation. Similar behaviour is observed when using ImageNet~\cite{Russakovsky2014} pre-trained model 
+for transfer learning. However, the Receiver Operating Characteristic (ROC) metric over the test set is indicative of a high level 
+of false positive predictions, as can be seen in Figure~\ref{figure:spp_roc}.
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{@{}l@{}}
+  \includegraphics[width=.6\linewidth]{figures/spp/quant/left_roc.eps}\\
+  (a)\\
+  \includegraphics[width=.6\linewidth]{figures/spp/quant/right_roc.eps}\\
+  (b)
+  \end{tabular}
+  \caption[Shape and Pose Prediction Quantitative II]
+  {
+    \begin{tabular}[t]{@{}l@{}}
+    Receiver Operating Characteristic metric for the predicted region (class 1) and background(class 0).\\
+    (a) Left section of the model.\\
+    (b) Right section of the model.
+    \end{tabular}
+  }
+~\label{figure:spp_roc}
+\end{figure}
+
+In Figure~\ref{figure:spp_roc}, the ROC metric has been computed pixel-wise over the output renderings for each 
+testing image pair. As such, for the purpose of the ROC evaluation, each pixel is evaluated with respect to it's 
+corresponding ground truth and predicted mask pixel.
 
 \section{Summary}
 ~\label{sec:spp_discussion}
+The model outlined in this work is an ambitious and theoretically principled approach to a very difficult problem 
+in 3D computer vision. Preliminary experimentation indicates that the proposed approach is, in theory, feasible. 
+However, as outlined in Sections~\ref{sec:spp_qualitative} and~\ref{sec:spp_quantitative} the predictive power of 
+the model is not yet at the level aspired to in the original research objectives of Sections~\ref{sec:intro_spp} 
+and~\ref{sec:intro_aims_structure}. This section shall proceed to evaluate potentially prohibitive aspects of the 
+formulation outlined in this chapter.
+
+Firstly, as CNN models are notouriously difficult to train~\cite{Glorot2010}, it is plausible that during training, 
+the optimiser is unable to traverse the solution space to an optimal minima, instead becoming stuck in a suboptimal 
+minima. Such behaviour may be caused by factors ranging from insufficiently varying data preventing the model from 
+``learning'' a sufficiently general functional mapping, to unsuitable nonlinear activations. Furthermore, the 
+architecture of the CNN itself may not be suitable for the specific problem at hand. However, it should be noted that 
+during the development of the model outlined in this work, the CNN component has been tested on the ResNet 34, 50 and 
+101 architectures. The experiments given in Sections~\ref{sec:spp_qualitative} and~\ref{sec:spp_quantitative} use 
+the ResNet-101 architecture.
+
+Another potential cause of the outlined training issues is the proposed loss function not penalising incorrect 
+predictions in a manner that is conducive to model convergence. Note that if a predicted pose causes the raycasting 
+stage to miss the isosurface of the predicted shape, the gradient passed back from the information theoretic loss 
+of Section~\ref{sec:spp_loss} could potentially not guide the optimiser appropriately. 
+
+Despite the results outlined in Sections~\ref{sec:spp_qualitative} and~\ref{sec:spp_quantitative} not indicating immediate 
+efficacy, the presented formulation does provide a theoretically principled foundation on which further research can be based. 
+At this point, the difficulty of \textit{weakly-supervised} learning of \textit{simultaneous} shape and pose should be reiterated.

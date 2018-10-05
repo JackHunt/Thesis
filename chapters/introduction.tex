@@ -9,7 +9,7 @@ a field concerned with the processing of 3D geometric data for machine vision. T
 open technical challenges within the field of active, 3D vision. Specifically, the 3D reconstruction of dynamic 
 environments, robust 3D reconstruction of arbitrary objects and, the prediction of shape and pose of objects. These 
 areas of research are of interest to the computer vision community due to the broad application potential of such 
-systems. Scene reconstruction for example, has applications ranging from mobile robotics to recreating the tangible 
+systems. Scene reconstruction for example, has applications ranging from mobile robotics to recreating the physical 
 world for Virtual Reality (VR) viewing. Object reconstruction has applications including the reproduction of tangible 
 objects via 3D printing and building 3D object models for the training of machine learning systems. Finally, shape 
 and pose prediction allows representations of a machine's environment to be inferred when traditional methods of 
@@ -41,11 +41,11 @@ in Figure~\ref{figure:room_recon_example}.
 ~\label{figure:room_recon_example}
 \end{figure}
 
-There has been much advancement in the two dimensional (2D) semantic scene understanding literature
-~\cite{Girshick2014,Shelhamer2017,Civera2011}, which can be utilised within the context of 3D vision to introduce a 
-semantic component to dense SLAM systems~\cite{Valentin2015,Golodetz2015,Cavallari2016}. Such a combination of techniques 
+There has been much advancement in the two dimensional (2D) semantic scene understanding literature~\cite{Girshick2014,Shelhamer2017,Civera2011}, 
+which can be utilised within the context of 3D vision to introduce a semantic component to dense SLAM 
+systems~\cite{Valentin2015,Golodetz2015,Cavallari2016}. Such a combination of techniques 
 provides an adaptable component to Augmented Reality (AR) and robotics applications. Early work on amalgamating the two areas 
-of research have allowed one to view a reconstruction of their environment in VR and interactively label some of the objects within it, with 
+of research has allowed one to view a reconstruction of their environment in VR and interactively label some of the objects within it, with 
 the system inferring the remaining labels. An example of the output of such a system is given in Figure~\ref{figure:spaint_teaser}.
 \begin{figure}[!htbp]
   \centering
@@ -59,7 +59,7 @@ the system inferring the remaining labels. An example of the output of such a sy
 }
 
 Though the results of the systems shown in Figures~\ref{figure:room_recon_example} and~\ref{figure:spaint_teaser} 
-represent impressive advancements in computer vision, there are however, open technical challenges. One such 
+represent impressive advances in computer vision, there are however, open technical challenges. One such 
 challenge is the successful modelling of real environments in which there are \textit{dynamic} components (such as 
 people walking in the camera's view). The traditional dense SLAM pipeline is unable to accurately build a 
 globally consistent model in such environments. In addition, when using a combined reconstruction and 
@@ -88,8 +88,8 @@ would  aditionally be capable of extracting pertinent semantic information.
 \section{Object Reconstruction}
 ~\label{sec:intro_object_recon}
 Modern machine learning provides much of the semantic and contextual information required to make meaningful 
-inferences over the state of the world, as observed by a sensor (such as a camera). Much advancement 
-has been made in recent years on the tasks of object detection and semantic segmentation, in standard 2D 
+inferences over the state of the world, as observed by a sensor (such as a camera). Many advances 
+have been made in recent years on the tasks of object detection and semantic segmentation, in standard 2D 
 images~\cite{Girshick2014,Shelhamer2017,Civera2011}. The application of such techniques in 3D vision allows 
 for semantic reasoning about 2D representations of 3D objects, as shown in the semantic SLAM system of 
 Figure~\ref{figure:spaint_teaser}, in which semantic labellings of 3D objects are applied to a 
@@ -141,7 +141,7 @@ Additionally, the scene and object reconstruction approaches previously outlined
 integration of observed range data. This approach may be troublesome in a scenario where an object may not 
 be visible to the sensor for a sufficient period of time to build a smoothly reconstructed model. Circumventing 
 this issue would require a very high framerate sensor. Additionally, the highly dynamic nature of such a scenario 
-is likely to be problematic in a similar manner to outlined case of dynamic dense SLAM\@.
+is likely to be problematic in a similar manner to the case of dynamic dense SLAM\@.
 
 As such, a desirable approach to the 3D modelling of objects in problematic environments would not rely on 
 direct reconstruction (in the sense of the integration of range data into a 3D model). Rather, an inference based 
@@ -203,7 +203,7 @@ utilising motion segmentation to perform rudimentary object recognition using 3D
 given.
 
 Chapter~\ref{chap:probobj} introduces a novel approach to the segmentation and reconstruction of individual 
-objects. The chapter outlines a novel Probabilistic approach to object reconstruction that reduces 
+objects. The chapter outlines a novel probabilistic approach to object reconstruction that reduces 
 inconsistencies in pose estimation, which positively impacts the overall reconstruction quality. The 
 approach presented in this chapter works with commodity computer and depth sensing equipment (though in 
 principle it is trivially extendable, by design) and yields high quality reconstructions. Reconstruction 

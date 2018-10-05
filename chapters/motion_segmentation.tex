@@ -192,7 +192,7 @@ respectively. Finally, an application to interactive object recognition is given
 ~\label{sec:moseg_static_fusion}
 The volumetric fusion approach taken in this work draws on previous volumetric
 integration techniques~\cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2014} 
-and shall be introduced in this section as preliminary material as it shall be
+and shall be introduced in this section as preliminary material, as it shall be
 referred to in later chapters. Following this approach, at each frame the camera
 is tracked against the current scene, after which new data is fused into the
 scene model which is then rendered using raycasting to prepare for tracking in
@@ -393,9 +393,8 @@ central finite differencing, as follows in Equation~\ref{eqn:sdf_central_diff}.
 
 For the gradient update phase of the ICP algorithm, the partial derivatives
 \( \frac{\partial E}{\partial \bm{R}_{\lambda}} \forall \lambda \in \{\alpha, \beta, \gamma \} \) 
-may be derived as follows in Equation~\ref{eqn:icp_update_derivation_rot}.
-
-As a first step, the following definition is made in Equation~\ref{eqn:icp_deriv_sub}.
+may be derived as follows in Equation~\ref{eqn:icp_update_derivation_rot}. As a first step, the 
+following definition is made in Equation~\ref{eqn:icp_deriv_sub}.
 \begin{equation}
   \label{eqn:icp_deriv_sub}
   \phi(\bm{R}, \bm{t}, \bm{x}, \bar{\bm{x}}) =
@@ -452,9 +451,7 @@ The full partial derivatives \(\frac{\partial \bm{R}}{\partial \alpha}\),
 \(\frac{\partial \bm{R}}{\partial \gamma}\) may be found Equations
 ~\ref{eqn:rodrigues_full_alpha_deriv},~\ref{eqn:rodrigues_full_beta_deriv}
 and~\ref{eqn:rodrigues_full_gamma_deriv} respectively, of Appendix 
-~\ref{appendix:mathematical}.
-
-The partial derivatives
+~\ref{appendix:mathematical}. The partial derivatives
 \( \frac{\partial \bm{R}}{\partial \lambda} \forall \lambda \in \{\alpha, \beta, \gamma \} \) 
 may be multiplied with \(\bm{x}\) and combined in to the Rotation Jacobian of Equation~\ref{eqn:rot_jac}.
 \begin{align}
@@ -530,6 +527,7 @@ approximated by \(\bm{H} = \bm{J}^{T}\bm{J}\). The parameter \( \lambda \)
 controls the influence of the gradient on the update step and is adjusted
 according to the change in error, as shall be evident in the algorithm
 that follows.
+
 {
   \centering
   \singlespacing{}
@@ -576,18 +574,18 @@ may be avoided by utilising the \texttt{chol} and \texttt{backsub} routines to
 compute the Cholesky Decomposition~\cite{NumericalRecipes} and solve a linear system with 
 backsubstitution~\cite{ElemLinAlg}, respectively. Additionally, it should be noted that 
 the cost term of Equation~\ref{eqn:pose_estimation_kf} and jacobian term of Equation
-~\ref{eqn:pose_jacobian} may be evaluated and reduced on the GPU as there exists no spatial 
+~\ref{eqn:pose_jacobian} may be evaluated and reduced on the GPU, as there exists no spatial 
 data dependence between either the model points or depth map points.
 
 \subsection{Volumetric Integration}
 ~\label{subsec:moseg_static_integration}
 The second phase in the scene reconstruction pipeline is volumetric integration.
-That is, the integration of observed depth images into a consistent, implicit
+That is, the integration of observed depth images into a consistent, implicit,
 volumetric representation, in this case the existing TSDF model of the scene,
 providing the basis for an updated rendering to be used in the ICP procedure
 for camera tracking at the next time step.
 
-As previously outlined, the TSDF may be defined as a volume of distances to an
+As previously outlined, the TSDF is defined as a volume of distances to an
 isosurface, with the isosurface itself being given by the Zero Level Set, as
 defined in Equation~\ref{eqn:zero_level_definition}. A graphical representation
 is given in Figure~\ref{figure:sdf_example}.
@@ -630,7 +628,7 @@ yields the depth offset from the surface, as follows in Equation~\ref{eqn:integr
   \eta = \bm{x}_{\Omega} - \bm{x}_{v}^{z}
 \end{equation}
 
-If \( \eta \geq -\mu \), that is that the depth of the point is not beyond the
+If \( \eta \geq -\mu \), then the depth of the point is not beyond the
 truncation band of the TSDF (behind the isosurface), where \( \mu \) is half the 
 width of the truncation band, then the TSDF depth measurement update 
 proceeds as follows in Equation~\ref{eqn:sdf_update} for a voxel \(\bm{x}_{v} \in \bm{\Phi}\). 
@@ -669,6 +667,7 @@ at the next time step.
 Rendering in the pipeline is achieved by Raycasting~\cite{Roth1982}, the process of 
 ``casting'' a ray from the camera frame into the volume representation of the scene, to find intersections with 
 the scene isosurface. The basic Raycasting process is Given in the following Algorithm.
+
 {
   \centering
   \singlespacing{}
@@ -734,6 +733,7 @@ the scene isosurface. The basic Raycasting process is Given in the following Alg
   \end{minipage}
   \par
 }
+
 It should be noted that the loop over image pixels \( \bm{\Omega}_{x, y} \) 
 can be trivially optimised in a data parallel fashion on a GPU\@. This is possible as there exists no data 
 dependence between image pixels and TSDF accesses are read only.
@@ -784,10 +784,10 @@ follows in Equation~\ref{eqn:moseg_stability_value}.
   \tau_{\mathcal{V}} = \Bigg[ \frac{1}{|\mathcal{V}|} \sum_{v \in \mathcal{V}}
   \bigg|\bm{\Phi}^{d}(v) - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
 \end{equation}
-T
-he stability label \( l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\} \) for
+
+The stability label \( l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\} \) for
 a given voxel block \(\mathcal{V}\) is determined by thresholding on \( \xi \) 
-(empirically set to \(0.3m\)) as follows in Equation~\ref{eqn:moseg_stability_labelling}.
+(empirically set to \(0.3m\)), as follows in Equation~\ref{eqn:moseg_stability_labelling}.
 \begin{equation}
   \label{eqn:moseg_stability_labelling}
   l_{\mathcal{V}} =
@@ -797,10 +797,10 @@ a given voxel block \(\mathcal{V}\) is determined by thresholding on \( \xi \)
   \end{cases}
 \end{equation}
 
-If the label \(l_{\mathcal{V}}\) is ``stable'', the implication is that the voxel
+If the label \(l_{\mathcal{V}}\) is \textit{stable}, the implication is that the voxel
 block contains few disparities between the current scene and the stored model.
 In this case, it's stability value is incremented. If however
-\(l_{\mathcal{V}}\) has the label ``unstable'', the implication is that the
+\(l_{\mathcal{V}}\) has the label \textit{unstable}, the implication is that the
 contents of the voxel block are changing, so it's stability value is reset to
 nought, as outlined in Equation~\ref{eqn:moseg_stability_update}.
 \begin{equation}
@@ -826,7 +826,7 @@ of Section~\ref{subsec:moseg_static_integration}, the update comprises
 integration of new data in to a running average.
 
 The weight update for a given voxel \(v\) in the stable model \(\bm{\Phi}^{s}\)
-with respect to a voxel (belonging to a voxel block labelled ``stable'') 
+with respect to a voxel (belonging to a voxel block labelled \textit{stable}) 
 \(\bar{v}\) in the dynamic model \(\bm{\Phi}^{d}\) is given in Equation
 ~\ref{eqn:moseg_weight_update}.
 \begin{equation}
@@ -850,6 +850,7 @@ With the central components of the proposed algorithm now outlined, an algorithm
 summary may be given. As has been highlighted, the central components of the approach 
 are the dual volume representation, stability labelling and inter-volume surface 
 integration. The process is given in the following Algorithm.
+
 {
   \centering
   \singlespacing{}
@@ -902,8 +903,8 @@ integration. The process is given in the following Algorithm.
   \end{minipage}
   \par
 }
-% TODO: Spacing. Gap not showing.
-The presented Algorithm is trivially parallelisable with commodity GPU hardware.
+
+The presented algorithm is trivially parallelisable with commodity GPU hardware.
 The integration of points in the depth map \( \mathcal{D} \) is parallelisable 
 with minimal risk of race conditions occurring. However care must be taken for edge 
 cases where multiple simultaneous writes may occur at the same TSDF location. 
@@ -1077,7 +1078,7 @@ highlighted in bold.}
 As outlined in the research objectives of Section~\ref{sec:intro_aims_structure}, the proposed 
 dynamic SLAM pipeline is required to run in real-time if it is to be suitable for use at scale. 
 The basic dense SLAM pipeline of \textit{Prisacariu et al}~\cite{Prisacariu2014} is a highly 
-optimised implementation of the Voxel Hashing approach of \textit{Nei{\ss}ner et al}~\cite{NieBner2013}, 
+optimised implementation of the voxel hashing approach of \textit{Nei{\ss}ner et al}~\cite{NieBner2013}, 
 achieving very high framerates on consumer computing equipment. For the purpose of evaluating the 
 performance of the modified pipeline outlined in this work, a direct comparison is drawn to 
 \textit{InfiniTAM}, the implementation of \textit{Prisacariu et al}~\cite{Prisacariu2014}.
@@ -1111,7 +1112,7 @@ they are, as outlined in Section~\ref{sec:intro_scene_recon}. In this section, i
 therefore shown that classifiers may be trained for the moving objects and used to recognise 
 new instances of those objects as they enter the scene.
 
-The voxel blocks in the dynamic model that were identified as ``unstable''
+The voxel blocks in the dynamic model that were identified as \textit{unstable}
 provide a natural representation of the dynamic parts of the scene. Where
 multiple dynamic objects are present, they can be separated by finding the
 connected components of these voxel blocks. For each object, a one-class Support
