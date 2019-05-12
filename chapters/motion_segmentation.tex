@@ -50,7 +50,7 @@ Figure~\ref{figure:moseg_teaser}.
   {
     \begin{tabular}[t]{@{}l@{}}
       Examples of motion segmentation (note that red indicates motion):\\
-      (a) A person sits on a setee.\\
+      (a) A person sits on a sofa.\\
       (b) Dynamic objects that have become stable and semantically identified.\\
       (c) A person waving their arms in the scene.
     \end{tabular}
@@ -183,7 +183,7 @@ of a given scene is presented in Figure~\ref{figure:voxel_blocks}.
 The remainder of this chapter is structured as follows.
 Section~\ref{sec:moseg_static_fusion} introduces preliminaries pertaining to 
 the static Fusion pipeline followed by Section~\ref{sec:moseg_dynamic_fusion} 
-describing the dynamic Fusion component of theipeline. Qualitative and quantitative 
+describing the dynamic Fusion component of the pipeline. Qualitative and quantitative 
 results are presented in Sections~\ref{sec:moseg_qualitative} and~\ref{sec:moseg_quantitative}, 
 respectively. Finally, an application to interactive object recognition is given in Section
 ~\ref{sec:moseg_semantic}.
@@ -195,7 +195,7 @@ integration techniques~\cite{Curless1996, Newcombe2011, NieBner2013, Prisacariu2
 and shall be introduced in this section as preliminary material, as it shall be
 referred to in later chapters. Following this approach, at each frame the camera
 is tracked against the current scene, after which new data is fused into the
-scene model which is then rendered using raycasting to prepare for tracking in
+scene model which is then rendered using ray-casting to prepare for tracking in
 the next frame. The static Fusion pipeline consists of the following three 
 consecutive stages:
 \begin{itemize}
@@ -244,7 +244,7 @@ As in previous works~\cite{Newcombe2011, Prisacariu2014}, the gradient
 optimisation based ICP algorithm is utilised to register consecutive images,
 to derive the camera pose at time \(t\) with respect to time \(t-1\), that is to
 optimise for the rigid body transform \(\bm{T} \in \mathbb{SE}(3)\) of the
-camera between the two frames using the Levenberg-Marquardt nonlinear least
+camera between the two frames using the Levenberg-Marquardt non-linear least
 squares method~\cite{NumericalRecipes}. The rendering stage of the pipeline
 is used to generate the image from the TSDF at time \(t-1\) to which a new frame
 at time \(t\) is registered.
@@ -365,7 +365,7 @@ In Equation~\ref{eqn:pose_estimation_kf}, \(\bm{R}\) and \(\bm{t}\) are
 the aforementioned rotation matrix and translation vector of the transformation 
 \(\bm{T}\). \(\bm{x}\) is the 3D point extracted from the depth image 
 \(\bm{\Omega}\) and the point \(\bar{\bm{x}}\) is the 3D point in the TSDF 
-volume \(\bm{\Phi}\) found by raycasting from \(\bm{\Omega}\) under the 
+volume \(\bm{\Phi}\) found by ray-casting from \(\bm{\Omega}\) under the 
 transformation \(\bm{T}\). Finally, \(\mathcal{N}\) is a normal map of 
 \(\bm{\Phi}\) and is defined as follows in Equation~\ref{eqn:normal_map_definition}.
 \begin{equation}
@@ -510,7 +510,7 @@ in Equation~\ref{eqn:pose_jacobian}.
 ~\label{subsub:moseg_static_camera_poserec_opt}
 With the gradient derivations in place, this section will now detail the
 pose recovery procedure. As highlighted, the optimisation routine used is the
-Levenberg-Marquardt~\cite{NumericalRecipes} algorithm for solving nonlinear least
+Levenberg-Marquardt~\cite{NumericalRecipes} algorithm for solving non-linear least
 squares problems. The gradient update equation for the Levenberg-Marquardt
 algorithm is given in Equation~\ref{eqn:lm_update}.
 \begin{equation}
@@ -572,7 +572,7 @@ that follows.
 Note that for numerical stability, the matrix inverse in Equation~\ref{eqn:lm_update} 
 may be avoided by utilising the \texttt{chol} and \texttt{backsub} routines to 
 compute the Cholesky Decomposition~\cite{NumericalRecipes} and solve a linear system with 
-backsubstitution~\cite{ElemLinAlg}, respectively. Additionally, it should be noted that 
+back-substitution~\cite{ElemLinAlg}, respectively. Additionally, it should be noted that 
 the cost term of Equation~\ref{eqn:pose_estimation_kf} and jacobian term of Equation
 ~\ref{eqn:pose_jacobian} may be evaluated and reduced on the GPU, as there exists no spatial 
 data dependence between either the model points or depth map points.
@@ -664,9 +664,9 @@ is the rendering stage in which an image of the scene under the current pose is 
 provide an updated rendering for the tracking stage outlined in Section~\ref{subsec:moseg_static_camera_tracking}, 
 at the next time step.
 
-Rendering in the pipeline is achieved by Raycasting~\cite{Roth1982}, the process of 
+Rendering in the pipeline is achieved by Ray-casting~\cite{Roth1982}, the process of 
 ``casting'' a ray from the camera frame into the volume representation of the scene, to find intersections with 
-the scene isosurface. The basic Raycasting process is Given in the following Algorithm.
+the scene isosurface. The basic Ray-casting process is Given in the following Algorithm.
 
 {
   \centering
@@ -771,7 +771,7 @@ between stable and unstable voxel blocks in the dynamic model, resulting in
 parts of the scene that are moving being excluded from the static model. For each voxel 
 block in the dynamic model, a stability value is maintained, 
 representing the extent to which the instantaneous TSDF values for the voxels 
-in a given voxel block (visible in the current view frustrum under the current 
+in a given voxel block (visible in the current view frustum under the current 
 pose) have remained sufficiently similar over time.
 
 The stability value for each voxel block in the scene is initialised to nought.
@@ -920,8 +920,8 @@ systems. The experiments performed demonstrate a robustness	to dynamics in
 various scenes, both in terms of tracking and noise artefacts in the static
 model. In addition, the system is robust to the addition and removal of scene
 components and is robust to short term occlusions, such as a person walking in
-front of the camera. An example of a person moving in to the the view frustrum
-and sitting on a Setee is given in Figure~\ref{figure:moseg_qualitative_setee}.
+front of the camera. An example of a person moving in to the the view frustum
+and sitting on a sofa is given in Figure~\ref{figure:moseg_qualitative_setee}.
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{ccc}
@@ -934,7 +934,7 @@ and sitting on a Setee is given in Figure~\ref{figure:moseg_qualitative_setee}.
   {
     \begin{tabular}[t]{@{}l@{}}
       A qualitative comparison between the proposed system and InfiniTAM~\cite{Prisacariu2014}.\\
-      (a) A static scene containing a Setee is reconstructed.\\
+      (a) A static scene containing a sofa is reconstructed.\\
       (b) When a person enters the scene using standard InfiniTAM, the tracking
       fails,\\ leading to a corrupted scene model.\\
       (c) Using the proposed system, tracking is maintained and the person is\\
@@ -947,7 +947,7 @@ and sitting on a Setee is given in Figure~\ref{figure:moseg_qualitative_setee}.
 In addition to the ability to reconstruct a moving object that becomes static in
 the scene as shown in Figure~\ref{figure:moseg_qualitative_setee}, the proposed
 system is also capable of segmenting dynamic objects in a scene that are
-undergoing nonrigid motion. Whilst these objects are segmented and labelled as
+undergoing non-rigid motion. Whilst these objects are segmented and labelled as
 ``dynamic'' they are not used for camera pose estimation. An example of this
 behaviour may be observed in Figure~\ref{figure:moseg_qualitative_chair}.
 
@@ -1079,7 +1079,7 @@ As outlined in the research objectives of Section~\ref{sec:intro_aims_structure}
 dynamic SLAM pipeline is required to run in real-time if it is to be suitable for use at scale. 
 The basic dense SLAM pipeline of \textit{Prisacariu et al}~\cite{Prisacariu2014} is a highly 
 optimised implementation of the voxel hashing approach of \textit{Nei{\ss}ner et al}~\cite{NieBner2013}, 
-achieving very high framerates on consumer computing equipment. For the purpose of evaluating the 
+achieving very high frame-rates on consumer computing equipment. For the purpose of evaluating the 
 performance of the modified pipeline outlined in this work, a direct comparison is drawn to 
 \textit{InfiniTAM}, the implementation of \textit{Prisacariu et al}~\cite{Prisacariu2014}.
 \begin{figure}[!htbp]
@@ -1169,7 +1169,7 @@ Section~\ref{sec:intro_aims_structure}.
 
 Additionally, it is evident that the proposed approach is capable of segmenting dynamic 
 components (such as people moving in an articulated fashion) that are visible in the camera's 
-view frustrum, from those that are static (such as furniture in the scene). This segmentation 
+view frustum, from those that are static (such as furniture in the scene). This segmentation 
 also demonstrates a novel way of obtaining 3D geometry information to perform rudimentary scene 
 understanding. Additionally, the resultant reconstructions of the proposed approach are 
 qualitatively comparable to the comparison static dense SLAM system. Both of these results 
@@ -1181,7 +1181,7 @@ estimation provides a simple and robust system for dense 3D reconstruction in en
 that would otherwise be troublesome. Contrary to existing approaches outlined in Section 
 ~\ref{sec:lit_review_dynamic}, the presented system has scope for use in large-scale 
 reconstruction scenarios, due to it's leverage of efficient, hashed volumetric data structures. 
-In addition, by utilising such data structures, the proposed system is performant to the 
+In addition, by utilising such data structures, the proposed system performs to the 
 level of highly optimised~\cite{Prisacariu2014} \textit{KinectFusion}~\cite{Newcombe2011} 
 implementations, demonstrating feasibility for application to problems that require 
 real time performance.
