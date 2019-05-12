@@ -43,7 +43,7 @@ mitigate this by introducing a surface tessellation step.
 estimation of camera pose and sparse scene mapping, making use of early parallel CPU hardware. 
 The proposed scene representation is a map, consisting of point based features and multiple resolution 
 keyframes. Pose estimation is achieved by the minimisation of the projection error between map points and 
-the current live frame, following a coarse-to-fine strategy. The authors report per-frame runtimes of 
+the current live frame, following a coarse-to-fine strategy. The authors report per-frame running times of 
 \( \approx 20ms \), irrespective of increases in map size. However, it is reported in the work that failure 
 cases exist; blurring of frames can impede feature detection, as can a lack of rigid geometry in the scene (due 
 to the systems dependence on corner based features).
@@ -70,7 +70,7 @@ authors do not make use of features extracted from the scene, but rather dense, 
 maps. However, similar to the approach of \textit{Klein \& Murray}~\cite{Klein2007}, the authors 
 generate map components on a keyframe basis, which are used for the pose estimation phase within 
 a photometric loss against a dense model. The authors report real-time performance with commodity 
-GPU accelleration. However, due to the reliance on a monocular RGB source, the authors report failure 
+GPU acceleration. However, due to the reliance on a monocular RGB source, the authors report failure 
 cases in the presence of illumination changes in the scene.
 
 Culminating much of the aforementioned work, in 2011 \textit{Newcombe et al} 
@@ -117,7 +117,7 @@ database of known objects a-priori.
 
 \textit{St{\"u}ckler et al}~\cite{Stuckler2014} in 2014 introduced a non implicit, non volumetric 
 representation based on multiple resolution Surfel~\cite{Pfister2000} maps. The core data structure 
-used for scene representation is a Voxel Octree~\cite{Laine2010}, containing both Surfels and 
+used for scene representation is a Voxel Octree~\cite{Laine2010}, containing both Surfel's and 
 probability distributions over appearance and shape. Pose estimation is achieved by optimising for 
 a unit quaternion~\cite{Mukundan2002} and translation vector within a maximum likelihood framework, 
 in which the energy function to be maximised is the likelihood of the RGBD observations given the 
@@ -142,7 +142,7 @@ source implementation. The proposed work provides further improvements to those 
 core hashed TSDF data structure, it's allocation and update (integration of observation points) and 
 the rendering phase of the pipeline. In addition, the authors demonstrate that pose estimation quality 
 may be greatly improved by the use of commodity Inertial Motion Unit devices, commonly found 
-on mobile phones and tablet computers. \textit{Prisacariu et al} report runtimes of 
+on mobile phones and tablet computers. \textit{Prisacariu et al} report running times of 
 \(\approx47Hz\) on an NVIDIA Shield tablet and \(\approx910Hz\) with a commodity NVIDIA Titan X GPU.\@
 
 \textit{Whelan et al}~\cite{Whelan2015} in 2015 proposed another \textit{KinectFusion} 
@@ -160,7 +160,7 @@ The proposed pipeline provides loop closure capabilities by utilising pose graph
 The authors present improvements to the pose estimation phase of the pipeline, utilising 
 contour cues to aid association and enforcing correspondence constraints on the estimated 
 pose, with respect to scene geometry. Central to the presented approach is the depth image 
-pre-processing steps of inpainting~\cite{Bertalmio2000} regions of the depth image for which 
+pre-processing steps of in-painting~\cite{Bertalmio2000} regions of the depth image for which 
 there are no depth measurements, followed by the aforementioned contour extraction stage.
 
 The optimised pipeline proposed in 2014 by \textit{Prisacariu et al}~\cite{Prisacariu2014} was 
@@ -241,7 +241,7 @@ adapted to new object classes on an ad-hoc basis.
 \textit{Cavallari et al}~\cite{Cavallari2016}, in the following year, presented another 
 semantic dense SLAM pipeline built on top of the dense SLAM system presented by 
 \textit{Nei{\ss}ner et al}~\cite{NieBner2013}. Much like the work of \textit{Handa et al} 
-~\cite{Handa2015}, the proposed approach depends on a model pretrained on a set of object 
+~\cite{Handa2015}, the proposed approach depends on a model pre-trained on a set of object 
 classes. Unlike \textit{Handa et al}~\cite{Handa2015}, the authors make use of an 
 Fully Connected Network~\cite{Long2015}, taking the Probability Mass Function (PMF) 
 output to determine the class to be assigned to an isosurface region.
@@ -274,14 +274,14 @@ section shall explore pertinent literature on the topics of \textit{Dynamic SLAM
 work surveyed in this section is the detection, estimation and segmentation of motion in 
 dynamic scenes.
 
-\textit{Tsap et al}~\cite{Tsap2000}, in 2000, presented an algorithm for nonrigid motion 
+\textit{Tsap et al}~\cite{Tsap2000}, in 2000, presented an algorithm for non-rigid motion 
 tracking of objects. The presented approach solves for dense motion vector fields between 
 3D objects by modelling motion with finite elements. The proposed system analyses differences 
 between actual and predicted behaviour, using gradient descent to find a set of optimal parameters 
-for the nonlinear Finite Element Model. Additionally, pose estimation is improved by using point 
+for the non-linear Finite Element Model. Additionally, pose estimation is improved by using point 
 correspondences.
 
-\textit{Chen et al}~\cite{Chen2011}, in 2011, introduced a system to perform nonrigid motion 
+\textit{Chen et al}~\cite{Chen2011}, in 2011, introduced a system to perform non-rigid motion 
 tracking of the human body. The proposed system extracts and skins a surface mesh from 
 multi-view video, after being fitted with a skeleton prior. To solve for non-rigid, articulated 
 motion, the authors utilise a weighted, hierarchical ICP algorithm, where weightings are obtained 
@@ -336,7 +336,7 @@ of interest. Motion segmentation is posed as a Maximum a Posteriori (MAP)
 ~\cite{Krahenbuhl2011} defined over TSDF voxels. The proposed system is able to segment objects 
 undergoing both minor and major displacements, with motion labels and parameters found with 
 respect to the live frame and the TSDF\@ However, the proposed approach is limited only to very 
-small scenes, with very long runtimes reported for TSDF volumes of dimensionality 
+small scenes, with very long running times reported for TSDF volumes of dimensionality 
 \( 256 \times 256 \times 256\).
 
 \textit{Newcombe et al}~\cite{Newcombe2015} again in 2015, introduced a dynamic dense SLAM 
@@ -372,7 +372,7 @@ related to SLAM, incurs additional complications with regards to pose estimation
 
 \textit{Curless \& Levoy}~\cite{Curless1996} as introduced in Section~\ref{sec:lit_review_tam} 
 presented a method of statically reconstructing shapes from range images taken from different 
-viewpoints. However, the presented approach predates many of the advances that have allowed 
+viewpoints. However, the presented approach pre-dates many of the advances that have allowed 
 for simultaneous tracking and mapping.
 
 \textit{Kolev et al}~\cite{Kolev2006}, in 2006, presented a probabilistic approach to 3D shape 
@@ -432,7 +432,7 @@ reconstruction of objects from an RGBD image source, as is the case with the app
 \section{Shape and Pose Prediction}
 ~\label{sec:lit_review_prediction}
 Section~\ref{sec:lit_review_obj_recon} provided a review of pertinent object reconstruction research, 
-which demonstrates thet although much progress has been made since the early work of \textit{Curless \& 
+which demonstrates that although much progress has been made since the early work of \textit{Curless \& 
 Levoy}~\cite{Curless1996}, many open research problems remain. This section provides a survey of research 
 into an alternative, inference driven approach to obtaining 3D models of observed 
 objects, whereby rather than direct optimisation and integration being used for pose estimation and 
@@ -463,7 +463,7 @@ of rough pose. As such, the proposed approach poses the problem as a K-Nearest N
 cars with different poses will have spatially distant descriptors).
 
 \textit{Chang et al}~\cite{Chang2015}, also in 2015, presented a large scale dataset of 3D shapes. The 
-dataset can be used for a variety of 3D vison tasks due to the potential of modern machine learning 
+dataset can be used for a variety of 3D vision tasks due to the potential of modern machine learning 
 techniques to learn rich latent space embeddings, as demonstrated by the approaches of 
 \textit{Prisacariu et al}~\cite{Prisacariu2011} and \textit{Dame et al}~\cite{Dame2013}. However, the 
 shapes in the dataset are synthetic and as such have no depth sequences. Though, such sequences may be 
