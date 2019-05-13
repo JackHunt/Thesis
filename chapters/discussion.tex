@@ -70,7 +70,7 @@ from their stable counterparts, thus allowing the pose estimation phase to use a
 corrupted scene model.
 
 In addition to the dual scene representation, the system outlined in Chapter~\ref{chap:moseg} 
-introduces a novel online adaption schema for the TSDF truncation region. This online adaption 
+introduces a novel online adjustment schema for the TSDF truncation region. This online adjustment 
 of the truncation region allows for live integration and removal of surface data in the dynamic 
 model by facilitating real time space carving such that changes in the scene are reflected 
 instantly in the dynamic model. This technique combined with the dual representation is the 
@@ -166,11 +166,11 @@ outlined in Chapter~\ref{chap:spp}. Predominantly, this research would be focuse
 architecture, and it's representational suitability for the task. Additionally, further investigation into 
 the suitability of ``minor'' model components (such as activation functions) would also be desirable. Finally, 
 it would be relevant to formulate a way of handling the case where a predicted pose does not induce an intersection 
-with the shape surface during the raycasting procedure.
+with the shape surface during the ray-casting procedure.
 
 \section{Closing Remarks}
 ~\label{sec:discussion_conclusions}
-This work has introduced novel approaches to a range of nontrivial research problems in 3D computer 
+This work has introduced novel approaches to a range of non-trivial research problems in 3D computer 
 vision. The contributions of this work span the extension of the traditional dense SLAM pipeline to 
 the dynamic case, the consistent reconstruction of arbitrary objects and the prediction of real world 
 objects, for which only a single view pair is available. The remit of this work has direct relevance to 

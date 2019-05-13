@@ -42,7 +42,7 @@ mitigate this by introducing a surface tessellation step.
 \textit{PTAM\: Parallel Tracking and Mapping}. The authors present an approach to the parallel 
 estimation of camera pose and sparse scene mapping, making use of early parallel CPU hardware. 
 The proposed scene representation is a map, consisting of point based features and multiple resolution 
-keyframes. Pose estimation is achieved by the minimisation of the projection error between map points and 
+key-frames. Pose estimation is achieved by the minimisation of the projection error between map points and 
 the current live frame, following a coarse-to-fine strategy. The authors report per-frame running times of 
 \( \approx 20ms \), irrespective of increases in map size. However, it is reported in the work that failure 
 cases exist; blurring of frames can impede feature detection, as can a lack of rigid geometry in the scene (due 
@@ -132,7 +132,7 @@ The proposed approach generates Surfel~\cite{Pfister2000} Maps from observed RGB
 which the planar regions are detected and integrated, filling holes in the reconstruction over time.
 The authors utilise an ICP algorithm to register the vertex maps of the RGBD observations and the 
 reconstructed model. Additionally, re-localisation is achieved by the use of fern encoding 
-~\cite{Glocker2014} on keyframes. 
+~\cite{Glocker2014} on key-frames. 
 
 \textit{Prisacariu et al}~\cite{Prisacariu2014, Kahler2015} in 2014 followed up the optimisations 
 to the \textit{KinectFusion} pipeline proposed by \textit{Nei{\ss}ner et al}~\cite{NieBner2013}. 

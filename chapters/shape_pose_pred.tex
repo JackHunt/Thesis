@@ -38,7 +38,7 @@ views of an object (from each sensor in the stereo pair) will make the pose esti
 learning based methods, due to the inherent disparity information from the frame pair.
 
 The second major deviation from the contributions of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
-is the removal of the dependence on temorally consistent input sequences. Rather, in this work 
+is the removal of the dependence on temporally consistent input sequences. Rather, in this work 
 the proposed system performs shape and pose prediction from an instantaneous
 stereo pair, requiring no temporal consistency in both the training and prediction 
 phases. As such, there is no iterative solving for shape and pose per frame, rather, the process 
@@ -80,7 +80,7 @@ object segmentation, from the GPLVM\@. Sections~\ref{sec:spp_pose_estim} and~\re
 representation of pose and shape rendering method used. Though, these are akin to those of Sections
 ~\ref{subsub:moseg_static_camera_attitude} and~\ref{subsec:moseg_static_rendering}, respectively, the rendering stage is 
 modified to introduce the property of differentiability. Sections~\ref{sec:spp_loss} and~\ref{sec:spp_backprop} 
-outline the loss function of the model and it's gradient for backpropagation, respectively. Sections~\ref{sec:spp_qualitative} 
+outline the loss function of the model and it's gradient for Backpropagation, respectively. Sections~\ref{sec:spp_qualitative} 
 and~\ref{sec:spp_quantitative} provide qualitative and quantitative results on the aforementioned dataset, respectively. 
 Finally, Section~\ref{sec:spp_discussion} provides a summary of the approach taken in this work and the preliminary results 
 of it's use.
@@ -88,7 +88,7 @@ of it's use.
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
 The proposed model takes as input an RGB stereo pair with the object of interest within the 
-view frustrum of both frames. From this stereo pair, a ResNet~\cite{He2015} extracts feature descriptors 
+view frustum of both frames. From this stereo pair, a ResNet~\cite{He2015} extracts feature descriptors 
 which are used to regress a latent space point for shape, and six \( \mathbb{SE}(3) \) pose parameters, forming 
 a Lie Algebra. The generated shape for the proposed latent space point is drawn from the distribution of 
 the Gaussian Process (GP) prior conditioned on the latent space point. The form of the pose is the Lie 
@@ -106,21 +106,21 @@ data, training is performed in a weakly-supervised manner against a segmentation
 The model of the proposed approach is of a Siamese topology, where for a given stereo 
 pair, each of the left and right frames are passed to a separate network. From end to 
 end, the model contains for each of the Siamese networks, a ResNet-101~\cite{He2015}, 
-Linear Layers, Batch Normalisation Layers, Nonlinear Activations, a mapping from Lie Algebra to 
-Lie Group (for pose), a GPLVM followed by an Inverse Discrete Cosine Transform (IDCT), a Raycaster and 
+Linear Layers, Batch Normalisation Layers, Non-linear Activations, a mapping from Lie Algebra to 
+Lie Group (for pose), a GPLVM followed by an Inverse Discrete Cosine Transform (IDCT), a Ray-caster and 
 an information theoretic loss. 
 
 The purpose of the ResNet-50 components is to extract pertinent features from the stereo 
 pair that are descriptive of the the object of interest in relation to the scene. For each 
-of the networks, the output of the ResNet-101 network is fed into two subnetworks consisting 
-of linear transforms and nonlinear activations. The purpose of these subnetworks is to regress 
+of the networks, the output of the ResNet-101 network is fed into two sub-networks consisting 
+of linear transforms and non-linear activations. The purpose of these sub-networks is to regress 
 a latent space point for object shape, and a 6DoF pose parameter vector for the object pose. 
-Following these two subnetworks is the aforementioned GPLVM and Lie Algebra mapping. The 
+Following these two sub-networks is the aforementioned GPLVM and Lie Algebra mapping. The 
 GPLVM generates a posterior mean over shape for a given latent space point, whilst the 
 Lie Algebra mapping generates an \( \mathbb{SE}(3) \) transform. 
 
 The IDCT decompresses the posterior mean output of the GPLVM to generate a valid SDF\@. Both the 
-resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the raycasting module, which generates 
+resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the ray-casting module, which generates 
 a rendering for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
 to the loss layer which computes appearance statistics for the detection region and the rendering 
 which are used to quantify loss. The topology of the proposed model is outlined in Figure
@@ -169,8 +169,8 @@ from observed to hidden, latent space is derived.
 
 Under a Bayesian formulation, the often intractable latent variables pertaining to the linear 
 mapping may be marginalised, such that the latent embedding itself may be optimised directly. The 
-given framework allows for complex, nonlinear embeddings to be learnt via the use of kernel functions, 
-though the optimisation in this case is often non-convex and highly nonlinear.
+given framework allows for complex, non-linear embeddings to be learnt via the use of kernel functions, 
+though the optimisation in this case is often non-convex and highly non-linear.
 
 A GP may be viewed as a prior distribution over continuous functions. The posterior 
 may be obtained by conditioning on observed data, to obtain a function estimate for each data point.
@@ -639,7 +639,7 @@ As outlined in Section~\ref{sec:spp_latent_shape_est}, the SDF volume \( \bm{\Ph
 is generated by taking the IDCT of the posterior mean of the GP prior conditioned on 
 a given latent space point, as given by Equation~\ref{eqn:spp_gp_conditional}. In the 
 formulation presented in this work, the 2D latent point is generated by the pose 
-network component following the Resnet-101 CNN of Figure~\ref{figure:spp_pipeline}. 
+network component following the ResNet-101 CNN of Figure~\ref{figure:spp_pipeline}. 
 The output of the network is constrained to the interval \( [0, 1] \) by the use of a Sigmoid 
 activation function.%TODO verify
 
@@ -806,10 +806,10 @@ same form as those outlined in Equations~\ref{eqn:rot_jac} and~\ref{eqn:trans_ja
 \section{Rendering}
 ~\label{sec:spp_rendering}
 The dynamic SLAM and object reconstruction works of Chapters~\ref{chap:moseg} and~\ref{chap:probobj}, 
-both rely on raycasting to obtain a rendering of a surface embedded within an implicit volume, under 
+both rely on ray-casting to obtain a rendering of a surface embedded within an implicit volume, under 
 some estimated pose. The approach taken in this chapter is very similar. 
 
-Raycasting is first and foremost used in the model outlined in Section~\ref{sec:spp_algorithm} for 
+Ray-casting is first and foremost used in the model outlined in Section~\ref{sec:spp_algorithm} for 
 visualisation purposes, to render the estimated shape under the estimated pose for an instantaneous scene 
 view. In Chapters~\ref{chap:moseg} and~\ref{chap:probobj}, the output rendering is also used for frame-wise 
 evaluation and optimisation of the pose energy function. However, as the approach outlined in this chapter 
@@ -817,16 +817,16 @@ does not assume temporal consistency, the requirements for optimisation differ.
 
 As the model outlined in Section~\ref{sec:spp_algorithm} relies on the backpropagation of gradients for it's 
 training, the rendering module must be differentiable for the backward pass. As such, this section outlines a 
-simple formulation of differentiable raycasting, inspired by the work of \textit{Prisacariu et al}
+simple formulation of differentiable ray-casting, inspired by the work of \textit{Prisacariu et al}
 ~\cite{Prisacariu2011}. In addition to generating a shaded rendering, the proposed approach generates a 
-probabilistic map. For a review of the general raycasting algorithm, refer to 
+probabilistic map. For a review of the general ray-casting algorithm, refer to 
 Section~\ref{subsec:moseg_static_rendering}.
 
 By accumulating log probabilities of voxels visited on traversal of the ray, a differentiable representation 
 of the process can be obtained. However, this relies on the use of a differentiable PMF\@. As with the approach 
 to object reconstruction outlined in Chapter~\ref{chap:probobj}, the desired behaviour is that the distribution 
 shall encode the probability of a voxel being very close to the isosurface. As such, the log-sigmoid of Equation
-~\ref{eqn:probobj_surface_prior_cdf} is used. Thus, for a pixel location \( [x, y] \), the output probabistic 
+~\ref{eqn:probobj_surface_prior_cdf} is used. Thus, for a pixel location \( [x, y] \), the output probabilistic 
 value is as follows in Equation~\ref{eqn:spp_diff_raycast}.
 \begin{equation}
 ~\label{eqn:spp_diff_raycast}
@@ -1026,8 +1026,8 @@ as given in Equation~\ref{eqn:spp_idct} of Section~\ref{subsec:sdf_extraction}.
 
 In Equations~\ref{eqn:spp_grad_chain_pose} and~\ref{eqn:spp_grad_chain_latent}, the gradients 
 are averaged over the left and right sides of the Siamese architecture. This is due to the fact 
-that in such an architecture, neural network parameters are shared by both subnetworks. Without 
-the averaging over each subnetwork, exploding gradient updates can be problematic.
+that in such an architecture, neural network parameters are shared by both sub-networks. Without 
+the averaging over each sub-network, exploding gradient updates can be problematic.
 
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
@@ -1087,10 +1087,11 @@ different points in the training process, suggesting that the model predictions 
 As outlined in Section~\ref{sec:spp_qualitative}, early results demonstrate behaviour encouraging of the model 
 formulation, however, it is clear that refinement to the approach is likely required. As the proposed method is 
 addressing the very difficult problem of \textit{weakly-supervised} training of a model on a problem for which 
-the solution space is broad, it is neccessary to quantify the model's performance.
+the solution space is broad, it is necessary to quantify the model's performance.
 
-Given in Figure~\ref{figure:spp_training} is the model's loss, quantified by Equation~\ref{eqn:spp_overall_loss} over a trainining session 
-of \( 500,000 \) examples, utilising the Adam Optimizer~\cite{Diederik2014} and a learning rate of \( 0.0001 \).
+Given in Figure~\ref{figure:spp_training} is the model's loss, quantified by Equation~\ref{eqn:spp_overall_loss} over 
+a training session of \( 500,000 \) examples, utilising the Adam Optimizer~\cite{Diederik2014} and a learning rate 
+of \( 0.0001 \).
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=.8\linewidth]{figures/spp/quant/scores_170_smooth.eps}
@@ -1135,17 +1136,17 @@ the model is not yet at the level aspired to in the original research objectives
 and~\ref{sec:intro_aims_structure}. This section shall proceed to evaluate potentially prohibitive aspects of the 
 formulation outlined in this chapter.
 
-Firstly, as CNN models are notouriously difficult to train~\cite{Glorot2010}, it is plausible that during training, 
+Firstly, as CNN models are notoriously difficult to train~\cite{Glorot2010}, it is plausible that during training, 
 the optimiser is unable to traverse the solution space to an optimal minima, instead becoming stuck in a suboptimal 
 minima. Such behaviour may be caused by factors ranging from insufficiently varying data preventing the model from 
-``learning'' a sufficiently general functional mapping, to unsuitable nonlinear activations. Furthermore, the 
+``learning'' a sufficiently general functional mapping, to unsuitable non-linear activations. Furthermore, the 
 architecture of the CNN itself may not be suitable for the specific problem at hand. However, it should be noted that 
 during the development of the model outlined in this work, the CNN component has been tested on the ResNet 34, 50 and 
 101 architectures. The experiments given in Sections~\ref{sec:spp_qualitative} and~\ref{sec:spp_quantitative} use 
 the ResNet-101 architecture.
 
 Another potential cause of the outlined training issues is the proposed loss function not penalising incorrect 
-predictions in a manner that is conducive to model convergence. Note that if a predicted pose causes the raycasting 
+predictions in a manner that is conducive to model convergence. Note that if a predicted pose causes the ray-casting 
 stage to miss the isosurface of the predicted shape, the gradient passed back from the information theoretic loss 
 of Section~\ref{sec:spp_loss} could potentially not guide the optimiser appropriately. 
 
