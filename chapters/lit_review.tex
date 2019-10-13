@@ -69,7 +69,7 @@ using monocular RGB images. Unlike the work of \textit{Klein \& Murray}~\cite{Kl
 authors do not make use of features extracted from the scene, but rather dense, textured depth 
 maps. However, similar to the approach of \textit{Klein \& Murray}~\cite{Klein2007}, the authors 
 generate map components on a keyframe basis, which are used for the pose estimation phase within 
-a photometric loss against a dense model. The authors report real-time performance with commodity 
+a photometric loss against a dense model. The authors report real time performance with commodity 
 GPU acceleration. However, due to the reliance on a monocular RGB source, the authors report failure 
 cases in the presence of illumination changes in the scene.
 
@@ -400,14 +400,21 @@ as-rigid-as-possible~\cite{Igarashi2005} manner. However, the specification of o
 a sensor is suggestive of limited tracking ability. In addition, the type of sensor is not specified, 
 as such it is not clear what quality of sensing equipment is required to yield high quality results.
 
+\textit{Prisacariu et al}~\cite{Prisacariu2012} in \textit{2012} proposed a probabilistic approach to the 
+simultaneous tracking and segmentation of objects with \textit{a priori known} 3D shape. Appearance based 
+segmentation is performed in 2D, utilising Pixel Wise Posteriors (PWP)~\cite{Bibby2008}, with tracking performed 
+in 3D. The authors demonstrate real time performance with the use of GPU hardware and propose a simple extension 
+to the multiple object tracking case.
+
 In 2013, \textit{Ren et al}~\cite{Ren2013} proposed an approach to the tracking and reconstruction of 
 objects. Like \textit{Kolev et al}~\cite{Kolev2006}, the authors utilise a probabilistic formulation 
 based on the evolution of a level set representation. Initialised with a shape prior level set, the 
 proposed approach evolves the shape prior with respect to observations. Crucially, unlike the approach of 
 \textit{Kolev et al}~\cite{Kolev2006}, the proposed approach simultaneously optimises for object pose.
-The proposed system works with RGBD data and segments the object of interest using Pixel Wise Posteriors 
-(PWP)~\cite{Bibby2008}. It is noteworthy however that there are performance limitations of the proposed 
-approach and experiments show success for a limited set of target shapes.
+The proposed system works with RGBD data and segments the object of interest using PWP~\cite{Bibby2008}, as 
+with the aforementioned work of \textit{Prisacariu et al}~\cite{Prisacariu2012}. It is noteworthy however 
+that there are performance limitations of the proposed approach and experiments show success for a limited 
+set of target shapes.
 
 Later in 2015, \textit{Dou et al}~\cite{Dou2015} present a system for the reconstruction of deformable 
 objects using a Microsoft Kinect RGBD sensor. The proposed approach solves for a latent target shape 
