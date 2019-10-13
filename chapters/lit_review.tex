@@ -254,6 +254,15 @@ are fused into the scene model via the use of a Bayesian update procedure. The a
 degree of semantic accuracy with their approach, and highlight that due to the multi-view nature of the 
 approach, an improvement on the 2D case is also achieved on the NYUv2 dataset.
 
+Following thir aforementioned \textit{2017} contribution, \textit{McCormack et al}~\cite{McCormac2018} 
+introduce an object centric Dense SLAM system, leveraging recent advances in 2D semantic segmentation 
+understanding~\cite{He2017} to augment the traditional Dense SLAM pipeline. The authors utilise 2D 
+segmentation masks to spawn object centric TSDF volumes, into which RGBD depth measurements are fused. 
+Contrary to the traditional point-to-plane, ICP based tracking (and it's variants), the authors estimate 
+pose over a graph of individual objects, including the handling of loop closure events. Spurious object 
+instance detections are suppressed by maintaining an existence probability for each detection and it's 
+corresponding TSDF volume.
+
 The theme of dense 3D reconstruction with semantics is directly related to the research objectives 
 outlined in Section~\ref{sec:intro_aims_structure}. As outlined in this section, little research has 
 investigated semantic learning \textit{directly} on 3D geometry, though approaches such as that of 
@@ -347,7 +356,6 @@ solving of the warp field is achieved by the use of Dual Quaternion blending~\ci
 Though promising results are presented, there are limitations, such as lack of robustness to 
 open/closed topology changes, such as hands. In addition, the authors highlight scalability issues.
 
-% TODO matthias, siemens, TUM
 The research outlined in this section is pertinent to the work presented in Chapter~\ref{chap:moseg}, 
 which presents an approach to the handling of dynamics for dense reconstruction in real time, and 
 with a volumetric representation. Though the aforementioned works of \textit{Perera et al}

@@ -1186,6 +1186,17 @@ level of highly optimised~\cite{Prisacariu2014} \textit{KinectFusion}~\cite{Newc
 implementations, demonstrating feasibility for application to problems that require 
 real time performance.
 
+Since the development of the work outlined in this chapter, there has been further research into 
+combined dynamic \textit{and} object-centric SLAM\@. \textit{R\''{u}nz et al}~\cite{Runz2017} in 
+\textit{2017} introduced an approach to dynamic SLAM in which dynamic objects are segmented (in image 
+space), reconstructed and tracked independently. In a future iteration of this work, such a schema 
+could be adopted and conbined with the approach of this chapter to yield a real-time, object aware 
+dynamic SLAM system. The authors cite the performance of their approach as being \( \approx 12Hz \). 
+Further advancements by \textit{R\''{u}nz et al}~\cite{Runz2018} utilise cues from a
+state-of-the-art~\cite{He2017} semantic segmentation algorithm to identify probable dynamic 
+objects in a given scene, for instance humans, and exclude them from pose estimation accordingly. This 
+contribution provides an additional, potential future expansion upon the contributions of this chapter.
+
 With the contributions outlined in this work, the proposed approach provides a platform 
 for further research into problems such as live semantic scene understanding and dense scene 
 flow. The proposed approach has the potential to be further developed in to a fully dynamic, 

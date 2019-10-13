@@ -2,5 +2,9 @@
     "python.pythonPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\Anaconda3_64\\python.exe",
     "files.associations": {
         "fstream": "cpp"
-    }
+    },
+    "latex-workshop.view.pdf.external.viewer.command": "C:/Program Files (x86)/Adobe/Acrobat Reader DC/Reader/AcroRd32.exe",
+    "latex-workshop.view.pdf.external.viewer.args": [
+        "%PDF%"
+    ]
 }
