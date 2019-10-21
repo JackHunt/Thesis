@@ -988,7 +988,10 @@ trajectory quality. The scenes provided in the dataset contain a range of
 dynamic components ranging from arm movement to people walking around, occluding
 parts of the scene. Comparison is drawn against the standard InfiniTAM framework
 on which the proposed system is based, using standard, static InfiniTAM as a
-baseline.
+baseline. It should be noted that both the approach outlined in this chapter \textit{and} 
+the baseline implementation (InfiniTAM) utilise a simple ICP outlier rejection routine 
+to improve tracking performance.
+
 ~\footnotetext{Technical University of Munich, RGB-D SLAM Dataset and Benchmark.\\
 \url{https://vision.in.tum.de/data/datasets/rgbd-dataset}}
 
@@ -1101,6 +1104,10 @@ is 0.011843 seconds, the standard deviation over the sequence is 0.000862 second
 frame times are due to the varying degree of observed dynamic scene components. However, the proposed 
 approach performs at \( \approx 84Hz \) versus the standard pipeline's performance of \( \approx 136Hz \), 
 indicating a non detrimental performance deficit.
+
+It should be noted that the quoted performance is that of the pipeline outlined in this chapter and 
+does not include the time taken to perform on-screen rendering (OpenGL texture writing and GLUT window 
+updating).
 
 \section{Application to Semantic Scene Understanding}
 ~\label{sec:moseg_semantic}
