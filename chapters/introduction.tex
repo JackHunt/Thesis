@@ -65,7 +65,7 @@ people walking in the camera's view). The traditional dense SLAM pipeline is una
 globally consistent model in such environments. In addition, when using a combined reconstruction and 
 semantics system such as that shown in Figure~\ref{figure:spaint_teaser}, many of the descriptive cues that 
 enable the segmentation to be performed rely on features utilising 2D image information. As such, there is 
-no true semantic 3D object learning and recognition.
+no true 3D object learning and recognition.
 
 As outlined, traditional dense SLAM systems have difficulty performing dense reconstruction in an 
 environment where there is motion. The aforementioned sensor pose estimation phase in these systems
@@ -83,7 +83,7 @@ reconstructing a busy working environment in which there is a high level of dyna
 doors opening etc), an ideal reconstruction would not include artefacts of such motion. As such, the 
 reconstruction system would be required to identify such components and account for them in the 
 reconstruction process. Additionally, a system that is capable of detecting and segmenting such motion 
-would additionally be capable of extracting pertinent semantic information.
+would additionally be capable of extracting pertinent cues for object recognition.
 
 \section{Object Reconstruction}
 ~\label{sec:intro_object_recon}
@@ -91,9 +91,9 @@ Modern machine learning provides much of the semantic and contextual information
 inferences over the state of the world, as observed by a sensor (such as a camera). Many advances 
 have been made in recent years on the tasks of object detection and semantic segmentation, in standard 2D 
 images~\cite{Girshick2014,Shelhamer2017,Civera2011}. The application of such techniques in 3D vision allows 
-for semantic reasoning about 2D representations of 3D objects, as shown in the semantic SLAM system of 
-Figure~\ref{figure:spaint_teaser}, in which semantic labellings of 3D objects are applied to a 
-dense 3D reconstruction of a scene.
+for semantic reasoning and/or discrimination about 2D representations of 3D objects, as shown in the semantic 
+SLAM system of Figure~\ref{figure:spaint_teaser}, in which semantic and/or class labellings of 3D objects are 
+applied to a dense 3D reconstruction of a scene.
 
 However, there are many technical challenges that must be overcome before such efficacy on these tasks is reached 
 for the \textit{true} 3D case (where both learning and inference are performed from geometry). Many modern Artificial 
@@ -163,7 +163,7 @@ such, the following main research challenges are addressed in this work.
   \end{itemize}
   \item Identifying the dynamic components of a scene.
   \begin{itemize}
-    \item Utilising for semantics.
+    \item Utilising for object recognition.
   \end{itemize}
   \item The reconstruction of arbitrary objects in a consistent manner.
   \begin{itemize}

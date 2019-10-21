@@ -5,8 +5,8 @@ in dynamic scenes with RGBD observations. The approach outlined in this chapter 
 capable of performing dense reconstruction in dynamic environments and segmenting objects 
 undergoing motion. The approach presented in this chapter yields an improvement in pose 
 estimation accuracy with respect to the standard KinectFusion-like pipeline. Furthermore, 
-it is demonstrated that the segmentation of dynamic objects may be leveraged for semantic 
-purposes.
+it is demonstrated that the segmentation of dynamic objects may be leveraged for 3D 
+object recognition purposes.
 \end{chapterabstract}
 
 \section{Introduction}
@@ -51,7 +51,7 @@ Figure~\ref{figure:moseg_teaser}.
     \begin{tabular}[t]{@{}l@{}}
       Examples of motion segmentation (note that red indicates motion):\\
       (a) A person sits on a sofa.\\
-      (b) Dynamic objects that have become stable and semantically identified.\\
+      (b) Dynamic objects that have become stable and have been identified by class.\\
       (c) A person waving their arms in the scene.
     \end{tabular}
   }
@@ -1109,7 +1109,7 @@ It should be noted that the quoted performance is that of the pipeline outlined 
 does not include the time taken to perform on-screen rendering (OpenGL texture writing and GLUT window 
 updating).
 
-\section{Application to Semantic Scene Understanding}
+\section{Application to 3D Object Recognition}
 ~\label{sec:moseg_semantic}
 The dynamic scene handling approach described in Section~\ref{sec:moseg_dynamic_fusion}
 can be used to prevent moving objects from being integrated into the static
