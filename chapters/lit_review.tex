@@ -272,7 +272,7 @@ such capabilities are desirable, as outlined in Chapter~\ref{chap:intro}. The co
 in this work are intended to facilitate such research.
 
 %% Dynamic & Non-Rigid SLAM.
-\section{Dynamic & Non-Rigid SLAM, Motion Segmentation and Optical Flow}
+\section{Dynamic \& Non-Rigid SLAM, Motion Segmentation and Optical Flow}
 ~\label{sec:lit_review_dynamic}
 Sections~\ref{sec:lit_review_tam} and~\ref{sec:lit_review_semantic} provided an assessment 
 of pertinent literature in the fields of SLAM and Semantic SLAM.\@ However, all of the 
@@ -303,6 +303,11 @@ automatically. The authors utilise Maximum Flow~\cite{Lamich2017} to solve a dis
 function for each layer, where object layers are a set of depth ordered Markov Random Fields (MRF) 
 ~\cite{BishopPRML, Murphy2012ML}.
 
+Also in 2012, \textit{Vicente \& Agapito}~\cite{Vicente2012} introduced an approach to the problem of 
+non rigid reconstruction from monocular RGB video. In the proposed approach, the authors utilise an 
+inextensibility constraint, such that the approach performs template-less reconstruction. The authors 
+also cite the lack of post processing requirement as an advantage over related methods.
+
 \textit{Unger et al}~\cite{Unger2012}, again in 2012, proposed an alternative system for the 
 estimation of motion of objects undergoing rigid body motion in images. The authors present a 
 variational formulation for motion estimation and segmentation with occlusion handling. As with 
@@ -312,13 +317,13 @@ of the flow field for each object undergoing motion, with labels encoded with an
 algorithm over the MRF models, \textit{Unger et al} solved for flow and labels within a Primal-Dual
 ~\cite{Boyd2004Convex} based optimisation framework.
 
-In the same year, \textit{Herbst et al}~\cite{Herbst2013} proposed an extension to optical 
+In 2013, \textit{Herbst et al}~\cite{Herbst2013} proposed an extension to optical 
 flow estimation to 3D scenes; the proposed system solves for Scene Flow based on RGBD data. 
 The proposed approach is similar to that of \textit{Brox et al}~\cite{Brox2004}, with scene flow 
 being formulated as a variational optimisation problem. The presented approach is a generalisation 
 of the well established variational optical flow algorithm of \textit{Brox et al}~\cite{Brox2004}.
 
-In the following year, \textit{St{\"u}ckler et al}~\cite{Stueckler2013} presented a framework 
+In the same year, \textit{St{\"u}ckler et al}~\cite{Stueckler2013} presented a framework 
 for the segmentation of rigid body motion from RGBD data. The authors represent regions undergoing 
 rigid body motion and their associated motion parameters as latent variables, with the resultant 
 segmentations and parameters being solved for within an Expectation Maximisation
@@ -401,7 +406,7 @@ a sensor is suggestive of limited tracking ability. In addition, the type of sen
 as such it is not clear what quality of sensing equipment is required to yield high quality results.
 
 \textit{Llado et al}~\cite{Llado2011} introduced in 2011 an approach to the 3D reconstruction of 
-\texit{Deformable} objects. The proposed approach makes use of an uncalibrated RGB stereo rig, requiring 
+\textit{Deformable} objects. The proposed approach makes use of an uncalibrated RGB stereo rig, requiring 
 minimal \textit{a-priori} setup. The approach to nonrigid reconstruction taken centers around the computation 
 of a mean shape, to which live and reference frames are registered. From the registration to the mean shape, 
 rigidly moving points may be identified. The final \textit{deformed} model is recovered as a nonlinear 
@@ -443,7 +448,7 @@ detection point. The resultant shape surface is extracted as a triangular mesh. 
 demonstrate high quality reconstruction results, but with overnight run times indicating that it is not 
 suitable for real time use.
 
-Also in 2015, \texit{Yu et al}~\cite{Yu2015} proposed a novel approach to non-rigid SfM using a monocular 
+Also in 2015, \textit{Yu et al}~\cite{Yu2015} proposed a novel approach to non-rigid SfM using a monocular 
 RGB video stream. The authors outline a shape template based algorithm, in which the template shape is 
 constructed from a short rigid sequence (i.e an object of interest is not \textit{non-rigidly deforming}). 
 Once a template shape has been obtained, the algorithm proceeds to recover, for each frame, the deformed 
@@ -541,7 +546,7 @@ weakly-supervised manner on silhouettes and 3D shapes with a log-barrier objecti
 However, the applicability to ``real world'' scenarios is questionable, due to the synthetic nature of 
 the data used to train and evaluate the network.
 
-\testit{Grabner et al}~\cite{Grabner18} in \textit{2018} introduce a CNN based approach to the problem of 
+\textit{Grabner et al}~\cite{Grabner18} in \textit{2018} introduce a CNN based approach to the problem of 
 simultaneous pose estimation and 3D shape retrieval. The authors use the estimated pose of a given 
 object of interest as a shape prior for 3D model lookup. The authors render depth images of a given retrieved 
 shape under the predicted pose for evaluation in a multi-view photometric loss for evaluation against 
