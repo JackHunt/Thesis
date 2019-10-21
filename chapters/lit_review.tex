@@ -428,6 +428,13 @@ with the aforementioned work of \textit{Prisacariu et al}~\cite{Prisacariu2012}.
 that there are performance limitations of the proposed approach and experiments show success for a limited 
 set of target shapes.
 
+\textit{Agudo et al}~\cite{Agudo2014} in 2014 proposed an approach to dense, non-rigid SfM. The authors outline 
+an algorithm that is sequential in nature (rather than offline, batch processed) and takes as input a single 
+monocular RGB stream. The approach taken is to model the mechanical dynamic behaviour of an objects surface over 
+a rolling temporal window. The authors perform EM in a tractable manner by marginalising over the time 
+dependent deformation parameters of the mechanical model. The proposed approach demonstrates efficacy for 
+on-line, instantaneous recovery of a given objects mesh.
+
 Later in 2015, \textit{Dou et al}~\cite{Dou2015} present a system for the reconstruction of deformable 
 objects using a Microsoft Kinect RGBD sensor. The proposed approach solves for a latent target shape 
 and shape deformations by utilising bundle adjustment~\cite{Triggs1999}. The authors report that loop 
@@ -435,6 +442,14 @@ closures are automatically detected, with errors incurred by drift being distrib
 detection point. The resultant shape surface is extracted as a triangular mesh. The presented experiments 
 demonstrate high quality reconstruction results, but with overnight run times indicating that it is not 
 suitable for real time use.
+
+Also in 2015, \texit{Yu et al}~\cite{Yu2015} proposed a novel approach to non-rigid SfM using a monocular 
+RGB video stream. The authors outline a shape template based algorithm, in which the template shape is 
+constructed from a short rigid sequence (i.e an object of interest is not \textit{non-rigidly deforming}). 
+Once a template shape has been obtained, the algorithm proceeds to recover, for each frame, the deformed 
+object model via an energy minimization over a photometric loss. Though the authors present impressive, 
+high quality results, the requirement of a rigid sequence \textit{a-priori} may limit the scope of 
+applicability of the approach.
 
 In the following year, \textit{Gupta et al}~\cite{Gupta2016} proposed a system for the reconstruction and 
 segmentation of 3D objects from data obtained with an RGBD sensor. The reconstructed object is represented 
