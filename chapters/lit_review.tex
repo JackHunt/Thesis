@@ -271,14 +271,14 @@ lack of readily available 3D data and the increased complexity of dealing with e
 such capabilities are desirable, as outlined in Chapter~\ref{chap:intro}. The contributions that follow 
 in this work are intended to facilitate such research.
 
-%% Dynamic SLAM.
-\section{Dynamic SLAM, Motion Segmentation and Optical Flow}
+%% Dynamic & Non-Rigid SLAM.
+\section{Dynamic & Non-Rigid SLAM, Motion Segmentation and Optical Flow}
 ~\label{sec:lit_review_dynamic}
 Sections~\ref{sec:lit_review_tam} and~\ref{sec:lit_review_semantic} provided an assessment 
 of pertinent literature in the fields of SLAM and Semantic SLAM.\@ However, all of the 
 approaches outlined in these sections are limited to use in static scenes only without 
-the capability to accurately operate in an environment that contains moving objects. This 
-section shall explore pertinent literature on the topics of \textit{Dynamic SLAM}, 
+the capability to accurately operate in an environment that contains moving or deforming objects. 
+This section shall explore pertinent literature on the topics of \textit{Dynamic SLAM}, 
 \textit{Motion Segmentation} and \textit{Optical Flow}. As such, the general focus of the 
 work surveyed in this section is the detection, estimation and segmentation of motion in 
 dynamic scenes.
@@ -400,13 +400,25 @@ as-rigid-as-possible~\cite{Igarashi2005} manner. However, the specification of o
 a sensor is suggestive of limited tracking ability. In addition, the type of sensor is not specified, 
 as such it is not clear what quality of sensing equipment is required to yield high quality results.
 
+\textit{Llado et al}~\cite{Llado2011} introduced in 2011 an approach to the 3D reconstruction of 
+\texit{Deformable} objects. The proposed approach makes use of an uncalibrated RGB stereo rig, requiring 
+minimal \textit{a-priori} setup. The approach to nonrigid reconstruction taken centers around the computation 
+of a mean shape, to which live and reference frames are registered. From the registration to the mean shape, 
+rigidly moving points may be identified. The final \textit{deformed} model is recovered as a nonlinear 
+optimisation problem. 
+
 \textit{Prisacariu et al}~\cite{Prisacariu2012} in \textit{2012} proposed a probabilistic approach to the 
 simultaneous tracking and segmentation of objects with \textit{a priori known} 3D shape. Appearance based 
 segmentation is performed in 2D, utilising Pixel Wise Posteriors (PWP)~\cite{Bibby2008}, with tracking performed 
 in 3D. The authors demonstrate real time performance with the use of GPU hardware and propose a simple extension 
 to the multiple object tracking case.
 
-In 2013, \textit{Ren et al}~\cite{Ren2013} proposed an approach to the tracking and reconstruction of 
+In 2013, \textit{Garg et al}~\cite{Garg2013} introduced an approach to dense, ron-rigid surface reconstruction 
+from monocular video. The authors present an approach to non-rigid SfM as a variational energy minimisation 
+problem that does not require a shape prior. The author's report efficacy on the modelling of an instantaneous 
+objects deformed state for a given frame.
+
+Also in 2013, \textit{Ren et al}~\cite{Ren2013} proposed an approach to the tracking and reconstruction of 
 objects. Like \textit{Kolev et al}~\cite{Kolev2006}, the authors utilise a probabilistic formulation 
 based on the evolution of a level set representation. Initialised with a shape prior level set, the 
 proposed approach evolves the shape prior with respect to observations. Crucially, unlike the approach of 
