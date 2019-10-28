@@ -20,7 +20,7 @@ collection, it is less applicable in scenarios where full sensor coverage of the
 of interest is not possible, as outlined in the research problems in Section
 ~\ref{sec:intro_aims_structure}. When a full view of an object is not available, only a 
 partial reconstruction may be built. Data driven, learning based approaches that yield 
-reconstructions as predictions from a generative model, however, do not have such a limitation. 
+reconstructions as predictions from a generative model do not have such a limitation. 
 However, for application as a direct replacement for manual reconstruction, pose estimation 
 must also be performed.
 
@@ -29,39 +29,35 @@ shape prediction, as outlined in Section~\ref{sec:lit_review_prediction}. Howeve
 this progress has been on the two problems when decoupled. In this work, an approach is 
 proposed to the problem of simultaneous shape and pose prediction. The first 
 difference in this work to those outlined in Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
-is the use of stereo RGB frames versus RGBD\@.
-
-The reason for the change of input data format is twofold. First, the use of RGBD is prohibitive 
-when considering outdoor environments where lighting conditions may prevent RGBD sensors, such as the 
-Microsoft Kinect, from producing a meaningful depth map. Second, the intuition that utilising multiple 
-views of an object (from each sensor in the stereo pair) will make the pose estimation more amenable to 
-learning based methods, due to the inherent disparity information from the frame pair.
+is the use of monocular RGB frames versus RGBD\@. The central reason for the change of input data 
+format is that the use of RGBD is prohibitive when considering outdoor environments where lighting 
+conditions may prevent RGBD sensors, such as the Microsoft Kinect, from producing a meaningful depth map.
 
 The second major deviation from the contributions of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
 is the removal of the dependence on temporally consistent input sequences. Rather, in this work 
-the proposed system performs shape and pose prediction from an instantaneous
-stereo pair, requiring no temporal consistency in both the training and prediction 
-phases. As such, there is no iterative solving for shape and pose per frame, rather, the process 
-is framed as an instantaneous regression task. However, this work makes use of volumetric
-shape representations, as with the other works outlined in Chapters~\ref{chap:moseg} and
-~\ref{chap:probobj}.
+the proposed system performs shape and pose prediction from an instantaneous, monocular RGB frame, 
+requiring no temporal consistency in both the training and prediction phases. As such, there is no 
+iterative solving for shape and pose per frame, rather, the process is framed as an instantaneous 
+regression task. However, this work makes use of volumetric shape representations, as with the other 
+works outlined in Chapters~\ref{chap:moseg} and~\ref{chap:probobj}.
 
-The approach outlined in this chapter makes use of Siamese~\cite{Bromley1993} 
-CNN's and GPLVM's to jointly regress shape and pose given a stereo pair with an object of interest 
-present in both frames. The training of the model is unsupervised and requires only a segmentation 
-of the object of interest in the input frames to train. The proposed system regresses rotational and 
-translational parameters directly from the neural network component, whilst the object shape is 
-a draw from a GPLVM\@. The use of a GPLVM for latent space embeddings of 3D shape allows for a simple 
-way to learn complex 3D geometrical features, thus simplifying the learning tasks of the neural network. 
-In the proposed approach, the neural network component need only learn a mapping from observation to latent 
-space, rather than from observation to full geometry for the shape of interest.
+The approach outlined in this chapter makes use of CNN's and GPLVM's to jointly regress shape and pose 
+given an RGB frame with an object (or objects) of interest present in the view frustum. The training of 
+the model is part supervised (pose) and part semi-supervised (3D shape), requiring a ground 6DoF pose and 
+a segmentation of the object(s) of interest. The proposed system regresses rotational and translational 
+parameters directly from the neural network component, whilst the object shape is a draw from a GPLVM\@. 
+The use of a GPLVM for latent space embeddings of 3D shape allows for a simple way to learn complex 3D 
+geometrical features, thus simplifying the learning tasks of the neural network. In the proposed approach, 
+the neural network component need only learn a mapping from observation to latent space, rather than from 
+observation to full geometry for the shape of interest.
 
-The system is trained on an information theoretic loss over a rendering of a predicted 
-shape under it's associated predicted pose, with respect to a given detection segmentation. As such, the 
-model is trained in a weakly-supervised manner, with neither ground truth shape or pose. Though such an 
-approach presents a greater challenge than in the case of known ground truth, it does widen the applicability 
-of the approach. In many \textit{real world} scenarios it is not possible to obtain such ground truth data 
-without first solving the problem of this work.
+The system is based on the \textit{Faster-RCNN} approach of \textit{Ren et al}~\cite{Ren2015RCNN}, trained 
+on a multi-task loss over detection, classification, pose and shape. For training of shape, the loss is evaluated 
+in terms of a rendering of the predicted shape under it's associated pose, against a ground truth segmentation. 
+As such, the shape component of the model is trained in a weakly-supervised manner, as there is no ground truth 
+3D shape. Though such an approach presents a greater challenge than in the case of known ground truth for 3D shape, 
+it does widen the applicability of the approach. In many \textit{real world} scenarios it is not possible to obtain 
+such ground truth data without first solving the problem of this work.
 
 As outlined previously, the proposed approach differs from that of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
 in that it is data driven. Rather than instantaneous algorithmic procedures being performed at each frame, the 
