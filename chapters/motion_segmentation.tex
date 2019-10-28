@@ -781,13 +781,22 @@ voxel block are computed. For each voxel block, the mean absolute difference
 follows in Equation~\ref{eqn:moseg_stability_value}.
 \begin{equation}
   \label{eqn:moseg_stability_value}
-  \tau_{\mathcal{V}} = \Bigg[ \frac{1}{|\mathcal{V}|} \sum_{v \in \mathcal{V}}
-  \bigg|\bm{\Phi}^{d}(v) - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg)\bigg| \Bigg]
+  \tau_{\mathcal{V}} = \frac{1}{|\mathcal{V}|} \sum_{v \in \mathcal{V}} \Bigg[ 
+    \bigg| \bm{\Phi}^{d}(v) - \text{min}\bigg(1, \frac{\eta}{\mu}\bigg) \bigg| +
+    \bigg| \bm{\Phi}^{d}_{rgb}(v) - \bm{\omega} \bigg|
+  \Bigg]
 \end{equation}
 
+Note that in Equation~\ref{eqn:moseg_stability_value}, \( \bm{\omega} \) is the RGB 
+pixel corresponding to the depth pixel from which the depth raycast was performed. Additionally,
+\( \bm{\Phi}^{d}_{rgb}(v) \) is the RGB value of the voxel \( v \) in the dynamic scene model.
+
 The stability label \( l_{\mathcal{V}} \in \{\text{stable}, \text{unstable}\} \) for
-a given voxel block \(\mathcal{V}\) is determined by thresholding on \( \xi \) 
-(empirically set to \(0.3m\)), as follows in Equation~\ref{eqn:moseg_stability_labelling}.
+a given voxel block \(\mathcal{V}\) is determined by thresholding on \( \xi \), as 
+follows in Equation~\ref{eqn:moseg_stability_labelling}. Note that the voxel block 
+score computed in Equation~\ref{eqn:moseg_stability_value} are min-max normalised block 
+wise to the interval \( \left[ 0, 1 \right] \) prior to the evaluation of 
+Equation~\ref{eqn:moseg_stability_labelling}.
 \begin{equation}
   \label{eqn:moseg_stability_labelling}
   l_{\mathcal{V}} =
@@ -843,6 +852,23 @@ Similarly, the update for the TSDF values is as follows in Equation
   \phi^{d}_{t-1}(\bar{v}) \bm{\Phi}^{d}_{t-1}(\bar{v})
   \bigg]
 \end{equation}
+
+\subsubsection{Removal of Static Blocks Undergoing Motion}
+~\label{subsub:moseg_block_removal}
+In the case that a voxel block that has been integrated into the static model 
+is detected to be undergoing motion in the dynamic model, it is simply removed 
+from the static model. Due to the \( 1:1 \) correspondence between the static 
+and dynamic scenes, this removal is trivial and computationally inexpensive. 
+
+Following the removal of a previously static voxel block from the static scene 
+model, any depth observations that have been integrated into the corresponding 
+space in the dynamic model must follow the integration procedure of 
+Equations~\ref{eqn:moseg_weight_update} and~\ref{eqn:moseg_sdf_update} once 
+labelled as static, as these quanitites are reset to their initial state. The 
+removal of a voxel block from the static model excludes it from the following 
+ICP pose estimation procedure.
+
+% TODO: pictures
 
 \subsection{Pipeline Summary}
 ~\label{subsec:moseg_pipeline_summary}
@@ -997,18 +1023,18 @@ to improve tracking performance.
 
 \begin{table}[!htbp]
 \begin{center}
-  \begin{tabular}{l c c}
-    \emph{TUM Standard Sequence Name} & \emph{MoSeg} ATE (m) & \emph{Baseline} ATE (m) \\
+  \begin{tabular}{l c c c}
+    \emph{TUM Standard Sequence Name} & \emph{MoSeg} ATE (m) & \emph{ITM} ATE (m)  & \emph{EF} ATE (m)\\
     \midrule
-    \textsf{fr2-desk-with-person} & \textbf{0.158 \std{0.091}} & 0.297 \std{0.193}\\
-    \textsf{fr3-sitting-static} & 0.014 \std{0.008} & \textbf{0.012 \std{0.007}}\\
-    \textsf{fr3-sitting-xyz} & 0.064 \std{0.031} & \textbf{0.053 \std{0.029}}\\
-    \textsf{fr3-sitting-halfsphere} & 0.142 \std{0.063} & \textbf{0.115 \std{0.049}}\\
-    \textsf{fr3-sitting-rpy} & \textbf{0.056 \std{0.033}} & 0.081 \std{0.051}\\
-    \textsf{fr3-walking-static} & \textbf{0.294 \std{0.153}} & 0.999 \std{0.178}\\
-    \textsf{fr3-walking-xyz} & \textbf{0.385 \std{0.271}} & 0.544 \std{0.343}\\
-    \textsf{fr3-walking-halfsphere} & \textbf{0.539 \std{0.360}} & 0.762 \std{0.367}\\
-    \textsf{fr3-walking-rpy} & \textbf{0.662 \std{0.335}} & 0.843 \std{0.365}\\
+    \textsf{fr2-desk-with-person} & \textbf{0.158 \std{0.091}} & 0.297 \std{0.193} & NA\\
+    \textsf{fr3-sitting-static} & 0.014 \std{0.008} & \textbf{0.012 \std{0.007}} & 0.009\\
+    \textsf{fr3-sitting-xyz} & 0.064 \std{0.031} & \textbf{0.053 \std{0.029}} & 0.026\\
+    \textsf{fr3-sitting-halfsphere} & 0.142 \std{0.063} & \textbf{0.115 \std{0.049}} & 0.138\\
+    \textsf{fr3-sitting-rpy} & \textbf{0.056 \std{0.033}} & 0.081 \std{0.051} & NA\\
+    \textsf{fr3-walking-static} & \textbf{0.294 \std{0.153}} & 0.999 \std{0.178} & 0.062\\
+    \textsf{fr3-walking-xyz} & \textbf{0.385 \std{0.271}} & 0.544 \std{0.343} & 0.216\\
+    \textsf{fr3-walking-halfsphere} & \textbf{0.539 \std{0.360}} & 0.762 \std{0.367} & 0.209\\
+    \textsf{fr3-walking-rpy} & \textbf{0.662 \std{0.335}} & 0.843 \std{0.365} & NA\\
   \end{tabular}
 \end{center}
 \caption[Motion Segmentation ATE]
@@ -1044,18 +1070,18 @@ in Figure~\ref{figure:moseg_rte}.
 
 \begin{table}[!htbp]
 \begin{center}
-  \begin{tabular}{l c c}
-    \emph{TUM Standard Sequence Name} & \emph{MoSeg} RTE (m) & \emph{Baseline} RTE (m) \\
+  \begin{tabular}{l c c c}
+    \emph{TUM Standard Sequence Name} & \emph{MoSeg} RTE (m) & \emph{ITM} RTE (m) & EF (m) \\
     \midrule
-    \textsf{fr2-desk-with-person} & \textbf{0.023 \std{0.030}} & 0.026 \std{0.037}\\
-    \textsf{fr3-sitting-static} & 0.010 \std{0.008} & \textbf{0.010 \std{0.008}}\\
-    \textsf{fr3-sitting-xyz} & 0.028 \std{0.017} & \textbf{0.028 \std{0.017}}\\
-    \textsf{fr3-sitting-halfsphere} & \textbf{0.031 \std{0.033}} & 0.032 \std{0.029}\\
-    \textsf{fr3-sitting-rpy} & 0.073 \std{0.061} & \textbf{0.067 \std{0.065}}\\
-    \textsf{fr3-walking-static} & \textbf{0.082 \std{0.140}} & 0.163 \std{0.308}\\
-    \textsf{fr3-walking-xyz} & 0.410 \std{0.262} & \textbf{0.300 \std{0.252}}\\
-    \textsf{fr3-walking-halfsphere} & \textbf{0.245 \std{0.320}} & 0.305 \std{0.374}\\
-    \textsf{fr3-walking-rpy} & 0.482 \std{0.456} & \textbf{0.406 \std{0.364}}\\
+    \textsf{fr2-desk-with-person} & \textbf{0.023 \std{0.030}} & 0.026 \std{0.037} & NA\\
+    \textsf{fr3-sitting-static} & 0.010 \std{0.008} & \textbf{0.010 \std{0.008}} & 0.01\\
+    \textsf{fr3-sitting-xyz} & 0.028 \std{0.017} & \textbf{0.028 \std{0.017}} & 0.028\\
+    \textsf{fr3-sitting-halfsphere} & \textbf{0.031 \std{0.033}} & 0.032 \std{0.029} & 0.102\\
+    \textsf{fr3-sitting-rpy} & 0.073 \std{0.061} & \textbf{0.067 \std{0.065}} & NA\\
+    \textsf{fr3-walking-static} & \textbf{0.082 \std{0.140}} & 0.163 \std{0.308} & 0.058\\
+    \textsf{fr3-walking-xyz} & 0.410 \std{0.262} & \textbf{0.300 \std{0.252}} & 0.214\\
+    \textsf{fr3-walking-halfsphere} & \textbf{0.245 \std{0.320}} & 0.305 \std{0.374} & 0.163\\
+    \textsf{fr3-walking-rpy} & 0.482 \std{0.456} & \textbf{0.406 \std{0.364}} & NA\\
   \end{tabular}
 \end{center}
 \caption[Motion Segmentation RTE]
