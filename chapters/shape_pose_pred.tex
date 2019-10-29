@@ -101,28 +101,28 @@ segmentation of the object of interest.
 
 \subsection{Model Architecture}
 ~\label{subsec:spp_network_architecture}
-The model of the proposed approach is of a Siamese topology, where for a given stereo 
-pair, each of the left and right frames are passed to a separate network. From end to 
-end, the model contains for each of the Siamese networks, a ResNet-101~\cite{He2015}, 
+The model of the proposed approach is of an RCNN~\cite{Girshick2014} like topology, where for a 
+given input frame, a backbone network computes a feature map which is then provided to a Region 
+Proposal Network (RPN), responsible for providing candidate Regions of Interest (RoI) in the input image. 
+For the application outlined in this work, a true positive RoI corresponds to an object for which pose and 
+shape should be regressed. From end to end, the model contains a ResNet-101~\cite{He2015} backbone, an RPN,
 Linear Layers, Batch Normalisation Layers, Non-linear Activations, a mapping from Lie Algebra to 
 Lie Group (for pose), a GPLVM followed by an Inverse Discrete Cosine Transform (IDCT), a Ray-caster and 
-an information theoretic loss. 
+and a loss layer. As previously outlined, the loss consists of supervised and semi-supervised terms.
 
-The purpose of the ResNet-50 components is to extract pertinent features from the stereo 
-pair that are descriptive of the the object of interest in relation to the scene. For each 
-of the networks, the output of the ResNet-101 network is fed into two sub-networks consisting 
-of linear transforms and non-linear activations. The purpose of these sub-networks is to regress 
-a latent space point for object shape, and a 6DoF pose parameter vector for the object pose. 
-Following these two sub-networks is the aforementioned GPLVM and Lie Algebra mapping. The 
+The purpose of the ResNet-101 and RPN components is to extract, for each region proposal (object proposal), 
+feature maps from the input frame that are descriptive of the the object of interest in relation to the scene. 
+Each proposed feature maps is input into two sub-networks consisting of linear transforms and non-linear activations. 
+The purpose of these sub-networks is to regress a latent space point for object shape, and a 6DoF pose parameter vector 
+for the object pose.  Following these two sub-networks is the aforementioned GPLVM and Lie Algebra mapping. The 
 GPLVM generates a posterior mean over shape for a given latent space point, whilst the 
 Lie Algebra mapping generates an \( \mathbb{SE}(3) \) transform. 
 
 The IDCT decompresses the posterior mean output of the GPLVM to generate a valid SDF\@. Both the 
 resultant SDF and \( \mathbb{SE}(3) \) transform are passed to the ray-casting module, which generates 
-a rendering for the candidate shape and pose. Finally, this rendering with the initial detection is passed 
-to the loss layer which computes appearance statistics for the detection region and the rendering 
-which are used to quantify loss. The topology of the proposed model is outlined in Figure
-~\ref{figure:spp_pipeline}.
+a rendering for the candidate shape under the predicted pose. Finally, both this rendering and the ground truth 
+segmentation mask are passed to the loss layer which computes a similarity metric between the two masks (ground truth and rendered), 
+providing a tractible proxy loss for 3D shape. The topology of the proposed model is outlined in Figure~\ref{figure:spp_pipeline}.
 \begin{landscape}
   \begin{figure}[!htbp]
     \centering
@@ -136,6 +136,10 @@ which are used to quantify loss. The topology of the proposed model is outlined 
 
 \subsection{Neural Network Architecture}
 ~\label{subsec:spp_neural_architecture}
+TODO
+
+\subsubsection{Backbone Component}
+~\label{subsub:spp_neural_backbone}
 The ResNet architecture, introduced by \textit{He at al}~\cite{He2015}, is designed to overcome the 
 convergence challenges of very ``deep'' neural network models. The central reformulation in the 
 Residual Network (ResNet) model is the notion that layers learn \textit{residual functions} with respect to 
@@ -155,6 +159,18 @@ The formulation of Equation~\ref{eqn:resnet} is depicted in Figure~\ref{figure:r
 ~\label{figure:resnet_block}
 \end{figure}
 ~\footnotetext{Image copyright: \textit{He et al}~\cite{He2015}.}
+
+\subsubsection{Region Proposal Component}
+~\label{subsub:spp_neural_rpn}
+TODO + BBOX
+
+\subsubsection{Pose Regression Component}
+~\label{subsub:spp_neural_pose}
+TODO
+
+\subsubsection{Latent Space Shape Regression Component}
+~\label{subsub:spp_neural_latent}
+TODO
 
 % TODO: Reorder this; goes from high level intro to GP's... bit heavy 
 \section{Gaussian Process Latent Variable Model}
@@ -373,8 +389,8 @@ As such, the form of the normalized marginal likelihood \(P(\bm{Y} \given \bm{X}
 \( \bm{W} \) is given in Equation~\ref{eqn:spp_gp_marginal_simp}.
 \begin{equation}
   \label{eqn:spp_gp_marginal_simp}
-  P(\bf{Y \given \bm{X}, \beta}) = \mathcal{N}(\bm{Y} \given \bm{0}, 
-  \bm{X}^{T}\bm{X} + \beta^{-1}\bm{I})
+  P(\bm{Y} \given \bm{X}, \beta) = \mathcal{N}(\bm{Y} \given \bm{0}, 
+  \bm{X}^{T}\bm{X} + \beta^{-1} \bm{I})
 \end{equation}
 
 \subsection{Gaussian Process Fitting}
@@ -455,7 +471,7 @@ given in Equation~\ref{eqn:spp_gp_log_marginal_grad_kernel}.
 
 It should be noted that the gradient \( \frac{\partial \bm{\kappa}}{\partial \bm{X}} \)
 may also be substituted for \( \frac{\partial \bm{\kappa}}{\partial \theta} \), for 
-some hyperparameter \( \theta \) of the kernel \( \bm{\kappa} \). A common non-linear covariance 
+some hyperparameter \( \theta \) of a given kernel \( \bm{\kappa} \). A common non-linear covariance 
 kernel function in the GP literature is the Exponentiated Quadratic~\cite{Lawrence2005}, which takes 
 the form given in Equation~\ref{eqn:spp_exp_quad}.
 \begin{align}
@@ -526,9 +542,9 @@ gradients of \( \kappa(.) \) may be trivially derived, as in Equation
 ~\label{sec:spp_latent_shape_est}
 The form of the model outlined in Section~\ref{subsec:spp_gp_marginal_likelihood}
 when trained as outlined in Section~\ref{subsec:spp_gp_fitting} defines a GP prior 
-over the latent space embedding \( \bm{X} \). When regressing shape, it is desirable to 
-predict the 3D shape of a given latent space point, conditioned on this prior. This 
-conditioning yields a posterior mean estimation over 3D shape for a given latent space point.
+over the latent space embedding \( \bm{X} \). When regressing a DCT compressed 3D shape, it is 
+necessary to condition the DCT compressed 3D shape of a given latent space point on the GP prior. 
+This conditioning yields a posterior mean estimation over 3D shape for a given latent space point.
 
 The estimated posterior mean provides a Discrete Cosine Transform (DCT) compressed representation 
 of an SDF shape volume \( \bm{\Phi} \in \mathbb{R}^{N \times N \times N} \). The DCT compressed form 
