@@ -60,13 +60,14 @@ it does widen the applicability of the approach. In many \textit{real world} sce
 such ground truth data without first solving the problem of this work.
 
 As outlined previously, the proposed approach differs from that of Chapters~\ref{chap:moseg} and~\ref{chap:probobj} 
-in that it is data driven. Rather than instantaneous algorithmic procedures being performed at each frame, the 
-result of the input frames is derived from a learnt model. As outlined in Sections~\ref{sec:intro_spp} and
+in that it is data driven. Rather than predetermined algorithmic procedures being performed at each frame, the 
+result of the input frames is derived from a trained model. As outlined in Sections~\ref{sec:intro_spp} and
 ~\ref{sec:intro_aims_structure}, the research interest is in shape and pose prediction for objects in larger scale, 
-\textit{real world} environments. As such, the dataset used in this work is the 
-\textit{The KITTI Vision Benchmark Suite}~\cite{Geiger2013,Menze2015,Geiger2012}, which consists of a variety of frames 
-taken in RGB stereo, from a sensor rigged on top of a car. The dataset is thus suitable to the initial objective 
-of real world application. The object class of interest in this work is cars.
+\textit{real world} environments. However, due to the difficulty faced with earlier experiments with a fully semi-supervised 
+approach, a ground truth 6DoF pose is highly desirabe. As such, the dataset used in this work is the \textit{Virtual KITTI (VKITTI)} 
+dataset~\cite{Gaidon2016}, a photo-realistic, synthetic rendering of the \textit{The KITTI Vision Benchmark Suite}~\cite{Geiger2013,Menze2015,Geiger2012}. 
+The advantage of using the aformentioned dataset is the balance between being a real world dataset and having a reliable and 
+accurate ground truth for pose. The object class of interest in this work is Cars.
 
 The remainder of this chapter is structured as follows; Section~\ref{sec:spp_algorithm} introduces the high level 
 structure of the proposed model and the structure of it's neural network components. Section~\ref{sec:spp_gplvm} 
@@ -83,19 +84,20 @@ of it's use.
 
 \section{Algorithmic Overview}
 ~\label{sec:spp_algorithm}
-The proposed model takes as input an RGB stereo pair with the object of interest within the 
-view frustum of both frames. From this stereo pair, a ResNet~\cite{He2015} extracts feature descriptors 
-which are used to regress a latent space point for shape, and six \( \mathbb{SE}(3) \) pose parameters, forming 
-a Lie Algebra. The generated shape for the proposed latent space point is drawn from the distribution of 
-the Gaussian Process (GP) prior conditioned on the latent space point. The form of the pose is the Lie 
+The proposed model takes as input a monocular RGB frame with the object(s) of interest present within the 
+view frustum. From this RGB frame, a ResNet-101~\cite{He2015} extracts feature descriptors which are mapped 
+to a number of candidate object detections~\cite{Girshick2014,Girshick2015_2}. For each detection, the extracted 
+feature set is used to regress a latent space point for shape, and six \( \mathbb{SE}(3) \) pose parameters, forming 
+a Lie Algebra. The generated shape corresponding to the proposed latent space point is drawn from the distribution 
+of the Gaussian Process (GP) prior conditioned on the latent space point. The form of the pose is the Lie 
 Group mapping of the parameters, as given in Sections~\ref{subsub:moseg_static_camera_attitude} 
 and~\ref{subsec:probobj_analytic_alignment_map}. 
 
-The goodness of fit of the regressed shape and pose is quantified by by rendering the generated shape 
-under the predicted pose and computing an information theoretic loss between the image statistics of 
-the rendered region versus the initial segmentation region. To maintain continuity, the rendering operation is 
-formulated in a differentiable manner. As there is often no ground truth pose and shape for \textit{real world} 
-data, training is performed in a weakly-supervised manner against a segmentation of the object of interest.
+The loss function over the regressed shape and pose is quantified by by rendering the generated shape 
+under the predicted pose and computing a comparitive loss between the rendered region versus the provided semantic 
+segmentation region. To maintain continuity, the rendering operation is formulated in a differentiable manner. As there 
+is often no ground 3D shape for \textit{real world} data, training is performed in a weakly-supervised manner against a 
+segmentation of the object of interest.
 
 \subsection{Model Architecture}
 ~\label{subsec:spp_network_architecture}
