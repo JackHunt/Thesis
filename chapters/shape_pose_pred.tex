@@ -174,9 +174,18 @@ TODO + BBOX
 For each feature map obtained from an RoI object proposal, a 6DoF pose is regressed. For this 
 pose regression, a separate pose branch of the network is used, taking as input for proposal \( n \), 
 a vector \( \bm{x}_{n} \in \mathbb{R}^{1024} \) and provides output vector \( \bm{y}_{n} \in \mathbb{R}^{4} \). 
-The 4-dimensional output vector contains three rotational parameters and a single depth value.
+The 4-dimensional output vector contains three rotational parameters and a single depth value. The architecture 
+given in Figure~\ref{figure:spp_pose_block} consists of linear transforms and nonlinear activation functions. 
+For all but the first three output nodes, the Rectified Linear Unit (ReLU) is used. The first three output 
+nodes for the objects rotational parameters however is the Hyperbolic Tangent (Tanh) scaled by \( \pi \).
 
-%TODO diagram
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/spp/pose_net_diagram.pdf}
+  \caption[Pose Regression Network]{Pose regression network taking a 1024 dimensional 
+  input and providing a 4 dimensional output.}
+~\label{figure:spp_pose_block}
+\end{figure}
 
 It is not necessary to regress the entire 6DoF pose directly in the case of \textit{known} camera intrinsic 
 parameters. For a given depth value \( z \), the \( x \) and \( y \) coordinates of a detected object may 
