@@ -104,11 +104,20 @@ segmentation of the object of interest.
 The model of the proposed approach is of an RCNN~\cite{Girshick2014} like topology, where for a 
 given input frame, a backbone network computes a feature map which is then provided to a Region 
 Proposal Network (RPN), responsible for providing candidate Regions of Interest (RoI) in the input image. 
+A high level depiction of this architecture is given in Figure~\ref{figure:spp_rcnn}.
 For the application outlined in this work, a true positive RoI corresponds to an object for which pose and 
 shape should be regressed. From end to end, the model contains a ResNet-101~\cite{He2015} backbone, an RPN,
 Linear Layers, Batch Normalisation Layers, Non-linear Activations, a mapping from Lie Algebra to 
 Lie Group (for pose), a GPLVM followed by an Inverse Discrete Cosine Transform (IDCT), a Ray-caster and 
 and a loss layer. As previously outlined, the loss consists of supervised and semi-supervised terms.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.4\linewidth]{figures/spp/rcnn.png}
+  \caption[RCNN Architecture]{Faster R-CNN Architecture.\footnotemark}
+~\label{figure:spp_rcnn}
+\end{figure}
+~\footnotetext{Image copyright: \textit{Ren et al}~\cite{Ren2015RCNN}.}
 
 The purpose of the ResNet-101 and RPN components is to extract, for each region proposal (object proposal), 
 feature maps from the input frame that are descriptive of the the object of interest in relation to the scene. 
@@ -133,10 +142,6 @@ providing a tractible proxy loss for 3D shape. The topology of the proposed mode
 ~\label{figure:spp_pipeline}
   \end{figure}
 \end{landscape}
-
-\subsection{Neural Network Architecture}
-~\label{subsec:spp_neural_architecture}
-TODO
 
 \subsubsection{Backbone Component}
 ~\label{subsub:spp_neural_backbone}
@@ -166,7 +171,48 @@ TODO + BBOX
 
 \subsubsection{Pose Regression Component}
 ~\label{subsub:spp_neural_pose}
-TODO
+For each feature map obtained from an RoI object proposal, a 6DoF pose is regressed. For this 
+pose regression, a separate pose branch of the network is used, taking as input for proposal \( n \), 
+a vector \( \bm{x}_{n} \in \mathbb{R}^{1024} \) and provides output vector \( \bm{y}_{n} \in \mathbb{R}^{4} \). 
+The 4-dimensional output vector contains three rotational parameters and a single depth value.
+
+%TODO diagram
+
+It is not necessary to regress the entire 6DoF pose directly in the case of \textit{known} camera intrinsic 
+parameters. For a given depth value \( z \), the \( x \) and \( y \) coordinates of a detected object may 
+be recovered as follows in Equations~\ref{eqn:spp_x_3d} and~\ref{eqn:spp_y_3d} by making use of the 2D bounding 
+box coordinates regressed by the network, as in Section~\ref{subsub:spp_neural_rpn}.
+
+To recover the 3D position of an object of interest, a simple camera unprojection may be performed. 
+However, first the pixel coordinates of the object must be computed. Taking the object's \( x \) image 
+location to be the centre of the \( x \) dimension of the bounding box, and the the \( y \) coordinate 
+to be the bottom of the bounding box, the pixel coordinates may be computed as follows in 
+Equations~\ref{eqn:spp_x_pred} and~\ref{eqn:spp_y_pred}, for some bounding box \( \bm{b} \).
+
+\begin{equation}
+  \label{eqn:spp_x_pred}
+  \bar{x} = \bm{b}_{x}^{tl} + \frac{1}{2} \Big[ \bm{b}_{x}^{br} - \bm{b}_{x}^{tl} \Big]
+\end{equation}
+
+\begin{equation}
+  \label{eqn:spp_y_pred}
+  \bar{y} = \bm{b}_{y}^{br}
+\end{equation}
+
+Where in Equations~\ref{eqn:spp_x_pred} and~\ref{eqn:spp_y_pred}, the indices \( tl \) and \( br \) 
+represent the top left and bottom right bounding box coordinates, respectively. Finally, the camera 
+space \( x \) and \( y \) coordinates of the object of interest may be recovered as follows in 
+Equations~\ref{eqn:spp_x_3d} and~\ref{eqn:spp_y_3d}.
+
+\begin{equation}
+  \label{eqn:spp_x_3d}
+  x = \frac{z}{f_{x}} \Big[ \bar{x} - c_{x} \Big]
+\end{equation}
+
+\begin{equation}
+  \label{eqn:spp_y_3d}
+  x = \frac{z}{f_{y}} \Big[ \bar{y} - c_{y} \Big]
+\end{equation}
 
 \subsubsection{Latent Space Shape Regression Component}
 ~\label{subsub:spp_neural_latent}
