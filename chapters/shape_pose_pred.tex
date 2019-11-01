@@ -183,7 +183,7 @@ nodes for the objects rotational parameters however is the Hyperbolic Tangent (T
   \centering
   \includegraphics[width=.8\linewidth]{figures/spp/pose_net_diagram.pdf}
   \caption[Pose Regression Network]{Pose regression network taking a 1024 dimensional 
-  input and providing a 4 dimensional output.}
+  input and providing a 4 dimensional output (three rotational parameters and a deph value).}
 ~\label{figure:spp_pose_block}
 \end{figure}
 
@@ -225,7 +225,24 @@ Equations~\ref{eqn:spp_x_3d} and~\ref{eqn:spp_y_3d}.
 
 \subsubsection{Latent Space Shape Regression Component}
 ~\label{subsub:spp_neural_latent}
-TODO
+As outlined in Section~\ref{sec:spp_algorithm}, the GPLVM component of the network provides 
+a generative model over 3D shape for the object class of focus in this work. However, to draw 
+a 3D shape from the GP distribution, the GP must be conditioned on a two dimensional latent space 
+point. The purpose of the shape regression network is to regress, for a given feature map corresponding 
+to an RoI, a latent space point on which the GP is conditioned to predict a 3D shape descriptor.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/spp/shape_net_diagram.pdf}
+  \caption[Shape Regression Network]{Shape regression network taking a 1024 dimensional 
+  input and providing a 2 dimensional output (a point in the latent shape space).}
+~\label{figure:spp_shape_block}
+\end{figure}
+
+The topology of the shape network is analogous to the pose network of Section~\ref{subsub:spp_neural_pose}. 
+Much like the pose network, the shape network consists of a set of linear transforms and nonlinear 
+activations. The domain of the GP shape prior is \( [0, 1] \), so the two outputs of the shape network 
+are given by the Sigmoidal activation function.
 
 % TODO: Reorder this; goes from high level intro to GP's... bit heavy 
 \section{Gaussian Process Latent Variable Model}
@@ -903,11 +920,11 @@ In Equation~\ref{eqn:spp_diff_raycast}, \( \mathcal{V} \) is the set of voxels i
 intersect the ray from the given pixel in the image frame. The gradient of the \( \ln P(v) \) term in 
 Equation~\ref{eqn:spp_diff_raycast} if the form given in Equation~\ref{eqn:probobj_log_post_rot_grad}.
 
-\section{Information Theoretic Loss}
+\section{Multiple Task Loss}
 ~\label{sec:spp_loss}
 %TODO
 
-\subsection{Information Theoretic Loss Gradient}
+\subsection{Multiple Task Loss Gradient}
 ~\label{subsec:spp_inf_loss_grad}
 %TODO
 
@@ -954,101 +971,11 @@ as given in Equation~\ref{eqn:spp_idct} of Section~\ref{subsec:sdf_extraction}.
 
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
-The model outlined in this chapter has been trained on the \textit{Stereo2015} section of the 
-\textit{The KITTI Vision Benchmark Suite}~\cite{Geiger2013,Menze2015,Geiger2012}. Though this work 
-is in it's early stages, preliminary qualitative results demonstrate that the proposed model is 
-yielding predictions that are tending towards the desired behaviour. In Figure~\ref{figure:spp_qual1}, 
-it is demonstrated that the model outlined in this chapter is regressing pose and shape for a given input 
-that is tending towards ground truth.
-\begin{figure}[!htbp]
-  \centering
-  \begin{tabular}{@{}c@{}}
-  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred.jpg}\\
-  (a)\\
-  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_1.jpg}\\
-  (b)
-  \end{tabular}
-  \caption[Shape and Pose Prediction Qualitative I]
-  {
-    \begin{tabular}[t]{@{}l@{}}
-    Ground truth car segmentation (green) with predicted rendering (red):\\
-    (a) A frame in which the location and shape of the rendering are in the\\ region of the ground truth.\\
-    (b) A frame in which the position of the rendered object is in the same\\ region as the ground truth.
-    \end{tabular}
-  }
-~\label{figure:spp_qual1}
-\end{figure}
-
-In Figure~\ref{figure:spp_qual1}, it is evident that although the regressed shape and pose for the first image 
-renders to a region that is of similar scale and shape, it is evident that the orientation is incorrect. However, 
-at other points in the dataset, it is evident that the predictions yielded by the model are improving with training time, 
-an example of which is given in Figure~\ref{figure:spp_qual2}.
-\begin{figure}[!htbp]
-  \centering
-  \begin{tabular}{@{}c@{}}
-  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_3.jpg}\\
-  (a)\\
-  \includegraphics[width=.8\linewidth]{figures/spp/qual/pred_5.jpg}\\
-  (b)
-  \end{tabular}
-  \caption[Shape and Pose Prediction Qualitative II]
-  {
-    \begin{tabular}[t]{@{}l@{}}
-    Ground truth car segmentation (green) with predicted rendering (red):\\
-    (a) A frame in which the location and shape of the rendering are in the\\ region of the ground truth.\\
-    (b) The rendered object is closer to ground truth later in training.
-    \end{tabular}
-  }
-~\label{figure:spp_qual2}
-\end{figure}
-
-Figure~\ref{figure:spp_qual2} demonstrates an increase in overlap between the ground truth and predicted regions at 
-different points in the training process, suggesting that the model predictions are improving.
+%TODO
 
 \section{Quantitative Results}
 ~\label{sec:spp_quantitative}
-As outlined in Section~\ref{sec:spp_qualitative}, early results demonstrate behaviour encouraging of the model 
-formulation, however, it is clear that refinement to the approach is likely required. As the proposed method is 
-addressing the very difficult problem of \textit{weakly-supervised} training of a model on a problem for which 
-the solution space is broad, it is necessary to quantify the model's performance.
-
-Given in Figure~\ref{figure:spp_training} is the model's loss, quantified by Equation~\ref{eqn:spp_overall_loss} over 
-a training session of \( 500,000 \) examples, utilising the Adam Optimizer~\cite{Diederik2014} and a learning rate 
-of \( 0.0001 \).
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=.8\linewidth]{figures/spp/quant/scores_170_smooth.eps}
-  \caption[Shape and Pose Prediction Quantitative I]
-  {The model's loss over a \( 500,000 \) example training period.}
-~\label{figure:spp_training}
-\end{figure}
-
-It is evident from Figure~\ref{figure:spp_training} that the loss of the proposed model is decreasing with time, from 
-a fresh weight initialisation. Similar behaviour is observed when using ImageNet~\cite{Russakovsky2014} pre-trained model 
-for transfer learning. However, the Receiver Operating Characteristic (ROC) metric over the test set is indicative of a high level 
-of false positive predictions, as can be seen in Figure~\ref{figure:spp_roc}.
-\begin{figure}[!htbp]
-  \centering
-  \begin{tabular}{@{}c@{}}
-  \includegraphics[width=.6\linewidth]{figures/spp/quant/left_roc.eps}\\
-  (a)\\
-  \includegraphics[width=.6\linewidth]{figures/spp/quant/right_roc.eps}\\
-  (b)
-  \end{tabular}
-  \caption[Shape and Pose Prediction Quantitative II]
-  {
-    \begin{tabular}[t]{@{}l@{}}
-    Receiver Operating Characteristic metric for the predicted region (class 1)\\ and background(class 0).\\
-    (a) Left section of the model.\\
-    (b) Right section of the model.
-    \end{tabular}
-  }
-~\label{figure:spp_roc}
-\end{figure}
-
-In Figure~\ref{figure:spp_roc}, the ROC metric has been computed pixel-wise over the output renderings for each 
-testing image pair. As such, for the purpose of the ROC evaluation, each pixel is evaluated with respect to it's 
-corresponding ground truth and predicted mask pixel.
+%TODO
 
 \section{Summary}
 ~\label{sec:spp_discussion}
