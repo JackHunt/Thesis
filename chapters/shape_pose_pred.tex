@@ -165,9 +165,16 @@ The formulation of Equation~\ref{eqn:resnet} is depicted in Figure~\ref{figure:r
 \end{figure}
 ~\footnotetext{Image copyright: \textit{He et al}~\cite{He2015}.}
 
-\subsubsection{Region Proposal Component}
+\subsubsection{Region Proposal, Classification and Bounding Box Components}
 ~\label{subsub:spp_neural_rpn}
-TODO + BBOX
+As outlined in the \textit{Faster-RCNN}~\cite{He2017} literature, the standard 
+\textit{R-CNN}~\cite{Girshick2014,Girshick2015_2} architecture contains a region proposal 
+network, providing pooled object RoI's in the input image, a classification network and 
+a bounding box regression network, as depicted in Figure~\ref{figure:spp_rcnn}.
+
+The standard \textit{R-CNN} components are trained in a supervised manner with ground truth 
+bounding boxes and classification labels. In the standard approach, the overall network loss 
+is an aggregate of these individual task oriented losses.
 
 \subsubsection{Pose Regression Component}
 ~\label{subsub:spp_neural_pose}
@@ -922,11 +929,43 @@ Equation~\ref{eqn:spp_diff_raycast} if the form given in Equation~\ref{eqn:probo
 
 \section{Multiple Task Loss}
 ~\label{sec:spp_loss}
-%TODO
+The architecture outlined in Section~\ref{subsec:spp_network_architecture} contains multiple branches 
+following the RoI extraction, each with a different task and associated loss function. As the approach outlined 
+in this work is based on the \textit{Faster R-CNN}~\cite{Ren2015RCNN} architecture, the overall network loss 
+is an aggregate of the individual task oriented losses, as outlined in Section~\ref{subsub:spp_neural_rpn}. 
+As such, the overall network loss may be defined as follows in Equation~\ref{eqn:spp_overall_loss}.
 
-\subsection{Multiple Task Loss Gradient}
-~\label{subsec:spp_inf_loss_grad}
-%TODO
+\begin{equation}
+  ~\label{eqn:spp_overall_loss}
+  \mathcal{L} = 
+  \mathcal{L}_{cls}(\bm{z}_{cls}, \bm{y}_{cls}) + 
+  \mathcal{L}_{bb}(\bm{z}_{bb}, \bm{y}_{bb}) + 
+  \mathcal{L}_{p}(\bm{z}_{p}, \bm{y}_{p}) + 
+  \mathcal{L}_{s}(\bm{z}_{s}, \bm{y}_{s})
+\end{equation}
+
+In Equation~\ref{eqn:spp_overall_loss}, the four loss terms measure the models performance on 
+classification, bounding box regression, pose regression and shape regression for predictions \( \bm{z} \) \
+and targets \( \bm{y} \).
+
+Note that the \( \mathcal{L}_{s} \) is a proxy loss over shape, which measures the similarity between 
+the rendering of the predicted 3D shape under the predicted pose.
+
+\subsection{Pose Loss}
+~\label{sec:spp_pose_loss}
+As the approach in this works assumes a known ground truth pose, a simple \( L_{2} \) loss over the 
+network predicted pose parameters and the ground truth is sufficient. As outlined in Section~\ref{subsub:spp_neural_pose}, 
+only the \( z \) component of the translation vector must be regressed by the network as the \( x \) and 
+\( y \) components may be recovered from the predicted bounding box coordinates.
+
+As such, the pose loss term is given in Equation~\ref{eqn:spp_pose_loss}, for rotational parameter vector 
+\( \bm{z}_{\rho} \) and depth parameter \( z \).
+
+\begin{equation}
+  ~\label{eqn:spp_pose_loss}
+  \mathcal{L}_{p} = \sum_{n=1}^{N} \Big[ \bm{y}_{\rho} - \bm{z}_{\rho} \Big]^{2} +
+  \sum_{n=1}^{N} \Big[ \bm{y}_{z} - \bm{z}_{z} \Big]^{2}
+\end{equation}
 
 \section{Gradients for Training With Backpropagation}
 ~\label{sec:spp_backprop}
@@ -975,31 +1014,37 @@ as given in Equation~\ref{eqn:spp_idct} of Section~\ref{subsec:sdf_extraction}.
 
 \section{Quantitative Results}
 ~\label{sec:spp_quantitative}
-%TODO
+Following the qualitative results presented in Section~\ref{sec:spp_qualitative}, this section 
+provides a quantitative analysis of the performance of the model outlined in this work.
+
+First, an overview of the models performance during training is provided, followed by quantitative 
+results on the pose prediction performance of the model. Finally, a quantitative measure of the 
+shape prediction performance of the model is provided.
+
+\subsection{Training and Validation Performance}
+~\label{sec:spp_quantitative_train}
+The training of the model has been performed in multiple stages. Firstly, the standard \textit{Faster R-CNN} 
+is trained on the dataset outlined in Section~\ref{sec:spp_introduction} for the tasks of classification and 
+bounding box regression. This stage of training may be thought of as a simple application of transfer learning 
+for the specific problem domain outlined in this work; the backbone and RPN components of the network 
+have been pretrained on the \textit{Microsoft COCO}~\cite{Lin2014COCO} dataset for the tasks of object 
+classification and bounding box regression.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/spp/quant/rcnn_pretrain/bb.png}
+  \caption[VKITTI Bounding Box Training]{Bounding box regression loss on the \textit{VKITTI} 
+  dataset for the standard \textit{Faster R-CNN} network.}
+~\label{figure:spp_pretrain_bb}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/spp/quant/rcnn_pretrain/cls.png}
+  \caption[VKITTI Classification Training]{Classification loss on the \textit{VKITTI} 
+  dataset for the standard \textit{Faster R-CNN} network.}
+~\label{figure:spp_pretrain_cls}
+\end{figure}
 
 \section{Summary}
 ~\label{sec:spp_discussion}
-The model outlined in this work is an ambitious and theoretically principled approach to a very difficult problem 
-in 3D computer vision. Preliminary experimentation indicates that the proposed approach is, in theory, feasible. 
-However, as outlined in Sections~\ref{sec:spp_qualitative} and~\ref{sec:spp_quantitative} the predictive power of 
-the model is not yet at the level aspired to in the original research objectives of Sections~\ref{sec:intro_spp} 
-and~\ref{sec:intro_aims_structure}. This section shall proceed to evaluate potentially prohibitive aspects of the 
-formulation outlined in this chapter.
-
-Firstly, as CNN models are notoriously difficult to train~\cite{Glorot2010}, it is plausible that during training, 
-the optimiser is unable to traverse the solution space to an optimal minima, instead becoming stuck in a suboptimal 
-minima. Such behaviour may be caused by factors ranging from insufficiently varying data preventing the model from 
-``learning'' a sufficiently general functional mapping, to unsuitable non-linear activations. Furthermore, the 
-architecture of the CNN itself may not be suitable for the specific problem at hand. However, it should be noted that 
-during the development of the model outlined in this work, the CNN component has been tested on the ResNet 34, 50 and 
-101 architectures. The experiments given in Sections~\ref{sec:spp_qualitative} and~\ref{sec:spp_quantitative} use 
-the ResNet-101 architecture.
-
-Another potential cause of the outlined training issues is the proposed loss function not penalising incorrect 
-predictions in a manner that is conducive to model convergence. Note that if a predicted pose causes the ray-casting 
-stage to miss the isosurface of the predicted shape, the gradient passed back from the information theoretic loss 
-of Section~\ref{sec:spp_loss} could potentially not guide the optimiser appropriately. 
-
-Despite the results outlined in Sections~\ref{sec:spp_qualitative} and~\ref{sec:spp_quantitative} not indicating immediate 
-efficacy, the presented formulation does provide a theoretically principled foundation on which further research can be based. 
-At this point, the difficulty of \textit{weakly-supervised} learning of \textit{simultaneous} shape and pose should be reiterated.
