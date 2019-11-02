@@ -324,12 +324,36 @@ integration stage, as outlined in Section~\ref{sec:moseg_static_fusion}.
 
 However, the presented formulation of this pipeline consists of an
 additional, novel estimation module that relies on the use of a sub-volume
-representation to correct tracking errors by applying rigid body transformations
-to the sub-segments of the reconstructed shape (the sub-volumes) to correct their
-alignment when there are intra sub-segment tracking inconsistencies. As inference
-on the full joint distribution of the presented probabilistic model is intractable, 
-conditional independence assumptions are made that empirically do not appear to 
-cause any functional issues. 
+representation (an example of which is given in Figure~\ref{figure:probobj_subvolumes}) 
+to correct tracking errors by applying rigid body transformations to the sub-segments of 
+the reconstructed shape (the sub-volumes) to correct their alignment when there are intra 
+sub-segment tracking inconsistencies. As inference on the full joint distribution of the 
+presented probabilistic model is intractable, conditional independence assumptions are made 
+that empirically do not appear to cause any functional issues. 
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.4\linewidth]{figures/object_recon/subvolumes/0.png} &
+    \includegraphics[width=.4\linewidth]{figures/object_recon/subvolumes/1.png} \\
+    (a) & (b) \\
+    \includegraphics[width=.4\linewidth]{figures/object_recon/subvolumes/2.png} &
+    \includegraphics[width=.4\linewidth]{figures/object_recon/subvolumes/3.png} \\
+    (c) & (d) \\
+  \end{tabular}
+  \caption[Subvolume Examples]
+  {
+    Example subvolume renderings of a given object of interest. As viewed from 
+    the front:\\
+    \begin{tabular}[t]{@{}l@{}}
+      (a) Left hand side and back. \\
+      (b) Back and right hand side. \\
+      (c) Top and sides \\
+      (d) Top and left hand side.
+    \end{tabular}
+  }
+~\label{figure:probobj_subvolumes}
+\end{figure}
 
 Note that only voxels whose appearance posterior is greater for the foreground 
 class are used in the correction procedure; only voxels that satisfy the probabilistic 
