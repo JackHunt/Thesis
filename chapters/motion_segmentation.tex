@@ -962,6 +962,10 @@ integration. The process is given in the following Algorithm.
             \State{\( b \gets \text{getVoxelBlock}(p) \)}\\
             \State{\( \tau_{b} \gets \text{getStability}(b) \)}
             \Comment{Equation~\ref{eqn:moseg_stability_value}}
+            %\If{\( \text{crf_enabled} \)}
+            %  \State{\( \tau_{b} \gets \text{refine_scores(\tau_{b})} \)}
+              %\Comment{Section~\ref{eqn:moseg_crf}}\\
+            %\EndIf{}
             \State{\( l_{b} \gets \text{getLabel}(\tau_{b}) \)}
             \Comment{Equation~\ref{eqn:moseg_stability_labelling}}
             \State{\( \text{updateStability}(b, l_{b}) \)}
