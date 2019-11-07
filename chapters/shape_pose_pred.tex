@@ -969,7 +969,7 @@ As such, the pose loss term is given in Equation~\ref{eqn:spp_pose_loss}, for ro
 \section{Gradients for Training With Backpropagation}
 ~\label{sec:spp_backprop}
 With the gradients of the model components derived, the gradient update to the neural network component 
-of the model may be given. As the proposed model is optimised using the backpropagation algorithm, 
+may be given. As the proposed model is optimised using the backpropagation algorithm, 
 the gradient update for layer \( n - m \) is computed by applying the chain rule to layer \( n \), 
 successively working backwards to layer \( n - m \). As such, the gradient for the non CNN components 
 with respect to the CNN output for pose \( \mathcal{O}_{p} \), is given as follows in Equation
@@ -977,11 +977,9 @@ with respect to the CNN output for pose \( \mathcal{O}_{p} \), is given as follo
 \begin{equation}
   \label{eqn:spp_grad_chain_pose}
   \frac{\partial \mathcal{L}}{\partial \mathcal{O}_{p}} = 
-  \frac{1}{2} \sum_{\omega \in \{L, R\}} \Bigg[
-    \frac{\partial \mathcal{L}}{\partial \mathcal{R}_{\omega}}
-    \frac{\partial \mathcal{R}_{\omega}}{\partial \bm{T}_{\omega}}
-    \frac{\partial \bm{T}_{\omega}}{\partial \mathcal{O}_{p}}
-  \Bigg]
+    \frac{\partial \mathcal{L}}{\partial \mathcal{R}}
+    \frac{\partial \mathcal{R}}{\partial \bm{T}}
+    \frac{\partial \bm{T}}{\partial \mathcal{O}_{p}}
 \end{equation}
 
 In Equation~\ref{eqn:spp_grad_chain_pose}, \( \mathcal{L} \) is the loss given in Equation~\ref{eqn:spp_overall_loss}
@@ -993,12 +991,10 @@ manner and is given in Equation~\ref{eqn:spp_grad_chain_latent}.
 \begin{equation}
   \label{eqn:spp_grad_chain_latent}
   \frac{\partial \mathcal{L}}{\partial \mathcal{O}_{l}} = 
-  \frac{1}{2} \sum_{\omega \in \{L, R\}} \Bigg[
-    \frac{\partial \mathcal{L}}{\partial \mathcal{R}_{\omega}}
-    \frac{\partial \mathcal{R}_{\omega}}{\partial \mathcal{\bm{\Phi}}_{\omega}}
-    \frac{\partial \bm{\Phi}_{\omega}}{\partial \bm{f}^{\star}_{\omega}}
-    \frac{\partial \bm{f}^{\star}_{\omega}}{\partial \mathcal{O}_{l}}
-  \Bigg]
+    \frac{\partial \mathcal{L}}{\partial \mathcal{R}}
+    \frac{\partial \mathcal{R}}{\partial \mathcal{\bm{\Phi}}}
+    \frac{\partial \bm{\Phi}}{\partial \bm{f}^{\star}}
+    \frac{\partial \bm{f}^{\star}}{\partial \mathcal{O}_{l}}
 \end{equation}
 
 In Equation~\ref{eqn:spp_grad_chain_latent}, \( \mathcal{L} \) and \( \mathcal{R} \) 
