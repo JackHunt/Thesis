@@ -1405,6 +1405,14 @@ model. The spikes in Figure~\ref{figure:probobj_timing} reflect the practical im
 this; though correction is performed asynchronously, occasionally the correction thread blocks the 
 main pipeline.
 
+It can be seen in Figure~\ref{figure:probobj_timing} that for the \textit{Bear} and \textit{Museum Rock} 
+sequences that there is a multimodality in the timing distributions. On further analysis it is apparent 
+that this is due to the non-consistent sizing of the reconstructed subvolumes. Thus, a subvolume with 
+high occupancy in the view frustum requires more processing time due to the increase of surface data. 
+This is apparent when a new subvolume is created when viewing a smaller portion of an object. For example, 
+if a new subvolume is created whilst viewing the side of the \textit{Bear}, that subvolume will naturally 
+contain a larger amount of distance and surface data than the case of viewing from the front, for example.
+
 However, in all cases the system demonstrates real time performance with frame-rates of 
 \( \approx 84Hz \), \( \approx 95Hz \) and \( \approx 45Hz \) for the \textit{Bear}, 
 \textit{Dinosaur Head} and \textit{Museum Rock} sequences, respectively. As with the performance 
