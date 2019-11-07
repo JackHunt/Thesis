@@ -871,8 +871,58 @@ ICP pose estimation procedure.
 % TODO: pictures
 
 \subsubsection{CRF Refinement of Voxel Block Scores}
+~\label{subsub:moseg_crf}
 The outlined motion segmentation and dynamic SLAM pipeline may also be augmented 
-with an additional 2D segmentation step.
+with an additional 2D segmentation step. Given the normalised voxel block wise stability 
+scores (refer to Section~\ref{sub:moseg_stability_labelling}), the corresponding stability 
+labels may be refined in image space and unprojected back into 3D scene space.
+
+During the raycast procedure of Section~\ref{alg:raycast}, a raster image of voxel block 
+indices is generated, such that each pixel contains the lookup index for the voxel block for 
+which it's ray intersects. Thus, a 2D map of unary potentials is generated based upon 
+the stabilityt scores for the voxel blocks in the view frustum.
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.415\linewidth]{figures/moseg/no_crf.png} &
+    \includegraphics[width=.4\linewidth]{figures/moseg/with_crf.png} \\
+    (a) & (b) \\
+  \end{tabular}
+  \caption[CRF Stability Refinement]
+  {
+    Denoising of stability scores.\\
+    \begin{tabular}[t]{@{}l@{}}
+      (a) Without CRF refinement. \\
+      (b) With CRF refinement. \\
+    \end{tabular}
+  }
+~\label{figure:moseg_crf_res}
+\end{figure}
+
+With known extrinsic calibration between the depth and RGB sensors, the energy function 
+of Equation~\ref{eqn:moseg_crf}, over voxel block stability scores may be defined.
+\begin{equation}
+  ~\label{eqn:moseg_crf}
+  E(\bm{\Phi}^{d}(\bm{v})) = P(\bm{v}) + 
+  \sum_{\bm{u} \in \mathcal{V}} P(\bm{\Omega}^{d}(\bm{v}) \given \bm{\Omega}^{d}(\bm{u}))
+\end{equation}
+
+In Equation~\ref{eqn:moseg_crf}, \( \bm{v} \) is the raster index of the voxel block for which the 
+energy calculation is to be computed, with respect to neighbouring raster locations 
+\( \bm{u} \in \mathcal{V}\), for some set of neighbouring locations \( \mathcal{V} \). The unary 
+term \( P(\bm{\Phi}^{d}(\bm{v})) \) is proportional to the normalised voxel block score \( \bm{\tau} \) 
+given by Equation~\ref{eqn:moseg_stability_value} and the pairwise term 
+\( P(\bm{\Omega}^{d}(\bm{v}) \given \bm{\Omega}^{d}(\bm{u}) \) is given by a standard Gaussian 
+density \( \mathcal{\bm{\Omega}^{d}(\bm{v}) \given \bm{\Omega}^{d}(\bm{u}), \bm{\Sigma}} \), where 
+\( \bm{\Sigma} \) is given by the texture variance of the voxel block corresponding to \( \bm{v} \).
+
+Following CRF refinement, the voxel block scores may be directly updated via the aformentioned index 
+image. This process is carried out prior to the labelling of Equation~\ref{eqn:moseg_stability_labelling}.
+Empirically, although this CRF refinement procedure does have a denoising effect on the stable scene 
+rendering, it appears to have minimal impact on pose estimation quality. Inference over the CRF outlined 
+in this section is performed via the efficient, filter based message passing algorithm of 
+\textit{Kr\''{a}henb\''{u}hl}~\cite{Krahenbuhl2011}.
 
 \subsection{Pipeline Summary}
 ~\label{subsec:moseg_pipeline_summary}
