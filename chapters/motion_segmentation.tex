@@ -63,7 +63,12 @@ current reconstruction the integrated dynamic components may cause artefacts
 that prevent the finding of ICP correspondences which often causes camera
 tracking to drift, or completely fail. By tracking against only the stable
 scene components, this interference in the ICP pose estimation process can be
-mitigated.
+mitigated. However, it should be noted that due to the rapid updating of the
+dynamic scene representation, the dynamic model does incur artefacts. This is due 
+to the shorter TSDF truncation band of the dynamic model. However, empirically, 
+these artefacts do not get fused into the static model as they do not gain a 
+sufficient level of stability. Pose estimation is thus unaffected due to the 
+static scene being used for ICP registration.
 
 % TODO: Check spacing, which changes from this point.
 Once a part of the dynamic model has been stable for a sufficient period, its
