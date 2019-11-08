@@ -1005,7 +1005,60 @@ as given in Equation~\ref{eqn:spp_idct} of Section~\ref{subsec:sdf_extraction}.
 
 \section{Qualitative Results}
 ~\label{sec:spp_qualitative}
-%TODO
+This section shall provide a qualitative evaluation of the approach outlined in this chapter, both with respect to shape 
+and combined shape and pose. For the experiments in this section and Section~\ref{sec:spp_quantitative} two data sources were 
+used. For the task of pose prediction, the \textit{VKITTI} dataset was chosen for it's accurate ground truth and relative 
+\textit{real world} nature (photorealistic renderings of real world scenes). For the shape embedding and prediction component, 
+the GPLVM model outlined in Section~\ref{sec:spp_gplvm} was trained on a collection of 3D shapes obtained from the online 
+\textit{ShapeNet} collection of 3D CAD models\footnotemark. 
+~\footnotetext{ShapeNet: https://www.shapenet.org/}
+
+For the training of the generative model, 70 CAD models of cars were obtained from \textit{ShapeNet}, chosen to cover a variety 
+of common geometries for the class. The obtained CAD models were then manually processed to remove inner geometry, voxelised into 
+binary occupancy volumes and finally converted to SDF's by the computation of the Eucledian Distance Transform to the binarised 
+contour. 
+
+When training the latent shape point network, outlined in Section~\ref{subsub:spp_neural_latent}, a combination of the \textit{VKITTI} 
+dataset and the shape drawn from the generative model of Section~\ref{sec:spp_gplvm} (derived from the \textit{ShapeNet} CAD models) 
+is used. As outlined, the \textit{VKITTI} dataset contains both ground truth 6DoF pose and ground truth semantic segmentation masks. As 
+outlined in Section~\ref{sec:spp_introduction}, the loss of Section~\ref{TODO} is minimised over the rendering of the shape drawn 
+from the GP under the predicted pose, with respect to the ground truth mask.
+
+\subsection{Gaussian Process Latent Shape Embedding}
+~\label{subsec:spp_qualitative_shape}
+TODO
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.4\linewidth]{figures/spp/gp_draws/0.png}&
+		\includegraphics[width=.4\linewidth]{figures/spp/gp_draws/1.png}\\
+    (a) & (b) \\
+    \includegraphics[width=.4\linewidth]{figures/spp/gp_draws/2.png}&
+		\includegraphics[width=.4\linewidth]{figures/spp/gp_draws/3.png}\\
+    (c) & (d)
+  \end{tabular}
+  \caption[GP Shape Draws]
+  {
+    (a, b, c, d) IDCT extracted, random draws from the trained GP.
+  }
+~\label{figure:spp_qualitative_shapes}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.4\linewidth]{figures/spp/gp_draws/bad/0.png}&
+		\includegraphics[width=.4\linewidth]{figures/spp/gp_draws/bad/1.png}\\
+    (a) & (b)
+  \end{tabular}
+  \caption[Bad GP Shape Draws]
+  {
+    (a, b) IDCT extracted, random draws from the trained GP in regions of the latent 
+    space that have high covariance.
+  }
+~\label{figure:spp_qualitative_shapes_bad}
+\end{figure}
 
 \section{Quantitative Results}
 ~\label{sec:spp_quantitative}
