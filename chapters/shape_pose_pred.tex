@@ -1130,7 +1130,35 @@ for the coupled task of object classification.
 \end{figure}
 
 For the training procedures of Figures~\ref{figure:spp_pretrain_bb} and~\ref{figure:spp_pretrain_cls}, the Stochastic Gradient 
-Descent (SGD) optimisation routine was used, with a learning rate of \( 0.001 \).
+Descent (SGD) optimisation routine was used, with a learning rate of \( 0.001 \). The training session consisted of \(50,000\) 
+batches, for which a batch consists of the class relevant ground truth detecions for a given frame.
+
+\subsection{GPLVM Training}
+~\label{sec:spp_quantitative_gp_train}
+The training procedure of the GPLVM outlined in Section~\ref{sec:spp_gplvm} is an unsupervised routine and as such, 
+no training/testing split of the 3D CAD model data introduced in Section~\ref{sec:spp_qualitative} is required. It 
+can be seen in Figure~\ref{figure:spp_gplvm_train} that the GPLVM model requires very few iterations to converge to 
+an optimal latent embedding. The model was trained by minimising the negative log-likelihood, as is standard in 
+the GP literature~\cite{GPML}.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/spp/quant/gp_train.eps}
+  \caption[VKITTI Classification Training]{Classification loss on the \textit{VKITTI} 
+  dataset for the standard \textit{Faster R-CNN} network.}
+~\label{figure:spp_gplvm_train}
+\end{figure}
+
+For the training procedure given in Figure~\ref{figure:spp_gplvm_train}, the Adam~\cite{Kingma2014} 
+optimiser was used with a base learning rate of \( 0.01 \). The model was trained for 1500 epochs, 
+though as can be seen in Figure~\ref{figure:spp_gplvm_train}, the model converges considerably 
+prior to this epoch limit.
+
+\subsection{Supervised Training of Pose}
+~\label{sec:spp_quantitative_pose_train}
+
+\subsection{Weakly Supervised Training of Latent Shape}
+~\label{sec:spp_quantitative_latentshape_train}
 
 \section{Summary}
 ~\label{sec:spp_discussion}
