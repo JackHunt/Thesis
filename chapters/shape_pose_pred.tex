@@ -1086,7 +1086,6 @@ Figure~\ref{figure:spp_qualitative_latent_cov}, respectively.
 ~\label{figure:spp_qualitative_latent_cov}
 \end{figure}
 
-
 \section{Quantitative Results}
 ~\label{sec:spp_quantitative}
 Following the qualitative results presented in Section~\ref{sec:spp_qualitative}, this section 
@@ -1094,16 +1093,19 @@ provides a quantitative analysis of the performance of the model outlined in thi
 
 First, an overview of the models performance during training is provided, followed by quantitative 
 results on the pose prediction performance of the model. Finally, a quantitative measure of the 
-shape prediction performance of the model is provided.
+shape prediction performance of the model is provided. In the training sections that follow, the supervised 
+and weakly supervised tasks have been trained and tested on a randomised \( 80:20 \) training and validation 
+data split, respectively.
 
-\subsection{Training and Validation Performance}
-~\label{sec:spp_quantitative_train}
+\subsection{Transfer Learning for Car Detection on VKITTI}
+~\label{sec:spp_quantitative_transfer}
 The training of the model has been performed in multiple stages. Firstly, the standard \textit{Faster R-CNN} 
 is trained on the dataset outlined in Section~\ref{sec:spp_introduction} for the tasks of classification and 
 bounding box regression. This stage of training may be thought of as a simple application of transfer learning 
 for the specific problem domain outlined in this work; the backbone and RPN components of the network 
 have been pretrained on the \textit{Microsoft Common Objects in Context (COCO)}~\cite{Lin2014COCO} dataset for 
-the tasks of object classification and bounding box regression.
+the tasks of object classification and bounding box regression. Due to the specialisation of the detection 
+requirements in this work, the RPN and feature extraction components must be retrained.
 
 \begin{figure}[!htbp]
   \centering
@@ -1113,6 +1115,12 @@ the tasks of object classification and bounding box regression.
 ~\label{figure:spp_pretrain_bb}
 \end{figure}
 
+Figure~\ref{figure:spp_pretrain_bb} depicts the short retraining of the RPN and finetuning of the feature extraction 
+network of the model outlined in Section~\ref{sec:spp_algorithm}. It can be seen that in a relatively short training period, 
+the \textit{Microsoft COCO} pretrained network rapidly becomes performant on the \textit{VKITTI} dataset used in this work, 
+for the task of specific object detection. Additionally, similar behaviour may be observed in Figure~\ref{figure:spp_pretrain_cls} 
+for the coupled task of object classification.
+
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=.6\linewidth]{figures/spp/quant/rcnn_pretrain/cls.png}
@@ -1120,6 +1128,9 @@ the tasks of object classification and bounding box regression.
   dataset for the standard \textit{Faster R-CNN} network.}
 ~\label{figure:spp_pretrain_cls}
 \end{figure}
+
+For the training procedures of Figures~\ref{figure:spp_pretrain_bb} and~\ref{figure:spp_pretrain_cls}, the Stochastic Gradient 
+Descent (SGD) optimisation routine was used, with a learning rate of \( 0.001 \).
 
 \section{Summary}
 ~\label{sec:spp_discussion}
