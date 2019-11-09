@@ -1022,11 +1022,15 @@ When training the latent shape point network, outlined in Section~\ref{subsub:sp
 dataset and the shape drawn from the generative model of Section~\ref{sec:spp_gplvm} (derived from the \textit{ShapeNet} CAD models) 
 is used. As outlined, the \textit{VKITTI} dataset contains both ground truth 6DoF pose and ground truth semantic segmentation masks. As 
 outlined in Section~\ref{sec:spp_introduction}, the loss of Section~\ref{TODO} is minimised over the rendering of the shape drawn 
-from the GP under the predicted pose, with respect to the ground truth mask.
+from the GP under the predicted pose, with respect to the ground truth mask. The 3D CAD models were also reoriented to align with the 
+\textit{VKITTI} coordinate system of \( y \) pointing downwards, \( x \) pointing to the right and \( z \) directly forwards.
 
 \subsection{Gaussian Process Latent Shape Embedding}
 ~\label{subsec:spp_qualitative_shape}
-TODO
+The GPLVM based embedding of 3D shape outlined in Section~\ref{sec:spp_gplvm} was trained on a small but varied dataset of 3D CAD 
+models. Qualitatively, the trained model appears capable of representing common geometries of the class of interest in this work. 
+Given in Figure~\ref{figure:spp_qualitative_shapes} are examples of shapes drawn from the shape distribution at uniformly sampled 
+latent space points.
 
 \begin{figure}[!htbp]
   \centering
@@ -1045,6 +1049,13 @@ TODO
 ~\label{figure:spp_qualitative_shapes}
 \end{figure}
 
+It can be seen in Figure~\ref{figure:spp_qualitative_shapes}, the trained shape model is capable of embdedding a variety of 
+3D geometries relevant to the problem addressed in this work. Note that due to the probabilistic nature of the shape model, for 
+a predicted shape (a posterior mean), there is additionally covariance information for each estimated posterior mean. The shapes 
+given in Figure~\ref{figure:spp_qualitative_shapes} were drawn from a region of the latent space for which there is low covariance, 
+thus higher probabilistic certainty. Figure~\ref{figure:spp_qualitative_shapes_bad} demonstrates shapes drawn from the shape distribution 
+on regions of the latent space for which there is higher covariance and thus increased estimation uncertainty.
+
 \begin{figure}[!htbp]
   \centering
   \begin{tabular}{cc}
@@ -1059,6 +1070,22 @@ TODO
   }
 ~\label{figure:spp_qualitative_shapes_bad}
 \end{figure}
+
+Given in Figure~\ref{figure:spp_qualitative_latent_cov} is a visual representation of the uncertainty 
+in estimated shape with respect to the latent space point on which the GP is conditioned. The examples 
+provided in Figures~\ref{figure:spp_qualitative_shapes} and~\ref{figure:spp_qualitative_shapes_bad} 
+correspond to the low uncertainty (dark) and higher (light) uncertainty regions of 
+Figure~\ref{figure:spp_qualitative_latent_cov}, respectively.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/spp/gp_latent_heatmap.eps}
+  \caption[Latent Space Variance]{Normalised sum of the embedding variance for estimated shape on the latent 
+  space, for regularly sampled latent points on the interval \( \left[-5, 5\right] \). Lower values indicate 
+  lower estimation uncertainty.}
+~\label{figure:spp_qualitative_latent_cov}
+\end{figure}
+
 
 \section{Quantitative Results}
 ~\label{sec:spp_quantitative}
