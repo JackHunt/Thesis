@@ -1210,12 +1210,60 @@ which higher learning rates were used did not yield a loss reduction trend.
 
 \subsection{Weakly Supervised Training of Latent Shape}
 ~\label{sec:spp_quantitative_latentshape_train}
+Contrary to the training approach taken for the pose branch of the network, the training of the latent space shape 
+point predictor is weakly-supervised in nature. As outlined in Section~\ref{subsub:spp_neural_latent}, the loss with 
+respect to the latent space shape point is minimised in terms of the 2D rendering of the predicted shape under the 
+predicted pose, against the ground truth semantic segmentation mask. Thus, the loss as outlined in this work may be 
+considered a proxy loss for true 3D shape. Figure~\ref{figure:spp_latent_point_train} demonstrates the training of the 
+latent shape space branch of the network.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/spp/quant/TODO}
+  \caption[VKITTI Shape Training]{}
+~\label{figure:spp_latent_point_train}
+\end{figure}
+
+It can be seen in Figure~\ref{figure:spp_latent_point_train}...
 
 \subsection{Pose Accuracy}
 ~\label{sec:spp_quantitative_pose_accuracy}
+As specified earlier in this section, the \textit{VKITTI} dataset was split on an \( 80:20 \) ratio of training to 
+testing data. This section provides a quantitative evaluation of the pose prediction branch of the model outlined 
+in this work. There are two components to the pose prediction branch of the network, the rotational component and 
+the \( z \) translation component. As such, during training, there are two measures of performance that are to be optimised.
+
+Table~\ref{table:spp_pose_mse} provides MSE measures for the rotational and \( z \)translation components for both the training 
+and testing portions of the \textit{VKITTI} dataset.
+
+\begin{table}[!htbp]
+  \begin{center}
+    \begin{tabular}{l c c}
+      Data Subset & Orientation (Rotational) MSE & \( z \) Translational MSE \\
+      \midrule
+      Training & TODO\\
+      Testing & TODO
+    \end{tabular}
+  \end{center}
+  \caption[Pose Prediction Quantitative Performance]{Mean Squared Error(s) over orientation and \( z \) 
+  coordinate estimates for training and testng subsets of the \textit{VKITTI} dataset.}
+  ~\label{table:spp_pose_mse}
+\end{table}
 
 \subsection{Shape Accuracy}
 ~\label{sec:spp_quantitative_pose_accuracy}
+As with Section~\ref{sec:spp_quantitative_pose_accuracy}, this section provides an evaluation of the shape prediction ability 
+of the outlined approach, for both the training and testing split in the \textit{VKITTI} dataset. The shape prediction component 
+of the network outputs a 3D shape volume, however there is no ground truth for this 3D shape. As outlined previously however, 
+there is a ground truth semantic segmentation that may be leveraged for the purposes of guiding the training of the network towards 
+a configuration that generates seemingly accurate shape, in terms of it's 2D rendering. 
+
+Given in Table~\ref{} are metrics pertaining to the similarity between the ground truth segmentation mask and the 2D region to 
+which the 3D shape projects, under the pose predicted by the model. For each example, the predicted and ground truth masks are 
+given by full frame size binary occupancy images. The use of full frame size mask images may appear unnecessary, however it accounts 
+for examples in which the pose estimate is poor (and thus with shape projecting to a completely different image region).
+
+
 
 \section{Summary}
 ~\label{sec:spp_discussion}

@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/usr/local/bin/python",
+    "python.pythonPath": "/anaconda3/bin/python",
     "files.associations": {
         "fstream": "cpp"
     },
