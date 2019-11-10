@@ -1157,6 +1157,56 @@ prior to this epoch limit.
 
 \subsection{Supervised Training of Pose}
 ~\label{sec:spp_quantitative_pose_train}
+The training procedure of the pose regression network, outlined in Section~\ref{sec:spp_pose_estim} is supervised 
+in nature, with the loss criterion given in Equation~\ref{eqn:spp_pose_loss} measuring the MSE between the model predicted 
+pose and the ground truth pose given in the \textit{VKITTI} dataset. The training of the pose regression network was split 
+over two training sessions, with differing learning rates. Figure~\ref{figure:spp_train} provides the training and validation 
+error losses for the rotation and \( z \) coordinate for 150,000 training steps.
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{c}
+    \includegraphics[width=.8\linewidth]{figures/spp/quant/pose/rot.png}\\
+    (a)\\
+		\includegraphics[width=.8\linewidth]{figures/spp/quant/pose/pos.png}\\
+    (b)
+  \end{tabular}
+  \caption[VKITTI Pose Training]
+  {
+    (a, b) Training and validation losses for the two pose components, over 150,000 training 
+    iterations, with a learning rate of \( 0.001 \).
+  }
+~\label{figure:spp_pose_train}
+\end{figure}
+
+It can be seen in Figure~\ref{figure:spp_pose_train} that the model rapidly trains to a configuration that dramatically 
+reduces the magnitude of error. This behaviour is due to the pretraining of the backbone and RPN networks, as outlined 
+in Section~\ref{sec:spp_quantitative_transfer}. Additional experiments that do not perform this pretraining phase do not 
+reduce as rapidly. The loss plots given in Figure~\ref{figure:spp_pose_train} are of the first training session, with a 
+learning rate of \( 0.001 \). Figure~\ref{figure:spp_pose_train2} provides the losses over a second training session, in 
+which the learning rate is reduced to \( 0.0001 \).
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{c}
+    \includegraphics[width=.8\linewidth]{figures/spp/quant/pose/rot2.png}\\
+    (a)\\
+    \includegraphics[width=.8\linewidth]{figures/spp/quant/pose/pos2.png}\\
+    (b)
+  \end{tabular}
+  \caption[VKITTI Pose Training]
+  {
+    (a, b) Training and validation losses for the two pose components, over 50,000 training 
+    iterations, with a learning rate of \( 0.0001 \).
+  }
+~\label{figure:spp_pose_train2}
+\end{figure}
+
+Though it can be seen in Figure~\ref{figure:spp_pose_train2} that the orientation and \( z \) component losses do 
+decrease on the second training session, the magnitude of change is not comparable to that of the first training session, 
+of Figure~\ref{figure:spp_pose_train}. This is to be expected, due to the combination of the network having been 
+previously trained and the use of a small learning rate. However, experimentation with a second training session in 
+which higher learning rates were used did not yield a loss reduction trend.
 
 \subsection{Weakly Supervised Training of Latent Shape}
 ~\label{sec:spp_quantitative_latentshape_train}
