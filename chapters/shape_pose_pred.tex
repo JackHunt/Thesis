@@ -1210,24 +1210,6 @@ of Figure~\ref{figure:spp_pose_train}. This is to be expected, due to the combin
 previously trained and the use of a small learning rate. However, experimentation with a second training session in 
 which higher learning rates were used did not yield a loss reduction trend.
 
-\subsection{Weakly Supervised Training of Latent Shape}
-~\label{sec:spp_quantitative_latentshape_train}
-Contrary to the training approach taken for the pose branch of the network, the training of the latent space shape 
-point predictor is weakly-supervised in nature. As outlined in Section~\ref{subsub:spp_neural_latent}, the loss with 
-respect to the latent space shape point is minimised in terms of the 2D rendering of the predicted shape under the 
-predicted pose, against the ground truth semantic segmentation mask. Thus, the loss as outlined in this work may be 
-considered a proxy loss for true 3D shape. Figure~\ref{figure:spp_latent_point_train} demonstrates the training of the 
-latent shape space branch of the network.
-
-\begin{figure}[!htbp]
-  \centering
-  %\includegraphics[width=.6\linewidth]{figures/spp/quant/TODO}
-  \caption[VKITTI Shape Training]{}
-~\label{figure:spp_latent_point_train}
-\end{figure}
-
-It can be seen in Figure~\ref{figure:spp_latent_point_train}...
-
 \subsection{Detection, Classification and Pose Accuracy}
 ~\label{sec:spp_quantitative_pose_accuracy}
 As specified earlier in this section, the \textit{VKITTI} dataset was split on an \( 80:20 \) ratio of training to 
@@ -1295,6 +1277,22 @@ density estimates over the MSE metrics are provided in Figures~\ref{figure:spp_q
 ~\label{figure:spp_quant_density_test}
 \end{figure}
 
+\subsection{Weakly Supervised Training of Latent Shape}
+~\label{sec:spp_quantitative_latentshape_train}
+Contrary to the training approach taken for the pose branch of the network, the training of the latent space shape 
+point predictor is weakly-supervised in nature. As outlined in Section~\ref{subsub:spp_neural_latent}, the loss with 
+respect to the latent space shape point is minimised in terms of the 2D rendering of the predicted shape under the 
+predicted pose, against the ground truth semantic segmentation mask. Thus, the loss as outlined in this work may be 
+considered a proxy loss for true 3D shape. 
+
+However, experimentation has proven the proposed shape evaluation pipeline to be infeasible, largely due to the very 
+high computational overhead involved in rendering an occupancy map for each detection in a given input frame (for a frame 
+in which there are many instances of the object class of interest, this cost can become very high). As such, the proposed 
+approach was unable to converge to a meaningful mapping from a given arbitrary detection, to a latent space shape point and 
+more crucially, scale factor. In addition to the computational overhead involved, there is the inherent difficulty in scale 
+estimation from a single view.
+
+\iffalse
 \subsection{Shape Accuracy}
 ~\label{sec:spp_quantitative_pose_accuracy}
 As with Section~\ref{sec:spp_quantitative_pose_accuracy}, this section provides an evaluation of the shape prediction ability 
@@ -1314,6 +1312,18 @@ for examples in which the pose estimate is poor (and thus with shape projecting 
   \caption[Shape Prediction ROC]{}
 ~\label{figure:spp_shape_roc}
 \end{figure}
+\fi
 
 \section{Summary}
 ~\label{sec:spp_discussion}
+The approaches introduced in this work to the problems of latent embedding of 3D shape and the regression of orientation and 
+depth (and thus, pose for a known camera configuration, as outlined in Section~\ref{sec:spp_pose_estim}) provide useful tools 
+for the understanding of 3D scenes and their components (object classes of interest), in the wild. The pose estimation approach 
+outlined in this work has direct potential application in many scenarios in which it is necessary to estimate an object's pose 
+(including translation, rather than just orientation~\cite{Braun2016}) from a single view.
+
+Additionally, the 3D latent shape embedding approach outlined in this work, though not completely novel, is certainly of theoretical 
+and practical interest. Despite the difficulties in end-to-end training of pose \textit{and} shape in this work, the use of the GPLVM 
+as a component within a 3D shape generating architecture is certainly a promising approach for domain specific applications, due to 
+the ease and short duration of training, as shown in Figure~\ref{figure:spp_gplvm_train}. Purely CNN based approaches to the problem 
+of learning 3D shape are typically far more computatioanlly expensive and complex (making them difficult to train).
