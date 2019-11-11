@@ -124,8 +124,39 @@ reconstructions is particularly evident for fields that are heavily data depende
 learning, where as outlined in Section~\ref{sec:intro_object_recon}, there is an abundance of real world 2D 
 image data available for the learning of vision tasks, but not a comparable amount for 3D geometry.
 
-\subsection{Stereo Shape and Pose Regression}
+\subsection{Shape and Pose Prediction}
 ~\label{subsec:discussion_spp}
+The work presented in Chapter~\ref{chap:spp} proposes an ambitious approach to simultaneous pose and 
+3D shape prediction for a domain specific problem, namely class specific inference for real world scenes. 
+Firstly, the work presents an approach to the pose estimation of instantaneous object detections, without 
+requiring an explicit tracking procedure; pose is inferred as a one-shot regression. The evaluation of this 
+pose regression performance demonstrates consistently low error over a randomised split of the dataset used, 
+prividing pose estimates for the difficult case of monocular vision.
+
+Secondly, the proposed approach makes use of generative probabilistic modelling to learn latent embeddings of 
+complex 3D geometry for the class of interest, namely cars. This latent embedding demonstrates the ability to 
+generate a range of domain specific geometries, given a low dimensional latent space input (2D). It is demonstrated 
+that the model is trivial to train, requiring little data and computation time when compared to CNN based approaches.
+
+Though the driving motivation of Chapter~\ref{chap:spp} is the unification of these two problems (pose estimation and 
+3D shape estimation), experimentally this proved to be computationally difficult. As the architecture presented is 
+based on the \textit{RCNN} approach, the model is trained on each proposed object in the input frame. When regressing 
+3D shape and attempting to optimise the latent space point that generated the 3D shape, there is considerable 
+computational overhead involved in performing the Gaussian Process Regression step. Though this is not an issue in 
+the case of a small number of confirmed detections, when performing this inference step for each proposal of an 
+\textit{RCNN} like architecture, it may need to be computed many times (experimentally, for some frames this incurred 
+upwards of 170 GP regressions). 
+
+As this requires a lot of memory, it is not feasible to run this inference step on a single GPU simultaneously with the 
+other neural network components. As the GPU hardware available during the development of this work was a single NVIDIA 
+GTX1060 6GB card, this phase was run on an Intel Core i5 Quad Core CPU\@. For some frames the running time was upwards of 
+1 minute for a single frame. However, there is no theoretical reason that the rich features provided by CNN models such as 
+that used in Chapter~\ref{chap:spp} can not be used to learn a mapping from detection to 2D latent point. The problems 
+encountered in the development of this work are computational.
+
+In summary, the approach outlined in Chapter~\ref{chap:spp} contains multiple components that are of direct use and 
+theoretical interest. However, computational difficulties were encountered when amalgamating the pose and shape 
+prediction components within the proposed \textit{RCNN} framework.
 
 \section{Future Work}
 ~\label{sec:discussion_limitations}
@@ -162,11 +193,11 @@ combined with the potential salient object detection would greatly enhance the e
 collection.
 
 Finally, much future research may be carried out on the method of simultaneous shape and pose prediction 
-outlined in Chapter~\ref{chap:spp}. Predominantly, this research would be focused around the neural network 
-architecture, and it's representational suitability for the task. Additionally, further investigation into 
-the suitability of ``minor'' model components (such as activation functions) would also be desirable. Finally, 
-it would be relevant to formulate a way of handling the case where a predicted pose does not induce an intersection 
-with the shape surface during the ray-casting procedure.
+outlined in Chapter~\ref{chap:spp}. Predominantly, this work would entail investigation into making the 
+simultaneous pose and shape inference tractable. Potential directions include changing the core architecture 
+to another that does not require the entire prediction pipeline to be run for each detection. Additionally, 
+the computational cost of the GP regression may be reduced by the use of sparse GP's. However, this would 
+entail a new direction of research into sparse GPLVM modelling of 3D shape.
 
 \section{Closing Remarks}
 ~\label{sec:discussion_conclusions}
