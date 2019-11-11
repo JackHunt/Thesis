@@ -1232,11 +1232,12 @@ It can be seen in Figure~\ref{figure:spp_latent_point_train}...
 ~\label{sec:spp_quantitative_pose_accuracy}
 As specified earlier in this section, the \textit{VKITTI} dataset was split on an \( 80:20 \) ratio of training to 
 testing data. This section provides a quantitative evaluation of the pose prediction branch of the model outlined 
-in this work. There are two components to the pose prediction branch of the network, the rotational component and 
-the \( z \) translation component. As such, during training, there are two measures of performance that are to be optimised.
-
-Table~\ref{table:spp_pose_mse} provides MSE measures for the rotational and \( z \) translation components for both the training 
-and testing portions of the \textit{VKITTI} dataset.
+in this work, as well as the object detection and classification branches, on which the pose prediction branch is 
+dependant. There are two components to the pose prediction branch of the network, the rotational component and 
+the \( z \) translation component. As such, during training, there are two measures of performance pertaining to 
+the systems pose accuracy. Table~\ref{table:spp_pose_mse} provides MSE measures for the rotational and \( z \) translation 
+components for both the training and testing portions of the \textit{VKITTI} dataset, as well as the related MSE measures 
+for the detection and classification branches.
 
 \begin{table}[!htbp]
   \begin{center}
@@ -1244,15 +1245,55 @@ and testing portions of the \textit{VKITTI} dataset.
       Quantity & Training MSE & Testing MSE \\
       \midrule
       Classification Error & 0.060825 & 0.059888\\
-      Bounding Box Error & 0.039616 & 0.039755\\
+      Detection (Bounding Box) Error & 0.039616 & 0.039755\\
       Rotational Error & 0.552863 & 0.512188\\
       \( z \) Coordinate Error & 1.798331 & 1.709215
     \end{tabular}
   \end{center}
-  \caption[Pose Prediction Quantitative Performance]{Mean Squared Error(s) over orientation and \( z \) 
-  coordinate estimates for training and testng subsets of the \textit{VKITTI} dataset.}
+  \caption[Detection, Classifiction and Pose Performance]{Mean Squared Error(s) over classification, detection, orientation 
+  and \( z \) coordinate estimates for the training and testng subsets of the \textit{VKITTI} dataset.}
   ~\label{table:spp_pose_mse}
 \end{table}
+
+It can be seen in Table~\ref{table:spp_pose_mse} that the training and testing errors are similarly low, indicating a good 
+bias/variance trade-off. In some cases, the testing data error is slightly lower than it's training counterpart, though by a 
+small margin. As the split between training and testing data was randomised on an \( 80:20 \) ratio, it is possible that this 
+due to the testing subset containing a lower number of outliers. In addition to the MSE metrics of Table~\ref{table:spp_pose_mse}, 
+density estimates over the MSE metrics are provided in Figures~\ref{figure:spp_quant_density} and~\ref{figure:spp_quant_density_test}.
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.4\linewidth]{figures/spp/quant/density/classification_loss.eps}&
+		\includegraphics[width=.4\linewidth]{figures/spp/quant/density/detection_loss.eps}\\
+    (a) & (b) \\
+    \includegraphics[width=.4\linewidth]{figures/spp/quant/density/orientation_loss.eps}&
+		\includegraphics[width=.4\linewidth]{figures/spp/quant/density/z_loss.eps}\\
+    (c) & (d)
+  \end{tabular}
+  \caption[GP Shape Draws]
+  {
+    (a, b, c, d) Training MSE Kernel Density Estimates (KDE's).
+  }
+~\label{figure:spp_quant_density}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=.4\linewidth]{figures/spp/quant/density/classification_loss_test.eps}&
+		\includegraphics[width=.4\linewidth]{figures/spp/quant/density/detection_loss_test.eps}\\
+    (a) & (b) \\
+    \includegraphics[width=.4\linewidth]{figures/spp/quant/density/orientation_loss_test.eps}&
+		\includegraphics[width=.4\linewidth]{figures/spp/quant/density/z_loss_test.eps}\\
+    (c) & (d)
+  \end{tabular}
+  \caption[GP Shape Draws]
+  {
+    (a, b, c, d) Testing MSE Kernel Density Estimates (KDE's).
+  }
+~\label{figure:spp_quant_density_test}
+\end{figure}
 
 \subsection{Shape Accuracy}
 ~\label{sec:spp_quantitative_pose_accuracy}
