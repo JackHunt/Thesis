@@ -1410,14 +1410,14 @@ statistics on a subset of the evaluation sequences.
 \end{figure}
 
 It can be seen in Figure~\ref{figure:probobj_timing} that for the \textit{Bear} and 
-\textit{Dinosaur Head} sequences there are Mean per-frame running times of 0.011948 and 
+\textit{Dinosaur Head} sequences there are mean per-frame running times of 0.011948 and 
 0.010490 seconds, respectively. It can also be seen that the Standard Deviations of the frame 
 running times are small (0.002129 and 0.002185 seconds respectively). As these sequences focus on objects 
 with sufficient geometry to converge to a consistent model in a relatively short period, the 
 fluctuations in runtime due to online correction are minimal. However, it may be seen in 
 Figure~\ref{figure:probobj_timing} that for the \textit{Museum Rock} sequence, the runtime is 
-less stable. This sequence demonstrates a Mean per frame runtime of 0.021890 seconds, with 
-a larger Standard Deviation of 0.007783 seconds. This behaviour is likely to be caused by the lack of 
+less stable. This sequence demonstrates a mean per frame runtime of 0.021890 seconds, with 
+a larger standard deviation of 0.007783 seconds. This behaviour is likely to be caused by the lack of 
 descriptive geometry of the object, resulting in less stable pose estimation. As such, for this 
 sequence, the online correction procedure requires more iterations to converge to a consistent 
 model. The spikes in Figure~\ref{figure:probobj_timing} reflect the practical implications of 

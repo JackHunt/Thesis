@@ -775,12 +775,12 @@ The purpose of the stability labelling section of the pipeline is to distinguish
 between stable and unstable voxel blocks in the dynamic model, resulting in
 parts of the scene that are moving being excluded from the static model. For each voxel 
 block in the dynamic model, a stability value is maintained, 
-representing the extent to which the instantaneous TSDF values for the voxels 
+representing the extent to which the instantaneous TSDF values and fused textures for the voxels 
 in a given voxel block (visible in the current view frustum under the current 
 pose) have remained sufficiently similar over time.
 
 The stability value for each voxel block in the scene is initialised to nought.
-At each frame, the instantaneous TSDF values for the voxels in each visible
+At each frame, the instantaneous TSDF values and textures for the voxels in each visible
 voxel block are computed. For each voxel block, the mean absolute difference
 \( \tau \), between the instantaneous and existing TSDF values is computed as
 follows in Equation~\ref{eqn:moseg_stability_value}.
@@ -882,10 +882,10 @@ with an additional 2D segmentation step. Given the normalised voxel block wise s
 scores (refer to Section~\ref{sub:moseg_stability_labelling}), the corresponding stability 
 labels may be refined in image space and unprojected back into 3D scene space.
 
-During the raycast procedure of Section~\ref{alg:raycast}, a raster image of voxel block 
+During the raycast procedure outlined previously, a raster image of voxel block 
 indices is generated, such that each pixel contains the lookup index for the voxel block for 
 which it's ray intersects. Thus, a 2D map of unary potentials is generated based upon 
-the stabilityt scores for the voxel blocks in the view frustum.
+the stability scores for the voxel blocks in the view frustum.
 
 \begin{figure}[!htbp]
   \centering
@@ -918,8 +918,8 @@ energy calculation is to be computed, with respect to neighbouring raster locati
 \( \bm{u} \in \mathcal{V}\), for some set of neighbouring locations \( \mathcal{V} \). The unary 
 term \( P(\bm{\Phi}^{d}(\bm{v})) \) is proportional to the normalised voxel block score \( \bm{\tau} \) 
 given by Equation~\ref{eqn:moseg_stability_value} and the pairwise term 
-\( P(\bm{\Omega}^{d}(\bm{v}) \given \bm{\Omega}^{d}(\bm{u}) \) is given by a standard Gaussian 
-density \( \mathcal{\bm{\Omega}^{d}(\bm{v}) \given \bm{\Omega}^{d}(\bm{u}), \bm{\Sigma}} \), where 
+\( P(\bm{\Omega}^{d}(\bm{v}) \given \bm{\Omega}^{d}(\bm{u})) \) is given by a standard Gaussian 
+density \( \mathcal{N}(\bm{\Omega}^{d}(\bm{v}) \given \bm{\Omega}^{d}(\bm{u}), \bm{\Sigma}) \), where 
 \( \bm{\Sigma} \) is given by the texture variance of the voxel block corresponding to \( \bm{v} \).
 
 Following CRF refinement, the voxel block scores may be directly updated via the aformentioned index 
@@ -934,7 +934,7 @@ in this section is performed via the efficient, filter based message passing alg
 With the central components of the proposed algorithm now outlined, an algorithmic 
 summary may be given. As has been highlighted, the central components of the approach 
 are the dual volume representation, stability labelling and inter-volume surface 
-integration. The process is given in the following Algorithm.
+integration. The process is given in the following algorithm.
 
 {
   \centering
@@ -1101,12 +1101,12 @@ to improve tracking performance.
   \end{tabular}
 \end{center}
 \caption[Motion Segmentation ATE]
-{The Absolute Trajectory Error (ATE) results (in metres, lower is better) 
+{The Absolute Trajectory Error (ATE) results (in metres) 
 achieved by the proposed approach in comparison to the baseline InfiniTAM
 ~\cite{Prisacariu2014} framework on a variety of the standard sequences from
-  the TUM RGBD dataset~\cite{Sturm2012}. Results are in the format mean
-  \( \pm \) standard deviation. The better result (by mean) on each sequence is
-  highlighted in bold.}
+  the TUM RGBD dataset~\cite{Sturm2012}. The lower ATE result on each sequence is
+  highlighted in bold. Additionally, ATE scores for ElasticFusion~\cite{Whelan2016} 
+  are also provided.}
 ~\label{table:moseg_ate}
 \end{table}
 
@@ -1114,7 +1114,11 @@ Given in Table~\ref{table:moseg_ate} is the Absolute Trajectory Error (ATE) meas
 for each of the TUM Dynamic Scenes. The ATE utilises the method of Horn~\cite{Horn1987} to 
 solve for the error incurred by mapping the trajectory of the proposed system on to the ground 
 truth trajectory of the TUM sequence, for a given TUM Dynamic Objects sequence. The results of 
-Table~\ref{table:moseg_ate} are visualised in Figure~\ref{figure:moseg_ate}.
+Table~\ref{table:moseg_ate} are visualised in Figure~\ref{figure:moseg_ate}. For completeness, the 
+performance of the current state of the art \textit{explicit} dense SLAM system 
+\textit{ElasticFusion}~\cite{Whelan2016} is also provided. Note that \textit{ElasticFusion} is 
+not volumetric in nature (rather, using an explicit, surfel representation), so is not directly 
+comparable with the approach outlined in this work.
 
 \begin{figure}[!htbp]
   \centering
@@ -1148,12 +1152,12 @@ in Figure~\ref{figure:moseg_rte}.
   \end{tabular}
 \end{center}
 \caption[Motion Segmentation RTE]
-{The Relative Trajectory Error (RTE) results (in metres, lower is better) 
+{The Relative Trajectory Error (RTE) results (in metres) 
 achieved by the proposed approach in comparison to the baseline InfiniTAM
 ~\cite{Prisacariu2014} framework on a variety of the standard sequences from
-the TUM RGBD dataset~\cite{Sturm2012}. Results are in the format mean
-\( \pm \) standard deviation. The better result (by mean) on each sequence is
-highlighted in bold.}
+the TUM RGBD dataset~\cite{Sturm2012}. The lower ATE result on each sequence is
+highlighted in bold. As with Figure~\ref{figure:moseg_ate}, ElasticFusion results 
+are also provided for completeness.}
 ~\label{table:moseg_rte}
 \end{table}
 
@@ -1268,7 +1272,7 @@ components (such as people moving in an articulated fashion) that are visible in
 view frustum, from those that are static (such as furniture in the scene). This segmentation 
 also demonstrates a novel way of obtaining 3D geometry information to perform rudimentary scene 
 understanding. Additionally, the resultant reconstructions of the proposed approach are 
-qualitatively comparable to the comparison static dense SLAM system. Both of these results 
+qualitatively comparable to the comparison static dense SLAM system (InfiniTAM). Both of these results 
 relate again to the research objectives of Section~\ref{sec:intro_aims_structure}.
 
 The novel dual volumetric representation approach taken in this work of maintaining both a 
@@ -1286,12 +1290,12 @@ Since the development of the work outlined in this chapter, there has been furth
 combined dynamic \textit{and} object-centric SLAM\@. \textit{R\''{u}nz et al}~\cite{Runz2017} in 
 \textit{2017} introduced an approach to dynamic SLAM in which dynamic objects are segmented (in image 
 space), reconstructed and tracked independently. In a future iteration of this work, such a schema 
-could be adopted and conbined with the approach of this chapter to yield a real-time, object aware 
+could be adopted and combined with the approach of this chapter to yield a real-time, object aware 
 dynamic SLAM system. The authors cite the performance of their approach as being \( \approx 12Hz \). 
 Further advancements by \textit{R\''{u}nz et al}~\cite{Runz2018} utilise cues from a
 state-of-the-art~\cite{He2017} semantic segmentation algorithm to identify probable dynamic 
 objects in a given scene, for instance humans, and exclude them from pose estimation accordingly. This 
-contribution provides an additional, potential future expansion upon the contributions of this chapter.
+contribution provides an additional, potential future expansion upon the approach of this chapter.
 
 With the contributions outlined in this work, the proposed approach provides a platform 
 for further research into problems such as live semantic scene understanding and dense scene 
